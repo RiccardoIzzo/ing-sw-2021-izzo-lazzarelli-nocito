@@ -47,6 +47,11 @@
 *.iml
 *.ipr
 
+# Coverage data
+*.html
+*.gif
+*.css
+
 # CMake
 cmake-build-*/
 

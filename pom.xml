@@ -38,7 +38,7 @@
         <version>3.8.1</version>
         <configuration>
           <!-- Version of the Java language to use -->
-          <source>15</source>
+          <source>11</source>
           <!-- Minimum JRE version the JAR will be compatible with -->
           <target>11</target>
         </configuration>
