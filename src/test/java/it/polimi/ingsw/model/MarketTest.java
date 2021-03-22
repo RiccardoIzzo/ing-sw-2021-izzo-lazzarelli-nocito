@@ -1,24 +1,31 @@
 package it.polimi.ingsw.model;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * Class MarketTest tests Market class.
+ *
+ * @author Riccardo Izzo
+ */
 public class MarketTest {
     Market myMarket;
-    int white = 0;
-    int blue = 0;
-    int gray = 0;
-    int yellow = 0;
-    int purple = 0;
-    int red = 0;
+    int white, blue, gray, yellow, purple, red = 0;
 
+    /**
+     * Method initialization create an instance of Market and generates the market tray.
+     */
     @Before
     public void initialization(){
         myMarket = new Market();
         myMarket.generateTray();
     }
 
+    /**
+     * Method generateTrayTest checks the number of marbles for each color: 4 white, 2 blue, 2 yellow, 2 gray, 2 purple, 1 red.
+     */
     @Test
     public void generateTrayTest(){
         int i = 0;
@@ -50,5 +57,22 @@ public class MarketTest {
         assertEquals(1, red);
     }
 
+    /**
+     * Method insertMarbleRowTest test the behaviour of insertMarble method and checks the size of the chest in case of a row selection by the user.
+     */
+    @Test
+    public void insertMarbleRowTest() {
+        myMarket.insertMarble(2, "ROW");
+        assertTrue(3 >= myMarket.chestSize());
+    }
+
+    /**
+     * Method insertMarbleRowTest test the behaviour of insertMarble method and checks the size of the chest in case of a column selection by the user.
+     */
+    @Test
+    public void insertMarbleColumnTest() {
+        myMarket.insertMarble(3, "COL");
+        assertTrue(4 >= myMarket.chestSize());
+    }
 
 }
