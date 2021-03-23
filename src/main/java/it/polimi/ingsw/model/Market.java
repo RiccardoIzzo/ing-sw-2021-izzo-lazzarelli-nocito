@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Collections;
 
 /**
- * Market class represent the market board where the player can buy resources.
+ * Market class represents the market board where the player can buy resources.
  *
  * @author Riccardo Izzo
  */
@@ -26,7 +26,7 @@ public class Market {
 
     /**
      * Method getSlideMarbel returns the marble that can slide, the one outside the market tray.
-     * @return the marble of type MarbleColor.
+     * @return the marble.
      */
     public MarbleColor getSlideMarbel(){
         return slideMarbel;
@@ -35,8 +35,8 @@ public class Market {
 
     /**
      * Method getMarble returns the marble of the the market tray at the specific index.
-     * @param index of type int - marbel position.
-     * @return the marble of type MarbleColor.
+     * @param index marbel position in the market tray.
+     * @return the marble.
      */
     public MarbleColor getMarble(int index){
         return marketTray.get(index);
@@ -78,8 +78,8 @@ public class Market {
 
     /**
      * Method insertMarble take all the resources displayed in the chosen row or column
-     * @param pos of type int - row/column index.
-     * @param type of type String - represent the user choice: row or column.
+     * @param pos row/column index.
+     * @param type represent the user choice: row or column.
      */
     public void insertMarble(int pos, String type){
         chest.clear();
@@ -91,7 +91,7 @@ public class Market {
 
     /**
      * Method selectRow push the row in order and insert the slideMarbel.
-     * @param n of type int - row index.
+     * @param n row index.
      */
     public void selectRow(int n){
         MarbleColor temp1 = slideMarbel;
@@ -101,7 +101,7 @@ public class Market {
             resourceConverter(getMarble(offset + i));
         }
 
-        slideMarbel = getMarble(n);
+        slideMarbel = getMarble(offset);
         marketTray.set(offset, getMarble(offset + 1));
         marketTray.set(offset + 1, getMarble(offset + 2));
         marketTray.set(offset + 2, getMarble(offset + 3));
@@ -111,7 +111,7 @@ public class Market {
 
     /**
      * Method selectRow push the column in order and insert the slideMarbel.
-     * @param n of type int - column index.
+     * @param n column index.
      */
     public void selectCol(int n){
         MarbleColor temp2 = slideMarbel;
@@ -129,7 +129,7 @@ public class Market {
 
     /**
      * Method resourceConverter converts the color of the marble into the right resource and adds it to the chest.
-     * @param marble of type MarbleColor - marble color.
+     * @param marble marble color.
      */
     public void resourceConverter(MarbleColor marble){
         if(marble == MarbleColor.BLUE) chest.add(Resource.SHIELD);

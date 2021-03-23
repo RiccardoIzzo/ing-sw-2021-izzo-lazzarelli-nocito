@@ -1,12 +1,11 @@
 package it.polimi.ingsw.model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Class MarketTest tests Market class.
+ * MarketTest tests Market class.
  *
  * @author Riccardo Izzo
  */
