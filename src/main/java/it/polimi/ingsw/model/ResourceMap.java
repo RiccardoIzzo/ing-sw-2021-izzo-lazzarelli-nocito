@@ -36,12 +36,11 @@ public class ResourceMap {
     }
 
     /**
-     * Method addResources receives an ArrayList of Integers with all the quantities to add on each Resource.
+     * Method addResources receives a Map of Resources and associated Integers to add.
      */
-    public void addResources(ArrayList<Integer> toAdd) {
-        for (int i = 0; i < toAdd.size(); i++) {
-            Resource resTemp = Resource.values()[i];
-            resources.replace(resTemp, resources.get(resTemp)+toAdd.get(i));
+    public void addResources(Map<Resource, Integer> toAdd) {
+        for (Map.Entry<Resource, Integer> entry : toAdd.entrySet()) {
+            resources.replace(entry.getKey() , entry.getValue()+resources.get(entry.getKey()));
         }
     }
     /**
