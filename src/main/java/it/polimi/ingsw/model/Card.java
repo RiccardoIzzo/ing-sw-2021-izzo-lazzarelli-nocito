@@ -27,4 +27,12 @@ public class Card {
     public int getVictoryPoints() {
         return victoryPoints;
     }
+
+    /**
+     * Method getRequirement gets the Requirements of the selected Card
+     * @return the Card's Requirement
+     */
+    public Requirement getRequirement() {
+        return requirement;
+    }
 }
