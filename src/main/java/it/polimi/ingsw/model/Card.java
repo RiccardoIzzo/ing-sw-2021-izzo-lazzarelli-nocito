@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 /**
  * Class Card is the superclass to both types of cards in the game, provides a
- * requirements attribute which counts as a cost for the DevelopmentCard
+ * requirement attribute which counts as a cost for the DevelopmentCard
  * or as requirement for the LeaderCard.
  */
 public class Card {
