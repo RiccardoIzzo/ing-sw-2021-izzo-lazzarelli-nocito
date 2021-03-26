@@ -55,23 +55,4 @@ public class MarketTest {
         assertEquals(2, purple);
         assertEquals(1, red);
     }
-
-    /**
-     * Method insertMarbleRowTest test the behaviour of insertMarble method and checks the size of the chest in case of a row selection by the user.
-     */
-    @Test
-    public void insertMarbleRowTest() {
-        myMarket.insertMarble(2, "ROW");
-        assertTrue(3 >= myMarket.chestSize());
-    }
-
-    /**
-     * Method insertMarbleRowTest test the behaviour of insertMarble method and checks the size of the chest in case of a column selection by the user.
-     */
-    @Test
-    public void insertMarbleColumnTest() {
-        myMarket.insertMarble(3, "COL");
-        assertTrue(4 >= myMarket.chestSize());
-    }
-
 }
