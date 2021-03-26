@@ -47,4 +47,17 @@ public class DevelopmentCard extends Card{
     public ProductionPower getProduction() {
         return production;
     }
+
+    /**
+     * Method equals is overridden, two DevelopmentCard are equals if their attributes are the same.
+     * @param o is the Object instance to compare
+     * @return true if the DevelopmentCard instances have the same attributes
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DevelopmentCard that = (DevelopmentCard) o;
+        return getLevel() == that.getLevel() && getType() == that.getType() && getProduction().equals(that.getProduction());
+    }
 }
