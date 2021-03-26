@@ -12,7 +12,9 @@ import java.util.Collections;
 public class Market {
     private ArrayList<MarbleColor> marketTray;
     private MarbleColor slideMarbel;
-    private ArrayList<Resource> chest;
+    private ResourceMap outputMarket;
+    private MarbleColor specialMarble;
+    private boolean faith;
 
 
     /**
@@ -20,7 +22,7 @@ public class Market {
      */
     public Market(){
         marketTray = new ArrayList<>();
-        chest = new ArrayList<>();
+        outputMarket = new ResourceMap();
     }
 
 
@@ -42,13 +44,21 @@ public class Market {
         return marketTray.get(index);
     }
 
+    /**
+     * Method getFaith return a boolean that indicates if in the last turn a red marble was collected.
+     * @return true if faith was collected in the last turn.
+     */
+    public boolean getFaith(){
+        return faith;
+    }
+
 
     /**
-     * Method chestSize returns the number of resources that can be stored (size of chest).
-     * @return the number of resources.
+     * Method setSpecialMarble updates the variable "specialMarble".
+     * @param marble the new specialMarble.
      */
-    public int chestSize(){
-        return chest.size();
+    public void setSpecialMarble(MarbleColor marble){
+        specialMarble = marble;
     }
 
 
@@ -77,24 +87,23 @@ public class Market {
 
 
     /**
-     * Method insertMarble take all the resources displayed in the chosen row or column
+     * Method insertMarble takes all the resources of the selected row/column.
      * @param pos row/column index.
-     * @param type represent the user choice: row or column.
+     * @param type represent the user choice: 1 = row, 2 = column.
      */
-    public void insertMarble(int pos, String type){
-        chest.clear();
-        if(type.equals("ROW")) selectRow(pos - 1);
-        else if(type.equals(("COL"))) selectCol(pos);
-
+    public void insertMarble(int pos, int type){
+        faith = false;
+        if(type == 1) selectRow(pos - 1);
+        else if(type == 2) selectCol(pos - 1);
     }
 
 
     /**
-     * Method selectRow push the row in order and insert the slideMarbel.
+     * Method selectRow push the row in order and insert the slideMarbel in the market tray.
      * @param n row index.
      */
     public void selectRow(int n){
-        MarbleColor temp1 = slideMarbel;
+        MarbleColor temp = slideMarbel;
         int offset = n * 4;
 
         for(int i = 0; i < 4; i++){
@@ -105,39 +114,52 @@ public class Market {
         marketTray.set(offset, getMarble(offset + 1));
         marketTray.set(offset + 1, getMarble(offset + 2));
         marketTray.set(offset + 2, getMarble(offset + 3));
-        marketTray.set(offset + 3, temp1);
+        marketTray.set(offset + 3, temp);
     }
 
 
     /**
-     * Method selectRow push the column in order and insert the slideMarbel.
+     * Method selectRow push the column in order and insert the slideMarbel in the market tray.
      * @param n column index.
      */
     public void selectCol(int n){
-        MarbleColor temp2 = slideMarbel;
+        MarbleColor temp = slideMarbel;
 
         for(int i = 0; i < 3; i++){
             resourceConverter(getMarble(n + (i * 4)));
         }
 
-        slideMarbel = getMarble(n);
+        slideMarbel = getMarble(n + 8);
         marketTray.set(n + 8, getMarble(n + 4));
         marketTray.set(n + 4, getMarble(n));
-        marketTray.set(n, temp2);
+        marketTray.set(n, temp);
     }
 
 
     /**
-     * Method resourceConverter converts the color of the marble into the right resource and adds it to the chest.
+     * Method resourceOutput returns a ResourceMap with the amount of taken resources.
+     * @return a ResourceMap.
+     */
+    public ResourceMap resourceOutput(){
+        return outputMarket;
+    }
+
+
+    /**
+     * Method resourceConverter converts the color of the marble to the corresponding resource type and adds it to the ResourceMap.
      * @param marble marble color.
      */
-    public void resourceConverter(MarbleColor marble){
-        if(marble == MarbleColor.BLUE) chest.add(Resource.SHIELD);
-        else if(marble == MarbleColor.GRAY) chest.add(Resource.STONE);
-        else if(marble == MarbleColor.YELLOW) chest.add(Resource.COIN);
-        else if(marble == MarbleColor.PURPLE) chest.add(Resource.SERVANT);
-        //else if(marble == MarbleColor.RED);
-        //else if(marble == MarbleColor.WHITE);
+    private void resourceConverter(MarbleColor marble){
+        if(marble == MarbleColor.BLUE) outputMarket.addResource(Resource.SHIELD, 1);
+        else if(marble == MarbleColor.GRAY) outputMarket.addResource(Resource.STONE, 1);
+        else if(marble == MarbleColor.YELLOW) outputMarket.addResource(Resource.COIN, 1);
+        else if(marble == MarbleColor.PURPLE) outputMarket.addResource(Resource.SERVANT, 1);
+        else if(marble == MarbleColor.RED) faith = true;
+        else if(marble == MarbleColor.WHITE) {
+            if(specialMarble != null){
+                resourceConverter(specialMarble);
+            }
+        }
     }
 
 }
