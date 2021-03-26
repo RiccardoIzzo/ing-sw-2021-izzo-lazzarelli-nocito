@@ -45,7 +45,7 @@ public class ProductionPower {
     }
 
     /**
-     * Method equals is overridden, two productionPower are equals if their attributes are the same.
+     * Method equals is overridden, two ProductionPower are equals if their attributes are the same.
      * @param o is the Object instance to compare
      * @return true if the ProductionPower instances have the same attributes
      */
