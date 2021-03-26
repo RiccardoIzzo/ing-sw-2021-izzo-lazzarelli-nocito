@@ -29,9 +29,9 @@ public class MultiplayerGameTest {
      */
     @Test
     public void AddRemovePlayers(){
-        assertEquals("Riccardo", game.getPlayers().get(0).getName());
-        assertEquals("Andrea", game.getPlayers().get(1).getName());
-        assertEquals("Gabriele", game.getPlayers().get(2).getName());
+        assertEquals("Riccardo", game.getPlayers().get(0).getNickname());
+        assertEquals("Andrea", game.getPlayers().get(1).getNickname());
+        assertEquals("Gabriele", game.getPlayers().get(2).getNickname());
         assertEquals(3, game.getNumPlayers());
         game.addPlayer("Francesco");
         assertEquals(4, game.getNumPlayers());

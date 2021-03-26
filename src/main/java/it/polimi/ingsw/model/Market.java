@@ -16,7 +16,6 @@ public class Market {
     private MarbleColor specialMarble;
     private boolean faith;
 
-
     /**
      * Constructor Market create a new Market instance.
      */
@@ -25,7 +24,6 @@ public class Market {
         outputMarket = new ResourceMap();
     }
 
-
     /**
      * Method getSlideMarbel returns the marble that can slide, the one outside the market tray.
      * @return the marble.
@@ -33,7 +31,6 @@ public class Market {
     public MarbleColor getSlideMarbel(){
         return slideMarbel;
     }
-
 
     /**
      * Method getMarble returns the marble of the the market tray at the specific index.
@@ -52,15 +49,13 @@ public class Market {
         return faith;
     }
 
-
     /**
      * Method setSpecialMarble updates the variable "specialMarble".
      * @param marble the new specialMarble.
      */
     public void setSpecialMarble(MarbleColor marble){
-        specialMarble = marble;
+        this.specialMarble = marble;
     }
-
 
     /**
      * Method generateTray creates the market tray with 12 marbles randomly generated and select the marble that can slide.
@@ -85,7 +80,6 @@ public class Market {
         marketTray.remove(rand);
     }
 
-
     /**
      * Method insertMarble takes all the resources of the selected row/column.
      * @param pos row/column index.
@@ -96,7 +90,6 @@ public class Market {
         if(type == 1) selectRow(pos - 1);
         else if(type == 2) selectCol(pos - 1);
     }
-
 
     /**
      * Method selectRow push the row in order and insert the slideMarbel in the market tray.
@@ -117,7 +110,6 @@ public class Market {
         marketTray.set(offset + 3, temp);
     }
 
-
     /**
      * Method selectRow push the column in order and insert the slideMarbel in the market tray.
      * @param n column index.
@@ -135,7 +127,6 @@ public class Market {
         marketTray.set(n, temp);
     }
 
-
     /**
      * Method resourceOutput returns a ResourceMap with the amount of taken resources.
      * @return a ResourceMap.
@@ -143,7 +134,6 @@ public class Market {
     public ResourceMap resourceOutput(){
         return outputMarket;
     }
-
 
     /**
      * Method resourceConverter converts the color of the marble to the corresponding resource type and adds it to the ResourceMap.

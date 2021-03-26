@@ -27,7 +27,7 @@ public class MultiplayerGame extends Game{
      * @param player the new current player to be set.
      */
     public void setCurrPlayer(Player player){
-        currPlayer = player;
+        this.currPlayer = player;
     }
 
     /**
@@ -71,7 +71,7 @@ public class MultiplayerGame extends Game{
      */
     public Player getPlayerByName(String name){
         for(Player player : players){
-            if(player.getName().equals(name)){
+            if(player.getNickname().equals(name)){
                 return player;
             }
         }
