@@ -1,13 +1,18 @@
 package it.polimi.ingsw.model;
 
 public class Player {
-    String nickname;
+    private String nickname;
+    private int victoryPoints;
 
     public Player(String name){
         nickname = name;
     }
 
-    public String getName(){
+    public String getNickname() {
         return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
