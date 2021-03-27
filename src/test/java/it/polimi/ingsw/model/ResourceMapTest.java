@@ -19,7 +19,6 @@ public class ResourceMapTest {
     @Before
     public void initialization(){
         myResourceMap = new ResourceMap();
-        myResourceMap.getResources();
     }
 
     /**
