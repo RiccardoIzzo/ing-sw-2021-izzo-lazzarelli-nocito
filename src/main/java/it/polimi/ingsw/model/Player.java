@@ -43,4 +43,9 @@ public class Player {
     public void removeProduction(ProductionPower production){
         availableProduction.remove(production);
     }
+
+    public void addExchange(Set<MarbleColor> exchange){
+        availableExchange.addAll(exchange);
+    }
+
 }
