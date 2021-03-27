@@ -48,4 +48,14 @@ public class ResourceMap {
     public void addResource(Resource type, Integer value) {
         resources.replace(type, resources.get(type)+value);
     }
+
+    /**
+     * Method flush resets resourceMap to its initial state, with value 0 for each Resource
+     */
+    public void flush() {
+        resources.clear();
+        for (Resource value : Resource.values()) {
+            resources.put(value, 0);
+        }
+    }
 }
