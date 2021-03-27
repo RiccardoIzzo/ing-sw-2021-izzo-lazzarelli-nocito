@@ -18,7 +18,7 @@ public abstract class LeaderCard extends Card{
      * Method setAbility is called when a LeaderCard is activated.
      * Has to be implemented by each of the subclasses of LeaderCard.
      */
-    public void setAbility() {
+    public void setAbility(Player player) {
     }
 
     /**
