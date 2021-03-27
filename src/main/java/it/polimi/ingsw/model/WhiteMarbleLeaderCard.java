@@ -21,4 +21,9 @@ public class WhiteMarbleLeaderCard extends LeaderCard{
     public Set<MarbleColor> getExchange() {
         return exchange;
     }
+
+    @Override
+    public void setAbility(Player player) {
+        player.addExchange(exchange);
+    }
 }
