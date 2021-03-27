@@ -1,18 +1,17 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class ResourceMap {
-    Map<Resource , Integer> resources;
+    EnumMap<Resource , Integer> resources;
 
     /**
-     * Constructor ResourceMap create a new ResourceMap instance.
+     * Constructor ResourceMap creates a new ResourceMap instance.
      * All the resources counters are set to 0.
      */
     public ResourceMap() {
-        resources = new HashMap<>();
+        resources = new EnumMap<>(Resource.class);
 
         for (Resource value : Resource.values()) {
             resources.put(value, 0);
@@ -31,8 +30,8 @@ public class ResourceMap {
      * Method getResources returns an ArrayList of Integers with all the available quantities of each Resource.
      * @return the an ArrayList of the associated Integers.
      */
-    public ArrayList<Integer> getResources() {
-        return (ArrayList<Integer>) resources.values();
+    public EnumMap <Resource, Integer> getResources() {
+        return resources;
     }
 
     /**
@@ -48,5 +47,15 @@ public class ResourceMap {
      */
     public void addResource(Resource type, Integer value) {
         resources.replace(type, resources.get(type)+value);
+    }
+
+    /**
+     * Method flush resets resourceMap to its initial state, with value 0 for each Resource
+     */
+    public void flush() {
+        resources.clear();
+        for (Resource value : Resource.values()) {
+            resources.put(value, 0);
+        }
     }
 }
