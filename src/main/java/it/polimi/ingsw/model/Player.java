@@ -31,7 +31,7 @@ public class Player {
         //code to decrease resources
         /*Example
         DevelopmentCard c - instance of the bought card
-        c.production.activatePower(this) - see ProductionPower
+        c.getProduction().activatePower(this) - see ProductionPower
          */
         //activatePower needs to be inside ProductionPower (LeaderCard uses it too)
     }
