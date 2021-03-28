@@ -11,13 +11,13 @@ import java.util.Collections;
  */
 public class Market {
     private ArrayList<MarbleColor> marketTray;
-    private MarbleColor slideMarbel;
-    private ResourceMap outputMarket;
+    private MarbleColor slideMarble;
     private MarbleColor specialMarble;
-    private boolean faith;
+    private ResourceMap outputMarket;
+    private boolean foundFaith;
 
     /**
-     * Constructor Market create a new Market instance.
+     * Constructor Market creates a new Market instance.
      */
     public Market(){
         marketTray = new ArrayList<>();
@@ -25,16 +25,16 @@ public class Market {
     }
 
     /**
-     * Method getSlideMarbel returns the marble that can slide, the one outside the market tray.
+     * Method getSlideMarble returns the marble that can slide, the one outside the market tray.
      * @return the marble.
      */
-    public MarbleColor getSlideMarbel(){
-        return slideMarbel;
+    public MarbleColor getSlideMarble(){
+        return slideMarble;
     }
 
     /**
      * Method getMarble returns the marble of the the market tray at the specific index.
-     * @param index marbel position in the market tray.
+     * @param index marble position in the market tray.
      * @return the marble.
      */
     public MarbleColor getMarble(int index){
@@ -42,11 +42,11 @@ public class Market {
     }
 
     /**
-     * Method getFaith return a boolean that indicates if in the last turn a red marble was collected.
+     * Method getFaith returns a boolean that indicates if in the last turn a red marble was collected.
      * @return true if faith was collected in the last turn.
      */
-    public boolean getFaith(){
-        return faith;
+    public boolean findFaith(){
+        return foundFaith;
     }
 
     /**
@@ -62,6 +62,7 @@ public class Market {
      */
     public void generateTray(){
         Random random = new Random();
+        int rand = random.nextInt(12);
 
         for(int n_white = 0; n_white < 4; n_white++){
             marketTray.add(MarbleColor.WHITE);
@@ -75,9 +76,17 @@ public class Market {
         marketTray.add(MarbleColor.RED);
 
         Collections.shuffle(marketTray);
-        int rand = random.nextInt(12);
-        slideMarbel = marketTray.get(rand);
+        slideMarble = marketTray.get(rand);
         marketTray.remove(rand);
+    }
+
+    /**
+     * Method reset flush the outputMarket and sets the default values to specialMarble and foundFaith.
+     */
+    private void reset(){
+        outputMarket.flush();
+        specialMarble = null;
+        foundFaith = false;
     }
 
     /**
@@ -86,7 +95,7 @@ public class Market {
      * @param type represent the user choice: 1 = row, 2 = column.
      */
     public void insertMarble(int pos, int type){
-        faith = false;
+        reset();
         if(type == 1) selectRow(pos - 1);
         else if(type == 2) selectCol(pos - 1);
     }
@@ -96,14 +105,14 @@ public class Market {
      * @param n row index.
      */
     public void selectRow(int n){
-        MarbleColor temp = slideMarbel;
+        MarbleColor temp = slideMarble;
         int offset = n * 4;
 
         for(int i = 0; i < 4; i++){
             resourceConverter(getMarble(offset + i));
         }
 
-        slideMarbel = getMarble(offset);
+        slideMarble = getMarble(offset);
         marketTray.set(offset, getMarble(offset + 1));
         marketTray.set(offset + 1, getMarble(offset + 2));
         marketTray.set(offset + 2, getMarble(offset + 3));
@@ -115,13 +124,13 @@ public class Market {
      * @param n column index.
      */
     public void selectCol(int n){
-        MarbleColor temp = slideMarbel;
+        MarbleColor temp = slideMarble;
 
         for(int i = 0; i < 3; i++){
             resourceConverter(getMarble(n + (i * 4)));
         }
 
-        slideMarbel = getMarble(n + 8);
+        slideMarble = getMarble(n + 8);
         marketTray.set(n + 8, getMarble(n + 4));
         marketTray.set(n + 4, getMarble(n));
         marketTray.set(n, temp);
@@ -139,12 +148,12 @@ public class Market {
      * Method resourceConverter converts the color of the marble to the corresponding resource type and adds it to the ResourceMap.
      * @param marble marble color.
      */
-    private void resourceConverter(MarbleColor marble){
+    public void resourceConverter(MarbleColor marble){
         if(marble == MarbleColor.BLUE) outputMarket.addResource(Resource.SHIELD, 1);
         else if(marble == MarbleColor.GRAY) outputMarket.addResource(Resource.STONE, 1);
         else if(marble == MarbleColor.YELLOW) outputMarket.addResource(Resource.COIN, 1);
         else if(marble == MarbleColor.PURPLE) outputMarket.addResource(Resource.SERVANT, 1);
-        else if(marble == MarbleColor.RED) faith = true;
+        else if(marble == MarbleColor.RED) foundFaith = true;
         else if(marble == MarbleColor.WHITE) {
             if(specialMarble != null){
                 resourceConverter(specialMarble);
