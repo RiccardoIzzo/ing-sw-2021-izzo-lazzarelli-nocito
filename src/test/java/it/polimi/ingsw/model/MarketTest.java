@@ -29,7 +29,7 @@ public class MarketTest {
     public void generateTrayTest(){
         int i = 0;
 
-        MarbleColor slide = myMarket.getSlideMarbel();
+        MarbleColor slide = myMarket.getSlideMarble();
         if(slide == MarbleColor.WHITE) white++;
         else if(slide == MarbleColor.BLUE) blue++;
         else if(slide == MarbleColor.GRAY) gray++;
@@ -54,5 +54,16 @@ public class MarketTest {
         assertEquals(2, yellow);
         assertEquals(2, purple);
         assertEquals(1, red);
+    }
+
+    /**
+     * Method whiteMarbleTest tests the behaviour of the resourceConverter method in the case of a white marble.
+     */
+    @Test
+    public void whiteMarbleTest(){
+        assertEquals(Integer.valueOf(0), myMarket.resourceOutput().getResource(Resource.SHIELD));
+        myMarket.setSpecialMarble(MarbleColor.BLUE);
+        myMarket.resourceConverter(MarbleColor.WHITE);
+        assertEquals(Integer.valueOf(1), myMarket.resourceOutput().getResource(Resource.SHIELD));
     }
 }
