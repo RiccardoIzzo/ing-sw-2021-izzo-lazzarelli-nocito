@@ -9,6 +9,8 @@ public class Player {
     //private Dashboard myDashboard;
     private Set<Card> developments;
     private Set<Card> leaders;
+    private ResourceMap numberOfCard;
+    private ResourceMap levelOfCard;
     private ArrayList<ProductionPower> availableProduction;
     private Set<MarbleColor> availableExchange;
     private ResourceMap availableDiscount;
@@ -23,6 +25,14 @@ public class Player {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public ResourceMap getNumberOfCard() {
+        return numberOfCard;
+    }
+
+    public ResourceMap getLevelOfCard() {
+        return levelOfCard;
     }
 
     public void buyCard(){
