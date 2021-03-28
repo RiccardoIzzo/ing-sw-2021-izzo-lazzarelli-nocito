@@ -17,7 +17,7 @@ public class Market {
     private boolean foundFaith;
 
     /**
-     * Constructor Market create a new Market instance.
+     * Constructor Market creates a new Market instance.
      */
     public Market(){
         marketTray = new ArrayList<>();
