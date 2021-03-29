@@ -9,8 +9,8 @@ public class Player {
     //private Dashboard myDashboard;
     private Set<Card> developments;
     private Set<Card> leaders;
-    private ResourceMap numberOfCard;
-    private ResourceMap levelOfCard;
+    private CardMap numberOfCard;
+    private CardMap levelOfCard;
     private ArrayList<ProductionPower> availableProduction;
     private Set<MarbleColor> availableExchange;
     private ResourceMap availableDiscount;
@@ -27,11 +27,11 @@ public class Player {
         this.nickname = nickname;
     }
 
-    public ResourceMap getNumberOfCard() {
+    public CardMap getNumberOfCard() {
         return numberOfCard;
     }
 
-    public ResourceMap getLevelOfCard() {
+    public CardMap getLevelOfCard() {
         return levelOfCard;
     }
 
