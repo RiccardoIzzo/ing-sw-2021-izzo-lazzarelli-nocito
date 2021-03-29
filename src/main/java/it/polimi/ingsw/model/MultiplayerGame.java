@@ -9,10 +9,18 @@ import java.util.Random;
  * @author Riccardo Izzo
  */
 public class MultiplayerGame extends Game{
-    private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Player> players;
     private Player currPlayer;
     private Player firstPlayer;
     private int playerIndex;
+
+    /**
+     * Constructor MultiplayerGame creates a new MultiplayerGame instance.
+     */
+    public MultiplayerGame(){
+        super();
+        players = new ArrayList<>();
+    }
 
     /**
      * Method getCurrPlayer returns the current player.
