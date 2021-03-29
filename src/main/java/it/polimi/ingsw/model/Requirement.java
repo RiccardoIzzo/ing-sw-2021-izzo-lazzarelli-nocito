@@ -6,5 +6,5 @@ package it.polimi.ingsw.model;
  * Marker interface pattern design is applied.
  */
 public interface Requirement {
-    void checkRequirement(Player player);
+    boolean checkRequirement(Player player);
 }
