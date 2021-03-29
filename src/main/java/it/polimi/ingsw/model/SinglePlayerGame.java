@@ -13,6 +13,7 @@ public class SinglePlayerGame extends Game{
      * Constructor SinglePlayerGame creates a new SinglePlayerGame instance.
      */
     public SinglePlayerGame(){
+        super();
         tokenStack = new TokenDeck();
         tokenStack.reset();
     }
