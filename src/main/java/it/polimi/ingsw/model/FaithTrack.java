@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.Arrays;
 
 /**
- * Shelf Class represents a player's faith track
+ * FaithTrack Class represents a player's faith track
  *
  * @author Andrea Nocito
  */
