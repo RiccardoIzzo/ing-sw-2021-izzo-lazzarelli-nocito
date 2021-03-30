@@ -15,7 +15,6 @@ public class Shelf {
     public Shelf(Integer shelfCapacity) {
         resourcesAllowed = new HashSet<>();
         capacity = shelfCapacity;
-
     }
 
 
@@ -24,9 +23,13 @@ public class Shelf {
     }
 
     public void takeResource(Resource resource) {
-
+        if ( resourcesAllowed.contains(resource) && resources.getResource(resource) > 0 ) {
+            resources.addResource(resource , -1);
+        }
     }
     public void placeResource(Resource resource) {
-
+        if ( resourcesAllowed.contains(resource) && resources.getResources().size() < capacity ) {
+            resources.addResource(resource, 1);
+        }
     }
 }
