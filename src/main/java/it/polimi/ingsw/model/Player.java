@@ -9,6 +9,7 @@ public class Player {
     //private Dashboard myDashboard;
     private Set<Card> developments;
     private Set<Card> leaders;
+    private ResourceMap totalResources;
     private CardMap numberOfCard;
     private CardMap levelOfCard;
     private ArrayList<ProductionPower> availableProduction;
@@ -58,4 +59,11 @@ public class Player {
         availableExchange.addAll(exchange);
     }
 
+    public void addDiscount(ResourceMap discount){
+        availableDiscount.addResources(discount);
+    }
+
+    public ResourceMap getTotalResources() {
+        return totalResources;
+    }
 }
