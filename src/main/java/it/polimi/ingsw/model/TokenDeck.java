@@ -40,4 +40,8 @@ public class TokenDeck {
     public SoloActionToken draw(){
         return tokens.pop();
     }
+
+    public int numTokens(){
+        return tokens.size();
+    }
 }
