@@ -6,15 +6,18 @@ package it.polimi.ingsw.model;
  * @author Riccardo Izzo
  */
 public class SinglePlayerGame extends Game{
-    private Player player;
     private TokenDeck tokenStack;
 
     /**
      * Constructor SinglePlayerGame creates a new SinglePlayerGame instance.
      */
-    public SinglePlayerGame(){
+    public SinglePlayerGame() {
         super();
         tokenStack = new TokenDeck();
         tokenStack.reset();
+    }
+
+    public void drawToken(){
+        tokenStack.draw().playToken();
     }
 }
