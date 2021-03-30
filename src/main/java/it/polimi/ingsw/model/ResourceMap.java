@@ -2,6 +2,11 @@ package it.polimi.ingsw.model;
 
 import java.util.EnumMap;
 import java.util.Map;
+/**
+ * ResourceMap class represents a set of available resources with associated quantities
+ *
+ * @author Andrea Nocito
+ */
 
 public class ResourceMap {
     EnumMap<Resource , Integer> resources;
@@ -18,13 +23,6 @@ public class ResourceMap {
         }
     }
 
-    /**
-     * Method getResource returns the available quantity of the specified Resource.
-     * @return the associated Integer.
-     */
-    public Integer getResource(Resource type) {
-        return resources.get(type);
-    }
 
     /**
      * Method getResources returns an ArrayList of Integers with all the available quantities of each Resource.
@@ -35,10 +33,18 @@ public class ResourceMap {
     }
 
     /**
+     * Method getResource returns the available quantity of the specified Resource.
+     * @return the associated Integer.
+     */
+    public Integer getResource(Resource type) {
+        return resources.get(type);
+    }
+
+    /**
      * Method addResources receives a Map of Resources and associated Integers to add.
      */
-    public void addResources(Map<Resource, Integer> toAdd) {
-        for (Map.Entry<Resource, Integer> entry : toAdd.entrySet()) {
+    public void addResources(ResourceMap toAdd) {
+        for (Map.Entry<Resource, Integer> entry : toAdd.resources.entrySet()) {
             resources.replace(entry.getKey() , entry.getValue()+resources.get(entry.getKey()));
         }
     }
