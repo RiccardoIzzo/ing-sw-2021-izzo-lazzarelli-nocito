@@ -28,10 +28,10 @@ public class MoveBlackMarkerToken implements SoloActionToken{
     }
 
     /**
-     * Method isResetStack returns a boolean that indicates if the token has this effect.
-     * @return true it the token has the indicated effect.
+     * Method hasResetStack returns a boolean that indicates if the token has this effect.
+     * @return true if the token has the indicated effect.
      */
-    public boolean isResetStack() {
+    public boolean hasResetStack() {
         return resetStack;
     }
 
@@ -39,8 +39,14 @@ public class MoveBlackMarkerToken implements SoloActionToken{
      * Method playToken represents the effect of the token.
      */
     @Override
-    public void playToken() {
-
+    public void playToken(SinglePlayerGame game) {
+        Dashboard dashboard = game.getPlayers().get(0).getDashboard();
+        for(int i = 0; i < steps; i++){
+            dashboard.incrementBlackFaith();
+        }
+        if(hasResetStack()){
+            game.getTokenStack().reset();
+        }
     }
 
 }

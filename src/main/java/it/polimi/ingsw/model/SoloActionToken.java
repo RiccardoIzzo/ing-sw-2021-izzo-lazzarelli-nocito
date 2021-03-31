@@ -9,7 +9,7 @@ package it.polimi.ingsw.model;
 
 public interface SoloActionToken {
     /**
-     * Method playToken has to be implemented by both types of tokens and represents the activation of a token.
+     * Method playToken has to be implemented by both types of tokens and represents the activation.
      */
-    void playToken();
+    void playToken(SinglePlayerGame game);
 }
