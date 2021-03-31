@@ -41,6 +41,10 @@ public class TokenDeck {
         return tokens.pop();
     }
 
+    /**
+     * Method numTokens returns the number of the tokens in the stack.
+     * @return the number of tokens.
+     */
     public int numTokens(){
         return tokens.size();
     }

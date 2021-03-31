@@ -22,11 +22,19 @@ public class Game {
     }
 
     /**
-     * Method getPlayers return the list of players.
+     * Method getPlayers returns the list of players.
      * @return a list of players.
      */
     public ArrayList<Player> getPlayers(){
         return players;
+    }
+
+    /**
+     * Method getGrid returns the grid of the development cards.
+     * @return the grid.
+     */
+    public Deck[][] getGrid() {
+        return grid;
     }
 
     /**

@@ -17,7 +17,18 @@ public class SinglePlayerGame extends Game{
         tokenStack.reset();
     }
 
+    /**
+     * Method getTokenStack returns the stack of tokens.
+     * @return the stack of tokens.
+     */
+    public TokenDeck getTokenStack() {
+        return tokenStack;
+    }
+
+    /**
+     * Method drawToken activates the token at the top of the stack.
+     */
     public void drawToken(){
-        tokenStack.draw().playToken();
+        tokenStack.draw().playToken(this);
     }
 }
