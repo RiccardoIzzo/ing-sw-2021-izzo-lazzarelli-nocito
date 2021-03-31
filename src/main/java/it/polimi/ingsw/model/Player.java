@@ -6,7 +6,7 @@ import java.util.Set;
 public class Player {
     private String nickname;
     private int victoryPoints;
-    //private Dashboard myDashboard;
+    private Dashboard myDashboard;
     private Set<Card> developments;
     private Set<Card> leaders;
     private ResourceMap totalResources;
@@ -35,6 +35,11 @@ public class Player {
     public CardMap getLevelOfCard() {
         return levelOfCard;
     }
+
+    public Dashboard getDashboard() {
+        return myDashboard;
+    }
+
 
     public void buyCard(){
         //code to choose DevelopmentCard
