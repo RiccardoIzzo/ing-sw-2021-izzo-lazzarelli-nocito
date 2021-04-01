@@ -37,7 +37,6 @@ public class Warehouse {
                 removeResource(shelfIndexStart);
                 addResource(resourceTemp.get(), shelfIndexEnd);
             }
-
         }
     }
 }
