@@ -18,7 +18,7 @@ public class Shelf {
     }
 
 
-    private Optional<Resource> getResourceType() {
+    public Optional<Resource> getResourceType() {
         return resourcesAllowed.size() > 0 ? Optional.ofNullable(resourcesAllowed.iterator().next()) : Optional.empty();
     }
 
