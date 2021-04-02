@@ -1,11 +1,14 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.token;
+
+import it.polimi.ingsw.model.player.Dashboard;
+import it.polimi.ingsw.model.SinglePlayerGame;
 
 /**
  * MoveBlackMarkerToken class implements SoloActionToken interface and represents the token that move forward the black cross marker.
  *
  * @author Riccardo Izzo
  */
-public class MoveBlackMarkerToken implements SoloActionToken{
+public class MoveBlackMarkerToken implements SoloActionToken {
     private final int steps;
     private final boolean resetStack;
 

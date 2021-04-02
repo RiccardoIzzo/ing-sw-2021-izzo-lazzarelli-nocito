@@ -1,10 +1,11 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
+
 /**
  * SinglePlayerFaithTrack Class represents a player's faith track in single player mode
  *
  * @author Andrea Nocito
  */
-public class SinglePlayerFaithTrack extends  FaithTrack {
+public class SinglePlayerFaithTrack extends FaithTrack {
     private int blackFaithMarker;
 
     public SinglePlayerFaithTrack() {

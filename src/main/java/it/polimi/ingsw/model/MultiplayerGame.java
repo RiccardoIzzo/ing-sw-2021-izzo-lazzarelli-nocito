@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.player.Player;
 import java.util.Random;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Random;
  *
  * @author Riccardo Izzo
  */
-public class MultiplayerGame extends Game{
+public class MultiplayerGame extends Game {
     private Player currPlayer;
     private Player firstPlayer;
     private int playerIndex;

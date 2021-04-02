@@ -1,6 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
 
-public abstract class LeaderCard extends Card{
+import it.polimi.ingsw.model.player.Player;
+
+public abstract class LeaderCard extends Card {
     private boolean active;
 
     /**

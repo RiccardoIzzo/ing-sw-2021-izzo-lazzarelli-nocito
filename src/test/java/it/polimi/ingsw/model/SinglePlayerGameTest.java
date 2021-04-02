@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * SinglePlayerGameTest tests SinglePlayerGame class.
@@ -15,7 +13,7 @@ public class SinglePlayerGameTest {
     /**
      * Method initialization create an instance of SinglePlayerGame.
      */
-    @Before
+    @BeforeEach
     public void initialization(){
         singlePlayerGame = new SinglePlayerGame();
     }

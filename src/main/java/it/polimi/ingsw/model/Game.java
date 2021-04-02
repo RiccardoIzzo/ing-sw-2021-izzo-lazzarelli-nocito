@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.card.Deck;
+import it.polimi.ingsw.model.player.Player;
+
 import java.util.ArrayList;
 
 /**
@@ -8,9 +11,9 @@ import java.util.ArrayList;
  * @author Riccardo Izzo
  */
 public class Game {
-    private ArrayList<Player> players;
-    private Market market;
-    private Deck[][] grid;
+    private final ArrayList<Player> players;
+    private final Market market;
+    private final Deck[][] grid;
 
     /**
      * Game constructor creates a new Game instance.

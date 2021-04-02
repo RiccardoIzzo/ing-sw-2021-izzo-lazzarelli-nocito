@@ -1,4 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.token;
+
+import it.polimi.ingsw.model.card.CardColor;
+import it.polimi.ingsw.model.card.Deck;
+import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.SinglePlayerGame;
 
 /**
  * RemoveCardsToken class implements SoloActionToken interface and represents the token that discards two development cards of the indicated type
@@ -6,7 +11,7 @@ package it.polimi.ingsw.model;
  *
  * @author Riccardo Izzo
  */
-public class RemoveCardsToken implements SoloActionToken{
+public class RemoveCardsToken implements SoloActionToken {
     private final CardColor color;
     private int numDiscard = 2;
 

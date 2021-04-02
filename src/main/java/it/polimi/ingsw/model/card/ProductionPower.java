@@ -1,4 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
+
+import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.model.player.Player;
 
 /**
  * Class ProductionPower wraps all of what's relevant to each production of resources in the game.

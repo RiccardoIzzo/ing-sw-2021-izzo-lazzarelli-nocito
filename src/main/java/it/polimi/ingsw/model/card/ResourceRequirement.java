@@ -1,9 +1,13 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
+
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceMap;
 
 /**
  * Class Requirement represents the cost for a DevelopCard or a requirement for a LeaderCard
  */
-public class ResourceRequirement implements Requirement{
+public class ResourceRequirement extends Requirement {
     private ResourceMap resources;
 
     /**
@@ -35,7 +39,6 @@ public class ResourceRequirement implements Requirement{
      * @param player is the Player to check
      * @return true if the Player meets the requirement, else false
      */
-    @Override
     public boolean checkRequirement(Player player) {
         ResourceMap playerResources = player.getTotalResources();
 

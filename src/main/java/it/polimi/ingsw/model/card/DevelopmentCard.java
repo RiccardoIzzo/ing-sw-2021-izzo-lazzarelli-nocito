@@ -1,9 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
 
 /**
  * Class DevelopmentCard contains a ProductionPower which players can use once they have bought one.
  */
-public class DevelopmentCard extends Card{
+public class DevelopmentCard extends Card {
     private final CardColor type;
     private final int level;
     private final ProductionPower production;

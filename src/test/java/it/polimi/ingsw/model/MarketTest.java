@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * MarketTest tests Market class.
@@ -16,7 +16,7 @@ public class MarketTest {
     /**
      * Method initialization create an instance of Market and generates the market tray.
      */
-    @Before
+    @BeforeEach
     public void initialization(){
         myMarket = new Market();
         myMarket.generateTray();

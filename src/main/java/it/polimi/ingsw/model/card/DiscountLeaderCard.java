@@ -1,10 +1,13 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
+
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.ResourceMap;
 
 /**
  * Class DiscountLeaderCard is a type of LeaderCard which provides the player discount when buying DevelopmentCard.
  */
-public class DiscountLeaderCard extends LeaderCard{
-    private ResourceMap discount;
+public class DiscountLeaderCard extends LeaderCard {
+    private final ResourceMap discount;
 
     /**
      * Constructor of the superclass Card takes two parameters which are shared among all of the subclasses.

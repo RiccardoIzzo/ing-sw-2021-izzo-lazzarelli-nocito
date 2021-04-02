@@ -1,4 +1,10 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
+
+import it.polimi.ingsw.model.MarbleColor;
+import it.polimi.ingsw.model.card.ProductionPower;
+import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.model.card.Card;
+import it.polimi.ingsw.model.card.CardMap;
 
 import java.util.ArrayList;
 import java.util.Set;

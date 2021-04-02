@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
 
 import java.util.Collections;
 import java.util.EmptyStackException;
@@ -8,7 +8,7 @@ import java.util.Stack;
  * Class Deck represents a stack of Card
  */
 public class Deck {
-    private Stack<Card> cards;
+    private final Stack<Card> cards;
 
     /**
      * Constructor Deck creates an instances of an empty Deck

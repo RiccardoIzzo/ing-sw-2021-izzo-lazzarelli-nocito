@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import it.polimi.ingsw.model.token.TokenDeck;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * TokenDeckTest tests TokenDeck class.
@@ -16,7 +16,7 @@ public class TokenDeckTest {
     /**
      * Method initialization create an instance of TokenDeck;
      */
-    @Before
+    @BeforeEach
     public void initialization(){
         tokenDeck = new TokenDeck();
     }

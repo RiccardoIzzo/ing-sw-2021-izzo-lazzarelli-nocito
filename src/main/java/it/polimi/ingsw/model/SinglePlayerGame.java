@@ -1,12 +1,14 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.token.TokenDeck;
+
 /**
  * SinglePlayerGame class extends Game class and implements the logic of a single player match.
  *
  * @author Riccardo Izzo
  */
-public class SinglePlayerGame extends Game{
-    private TokenDeck tokenStack;
+public class SinglePlayerGame extends Game {
+    private final TokenDeck tokenStack;
 
     /**
      * Constructor SinglePlayerGame creates a new SinglePlayerGame instance.

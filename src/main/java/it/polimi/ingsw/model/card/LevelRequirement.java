@@ -1,13 +1,14 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
 
-public class LevelRequirement implements Requirement{
-    private CardMap level;
+import it.polimi.ingsw.model.player.Player;
+
+public class LevelRequirement extends Requirement {
+    private final CardMap level;
 
     public LevelRequirement(CardMap level) {
         this.level = level;
     }
 
-    @Override
     public boolean checkRequirement(Player player) {
         CardMap playerLevelOfCard = player.getLevelOfCard();
 

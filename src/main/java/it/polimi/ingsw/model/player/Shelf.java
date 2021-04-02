@@ -1,4 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
+
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceMap;
 
 import java.util.*;
 
@@ -8,9 +11,9 @@ import java.util.*;
  * @author Andrea Nocito
  */
 public class Shelf {
-    private Set<Resource> resourcesAllowed;
+    private final Set<Resource> resourcesAllowed;
     private ResourceMap resources;
-    private Integer capacity;
+    private final Integer capacity;
 
     public Shelf(Integer shelfCapacity) {
         resourcesAllowed = new HashSet<>();

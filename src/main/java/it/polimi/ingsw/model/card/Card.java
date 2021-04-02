@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
 
 /**
  * Class Card is the superclass to both types of cards in the game, provides a
@@ -6,7 +6,6 @@ package it.polimi.ingsw.model;
  * or as requirement for the LeaderCard.
  */
 public class Card {
-
     private final int victoryPoints;
     private final Requirement requirement;
 

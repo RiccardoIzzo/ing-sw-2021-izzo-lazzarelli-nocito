@@ -1,12 +1,15 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
+
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.card.Card;
 
 import java.util.ArrayList;
 
 public class Dashboard {
-    private FaithTrack path;
-    private Warehouse warehouse;
-    private ArrayList<Card> cardSlots;
-    private ResourceMap strongBox;
+    private final FaithTrack path;
+    private final Warehouse warehouse;
+    private final ArrayList<Card> cardSlots;
+    private final ResourceMap strongBox;
 
     public Dashboard() {
         path = new FaithTrack();

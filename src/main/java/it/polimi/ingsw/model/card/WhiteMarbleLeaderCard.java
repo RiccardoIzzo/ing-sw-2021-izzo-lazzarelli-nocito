@@ -1,8 +1,11 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
+
+import it.polimi.ingsw.model.MarbleColor;
+import it.polimi.ingsw.model.player.Player;
 
 import java.util.Set;
 
-public class WhiteMarbleLeaderCard extends LeaderCard{
+public class WhiteMarbleLeaderCard extends LeaderCard {
     private final Set<MarbleColor> exchange;
 
     /**

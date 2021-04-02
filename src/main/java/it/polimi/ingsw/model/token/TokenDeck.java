@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.token;
 
+import it.polimi.ingsw.model.card.CardColor;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -9,7 +10,7 @@ import java.util.Stack;
  * @author Riccardo Izzo
  */
 public class TokenDeck {
-    private Stack<SoloActionToken> tokens;
+    private final Stack<SoloActionToken> tokens;
 
     /**
      * Constructor TokenDeck creates a new TokenDeck instance.

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * GameTest tests Game class.
@@ -15,7 +15,7 @@ public class GameTest {
     /**
      * Method initialization create an instance of Game and adds three players.
      */
-    @Before
+    @BeforeEach
     public void initialization(){
         game = new Game();
         game.addPlayer("Riccardo");

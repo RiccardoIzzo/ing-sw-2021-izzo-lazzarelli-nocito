@@ -1,13 +1,14 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
 
-public class NumberRequirement implements Requirement{
-    private CardMap number;
+import it.polimi.ingsw.model.player.Player;
+
+public class NumberRequirement extends Requirement {
+    private final CardMap number;
 
     public NumberRequirement(CardMap number) {
         this.number = number;
     }
 
-    @Override
     public boolean checkRequirement(Player player) {
         CardMap playerNumberOfCard = player.getNumberOfCard();
 

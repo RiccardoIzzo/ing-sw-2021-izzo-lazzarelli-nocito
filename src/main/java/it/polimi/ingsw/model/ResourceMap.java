@@ -9,7 +9,7 @@ import java.util.Map;
  */
 
 public class ResourceMap {
-    EnumMap<Resource , Integer> resources;
+    Map<Resource , Integer> resources;
 
     /**
      * Constructor ResourceMap creates a new ResourceMap instance.
@@ -28,7 +28,7 @@ public class ResourceMap {
      * Method getResources returns an ArrayList of Integers with all the available quantities of each Resource.
      * @return the an ArrayList of the associated Integers.
      */
-    public EnumMap <Resource, Integer> getResources() {
+    public Map <Resource, Integer> getResources() {
         return resources;
     }
 

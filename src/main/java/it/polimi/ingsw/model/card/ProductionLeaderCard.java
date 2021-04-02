@@ -1,6 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
 
-public class ProductionLeaderCard extends LeaderCard{
+import it.polimi.ingsw.model.player.Player;
+
+public class ProductionLeaderCard extends LeaderCard {
     private final ProductionPower production;
 
     /**

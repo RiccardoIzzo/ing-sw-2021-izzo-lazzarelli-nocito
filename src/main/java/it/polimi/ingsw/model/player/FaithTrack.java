@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
 
 import java.util.Arrays;
 
@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public class FaithTrack {
     private int posFaithMarker;
-    private Boolean[] popesFavorTiles;
+    private final Boolean[] popesFavorTiles;
 
     // TILE_POS : position of tiles in the game.
     private static final int[] TILE_POS = {8,16,24};

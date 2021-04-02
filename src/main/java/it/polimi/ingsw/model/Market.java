@@ -10,10 +10,10 @@ import java.util.Collections;
  * @author Riccardo Izzo
  */
 public class Market {
-    private ArrayList<MarbleColor> marketTray;
+    private final ArrayList<MarbleColor> marketTray;
     private MarbleColor slideMarble;
     private MarbleColor specialMarble;
-    private ResourceMap outputMarket;
+    private final ResourceMap outputMarket;
     private boolean foundFaith;
 
     /**

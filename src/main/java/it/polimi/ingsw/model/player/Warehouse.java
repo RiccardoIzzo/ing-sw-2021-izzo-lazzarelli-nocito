@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
+
+import it.polimi.ingsw.model.Resource;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -9,7 +11,7 @@ import java.util.Optional;
     * @author Andrea Nocito
     */
 public class Warehouse {
-    private ArrayList<Shelf> shelves;
+    private final ArrayList<Shelf> shelves;
 
     public Warehouse(int numberOfShelves) {
         this.shelves = new ArrayList<>();

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.card;
 
 import java.util.EnumMap;
 
@@ -7,7 +7,7 @@ import java.util.EnumMap;
  */
 public class CardMap {
 
-    private EnumMap<CardColor,Integer> cards;
+    private final EnumMap<CardColor,Integer> cards;
 
     /**
      * Constructor CardMap creates a new CardMap instance.
