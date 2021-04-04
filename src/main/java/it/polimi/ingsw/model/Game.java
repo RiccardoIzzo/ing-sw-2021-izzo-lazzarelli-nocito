@@ -1,8 +1,15 @@
 package it.polimi.ingsw.model;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.card.Deck;
+import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.player.Player;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -82,8 +89,43 @@ public class Game {
 
     }
 
-    public void generateGrid(){
+    /**
+     * Method getDeck returns the deck of development cards at the specified indexes.
+     * @param i row index.
+     * @param j column index.
+     * @return the deck.
+     */
+    public Deck getDeck(int i, int j){
+        return grid[i][j];
+    }
 
+    /**
+     * Method generateGrid generates the grid with the 48 development cards from a JSON file.
+     */
+    public void generateGrid(){
+        Type listType = new TypeToken<ArrayList<DevelopmentCard>>(){}.getType();
+        ArrayList<DevelopmentCard> cards;
+        int index = 0;
+
+        try (Reader reader = new FileReader("src/main/resources/json/development_card.json")) {
+            // Convert JSON file into list of Java object
+            cards = new Gson().fromJson(reader, listType);
+
+            for(int j = 0; j < 4; j++){
+                for(int i = 0; i < 3; i++){
+                    grid[i][j] = new Deck();
+                    grid[i][j].addCard(cards.get(index));
+                    grid[i][j].addCard(cards.get(index + 1));
+                    grid[i][j].addCard(cards.get(index + 2));
+                    grid[i][j].addCard(cards.get(index + 3));
+                    grid[i][j].shuffle();
+                    index += 4;
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void generateLeaders(){
