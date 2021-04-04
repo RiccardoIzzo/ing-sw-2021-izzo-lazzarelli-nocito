@@ -1,0 +1,9 @@
+[
+{"discount":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":1}},"active":false,"victoryPoints":2,"requirement":{"number":{"cards":{"GREEN":1,"YELLOW":1,"BLUE":0,"PURPLE":0}}}},
+
+{"discount":{"resources":{"STONE":0,"COIN":0,"SHIELD":1,"SERVANT":0}},"active":false,"victoryPoints":2,"requirement":{"number":{"cards":{"GREEN":0,"YELLOW":0,"BLUE":1,"PURPLE":1}}}},
+
+{"discount":{"resources":{"STONE":1,"COIN":0,"SHIELD":0,"SERVANT":0}},"active":false,"victoryPoints":2,"requirement":{"number":{"cards":{"GREEN":1,"YELLOW":0,"BLUE":1,"PURPLE":0}}}},
+
+{"discount":{"resources":{"STONE":0,"COIN":1,"SHIELD":0,"SERVANT":0}},"active":false,"victoryPoints":2,"requirement":{"number":{"cards":{"GREEN":0,"YELLOW":1,"BLUE":0,"PURPLE":1}}}}
+]
