@@ -2,9 +2,10 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.card.CardColor;
 import it.polimi.ingsw.model.card.DevelopmentCard;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * GameTest tests Game class.
@@ -17,7 +18,7 @@ public class GameTest {
     /**
      * Method initialization create an instance of Game and adds three players.
      */
-    @BeforeEach
+    @Before
     public void initialization() {
         game = new Game();
         game.addPlayer("Riccardo");

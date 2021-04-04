@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * ResourceMapTest tests ResourceMap class.
@@ -14,7 +14,7 @@ public class ResourceMapTest {
     /**
      * Method initialization create an instance of ResourceMap and generates the market tray.
      */
-    @BeforeEach
+    @Before
     public void initialization(){
         myResourceMap = new ResourceMap();
     }

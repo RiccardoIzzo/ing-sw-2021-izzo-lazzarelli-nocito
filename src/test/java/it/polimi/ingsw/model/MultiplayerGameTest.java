@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * MultiplayerGameTest tests MultiplayerGame class.
@@ -16,7 +16,7 @@ public class MultiplayerGameTest {
     /**
      * Method initialization create an instance of MultiplayerGame, adds three players and choose randomly the first player.
      */
-    @BeforeEach
+    @Before
     public void initialization(){
         multiplayerGame = new MultiplayerGame();
         multiplayerGame.addPlayer("Riccardo");
