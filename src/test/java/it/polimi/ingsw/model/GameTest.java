@@ -60,6 +60,14 @@ public class GameTest {
     }
 
     /**
+     * Method generateLeadersTest checks the correct creation of the 16 leader cards.
+     */
+    @Test
+    public void generateLeadersTest(){
+        assertEquals(16, game.generateLeaders().size());
+    }
+
+    /**
      * Method gridTest checks that in each deck there are only cards of the same color and level.
      */
     @Test

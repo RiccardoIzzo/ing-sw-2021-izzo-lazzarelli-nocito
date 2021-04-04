@@ -4,6 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.card.Deck;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.card.LeaderCard;
+import it.polimi.ingsw.model.card.DiscountLeaderCard;
+import it.polimi.ingsw.model.card.ExtraShelfLeaderCard;
+import it.polimi.ingsw.model.card.ProductionLeaderCard;
+import it.polimi.ingsw.model.card.WhiteMarbleLeaderCard;
 import it.polimi.ingsw.model.player.Player;
 
 import java.io.FileReader;
@@ -11,6 +16,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Game class contains the main logic of "Master of Renaissance".
@@ -128,7 +134,49 @@ public class Game {
         }
     }
 
-    public void generateLeaders(){
+    /**
+     * Method generateLeaders generates the 16 leader cards from a JSON file and returns a list of leader cards.
+     * @return the list of leader cards.
+     */
+    public List<LeaderCard> generateLeaders(){
+        List<LeaderCard> leaders = new ArrayList<>();
 
+        try (Reader reader = new FileReader("src/main/resources/json/discount_leadercard.json")) {
+            ArrayList<DiscountLeaderCard> leads1 = new Gson().fromJson(reader, new TypeToken<ArrayList<DiscountLeaderCard>>(){}.getType());
+            for(int i = 0; i < 4; i++){
+                leaders.add(leads1.get(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (Reader reader = new FileReader("src/main/resources/json/extrashelf_leadercard.json")) {
+            ArrayList<ExtraShelfLeaderCard> leads2 = new Gson().fromJson(reader, new TypeToken<ArrayList<ExtraShelfLeaderCard>>(){}.getType());
+            for(int i = 0; i < 4; i++){
+                leaders.add(leads2.get(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (Reader reader = new FileReader("src/main/resources/json/production_leadercard.json")) {
+            ArrayList<ProductionLeaderCard> leads3 = new Gson().fromJson(reader, new TypeToken<ArrayList<ProductionLeaderCard>>(){}.getType());
+            for(int i = 0; i < 4; i++){
+                leaders.add(leads3.get(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (Reader reader = new FileReader("src/main/resources/json/whitemarble_leadercard.json")) {
+            ArrayList<WhiteMarbleLeaderCard> leads4 = new Gson().fromJson(reader, new TypeToken<ArrayList<WhiteMarbleLeaderCard>>(){}.getType());
+            for(int i = 0; i < 4; i++){
+                leaders.add(leads4.get(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return leaders;
     }
 }
