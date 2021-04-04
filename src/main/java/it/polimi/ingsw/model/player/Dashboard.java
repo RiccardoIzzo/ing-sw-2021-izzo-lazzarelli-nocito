@@ -21,7 +21,7 @@ public class Dashboard {
     void useAbility() {
 
     }
-    void addShelf(Shelf shelf) {
+    public void addShelf(Shelf shelf) {
         warehouse.addShelf(shelf);
     }
     void addResource(Resource resource) {
