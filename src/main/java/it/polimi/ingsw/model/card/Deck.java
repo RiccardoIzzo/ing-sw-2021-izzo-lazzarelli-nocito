@@ -63,4 +63,12 @@ public class Deck {
     public void shuffle(){
         Collections.shuffle(cards);
     }
+
+    /**
+     * Method addCard place a Card at the top of this Deck
+     * @param card is the Card which is placed at the top of this Deck
+     */
+    public void addCard(Card card){
+        cards.push(card);
+    }
 }
