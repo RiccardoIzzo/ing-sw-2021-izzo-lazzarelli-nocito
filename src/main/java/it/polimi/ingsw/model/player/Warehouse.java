@@ -26,6 +26,9 @@ public class Warehouse {
     public void addShelf(int shelfCapacity) {
         shelves.add( new Shelf(shelfCapacity));
     }
+    public void addShelf(Shelf shelf) {
+        shelves.add(shelf);
+    }
     public void addResource(Resource resource, int shelfIndex) {
         if (shelves.size() > shelfIndex) {
             shelves.get(shelfIndex).placeResource(resource);
