@@ -1,14 +1,19 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.MarbleColor;
+import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.ProductionPower;
 import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.model.card.Card;
 import it.polimi.ingsw.model.card.CardMap;
 
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * Player class represents a player in the game.
+ * @author Gabriele Lazzarelli, Riccardo Izzo
+ */
 public class Player {
     private String nickname;
     private int victoryPoints;
@@ -22,8 +27,15 @@ public class Player {
     private Set<MarbleColor> availableExchange;
     private ResourceMap availableDiscount;
 
+    /**
+     * Constructor Player creates a new Player instance.
+     * @param name player nickname.
+     */
     public Player(String name){
         nickname = name;
+        myDashboard = new Dashboard();
+        developments = new HashSet<>();
+        leaders = new HashSet<>();
     }
 
     public String getNickname() {
@@ -32,6 +44,14 @@ public class Player {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void setLeaders(List<LeaderCard> cards){
+        leaders.addAll(cards);
+    }
+
+    public Set<Card> getLeaders(){
+        return leaders;
     }
 
     public CardMap getNumberOfCard() {
@@ -77,4 +97,55 @@ public class Player {
     public ResourceMap getTotalResources() {
         return totalResources;
     }
+
+    public void getResources(){
+
+    }
+
+    public void activateProduction(){
+
+    }
+
+    /**
+     * Method selectLeaderCard selects two leader cards among the four available at the start of the game and deletes the others.
+     * @param card1 first leader card chosen by the player.
+     * @param card2 second leader card chosen by the player.
+     */
+    public void selectLeaderCard(Card card1, Card card2){
+        leaders.removeIf(leader -> !(leader.equals(card1)) && !(leader.equals(card2)));
+    }
+
+    /**
+     * Method activateLeaderCard activates a leader card.
+     * @param card the leader card that must be activated.
+     */
+    public void activateLeaderCard(LeaderCard card){
+        Iterator<Card> itr = leaders.iterator();
+        while(itr.hasNext()){
+            if(itr.next().equals(card)){
+                LeaderCard leader = (LeaderCard) itr.next();
+                leader.setAbility(this);
+            }
+        }
+    }
+
+    /**
+     * Method discardLeaderCard discards the selected leader card and moves forward all the other players on the faith track.
+     * @param card the leader card that must be discarded.
+     * @param game instance of Game class.
+     */
+    public void discardLeaderCard(Card card, Game game){
+        leaders.remove(card);
+        for(Player player : game.getPlayers()){
+            if(!(player.equals(this))){
+                player.getDashboard().incrementFaith(1);
+            }
+        }
+    }
+
+    public void calcPoints(){
+
+    }
+
+
 }
