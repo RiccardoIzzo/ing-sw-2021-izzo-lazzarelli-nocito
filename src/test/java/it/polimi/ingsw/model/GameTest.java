@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.card.CardColor;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.player.Player;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -61,11 +62,15 @@ public class GameTest {
     }
 
     /**
-     * Method generateLeadersTest checks the correct creation of the 16 leader cards.
+     * Method generateLeadersTest checks the correct assignment of four leader cards to each player at the start of the game.
      */
     @Test
     public void generateLeadersTest(){
-        assertEquals(16, game.generateLeaders().size());
+        game.generateLeaders();
+        for(Player player : game.getPlayers()){
+            assertEquals(4, player.getLeaders().size());
+        }
+
     }
 
     /**

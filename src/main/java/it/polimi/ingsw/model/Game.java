@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -135,11 +137,12 @@ public class Game {
     }
 
     /**
-     * Method generateLeaders generates the 16 leader cards from a JSON file and returns a list of leader cards.
-     * @return the list of leader cards.
+     * Method generateLeaders generates the 16 leader cards from a JSON file, shuffles them and distributed them among the players.
      */
-    public List<LeaderCard> generateLeaders(){
+    public void generateLeaders(){
         List<LeaderCard> leaders = new ArrayList<>();
+        Iterator<Player> itr = players.iterator();
+        int index = 0;
 
         try (Reader reader = new FileReader("src/main/resources/json/discount_leadercard.json")) {
             ArrayList<DiscountLeaderCard> leads1 = new Gson().fromJson(reader, new TypeToken<ArrayList<DiscountLeaderCard>>(){}.getType());
@@ -177,6 +180,11 @@ public class Game {
             e.printStackTrace();
         }
 
-        return leaders;
+        Collections.shuffle(leaders);
+
+        while(itr.hasNext()){
+            itr.next().setLeaders(leaders.subList(index, index + 4));
+            index += 4;
+        }
     }
 }
