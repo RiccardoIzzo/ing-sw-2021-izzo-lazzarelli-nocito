@@ -1,6 +1,5 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.token;
 
-import it.polimi.ingsw.model.token.TokenDeck;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
