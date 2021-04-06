@@ -33,6 +33,12 @@ public class Dashboard {
             path.moveForward();
         }
     }
+
+    public FaithTrack getPath() {
+        return path;
+    }
+
+
     public void incrementBlackFaith(){
         ((SinglePlayerFaithTrack) path).moveBlack();
     }
