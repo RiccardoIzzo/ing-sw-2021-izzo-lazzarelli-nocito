@@ -38,6 +38,13 @@ public class FaithTrack {
     }
     public void popeTilePass() {
     }
+    public int getNumberOfActiveTiles() {
+        int counter = 0;
+        for (Boolean tile : popesFavorTiles) {
+            counter += tile ? 1 : 0;
+        }
+        return counter;
+    }
     public int getPlayerPos() {
         return posFaithMarker;
     }
