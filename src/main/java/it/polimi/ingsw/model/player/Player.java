@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.MarbleColor;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.ProductionPower;
 import it.polimi.ingsw.model.ResourceMap;
@@ -12,11 +13,12 @@ import java.util.*;
 
 /**
  * Player class represents a player in the game.
+ *
  * @author Gabriele Lazzarelli, Riccardo Izzo
  */
 public class Player {
     private String nickname;
-    private int victoryPoints;
+    private int victoryPoints = 0;
     private Dashboard myDashboard;
     private Set<Card> developments;
     private Set<Card> leaders;
@@ -143,9 +145,27 @@ public class Player {
         }
     }
 
+    /**
+     * Method calcPoints calculates the victory points achieved by a player.
+     */
     public void calcPoints(){
+        Iterator<Card> itrCards = developments.iterator();
+        Iterator<Card> itrLeaders = leaders.iterator();
+        int numResources = 0;
+        // VPs for each Development Card
+        while(itrCards.hasNext()){
+            victoryPoints += itrCards.next().getVictoryPoints();
+        }
+        // VPs for each Leader Card
+        while(itrLeaders.hasNext()){
+            victoryPoints += itrLeaders.next().getVictoryPoints();
+        }
 
+        for(Resource resource : Resource.values()){
+            numResources += totalResources.getResource(resource);
+        }
+        // VPs for every set of 5 resources of any type + VPs depending on the final position on the faith track + VPs based on the Pope's favor tiles
+        victoryPoints += (numResources % 5) + myDashboard.getPath().getPosVictoryPoints();
     }
-
 
 }
