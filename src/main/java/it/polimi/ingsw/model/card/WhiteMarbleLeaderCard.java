@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.player.Player;
 
 import java.util.Set;
 
+/**
+ * Class WhiteMarbleLeaderCard is a subclass of LeaderCard, when active the player can exchange the white marble for a resource.
+ * @author Gabriele Lazzarelli
+ */
 public class WhiteMarbleLeaderCard extends LeaderCard {
     private final Set<MarbleColor> exchange;
 
@@ -21,10 +25,10 @@ public class WhiteMarbleLeaderCard extends LeaderCard {
         this.exchange = exchange;
     }
 
-    public Set<MarbleColor> getExchange() {
-        return exchange;
-    }
-
+    /**
+     * Method setAbility adds one (or more) types of possible exchanges for the white marble in the available exchange list.
+     * @param player is the Player which gets the ability to exchange the white marble.
+     */
     @Override
     public void setAbility(Player player) {
         player.addExchange(exchange);

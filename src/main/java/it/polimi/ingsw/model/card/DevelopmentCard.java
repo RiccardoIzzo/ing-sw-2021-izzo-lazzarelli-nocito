@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.card;
 
 /**
  * Class DevelopmentCard contains a ProductionPower which players can use once they have bought one.
+ * @author Gabriele Lazzarelli
  */
 public class DevelopmentCard extends Card {
     private final CardColor type;

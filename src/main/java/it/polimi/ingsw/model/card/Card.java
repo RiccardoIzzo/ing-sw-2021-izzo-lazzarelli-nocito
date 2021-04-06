@@ -4,6 +4,7 @@ package it.polimi.ingsw.model.card;
  * Class Card is the superclass to both types of cards in the game, provides a
  * requirement attribute which counts as a cost for the DevelopmentCard
  * or as requirement for the LeaderCard.
+ * @author Gabriele Lazzarelli
  */
 public class Card {
     private final int victoryPoints;
@@ -11,8 +12,8 @@ public class Card {
 
     /**
      * Constructor Card takes two parameters which are shared among all of the subclasses.
-     * @param victoryPoints are the card's victory points .
-     * @param requirement is the card's requirement.
+     * @param victoryPoints are this Card victory points.
+     * @param requirement is this Card requirement.
      */
     public Card(int victoryPoints, Requirement requirement) {
         this.victoryPoints = victoryPoints;
@@ -20,7 +21,7 @@ public class Card {
     }
 
     /**
-     * Method getVictoryPoints returns the victoryPoints of the associated Card.
+     * Method getVictoryPoints returns the victory points of this Card.
      * @return the value of victoryPoints.
      */
     public int getVictoryPoints() {
@@ -28,7 +29,7 @@ public class Card {
     }
 
     /**
-     * Method getRequirement gets the Requirements of the selected Card
+     * Method getRequirement gets the Requirements of this Card
      * @return the Card's Requirement
      */
     public Requirement getRequirement() {

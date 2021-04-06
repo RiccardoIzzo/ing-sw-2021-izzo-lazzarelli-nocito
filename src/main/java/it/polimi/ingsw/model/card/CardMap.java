@@ -3,7 +3,8 @@ package it.polimi.ingsw.model.card;
 import java.util.EnumMap;
 
 /**
- * Class CardMap is the ADT used to handle collections of Cards.
+ * Class CardMap is the ADT used to keep track of the amount (or level) and type in a collection of Card.
+ * @author Gabriele Lazzarelli
  */
 public class CardMap {
 
@@ -46,9 +47,9 @@ public class CardMap {
     }
 
     /**
-     * Methods addCards takes another CardMap as input and for each CardColor key increases this CardMap value
-     * by the value in CardMap parameter.
-     * @param cardMap is a CardMap, contains the values to add to this CardMap
+     * Methods addCards takes another CardMap as input and for each CardColor key increases this CardColor value
+     * by the CardColor value of the CardMap parameter.
+     * @param cardMap is a CardMap, which contents are added to this CardMap
      */
     public void addCards(CardMap cardMap){
         for (CardColor cardColor : CardColor.values()) {
@@ -70,7 +71,7 @@ public class CardMap {
     /**
      * Method addCard sets a value to a specified CardColor of this CardMap.
      * @param cardColor is the CardColor key to set
-     * @param value is the value to set to the specified CardColor key
+     * @param value is the CardColor's value to set
      */
     public void put(CardColor cardColor, int value) {
         cards.put(cardColor, value);

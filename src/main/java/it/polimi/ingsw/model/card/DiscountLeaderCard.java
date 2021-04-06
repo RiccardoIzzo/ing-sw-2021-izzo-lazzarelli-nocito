@@ -4,7 +4,8 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.ResourceMap;
 
 /**
- * Class DiscountLeaderCard is a type of LeaderCard which provides the player discount when buying DevelopmentCard.
+ * Class DiscountLeaderCard is a subclass of LeaderCard, if active provides the player a discount when buying a DevelopmentCard.
+ * @author Gabriele Lazzarelli
  */
 public class DiscountLeaderCard extends LeaderCard {
     private final ResourceMap discount;
@@ -23,7 +24,7 @@ public class DiscountLeaderCard extends LeaderCard {
     }
 
     /**
-     * Method setAbility adds the discount DiscountLeaderCard provides to the list of available discounts
+     * Method setAbility adds the discount this DiscountLeaderCard provides to the list of available discounts.
      */
     @Override
     public void setAbility(Player player) {

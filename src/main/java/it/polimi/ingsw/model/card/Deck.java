@@ -6,6 +6,7 @@ import java.util.Stack;
 
 /**
  * Class Deck represents a stack of Card
+ * @author Gabriele Lazzarelli
  */
 public class Deck {
     private final Stack<Card> cards;

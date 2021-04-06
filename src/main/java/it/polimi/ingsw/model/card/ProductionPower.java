@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.player.Player;
 
 /**
  * Class ProductionPower wraps all of what's relevant to each production of resources in the game.
+ * @author Gabriele Lazzarelli
  */
 public class ProductionPower {
     private final ResourceMap inputResource;
