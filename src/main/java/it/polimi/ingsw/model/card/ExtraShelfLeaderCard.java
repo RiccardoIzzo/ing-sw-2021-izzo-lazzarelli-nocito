@@ -20,6 +20,6 @@ public class ExtraShelfLeaderCard extends LeaderCard {
 
     @Override
     public void setAbility(Player player) {
-        //player.getDashboard().addShelf(shelf);
+        player.getDashboard().addShelf(shelf);
     }
 }
