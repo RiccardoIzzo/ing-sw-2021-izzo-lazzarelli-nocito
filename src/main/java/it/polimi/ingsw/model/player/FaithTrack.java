@@ -43,12 +43,7 @@ public class FaithTrack {
      * Method isInVaticanSpace checks if the position is eligible for the pope tile points
      */
     public void isInVaticanSpace(Integer space) {
-        if (posFaithMarker <= TILE_POS[space] && posFaithMarker >= TILE_POS[space]-INITIAL_OFFSET-space) {
-            popesFavorTiles[space] = true;
-        }
-        else {
-            popesFavorTiles[space] = false;
-        }
+        popesFavorTiles[space] = posFaithMarker <= TILE_POS[space] && posFaithMarker >= TILE_POS[space] - INITIAL_OFFSET - space;
     }
 
     /**
@@ -87,6 +82,7 @@ public class FaithTrack {
         }
         return victoryPoints+getPointsForTiles();
     }
+
     public int getPlayerPos() {
         return posFaithMarker;
     }
