@@ -25,10 +25,12 @@ public class Shelf {
         return resourcesAllowed.size() > 0 ? Optional.ofNullable(resourcesAllowed.iterator().next()) : Optional.empty();
     }
 
-    public void takeResource(Resource resource) {
+    public boolean takeResource(Resource resource) {
         if ( resourcesAllowed.contains(resource) && resources.getResource(resource) > 0 ) {
             resources.addResource(resource , -1);
+            return true;
         }
+        return false;
     }
     public boolean placeResources(ResourceMap resources) {
         int totalResources = 0;
