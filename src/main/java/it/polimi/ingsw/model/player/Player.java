@@ -1,11 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.MarbleColor;
-import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.ProductionPower;
-import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.model.card.Card;
 import it.polimi.ingsw.model.card.CardMap;
 
@@ -100,8 +97,10 @@ public class Player {
         return totalResources;
     }
 
-    public void getResources(){
-
+    public void getResources(int pos, int type, Market market){
+        market.insertMarble(pos, type);
+        if(market.findFaith()) myDashboard.incrementFaith(1);
+        myDashboard.getWarehouse().addResourcesIntoTemporaryShelf(market.resourceOutput());
     }
 
     public void activateProduction(){
