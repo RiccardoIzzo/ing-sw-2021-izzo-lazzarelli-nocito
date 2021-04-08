@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceMap;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -37,6 +38,14 @@ public class Warehouse {
         return false;
     }
 
+    /**
+     * Method addResourceIntoTemporaryShelf creates a new temporary Shelf and adds the Resources into it.
+     */
+    public void addResourceIntoTemporaryShelf(ResourceMap resources) {
+        Shelf tempShelf = new Shelf(resources.getResources().size());
+        tempShelf.placeResources(resources);
+        shelves.add(tempShelf);
+    }
     /**
      * Method removeResource tries  to remove the last resource unit inside the specified shelf.
      * @return true is the operation was successful
