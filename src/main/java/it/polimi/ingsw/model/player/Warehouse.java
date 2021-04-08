@@ -41,7 +41,7 @@ public class Warehouse {
     /**
      * Method addResourceIntoTemporaryShelf creates a new temporary Shelf and adds the Resources into it.
      */
-    public void addResourceIntoTemporaryShelf(ResourceMap resources) {
+    public void addResourcesIntoTemporaryShelf(ResourceMap resources) {
         Shelf tempShelf = new Shelf(resources.getResources().size());
         tempShelf.placeResources(resources);
         shelves.add(tempShelf);
@@ -66,10 +66,10 @@ public class Warehouse {
     }
 
     /**
-     * Method swapRosource tries  to swap the position fo two resources from two differnt shelves
+     * Method swapResource tries  to swap the position fo two resources from two differnt shelves
      * @return true is the operation was successful
      */
-    public boolean swapRosource(int shelfIndexStart, int shelfIndexEnd) {
+    public boolean swapResource(int shelfIndexStart, int shelfIndexEnd) {
         if (shelves.size() > shelfIndexStart && shelves.size() > shelfIndexEnd) {
             Optional<Resource> resourceTemp = shelves.get(shelfIndexStart).getResourceType();
             if (resourceTemp.isPresent()){

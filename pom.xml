@@ -50,9 +50,9 @@
         <version>3.8.1</version>
         <configuration>
           <!-- Version of the Java language to use -->
-          <source>14</source>
+          <source>15</source>
           <!-- Minimum JRE version the JAR will be compatible with -->
-          <target>14</target>
+          <target>15</target>
         </configuration>
       </plugin>
 
