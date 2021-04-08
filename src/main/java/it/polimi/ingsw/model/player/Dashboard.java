@@ -46,6 +46,10 @@ public class Dashboard {
         }
     }
 
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
     public FaithTrack getPath() {
         return path;
     }
