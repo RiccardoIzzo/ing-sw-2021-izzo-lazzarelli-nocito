@@ -30,7 +30,7 @@ public class Warehouse {
     public void addShelf(Shelf shelf) {
         shelves.add(shelf);
     }
-    public void addResource(Resource resource, int shelfIndex) {
+    public boolean addResource(Resource resource, int shelfIndex) {
         if (shelves.size() > shelfIndex) {
             shelves.get(shelfIndex).placeResource(resource);
             return true;
