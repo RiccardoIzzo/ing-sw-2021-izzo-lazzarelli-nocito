@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
