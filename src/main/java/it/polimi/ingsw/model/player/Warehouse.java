@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
-    * Warehouse Class represents the set of sehlves available on a dashboard
+    * Warehouse Class represents the set of shelves available on a dashboard
     *
     * @author Andrea Nocito
     */
@@ -32,21 +32,36 @@ public class Warehouse {
     public void addResource(Resource resource, int shelfIndex) {
         if (shelves.size() > shelfIndex) {
             shelves.get(shelfIndex).placeResource(resource);
+            return true;
         }
-    }
-    public void removeResource(int shelfIndex) {
-        if (shelves.size() > shelfIndex && shelves.get(shelfIndex).getResourceType().isPresent() )  {
-            shelves.get(shelfIndex).takeResource(shelves.get(shelfIndex).getResourceType().get() );
-        }
+        return false;
     }
 
-    public void swapRosource(int shelfIndexStart, int shelfIndexEnd) {
+    /**
+     * Method removeResource tries  to remove the last resource unit inside the specified shelf.
+     * @return true is the operation was successful
+     */
+    public boolean removeResource(int shelfIndex) {
+        if (shelves.size() > shelfIndex && shelves.get(shelfIndex).getResourceType().isPresent() )  {
+            shelves.get(shelfIndex).takeResource(shelves.get(shelfIndex).getResourceType().get() );
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method swapRosource tries  to swap the position fo two resources from two differnt shelves
+     * @return true is the operation was successful
+     */
+    public boolean swapRosource(int shelfIndexStart, int shelfIndexEnd) {
         if (shelves.size() > shelfIndexStart && shelves.size() > shelfIndexEnd) {
             Optional<Resource> resourceTemp = shelves.get(shelfIndexStart).getResourceType();
             if (resourceTemp.isPresent()){
                 removeResource(shelfIndexStart);
                 addResource(resourceTemp.get(), shelfIndexEnd);
+                return true;
             }
         }
+        return false;
     }
 }
