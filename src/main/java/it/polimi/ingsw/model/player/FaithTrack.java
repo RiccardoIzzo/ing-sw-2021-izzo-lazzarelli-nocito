@@ -30,20 +30,42 @@ public class FaithTrack {
         Arrays.fill(popesFavorTiles, false);
 
     }
+
+    /**
+     * Method moveForward moves the faith marker and calls popeTilePass
+     */
     public void moveForward() {
         posFaithMarker++;
+        popeTilePass();
+    }
+
+    /**
+     * Method isInVaticanSpace checks if the position is eligible for the pope tile points
+     */
+    public void isInVaticanSpace(Integer space) {
+        if (posFaithMarker <= TILE_POS[space] && posFaithMarker >= TILE_POS[space]-INITIAL_OFFSET-space) {
+            popesFavorTiles[space] = true;
+        }
+        else {
+            popesFavorTiles[space] = false;
+        }
+    }
+
+    /**
+     * Method popeTilePass checks if the position is the same as a tile pass
+     */
+    public void popeTilePass() {
         for(int i = 0; i < TILE_POS.length; i++) {
             if ( posFaithMarker == TILE_POS[i] ) {
                 popesFavorTiles[i] = true;
-
             }
         }
     }
-    public void isInVaticanSpace(Integer space) {
 
-    }
-    public void popeTilePass() {
-    }
+    /**
+     * Method getPointsForTiles
+     * @return the number of points earned by the unlocked pope tiles
+     */
     public int getPointsForTiles() {
         int counter = 0;
         for (int i = 0; i < popesFavorTiles.length; i++) {
@@ -51,6 +73,11 @@ public class FaithTrack {
         }
         return counter;
     }
+
+    /**
+     * Method getPosVictoryPoints
+     * @return the number of points earned by the player's position on the faith track and the unlocked pope tiles
+     */
     public int getPosVictoryPoints() {
         int victoryPoints = 0;
         int i = 0;
