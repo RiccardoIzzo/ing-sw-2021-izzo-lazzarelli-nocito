@@ -46,6 +46,13 @@ public class Warehouse {
         tempShelf.placeResources(resources);
         shelves.add(tempShelf);
     }
+
+    /**
+     * Method removeResourcesFromTemporaryShelf removes the temporary shelf created by addResourceIntoTemporaryShelf
+     */
+    public void removeResourcesFromTemporaryShelf() {
+        shelves.remove(shelves.size()-1);
+    }
     /**
      * Method removeResource tries  to remove the last resource unit inside the specified shelf.
      * @return true is the operation was successful
