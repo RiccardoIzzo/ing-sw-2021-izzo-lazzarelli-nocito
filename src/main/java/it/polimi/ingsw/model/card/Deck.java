@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.card;
 
-import java.util.Collections;
-import java.util.EmptyStackException;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Class Deck represents a stack of Card
@@ -12,10 +10,13 @@ public class Deck {
     private final Stack<Card> cards;
 
     /**
-     * Constructor Deck creates an instances of an empty Deck
+     * Constructor Deck creates a new Deck instance with four cards shuffled.
+     * @param list a list of four Card to add to the deck.
      */
-    public Deck() {
+    public Deck(List<Card> list) {
         this.cards = new Stack<>();
+        cards.addAll(list);
+        Collections.shuffle(cards);
     }
 
     /**
@@ -58,18 +59,4 @@ public class Deck {
         return card;
     }
 
-    /**
-     * Shuffles the cards of this Deck
-     */
-    public void shuffle(){
-        Collections.shuffle(cards);
-    }
-
-    /**
-     * Method addCard place a Card at the top of this Deck
-     * @param card is the Card which is placed at the top of this Deck
-     */
-    public void addCard(Card card){
-        cards.push(card);
-    }
 }
