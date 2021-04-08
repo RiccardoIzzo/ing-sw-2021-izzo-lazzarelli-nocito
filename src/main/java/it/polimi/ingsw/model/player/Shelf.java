@@ -49,9 +49,11 @@ public class Shelf {
         }
         return true;
     }
-    public void placeResource(Resource resource) {
+    public boolean placeResource(Resource resource) {
         if ( resourcesAllowed.contains(resource) && resources.getResources().size() < capacity ) {
             resources.addResource(resource, 1);
+            return true;
         }
+        return false;
     }
 }
