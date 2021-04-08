@@ -30,6 +30,25 @@ public class Shelf {
             resources.addResource(resource , -1);
         }
     }
+    public boolean placeResources(ResourceMap resources) {
+        int totalResources = 0;
+//        Map resourcesToAdd = resources.getResources();
+        boolean resourceNotAllowed = false;
+        for(Resource res : resources.getResources().keySet()) {
+            totalResources += resources.getResource(res);
+            if(!resourcesAllowed.contains(res)) {
+                resourceNotAllowed = true;
+                break;
+            }
+        }
+        if (resourceNotAllowed || resources.getResources().size()+totalResources< capacity) {
+            return false;
+        }
+        for(Resource res : resources.getResources().keySet()) {
+            resources.addResource(res,  resources.getResource(res));
+        }
+        return true;
+    }
     public void placeResource(Resource resource) {
         if ( resourcesAllowed.contains(resource) && resources.getResources().size() < capacity ) {
             resources.addResource(resource, 1);
