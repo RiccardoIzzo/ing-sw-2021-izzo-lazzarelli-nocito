@@ -16,10 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Game class contains the main logic of "Master of Renaissance".
@@ -100,12 +97,12 @@ public class Game {
 
     /**
      * Method getDeck returns the deck of development cards at the specified indexes.
-     * @param i row index.
-     * @param j column index.
+     * @param row row index.
+     * @param col column index.
      * @return the deck.
      */
-    public Deck getDeck(int i, int j){
-        return grid[i][j];
+    public Deck getDeck(int row, int col){
+        return grid[row][col];
     }
 
     /**
@@ -133,54 +130,28 @@ public class Game {
     }
 
     /**
-     * Method generateLeaders generates the 16 leader cards from a JSON file, shuffles them and distributed them among the players.
+     * Method generateLeaders generates the 16 leader cards from a JSON file, shuffles them and distributes them among the players.
      */
     public void generateLeaders(){
         List<LeaderCard> leaders = new ArrayList<>();
-        Iterator<Player> itr = players.iterator();
-        int index = 0;
+        Map<String, Type> files = new HashMap<>();
+        files.put("src/main/resources/json/discount_leadercard.json", new TypeToken<ArrayList<DiscountLeaderCard>>(){}.getType());
+        files.put("src/main/resources/json/extrashelf_leadercard.json", new TypeToken<ArrayList<ExtraShelfLeaderCard>>(){}.getType());
+        files.put("src/main/resources/json/production_leadercard.json", new TypeToken<ArrayList<ProductionLeaderCard>>(){}.getType());
+        files.put("src/main/resources/json/whitemarble_leadercard.json", new TypeToken<ArrayList<WhiteMarbleLeaderCard>>(){}.getType());
 
-        try (Reader reader = new FileReader("src/main/resources/json/discount_leadercard.json")) {
-            ArrayList<DiscountLeaderCard> leads1 = new Gson().fromJson(reader, new TypeToken<ArrayList<DiscountLeaderCard>>(){}.getType());
-            for(int i = 0; i < 4; i++){
-                leaders.add(leads1.get(i));
+        for(String key : files.keySet()){
+            try (Reader reader = new FileReader(key)){
+                leaders.addAll(new Gson().fromJson(reader, files.get(key)));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try (Reader reader = new FileReader("src/main/resources/json/extrashelf_leadercard.json")) {
-            ArrayList<ExtraShelfLeaderCard> leads2 = new Gson().fromJson(reader, new TypeToken<ArrayList<ExtraShelfLeaderCard>>(){}.getType());
-            for(int i = 0; i < 4; i++){
-                leaders.add(leads2.get(i));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try (Reader reader = new FileReader("src/main/resources/json/production_leadercard.json")) {
-            ArrayList<ProductionLeaderCard> leads3 = new Gson().fromJson(reader, new TypeToken<ArrayList<ProductionLeaderCard>>(){}.getType());
-            for(int i = 0; i < 4; i++){
-                leaders.add(leads3.get(i));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try (Reader reader = new FileReader("src/main/resources/json/whitemarble_leadercard.json")) {
-            ArrayList<WhiteMarbleLeaderCard> leads4 = new Gson().fromJson(reader, new TypeToken<ArrayList<WhiteMarbleLeaderCard>>(){}.getType());
-            for(int i = 0; i < 4; i++){
-                leaders.add(leads4.get(i));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         Collections.shuffle(leaders);
-
-        while(itr.hasNext()){
-            itr.next().setLeaders(leaders.subList(index, index + 4));
-            index += 4;
+        for(Player player : getPlayers()){
+            player.setLeaders(leaders.subList(0, 4));
+            leaders.removeAll(leaders.subList(0, 4));
         }
     }
 }
