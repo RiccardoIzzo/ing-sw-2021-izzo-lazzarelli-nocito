@@ -49,10 +49,16 @@ public class ResourceMap {
         }
     }
     /**
-     * Method addResource receives the resource type and the Integer value to add to such resource.
+     * Method modifyResource receives the resource type and the Integer value to add to such resource.
+     * @return true if the operation was successful
      */
-    public void addResource(Resource type, Integer value) {
-        resources.replace(type, resources.get(type)+value);
+    public boolean modifyResource(Resource type, Integer value) {
+        int num = resources.get(type) + value;
+        if(num > 0) {
+            resources.replace(type, num);
+            return true;
+        }
+        return false;
     }
 
     /**
