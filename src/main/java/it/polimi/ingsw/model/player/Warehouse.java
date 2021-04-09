@@ -12,12 +12,13 @@ import java.util.Optional;
     * @author Andrea Nocito
     */
 public class Warehouse {
-    private final ArrayList<Shelf> shelves;
+    private ArrayList<Shelf> shelves;
+    private static final int NUMBER_SHELF = 3;
 
-    public Warehouse(int numberOfShelves) {
+    public Warehouse() {
         this.shelves = new ArrayList<>();
 
-        for(int i=1; i<=numberOfShelves; i++) {
+        for(int i=1; i<=NUMBER_SHELF; i++) {
             shelves.add( new Shelf(i));
         }
     }
