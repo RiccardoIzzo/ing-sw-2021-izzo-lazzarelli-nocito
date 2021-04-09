@@ -63,16 +63,21 @@ public class Warehouse {
     }
 
     /**
-     * Method swapResource tries  to swap the position fo two resources from two differnt shelves
+     * Method swapResource tries to swap the position fo two resources from two different shelves
      * @return true is the operation was successful
      */
-    public boolean swapResource(int shelfIndexStart, int shelfIndexEnd) {
+    public boolean swapResource(int shelfIndexStart, int shelfIndexEnd, Resource firstResource, Resource secondResource) {
         if (shelves.size() > shelfIndexStart && shelves.size() > shelfIndexEnd) {
-            Optional<Resource> resourceTemp = shelves.get(shelfIndexStart).getResourceType();
-            if (resourceTemp.isPresent()){
-                removeResource(shelfIndexStart);
-                addResource(resourceTemp.get(), shelfIndexEnd);
-                return true;
+
+            if (shelves.get(shelfIndexStart).takeResource(firstResource)){
+                if(shelves.get(shelfIndexEnd).takeResource(secondResource)){
+                    shelves.get(shelfIndexStart).placeResource(secondResource);
+                    shelves.get(shelfIndexEnd).placeResource(firstResource);
+                    return true;
+                }
+                else{
+                    shelves.get(shelfIndexStart).placeResource(firstResource);
+                }
             }
         }
         return false;
