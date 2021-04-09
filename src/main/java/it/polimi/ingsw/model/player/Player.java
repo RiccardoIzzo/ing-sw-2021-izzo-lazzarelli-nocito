@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class Player {
     private String nickname;
-    private int victoryPoints = 0;
+    private int victoryPoints;
     private Dashboard myDashboard;
     private Set<Card> developments;
     private Set<Card> leaders;
@@ -32,6 +32,7 @@ public class Player {
      */
     public Player(String name){
         nickname = name;
+        victoryPoints = 0;
         myDashboard = new Dashboard();
         developments = new HashSet<>();
         leaders = new HashSet<>();
@@ -109,39 +110,34 @@ public class Player {
 
     /**
      * Method selectLeaderCard selects two leader cards among the four available at the start of the game and deletes the others.
-     * @param card1 first leader card chosen by the player.
-     * @param card2 second leader card chosen by the player.
+     * @param firstCard first leader card chosen by the player.
+     * @param secondCard second leader card chosen by the player.
      */
-    public void selectLeaderCard(Card card1, Card card2){
-        leaders.removeIf(leader -> !(leader.equals(card1)) && !(leader.equals(card2)));
+    public void selectLeaderCard(Card firstCard, Card secondCard){
+        leaders.removeIf(leader -> !(leader.equals(firstCard)) && !(leader.equals(secondCard)));
     }
 
     /**
      * Method activateLeaderCard activates a leader card.
-     * @param card the leader card that must be activated.
+     * @param leaderCard the leader card that must be activated.
      */
-    public void activateLeaderCard(LeaderCard card){
-        Iterator<Card> itr = leaders.iterator();
-        while(itr.hasNext()){
-            if(itr.next().equals(card)){
-                LeaderCard leader = (LeaderCard) itr.next();
-                leader.setAbility(this);
+    public void activateLeaderCard(Card leaderCard){
+        Iterator<Card> cardIterator = leaders.iterator();
+        while(cardIterator.hasNext()){
+            Card card = cardIterator.next();
+            if(card.equals(leaderCard)){
+                ((LeaderCard) card).setAbility(this);
             }
         }
     }
 
     /**
-     * Method discardLeaderCard discards the selected leader card and moves forward all the other players on the faith track.
+     * Method discardLeaderCard discards the selected leader card and increments the player position on the faith track.
      * @param card the leader card that must be discarded.
-     * @param game instance of Game class.
      */
-    public void discardLeaderCard(Card card, Game game){
+    public void discardLeaderCard(Card card){
         leaders.remove(card);
-        for(Player player : game.getPlayers()){
-            if(!(player.equals(this))){
-                player.getDashboard().incrementFaith(1);
-            }
-        }
+        myDashboard.incrementFaith(1);
     }
 
     /**
