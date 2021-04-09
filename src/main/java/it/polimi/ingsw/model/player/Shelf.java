@@ -11,22 +11,29 @@ import java.util.*;
  * @author Andrea Nocito
  */
 public class Shelf {
-    private final Set<Resource> resourcesAllowed;
+    private Set<Resource> resourcesAllowed;
     private ResourceMap resources;
     private final Integer capacity;
 
     public Shelf(Integer shelfCapacity) {
         resourcesAllowed = new HashSet<>();
+        resources = new ResourceMap();
         capacity = shelfCapacity;
     }
 
+    public Shelf(Integer shelfCapacity, Set<Resource> allowed) {
+        resourcesAllowed = new HashSet<>();
+        resourcesAllowed.addAll(allowed);
+        resources = new ResourceMap();
+        capacity = shelfCapacity;
+    }
 
     /**
      * Method getResourceType returns the first type of resource allowed to be stored.
      * @return the Resource value.
      */
-    public Optional<Resource> getResourceType() {
-        return resourcesAllowed.size() > 0 ? Optional.ofNullable(resourcesAllowed.iterator().next()) : Optional.empty();
+    public Set<Resource> getResourceAllowed() {
+        return resourcesAllowed;
     }
 
 
@@ -35,12 +42,9 @@ public class Shelf {
      * @return true if the operation was successful
      */
     public boolean takeResource(Resource resource) {
-        if ( resourcesAllowed.contains(resource) && resources.getResource(resource) > 0 ) {
-            resources.addResource(resource , -1);
-            return true;
-        }
-        return false;
+        return (resourcesAllowed.contains(resource) && resources.modifyResource(resource , -1));
     }
+
     /**
      * Method placeResources tries to place the desired Resources inside the shelf.
      * This method checks if all the resources are allowed and if there is enough room to store them.
@@ -60,17 +64,18 @@ public class Shelf {
             return false;
         }
         for(Resource res : resources.getResources().keySet()) {
-            resources.addResource(res,  resources.getResource(res));
+            resources.modifyResource(res,  resources.getResource(res));
         }
         return true;
     }
+
     /**
      * Method placeResource tries to place the desired Resource inside the shelf
      * @return true if the operation was successful
      */
     public boolean placeResource(Resource resource) {
         if ( resourcesAllowed.contains(resource) && resources.getResources().size() < capacity ) {
-            resources.addResource(resource, 1);
+            resources.modifyResource(resource, 1);
             return true;
         }
         return false;
