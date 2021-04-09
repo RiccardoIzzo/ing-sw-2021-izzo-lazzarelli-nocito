@@ -42,6 +42,10 @@ public class Player {
         return nickname;
     }
 
+    public int getVictoryPoints(){
+        return victoryPoints;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
