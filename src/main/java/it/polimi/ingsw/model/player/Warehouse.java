@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
     * Warehouse Class represents the set of shelves available on a dashboard
@@ -51,12 +50,12 @@ public class Warehouse {
         shelves.remove(shelves.size()-1);
     }
     /**
-     * Method removeResource tries  to remove the last resource unit inside the specified shelf.
+     * Method removeResource tries to remove the last resource unit inside the specified shelf.
      * @return true is the operation was successful
      */
-    public boolean removeResource(int shelfIndex) {
-        if (shelves.size() > shelfIndex && shelves.get(shelfIndex).getResourceType().isPresent() )  {
-            shelves.get(shelfIndex).takeResource(shelves.get(shelfIndex).getResourceType().get() );
+    public boolean removeResource(int shelfIndex, Resource resource) {
+        if (shelves.size() > shelfIndex && shelves.get(shelfIndex).getResourceAllowed().contains(resource))  {
+            shelves.get(shelfIndex).takeResource(resource);
             return true;
         }
         return false;
