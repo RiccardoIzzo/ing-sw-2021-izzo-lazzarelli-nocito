@@ -110,17 +110,16 @@ public class Game {
      */
     public void generateGrid(){
         ArrayList<Card> jsonCards;
-        Type listType = new TypeToken<ArrayList<DevelopmentCard>>(){}.getType();
-        int index = 0;
+        Type type = new TypeToken<ArrayList<DevelopmentCard>>(){}.getType();
 
         try (Reader reader = new FileReader("src/main/resources/json/development_card.json")) {
             // Convert JSON file into list of Java object
-            jsonCards = new Gson().fromJson(reader, listType);
+            jsonCards = new Gson().fromJson(reader, type);
 
             for(int j = 0; j < 4; j++){
                 for(int i = 0; i < 3; i++){
-                    grid[i][j] = new Deck(jsonCards.subList(index, index + 4));
-                    index += 4;
+                    grid[i][j] = new Deck(jsonCards.subList(0, 4));
+                    jsonCards.removeAll(jsonCards.subList(0, 4));
                 }
             }
 
