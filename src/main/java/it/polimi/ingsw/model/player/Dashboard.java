@@ -13,7 +13,7 @@ public class Dashboard {
 
     public Dashboard() {
         path = new FaithTrack();
-        warehouse = new Warehouse(3);
+        warehouse = new Warehouse();
         cardSlots = new ArrayList<>();
         strongBox = new ResourceMap();
     }
@@ -33,7 +33,7 @@ public class Dashboard {
      * Method addResource adds one resource into the strongBox
      */
     void addResource(Resource resource) {
-        strongBox.addResource(resource, 1);
+        strongBox.modifyResource(resource, 1);
 
     }
 

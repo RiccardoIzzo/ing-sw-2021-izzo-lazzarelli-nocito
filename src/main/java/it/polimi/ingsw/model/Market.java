@@ -149,10 +149,10 @@ public class Market {
      * @param marble marble color.
      */
     public void resourceConverter(MarbleColor marble){
-        if(marble == MarbleColor.BLUE) outputMarket.addResource(Resource.SHIELD, 1);
-        else if(marble == MarbleColor.GRAY) outputMarket.addResource(Resource.STONE, 1);
-        else if(marble == MarbleColor.YELLOW) outputMarket.addResource(Resource.COIN, 1);
-        else if(marble == MarbleColor.PURPLE) outputMarket.addResource(Resource.SERVANT, 1);
+        if(marble == MarbleColor.BLUE) outputMarket.modifyResource(Resource.SHIELD, 1);
+        else if(marble == MarbleColor.GRAY) outputMarket.modifyResource(Resource.STONE, 1);
+        else if(marble == MarbleColor.YELLOW) outputMarket.modifyResource(Resource.COIN, 1);
+        else if(marble == MarbleColor.PURPLE) outputMarket.modifyResource(Resource.SERVANT, 1);
         else if(marble == MarbleColor.RED) foundFaith = true;
         else if(marble == MarbleColor.WHITE) {
             if(specialMarble != null){
