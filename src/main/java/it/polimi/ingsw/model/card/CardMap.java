@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card;
 
 import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Class CardMap is the ADT used to keep track of the amount (or level) and type in a collection of Card.
@@ -8,7 +9,7 @@ import java.util.EnumMap;
  */
 public class CardMap {
 
-    private final EnumMap<CardColor,Integer> cards;
+    private final Map<CardColor,Integer> cards;
 
     /**
      * Constructor CardMap creates a new CardMap instance.
@@ -23,7 +24,7 @@ public class CardMap {
      * Method getCards returns this.cards.
      * @return an EnumMap, this.cards.
      */
-    public EnumMap<CardColor, Integer> getCards() {
+    public Map<CardColor, Integer> getCards() {
         return cards;
     }
 
