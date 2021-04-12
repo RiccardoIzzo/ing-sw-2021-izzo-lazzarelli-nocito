@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.player.Player;
  * Class NumberRequirement has a CardMap attribute whose values represent the number of Card required for each CardColor.
  * @author Gabriele Lazzarelli
  */
-public class NumberRequirement extends Requirement {
+public class NumberRequirement implements Requirement {
     private final CardMap number;
 
     /**

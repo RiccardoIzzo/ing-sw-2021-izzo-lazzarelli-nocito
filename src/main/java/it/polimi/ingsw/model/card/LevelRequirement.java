@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.player.Player;
  * Class LevelRequirement has a CardMap attribute whose values represent the level of Card required for each CardColor.
  * @author Gabriele Lazzarelli
  */
-public class LevelRequirement extends Requirement {
+public class LevelRequirement implements Requirement {
     private final CardMap level;
 
     /**

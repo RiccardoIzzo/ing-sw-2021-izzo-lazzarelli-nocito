@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.ResourceMap;
  * Class Requirement represents the cost for a DevelopCard or the requirement for a LeaderCard.
  * @author Gabriele Lazzarelli
  */
-public class ResourceRequirement extends Requirement {
+public class ResourceRequirement implements Requirement {
     private ResourceMap resources;
 
     /**
