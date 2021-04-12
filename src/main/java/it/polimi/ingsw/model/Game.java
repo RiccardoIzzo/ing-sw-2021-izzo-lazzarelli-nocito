@@ -1,22 +1,17 @@
 package it.polimi.ingsw.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.model.card.Deck;
-import it.polimi.ingsw.model.card.DiscountLeaderCard;
-import it.polimi.ingsw.model.card.ExtraShelfLeaderCard;
-import it.polimi.ingsw.model.card.WhiteMarbleLeaderCard;
-import it.polimi.ingsw.model.card.ProductionLeaderCard;
-import it.polimi.ingsw.model.card.LeaderCard;
-import it.polimi.ingsw.model.card.Card;
-import it.polimi.ingsw.model.card.DevelopmentCard;
+import java.lang.reflect.Type;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.*;
 
 /**
  * Game class contains the main logic of "Master of Renaissance".
@@ -27,6 +22,12 @@ public class Game {
     private final ArrayList<Player> players;
     private final Market market;
     private final Deck[][] grid;
+
+    RuntimeTypeAdapterFactory<Requirement> requirementAdapterFactory = RuntimeTypeAdapterFactory.of(Requirement.class)
+            .registerSubtype(LevelRequirement.class,"Level")
+            .registerSubtype(NumberRequirement.class, "Number")
+            .registerSubtype(ResourceRequirement.class, "Resource");
+    Gson gson = new GsonBuilder().registerTypeAdapterFactory(requirementAdapterFactory).create();
 
     /**
      * Game constructor creates a new Game instance.
@@ -109,12 +110,9 @@ public class Game {
      * Method generateGrid generates the grid with the 48 development cards from a JSON file.
      */
     public void generateGrid(){
-        ArrayList<Card> jsonCards;
-        Type type = new TypeToken<ArrayList<DevelopmentCard>>(){}.getType();
-
         try (Reader reader = new FileReader("src/main/resources/json/development_card.json")) {
             // Convert JSON file into list of Java object
-            jsonCards = new Gson().fromJson(reader, type);
+            ArrayList<Card> jsonCards = gson.fromJson(reader, new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
 
             for(int j = 0; j < 4; j++){
                 for(int i = 0; i < 3; i++){
@@ -141,7 +139,7 @@ public class Game {
 
         for(String key : files.keySet()){
             try (Reader reader = new FileReader(key)){
-                leaders.addAll(new Gson().fromJson(reader, files.get(key)));
+                leaders.addAll(gson.fromJson(reader, files.get(key)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
