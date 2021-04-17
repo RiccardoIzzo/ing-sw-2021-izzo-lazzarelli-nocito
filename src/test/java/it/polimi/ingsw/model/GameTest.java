@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 
 /**
@@ -26,6 +26,7 @@ public class GameTest {
         game.addPlayer("Andrea");
         game.addPlayer("Gabriele");
         game.generateGrid();
+        game.generateLeaders();
     }
 
     /**
@@ -66,7 +67,6 @@ public class GameTest {
      */
     @Test
     public void generateLeadersTest(){
-        game.generateLeaders();
         for(Player player : game.getPlayers()){
             assertEquals(4, player.getLeaders().size());
         }
@@ -92,5 +92,19 @@ public class GameTest {
                 }
             }
         }
+    }
+
+    /**
+     * Method getPlayerByNameTest test getPlayerByName method in both cases:
+     * 1. Standard case when there is a player with the name specified as a parameter.
+     * 2. Null case when there is no player with that name.
+     */
+    @Test
+    public void getPlayerByNameTest(){
+        assertEquals(game.getPlayers().get(0), game.getPlayerByName("Riccardo"));
+        assertNotEquals(game.getPlayers().get(1), game.getPlayerByName("Riccardo"));
+        assertEquals(game.getPlayers().get(1), game.getPlayerByName("Andrea"));
+        assertEquals(game.getPlayers().get(2), game.getPlayerByName("Gabriele"));
+        assertNull(game.getPlayerByName("Francesco"));
     }
 }
