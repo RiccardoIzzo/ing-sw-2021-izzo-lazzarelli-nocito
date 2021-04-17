@@ -13,7 +13,7 @@ import it.polimi.ingsw.model.SinglePlayerGame;
  */
 public class RemoveCardsToken implements SoloActionToken {
     private final CardColor color;
-    private int numDiscard = 2;
+    private final int NUM_DISCARD = 2;
 
     /**
      * Constructor RemoveCardToken creates a new RemoveCardToken instance.
@@ -37,24 +37,20 @@ public class RemoveCardsToken implements SoloActionToken {
     @Override
     public void playToken(SinglePlayerGame game) {
         Deck[][] deck = game.getGrid();
-        DevelopmentCard card;
-        int row = 0, col = 0;
+        int row = 0, col, n = NUM_DISCARD;
 
-        for (int i = 0; i < 4; i++) {
-            card = (DevelopmentCard) deck[0][i].getTopCard();
-            if(card.getType().equals(getColor())){
-                col = i;
-            }
+        for (col = 0; col < 4; col++) {
+            if(((DevelopmentCard) deck[2][col].getTopCard()).getType().equals(getColor())) break;
         }
 
-        while(numDiscard > 0) {
+        while(n > 0) {
             if(deck[row][col].getCards().empty()){
                 if(row == 2) break; //One type of DevelopmentCard is no longer available -> player has lost. Call a method (to implement) that ends the game.
                 else row++;
             }
             else{
                 deck[row][col].getCards().pop();
-                numDiscard--;
+                n--;
             }
         }
     }
