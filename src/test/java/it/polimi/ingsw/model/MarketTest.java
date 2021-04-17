@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * MarketTest tests Market class.
@@ -14,7 +14,7 @@ public class MarketTest {
     int white, blue, gray, yellow, purple, red = 0;
 
     /**
-     * Method initialization create an instance of Market and generates the market tray.
+     * Method initialization creates an instance of Market and generates the market tray.
      */
     @Before
     public void initialization(){
@@ -60,10 +60,81 @@ public class MarketTest {
      * Method whiteMarbleTest tests the behaviour of the resourceConverter method in the case of a white marble.
      */
     @Test
-    public void whiteMarbleTest(){
+    public void whiteMarbleConversionTest(){
         assertEquals(Integer.valueOf(0), myMarket.resourceOutput().getResource(Resource.SHIELD));
         myMarket.setSpecialMarble(MarbleColor.BLUE);
         myMarket.resourceConverter(MarbleColor.WHITE);
         assertEquals(Integer.valueOf(1), myMarket.resourceOutput().getResource(Resource.SHIELD));
+    }
+
+    /**
+     * Method resetTest tests reset method checking that outputMarket is empty and that both specialMarble and foundFaith are set to default values.
+     */
+    @Test
+    public void resetTest(){
+        myMarket.reset();
+        for(Resource resource : myMarket.resourceOutput().getResources().keySet()){
+            assertEquals(Integer.valueOf(0), myMarket.resourceOutput().getResource(resource));
+        }
+        assertNull(myMarket.getSpecialMarble());
+        assertFalse(myMarket.findFaith());
+    }
+
+    /**
+     *
+     */
+    @Test
+    public void insertMarbleRowTest(){
+        //INSERT HERE THE ROW NUMBER TO TEST, NUM_ROW = {1, 2 ,3}
+        int NUM_ROW = 2;
+        int index = (NUM_ROW - 1) * 4;
+        MarbleColor currSlideMarble = myMarket.getSlideMarble();
+        MarbleColor nextSlideMarble = myMarket.getMarble(index);
+        MarbleColor marble1 = myMarket.getMarble(index + 1);
+        MarbleColor marble2 = myMarket.getMarble(index + 2);
+        MarbleColor marble3 = myMarket.getMarble(index + 3);
+        //insert marble in the first row
+        myMarket.insertMarble(NUM_ROW, 1);
+        //checks that the marbles slide correctly in the grid
+        assertEquals(myMarket.getSlideMarble(), nextSlideMarble);
+        assertEquals(myMarket.getMarble(index), marble1);
+        assertEquals(myMarket.getMarble(index + 1), marble2);
+        assertEquals(myMarket.getMarble(index + 2), marble3);
+        assertEquals(myMarket.getMarble(index + 3), currSlideMarble);
+
+        int size = 0;
+        for(Resource resource : myMarket.resourceOutput().getResources().keySet()){
+            size += myMarket.resourceOutput().getResource(resource);
+        }
+        // when selecting a row the max number of resources obtainable is 4
+        assertTrue(size <= 4);
+    }
+
+    /**
+     *
+     */
+    @Test
+    public void insertMarbleColumnTest(){
+        //INSERT HERE THE COLUMN NUMBER TO TEST, NUM_COLUMN = {1, 2, 3, 4}
+        int NUM_COLUMN = 3;
+        int index = NUM_COLUMN - 1;
+        MarbleColor currSlideMarble = myMarket.getSlideMarble();
+        MarbleColor nextSlideMarble = myMarket.getMarble(index + 8);
+        MarbleColor marble1 = myMarket.getMarble(index + 4);
+        MarbleColor marble2 = myMarket.getMarble(index);
+        // test: insert marble in the NUM_COLUMN column
+        myMarket.insertMarble(NUM_COLUMN, 2);
+        //checks that the marbles slide correctly in the grid
+        assertEquals(myMarket.getSlideMarble(), nextSlideMarble);
+        assertEquals(myMarket.getMarble(index + 8), marble1);
+        assertEquals(myMarket.getMarble(index + 4), marble2);
+        assertEquals(myMarket.getMarble(index), currSlideMarble);
+
+        int size = 0;
+        for(Resource resource : myMarket.resourceOutput().getResources().keySet()){
+            size += myMarket.resourceOutput().getResource(resource);
+        }
+        // when selecting a column the max number of resources obtainable is 3
+        assertTrue(size <= 3);
     }
 }

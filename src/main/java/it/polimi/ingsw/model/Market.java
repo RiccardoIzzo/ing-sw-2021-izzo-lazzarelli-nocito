@@ -13,7 +13,7 @@ public class Market {
     private final ArrayList<MarbleColor> marketTray;
     private MarbleColor slideMarble;
     private MarbleColor specialMarble;
-    private final ResourceMap outputMarket;
+    private ResourceMap outputMarket;
     private boolean foundFaith;
 
     /**
@@ -58,6 +58,14 @@ public class Market {
     }
 
     /**
+     * Method getSpecialMarble returns the marble into which the white marbles will be converted.
+     * @return the specialMarble.
+     */
+    public MarbleColor getSpecialMarble(){
+        return specialMarble;
+    }
+
+    /**
      * Method generateTray creates the market tray with 12 marbles randomly generated and select the marble that can slide.
      */
     public void generateTray(){
@@ -83,7 +91,7 @@ public class Market {
     /**
      * Method reset flush the outputMarket and sets the default values to specialMarble and foundFaith.
      */
-    private void reset(){
+    public void reset(){
         outputMarket.flush();
         specialMarble = null;
         foundFaith = false;
@@ -95,13 +103,12 @@ public class Market {
      * @param type represent the user choice: 1 = row, 2 = column.
      */
     public void insertMarble(int pos, int type){
-        reset();
         if(type == 1) selectRow(pos - 1);
         else if(type == 2) selectCol(pos - 1);
     }
 
     /**
-     * Method selectRow push the row in order and insert the slideMarbel in the market tray.
+     * Method selectRow push the row in order and insert the slideMarble in the market tray.
      * @param n row index.
      */
     public void selectRow(int n){
@@ -120,7 +127,7 @@ public class Market {
     }
 
     /**
-     * Method selectRow push the column in order and insert the slideMarbel in the market tray.
+     * Method selectRow push the column in order and insert the slideMarble in the market tray.
      * @param n column index.
      */
     public void selectCol(int n){
@@ -155,8 +162,8 @@ public class Market {
         else if(marble == MarbleColor.PURPLE) outputMarket.modifyResource(Resource.SERVANT, 1);
         else if(marble == MarbleColor.RED) foundFaith = true;
         else if(marble == MarbleColor.WHITE) {
-            if(specialMarble != null){
-                resourceConverter(specialMarble);
+            if(getSpecialMarble() != null){
+                resourceConverter(getSpecialMarble());
             }
         }
     }
