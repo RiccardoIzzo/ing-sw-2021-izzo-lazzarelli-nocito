@@ -30,7 +30,7 @@ public class SinglePlayerGame extends Game {
     /**
      * Method drawToken activates the token at the top of the stack.
      */
-    public void drawToken(){
-        tokenStack.draw().playToken(this);
+    public void drawToken(SinglePlayerGame game){
+        tokenStack.draw().playToken(game);
     }
 }
