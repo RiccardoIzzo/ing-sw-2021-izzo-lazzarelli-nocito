@@ -26,11 +26,18 @@ public class MultiplayerGameTest {
     }
 
     /**
+     * Method setFirstPlayerTest checks that at the start of the game the current player is actually the first player chosen randomly.
+     */
+    @Test
+    public void setFirstPlayerTest(){
+        assertEquals(multiplayerGame.getCurrPlayer(), multiplayerGame.getFirstPlayer());
+    }
+
+    /**
      * Method playerRotation tests the clockwise rotation of the players during the game.
      */
     @Test
     public void playerRotation(){
-        assertEquals(multiplayerGame.getCurrPlayer(), multiplayerGame.getFirstPlayer());
         multiplayerGame.nextPlayer();
         multiplayerGame.nextPlayer();
         assertNotEquals(multiplayerGame.getCurrPlayer(), multiplayerGame.getFirstPlayer());
