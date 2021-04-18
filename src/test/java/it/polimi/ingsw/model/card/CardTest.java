@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * This class tests:
+ * This class tests if:
  * <ul>
  * <li>Card() constructor can instantiates a card for each type of Requirement available</li>
  * <li>getVictoryPoints() works as expected</li>
