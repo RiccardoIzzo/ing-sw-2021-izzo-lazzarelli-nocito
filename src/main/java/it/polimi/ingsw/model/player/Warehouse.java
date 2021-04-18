@@ -33,6 +33,8 @@ public class Warehouse {
         }
         return false;
     }
+    public int getShelvesSize() {return shelves.size();}
+
     public int getNumberShelf() {
         return NUMBER_SHELF;
     }
