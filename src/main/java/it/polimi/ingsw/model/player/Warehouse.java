@@ -33,6 +33,9 @@ public class Warehouse {
         }
         return false;
     }
+    public int getNumberShelf() {
+        return NUMBER_SHELF;
+    }
 
     /**
      * Method addResourceIntoTemporaryShelf creates a new temporary Shelf and adds the Resources into it.
