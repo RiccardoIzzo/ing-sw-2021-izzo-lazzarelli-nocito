@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.card.Card;
 
 import java.util.ArrayList;
 
+/**
+ * Dashboard Class represents a player's dashboard
+ *
+ * @author Andrea Nocito
+ */
 public class Dashboard {
     private final FaithTrack path;
     private final Warehouse warehouse;
