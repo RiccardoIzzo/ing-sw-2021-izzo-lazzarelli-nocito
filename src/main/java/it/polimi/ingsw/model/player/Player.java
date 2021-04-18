@@ -111,8 +111,15 @@ public class Player {
         myDashboard.getWarehouse().addResourcesIntoTemporaryShelf(market.resourceOutput());
     }
 
-    public void activateProduction(){
 
+    /**
+     * activateProduction calls the method activatePower of the chosen production
+     * @param index : index of the production to activate
+     */
+    public void activateProduction(int index){
+       if ( index < availableProduction.size() ) {
+           availableProduction.get(index).activatePower(this);
+        }
     }
 
     /**
