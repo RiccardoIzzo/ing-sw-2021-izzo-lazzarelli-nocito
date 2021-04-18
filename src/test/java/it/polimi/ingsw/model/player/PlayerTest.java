@@ -1,8 +1,12 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.card.Card;
+import it.polimi.ingsw.model.card.LeaderCard;
 import org.junit.Before;
-
+import org.junit.Test;
+import java.util.ArrayList;
+import java.util.Optional;
 import static org.junit.Assert.*;
 
 /**
@@ -12,6 +16,7 @@ import static org.junit.Assert.*;
  */
 public class PlayerTest {
     Game game;
+    Player player;
 
     /**
      * Method initialization create an instance of Game, adds three players and generates all the leader cards.
@@ -20,8 +25,59 @@ public class PlayerTest {
     public void initialization() {
         game = new Game();
         game.addPlayer("Riccardo");
-        game.addPlayer("Andrea");
-        game.addPlayer("Gabriele");
+        player = game.getPlayerByName("Riccardo");
+        game.generateGrid();
         game.generateLeaders();
+    }
+
+    /**
+     * Method selectLeaderCardTest tests selectLeaderCard method when the player at the beginning of the game must choose two leader cards among the four available.
+     */
+    @Test
+    public void selectLeaderCardTest(){
+        ArrayList<Card> cards = new ArrayList<>(player.getLeaders());
+        Card firstCard = cards.get(0);
+        Card secondCard = cards.get(1);
+        assertNotEquals(firstCard, secondCard);
+        assertEquals(4, player.getLeaders().size());
+        player.selectLeaderCard(firstCard, secondCard);
+        assertEquals(2, player.getLeaders().size());
+        assertTrue(player.getLeaders().contains(firstCard));
+        assertTrue(player.getLeaders().contains(secondCard));
+    }
+
+    /**
+     * Method activateLeaderCardTest checks the correct activation of a leader card.
+     */
+    @Test
+    public void activateLeaderCardTest(){
+        Optional<Card> card = player.getLeaders().stream().findAny();
+        if(card.isPresent()){
+            LeaderCard leaderCard = (LeaderCard) card.get();
+            assertFalse(leaderCard.isActive());
+            player.activateLeaderCard(leaderCard);
+            assertTrue(leaderCard.isActive());
+        }
+    }
+
+    /**
+     * Method discardLeaderTest checks that the leader card is correctly discarded and that the player's position on the faithtrack is increased.
+     */
+    @Test
+    public void discardLeaderTest(){
+        Optional<Card> card = player.getLeaders().stream().findAny();
+        if(card.isPresent()){
+            assertEquals(4, player.getLeaders().size());
+            assertEquals(0, player.getDashboard().getPath().getPlayerPos());
+            player.discardLeaderCard(card.get());
+            assertEquals(3, player.getLeaders().size());
+            assertEquals(1, player.getDashboard().getPath().getPlayerPos());
+            card = player.getLeaders().stream().findAny();
+            if(card.isPresent()){
+                player.discardLeaderCard(card.get());
+                assertEquals(2, player.getLeaders().size());
+                assertEquals(2, player.getDashboard().getPath().getPlayerPos());
+            }
+        }
     }
 }
