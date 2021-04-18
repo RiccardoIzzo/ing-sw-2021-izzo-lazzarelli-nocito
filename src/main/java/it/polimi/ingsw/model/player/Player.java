@@ -36,6 +36,9 @@ public class Player {
         myDashboard = new Dashboard();
         developments = new HashSet<>();
         leaders = new HashSet<>();
+        availableProduction = new ArrayList<>();
+        availableExchange = new HashSet<>();
+        availableDiscount = new ResourceMap();
     }
 
     public String getNickname() {
@@ -130,6 +133,7 @@ public class Player {
         while(cardIterator.hasNext()){
             Card card = cardIterator.next();
             if(card.equals(leaderCard)){
+                ((LeaderCard) card).setActive(true);
                 ((LeaderCard) card).setAbility(this);
             }
         }
@@ -157,7 +161,8 @@ public class Player {
         }
         // VPs for each Leader Card
         while(itrLeaders.hasNext()){
-            victoryPoints += itrLeaders.next().getVictoryPoints();
+            LeaderCard card = (LeaderCard) itrLeaders.next();
+            if(card.isActive()) victoryPoints += card.getVictoryPoints();
         }
 
         for(Resource resource : Resource.values()){
