@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
  * <li>getVictoryPoints() works as expected</li>
  * <li>getRequirement() works as expected (checks if the type of requirement is the same as the one used in Card() )</li>
  * </ul>
+ * @author Gabriele Lazzarelli
  */
 public class CardTest {
     private ResourceMap resourceMap = new ResourceMap();
