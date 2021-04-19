@@ -9,7 +9,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * This class tests if:
  * @author Gabriele Lazzarelli
  */
 public class DevelopmentCardTest {
