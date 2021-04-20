@@ -29,15 +29,15 @@ public class Deck {
 
     /**
      * Method getTopCard returns the Card at the top of this Deck of Card
-     * @return a Card, the Card at the top of this Deck
+     * @return a Card, the Card at the top of this Deck, null if the Deck is empty
      */
     public Card getTopCard(){
-        Card card = null;
+        Card card;
 
         try {
             card = cards.peek();
         } catch (EmptyStackException e) {
-            System.out.println(e.toString());
+            return null;
         }
 
         return card;
@@ -45,15 +45,15 @@ public class Deck {
 
     /**
      * Method draw returns the Card at the top of this Deck and removes it from the Deck
-     * @return a Card, the Card at the top of this Deck
+     * @return a Card, the Card at the top of this Deck, null if the Deck is empty
      */
     public Card draw(){
-        Card card = null;
+        Card card;
 
         try {
             card = cards.pop();
         } catch (EmptyStackException e) {
-            System.out.println(e.toString());
+            return null;
         }
 
         return card;
