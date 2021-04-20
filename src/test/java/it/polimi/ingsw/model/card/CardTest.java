@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card;
 
 import it.polimi.ingsw.model.ResourceMap;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,20 +17,37 @@ import static org.junit.Assert.*;
  * @author Gabriele Lazzarelli
  */
 public class CardTest {
-    private ResourceMap resourceMap = new ResourceMap();
-    private CardMap cardMap = new CardMap();
-    private Requirement requirement1 = new ResourceRequirement(resourceMap);
-    private Requirement requirement2 = new NumberRequirement(cardMap);
-    private Requirement requirement3 = new LevelRequirement(cardMap);
-    private Card card1 = new Card(18, requirement1);
-    private Card card2 = new Card(19, requirement2);
-    private Card card3 = new Card(20, requirement3);
+    private ResourceMap resourceMap;
+    private CardMap cardMap;
+    private Requirement requirement1;
+    private Requirement requirement2;
+    private Requirement requirement3;
+    private Card card1;
+    private Card card2;
+    private Card card3;
 
-    @Test
-    public void constructor(){
-        assertNotNull(card1);
-        assertNotNull(card2);
-        assertNotNull(card3);
+    @Before
+    public void setUp(){
+        resourceMap = new ResourceMap();
+        cardMap = new CardMap();
+        requirement1 = new ResourceRequirement(resourceMap);
+        requirement2 = new NumberRequirement(cardMap);
+        requirement3 = new LevelRequirement(cardMap);
+        card1 = new Card(18, requirement1);
+        card2 = new Card(19, requirement2);
+        card3 = new Card(20, requirement3);
+    }
+
+    @After
+    public void tearDown() {
+        resourceMap = null;
+        cardMap = null;
+        requirement1 = null;
+        requirement2 = null;
+        requirement3 = null;
+        card1 = null;
+        card2 = null;
+        card3 = null;
     }
 
     @Test
@@ -38,7 +56,6 @@ public class CardTest {
         assertEquals(19, card2.getVictoryPoints());
         assertEquals(20, card3.getVictoryPoints());
     }
-
 
     @Test
     public void getRequirement() {
