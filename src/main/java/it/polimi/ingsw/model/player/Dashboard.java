@@ -24,7 +24,7 @@ public class Dashboard {
     }
 
     public Dashboard(int numberOfPlayers) {
-        path = numberOfPlayers > 1 ? new SinglePlayerFaithTrack() : new FaithTrack();
+        path = numberOfPlayers > 1 ? new FaithTrack() : new SinglePlayerFaithTrack();
         warehouse = new Warehouse();
         cardSlots = new ArrayList<>();
         strongBox = new ResourceMap();
