@@ -6,9 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * RemoveCardsTokenTest tests RemoveCardsToken class.
+ *
+ * @author Riccardo Izzo
+ */
 public class RemoveCardsTokenTest {
     SinglePlayerGame singlePlayerGame;
-    SoloActionToken token;
 
     /**
      * Method initialization creates an instance of SinglePlayerGame and generates the grid of development cards.
@@ -20,7 +24,7 @@ public class RemoveCardsTokenTest {
     }
 
     /**
-     * Method playTokenTest simulates the activation of different tokens.
+     * Method playTokenTest simulates the activation of different tokens of type RemoveCardsToken.
      */
     @Test
     public void playTokenTest(){
