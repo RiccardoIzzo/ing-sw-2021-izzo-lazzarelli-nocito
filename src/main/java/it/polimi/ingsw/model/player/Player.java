@@ -85,22 +85,45 @@ public class Player {
         //activatePower needs to be inside ProductionPower (LeaderCard uses it too)
     }
 
+    /**
+     * Method addProduction takes as parameter a Production power and adds it to the ArrayList of availableProduction.
+     * Example: when a player buys a DevelopmentCard then its ProductionPower is available to the player.
+     * @param production is the ProductionPower to add the list of availableProductions.
+     */
     public void addProduction(ProductionPower production){
         availableProduction.add(production);
     }
 
+    /**
+     * Method removeProduction takes as parameter a ProductionPower and removes it from the ArrayList of availableProduction.
+     * Example: the ProductionPower belongs to a DevelopmentCard, if this Card is topped by another of the same type but of the
+     * next level then the old ProductionPower is no more available.
+     * @param production is ProductionPower to remove from the list of availableProductions.
+     */
     public void removeProduction(ProductionPower production){
         availableProduction.remove(production);
     }
 
+    /**
+     * Method addExchange takes as parameter a Set<MarbleColor> and adds its values to the Set of availableExchanges.
+     * @param exchange is a Set of MarbleColor, it contains the MarbleColor(s) which can be exchanged for the white marble.
+     */
     public void addExchange(Set<MarbleColor> exchange){
         availableExchange.addAll(exchange);
     }
 
+    /**
+     * Method addDiscount takes as parameter a ResourceMap and adds its values to the ResourceMap of availableDiscounts.
+     * @param discount is a ResourceMap, the values represent the total discount for each Resource
+     */
     public void addDiscount(ResourceMap discount){
         availableDiscount.addResources(discount);
     }
 
+    /**
+     * Method getResources returns the sum of resources in both the warehouse and the strongbox
+     * @return the available resources of this Player
+     */
     public ResourceMap getTotalResources() {
         return totalResources;
     }
@@ -136,10 +159,8 @@ public class Player {
      * @param leaderCard the leader card that must be activated.
      */
     public void activateLeaderCard(Card leaderCard){
-        Iterator<Card> cardIterator = leaders.iterator();
-        while(cardIterator.hasNext()){
-            Card card = cardIterator.next();
-            if(card.equals(leaderCard)){
+        for (Card card : leaders) {
+            if (card.equals(leaderCard)) {
                 ((LeaderCard) card).setActive(true);
                 ((LeaderCard) card).setAbility(this);
             }
