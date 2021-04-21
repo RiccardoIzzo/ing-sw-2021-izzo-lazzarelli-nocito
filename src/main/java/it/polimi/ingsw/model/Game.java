@@ -67,7 +67,9 @@ public class Game {
      * @param name name of the player to be added.
      */
     public void addPlayer(String name){
-        players.add(new Player(name));
+        if(this instanceof SinglePlayerGame) players.add(new Player(name, true));
+        else players.add(new Player(name, false));
+
     }
 
     /**
