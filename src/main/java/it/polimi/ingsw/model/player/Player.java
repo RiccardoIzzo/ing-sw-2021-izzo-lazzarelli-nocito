@@ -30,10 +30,10 @@ public class Player {
      * Constructor Player creates a new Player instance.
      * @param name player nickname.
      */
-    public Player(String name){
+    public Player(String name, boolean singlePlayer){
         nickname = name;
         victoryPoints = 0;
-        myDashboard = new Dashboard();
+        myDashboard = new Dashboard(singlePlayer);
         developments = new HashSet<>();
         leaders = new HashSet<>();
         availableProduction = new ArrayList<>();

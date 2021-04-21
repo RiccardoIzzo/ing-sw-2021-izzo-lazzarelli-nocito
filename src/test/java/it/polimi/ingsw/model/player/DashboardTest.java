@@ -13,7 +13,7 @@ public class DashboardTest {
      */
     @Before
     public void initialization() {
-        dashboard = new Dashboard();
+        dashboard = new Dashboard(true);
     }
 
     /**

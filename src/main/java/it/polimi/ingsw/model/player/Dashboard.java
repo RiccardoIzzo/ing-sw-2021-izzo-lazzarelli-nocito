@@ -16,15 +16,8 @@ public class Dashboard {
     private final ArrayList<Card> cardSlots;
     private final ResourceMap strongBox;
 
-    public Dashboard() {
-        path = new FaithTrack();
-        warehouse = new Warehouse();
-        cardSlots = new ArrayList<>();
-        strongBox = new ResourceMap();
-    }
-
-    public Dashboard(int numberOfPlayers) {
-        path = numberOfPlayers > 1 ? new FaithTrack() : new SinglePlayerFaithTrack();
+    public Dashboard(boolean singlePlayer) {
+        path = singlePlayer ? new SinglePlayerFaithTrack() : new FaithTrack();
         warehouse = new Warehouse();
         cardSlots = new ArrayList<>();
         strongBox = new ResourceMap();
