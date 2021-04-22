@@ -60,7 +60,7 @@ public class Shelf {
                 break;
             }
         }
-        if (resourceNotAllowed || resources.getResources().size()+totalResources< capacity) {
+        if (resourceNotAllowed || resources.getMapSize()+totalResources< capacity) {
             return false;
         }
         for(Resource res : resources.getResources().keySet()) {
