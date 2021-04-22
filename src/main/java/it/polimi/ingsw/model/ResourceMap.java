@@ -41,6 +41,19 @@ public class ResourceMap {
     }
 
     /**
+     * Method getMapSize returns  quantity of resources inside ResourceMap
+     * @return the associated Integer.
+     */
+    public Integer getMapSize() {
+        int total = 0;
+        for (Map.Entry<Resource, Integer> entry : resources.entrySet()) {
+            total += entry.getValue();
+        }
+        return total;
+    }
+
+
+    /**
      * Method addResources receives a Map of Resources and associated Integers to add.
      */
     public void addResources(ResourceMap toAdd) {
