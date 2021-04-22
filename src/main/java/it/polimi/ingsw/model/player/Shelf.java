@@ -64,13 +64,15 @@ public class Shelf {
         int totalResources = 0;
         boolean resourceNotAllowed = false;
         for(Resource res : resources.getResources().keySet()) {
-            totalResources += resources.getResource(res);
-            if(!resourcesAllowed.contains(res)) {
-                resourceNotAllowed = true;
-                break;
+            if (resources.getResource(res) > 0) {
+                totalResources += resources.getResource(res);
+                if (!resourcesAllowed.contains(res)) {
+                    resourceNotAllowed = true;
+                    break;
+                }
             }
         }
-        if (resourceNotAllowed || resources.getMapSize()+totalResources< capacity) {
+        if (resourceNotAllowed || this.resources.getMapSize()+totalResources > capacity) {
             return false;
         }
         for(Resource res : resources.getResources().keySet()) {
