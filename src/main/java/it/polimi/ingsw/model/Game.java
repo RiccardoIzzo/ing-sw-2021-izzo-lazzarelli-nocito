@@ -63,7 +63,7 @@ public class Game {
     }
 
     /**
-     * Method addPlayer create a nem player and adds it to the list of player.
+     * Method addPlayer creates a player and adds it to the list of players.
      * @param name name of the player to be added.
      */
     public void addPlayer(String name){
@@ -73,7 +73,7 @@ public class Game {
     }
 
     /**
-     * Method removePlayer remove a player from the list.
+     * Method removePlayer removes a player from the list.
      * @param name name of the player to be removed.
      */
     public void removePlayer(String name){
@@ -81,7 +81,7 @@ public class Game {
     }
 
     /**
-     * Method getPlayerByName return a player instance relying on his name.
+     * Method getPlayerByName returns a player instance relying on his name.
      * @param name player name.
      * @return an instance of player.
      */
