@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
     * Warehouse Class represents the set of shelves available on a dashboard
@@ -38,7 +39,12 @@ public class Warehouse {
     public int getNumberShelf() {
         return NUMBER_SHELF;
     }
-
+    public Optional<Shelf> getShelf(int shelfIndex) {
+        if (shelves.size() > shelfIndex) {
+            return Optional.ofNullable(shelves.get(shelfIndex));
+        }
+        return Optional.empty();
+    }
     /**
      * Method addResourceIntoTemporaryShelf creates a new temporary Shelf and adds the Resources into it.
      */
