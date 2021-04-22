@@ -20,6 +20,14 @@ public class TokenDeck {
     }
 
     /**
+     * Method getTokens returns the stack of tokens.
+     * @return the stack of tokens.
+     */
+    public Stack<SoloActionToken> getTokens(){
+        return tokens;
+    }
+
+    /**
      * Method reset cleans the stack, inserts the seven types of tokens and shuffles it.
      */
     public void reset(){
