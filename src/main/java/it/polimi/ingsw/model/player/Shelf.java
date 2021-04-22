@@ -74,7 +74,7 @@ public class Shelf {
      * @return true if the operation was successful
      */
     public boolean placeResource(Resource resource) {
-        if ( resourcesAllowed.contains(resource) && resources.getResources().size() < capacity ) {
+        if ( resourcesAllowed.contains(resource) && resources.getMapSize() < capacity ) {
             resources.modifyResource(resource, 1);
             return true;
         }
