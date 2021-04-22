@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.token;
 
-import it.polimi.ingsw.model.SinglePlayerGame;
+import it.polimi.ingsw.model.Game;
 
 /**
  * Interface SoloActionToken has to be implemented by the two types of token, MoveBlackMarker and RemoveCards.
@@ -10,8 +10,9 @@ import it.polimi.ingsw.model.SinglePlayerGame;
  */
 
 public interface SoloActionToken {
+
     /**
      * Method playToken has to be implemented by both types of tokens and represents the activation.
      */
-    void playToken(SinglePlayerGame game);
+    void playToken(Game game);
 }

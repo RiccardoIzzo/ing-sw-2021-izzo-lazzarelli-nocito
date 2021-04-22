@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.token;
 
-import it.polimi.ingsw.model.player.Dashboard;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SinglePlayerGame;
+import it.polimi.ingsw.model.player.Dashboard;
 
 /**
  * MoveBlackMarkerToken class implements SoloActionToken interface and represents the token that move forward the black cross marker.
@@ -42,13 +43,13 @@ public class MoveBlackMarkerToken implements SoloActionToken {
      * Method playToken represents the effect of the token.
      */
     @Override
-    public void playToken(SinglePlayerGame game) {
+    public void playToken(Game game) {
         Dashboard dashboard = game.getPlayers().get(0).getDashboard();
         for(int i = 0; i < steps; i++){
             dashboard.incrementBlackFaith();
         }
         if(hasResetStack()){
-            game.getTokenStack().reset();
+            ((SinglePlayerGame) game).getTokenStack().reset();
         }
     }
 
