@@ -67,7 +67,7 @@ public class ResourceMap {
      */
     public boolean modifyResource(Resource type, Integer value) {
         int num = resources.get(type) + value;
-        if(num > 0) {
+        if(num >= 0) {
             resources.replace(type, num);
             return true;
         }
