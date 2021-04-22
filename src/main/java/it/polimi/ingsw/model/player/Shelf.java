@@ -38,14 +38,27 @@ public class Shelf {
     }
 
     /**
-     * Method getResourceType returns the first type of resource allowed to be stored.
-     * @return the Resource value.
+     * Method getResourceAllowed returns the type of resources allowed to be stored.
+     * @return the resourcesAllowed value.
      */
     public Set<Resource> getResourceAllowed() {
         return resourcesAllowed;
     }
 
 
+    /**
+     * Method addResourceAllowed add a type of Resource to the allowed ones that can be stored into the shelf
+     * @return true if the operation was successful.
+     */
+    public boolean addResourceAllowed(Resource resourceToAdd) {
+        if (resourcesAllowed.contains(resourceToAdd) ) {
+            return false;
+        }
+        else {
+            resourcesAllowed.add(resourceToAdd);
+            return true;
+        }
+    }
 
     /**
      * Method takeResource tries to remove one unit of the requested Resource.
