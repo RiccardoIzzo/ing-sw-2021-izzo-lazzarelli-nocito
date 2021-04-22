@@ -12,10 +12,16 @@ public class SinglePlayerFaithTrack extends FaithTrack {
         super();
         blackFaithMarker = 0;
     }
+
+    public int getBlackFaithMarker() {
+        return blackFaithMarker;
+    }
+
     public void moveBlack() {
         blackFaithMarker++;
         checkBlack();
     }
+
     public void checkBlack() {
         if(blackFaithMarker == END) {
             // Game ended
