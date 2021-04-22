@@ -15,6 +15,7 @@ public class Shelf {
     private ResourceMap resources;
     private final Integer capacity;
 
+
     public Shelf(Integer shelfCapacity) {
         resourcesAllowed = new HashSet<>();
         resources = new ResourceMap();
@@ -29,12 +30,21 @@ public class Shelf {
     }
 
     /**
+     * Method getCapacity returns the actual capacity of the Shelf
+     * @return the capacity value.
+     */
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    /**
      * Method getResourceType returns the first type of resource allowed to be stored.
      * @return the Resource value.
      */
     public Set<Resource> getResourceAllowed() {
         return resourcesAllowed;
     }
+
 
 
     /**
