@@ -76,7 +76,7 @@ public class Shelf {
             return false;
         }
         for(Resource res : resources.getResources().keySet()) {
-            resources.modifyResource(res,  resources.getResource(res));
+            this.resources.modifyResource(res,  resources.getResource(res));
         }
         return true;
     }
