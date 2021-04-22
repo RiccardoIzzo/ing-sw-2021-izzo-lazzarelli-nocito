@@ -49,7 +49,7 @@ public class Warehouse {
      * Method addResourceIntoTemporaryShelf creates a new temporary Shelf and adds the Resources into it.
      */
     public void addResourcesIntoTemporaryShelf(ResourceMap resources) {
-        Shelf tempShelf = new Shelf(resources.getResources().size());
+        Shelf tempShelf = new Shelf(resources.getResources().size(), resources.getResources().keySet());
         tempShelf.placeResources(resources);
         shelves.add(tempShelf);
     }
