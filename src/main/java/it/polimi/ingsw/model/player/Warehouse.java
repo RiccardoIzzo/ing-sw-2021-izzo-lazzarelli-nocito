@@ -66,8 +66,14 @@ public class Warehouse {
      */
     public boolean removeResource(int shelfIndex, Resource resource) {
         if (shelves.size() > shelfIndex && shelves.get(shelfIndex).getResourceAllowed().contains(resource))  {
-            shelves.get(shelfIndex).takeResource(resource);
-            return true;
+            Shelf tempShelf = shelves.get(shelfIndex);
+            if (tempShelf.takeResource(resource)) {
+                shelves.set(shelfIndex, tempShelf);
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         return false;
     }
