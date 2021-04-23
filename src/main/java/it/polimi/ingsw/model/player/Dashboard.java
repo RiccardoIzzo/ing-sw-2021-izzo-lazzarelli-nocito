@@ -42,11 +42,15 @@ public class Dashboard {
 
     }
 
+    public ResourceMap getStrongBox() {
+        return strongBox;
+    }
+
     /**
      * Method removeResource removes one resource from the strongBox
      */
-    void removeResource(Resource resource) {
-        strongBox.modifyResource(resource, -1);
+    boolean removeResource(Resource resource) {
+        return strongBox.modifyResource(resource, -1);
 
     }
     /**
