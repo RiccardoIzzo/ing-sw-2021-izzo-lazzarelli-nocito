@@ -22,6 +22,8 @@ public class FaithTrack {
     private static final int INITIAL_OFFSET = 4;
     // END: last tile of the game
     static final int END = 24;
+    // tilesUncovered: Value that states if the pope tiles have been uncovered
+    private boolean[] tilesUncovered = {false, false, false};
 
 
     public FaithTrack() {
@@ -30,7 +32,23 @@ public class FaithTrack {
         Arrays.fill(popesFavorTiles, false);
 
     }
+    public boolean getTilesUncovered(int index) {
+        if (index < tilesUncovered.length) {
+            return tilesUncovered[index];
+        }
+        return false;
+    }
 
+    public boolean setTilesUncovered(int index, boolean value) {
+        if (index < tilesUncovered.length) {
+            tilesUncovered[index] = value;
+            return true;
+        }
+        return false;
+    }
+    public int getEnd() {
+        return END;
+    }
     /**
      * Method moveForward moves the faith marker and calls popeTilePass
      */
@@ -51,8 +69,9 @@ public class FaithTrack {
      */
     public void popeTilePass() {
         for(int i = 0; i < TILE_POS.length; i++) {
-            if ( posFaithMarker == TILE_POS[i] ) {
+            if ( posFaithMarker == TILE_POS[i] && !tilesUncovered[i] ) {
                 popesFavorTiles[i] = true;
+                tilesUncovered[i] = true;
             }
         }
     }
