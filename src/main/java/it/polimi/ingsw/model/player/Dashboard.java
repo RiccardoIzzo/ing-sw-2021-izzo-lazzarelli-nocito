@@ -43,6 +43,13 @@ public class Dashboard {
     }
 
     /**
+     * Method removeResource removes one resource from the strongBox
+     */
+    void removeResource(Resource resource) {
+        strongBox.modifyResource(resource, -1);
+
+    }
+    /**
      * Method incrementFaith receives the number of steps to take and makes the path move forward.
      */
     void incrementFaith(int steps) {
