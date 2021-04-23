@@ -97,7 +97,7 @@ public class FaithTrack {
     public int getPosVictoryPoints() {
         int victoryPoints = 0;
         int i = 0;
-        while (posFaithMarker < WINNING_TILES[i]) {
+        while (i<WINNING_TILES.length && posFaithMarker >= WINNING_TILES[i]) {
             victoryPoints += WINNING_VALUES[i];
             i++;
         }
