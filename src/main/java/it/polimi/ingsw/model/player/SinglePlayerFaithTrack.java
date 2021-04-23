@@ -22,10 +22,10 @@ public class SinglePlayerFaithTrack extends FaithTrack {
         checkBlack();
     }
 
-    public void checkBlack() {
-        if(blackFaithMarker == END) {
-            // Game ended
-        }
+
+
+    public boolean checkBlack() {
+        return blackFaithMarker == END;
     }
 }
 
