@@ -23,10 +23,6 @@ public class Dashboard {
         strongBox = new ResourceMap();
     }
 
-    void useAbility() {
-
-    }
-
     /**
      * Method addShelf receives a shelf and adds it to the list
      */
