@@ -39,6 +39,15 @@ public class Dashboard {
 
     }
 
+    /**
+     * Method addResources adds the resources into the strongBox
+     */
+    void addResources(ResourceMap resources) {
+        for( Resource res : resources.getResources().keySet()){
+            strongBox.modifyResource(res, resources.getResource(res));
+        }
+
+    }
     public ResourceMap getStrongBox() {
         return strongBox;
     }
