@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+import it.polimi.ingsw.constants.GameConstants;
 import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.model.player.Player;
 
@@ -112,7 +113,7 @@ public class Game {
      * Method generateGrid generates the grid with the 48 development cards from a JSON file.
      */
     public void generateGrid(){
-        try (Reader reader = new FileReader("src/main/resources/json/development_card.json")) {
+        try (Reader reader = new FileReader(GameConstants.developmentCardsJson)) {
             // Convert JSON file into list of Java object
             ArrayList<Card> jsonCards = gson.fromJson(reader, new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
 
@@ -133,15 +134,16 @@ public class Game {
      */
     public void generateLeaders(){
         List<LeaderCard> leaders = new ArrayList<>();
-        Map<String, Type> files = new HashMap<>();
-        files.put("src/main/resources/json/discount_leadercard.json", new TypeToken<ArrayList<DiscountLeaderCard>>(){}.getType());
-        files.put("src/main/resources/json/extrashelf_leadercard.json", new TypeToken<ArrayList<ExtraShelfLeaderCard>>(){}.getType());
-        files.put("src/main/resources/json/production_leadercard.json", new TypeToken<ArrayList<ProductionLeaderCard>>(){}.getType());
-        files.put("src/main/resources/json/whitemarble_leadercard.json", new TypeToken<ArrayList<WhiteMarbleLeaderCard>>(){}.getType());
+        List <Type> types = new ArrayList<>();
+        types.add(new TypeToken<ArrayList<DiscountLeaderCard>>(){}.getType());
+        types.add(new TypeToken<ArrayList<ExtraShelfLeaderCard>>(){}.getType());
+        types.add(new TypeToken<ArrayList<ProductionLeaderCard>>(){}.getType());
+        types.add(new TypeToken<ArrayList<WhiteMarbleLeaderCard>>(){}.getType());
+        int i = 0;
 
-        for(String key : files.keySet()){
-            try (Reader reader = new FileReader(key)){
-                leaders.addAll(gson.fromJson(reader, files.get(key)));
+        for(String filePath : GameConstants.leaderCardsJson){
+            try (Reader reader = new FileReader(filePath)){
+                leaders.addAll(gson.fromJson(reader, types.get(i++)));
             } catch (IOException e) {
                 e.printStackTrace();
             }

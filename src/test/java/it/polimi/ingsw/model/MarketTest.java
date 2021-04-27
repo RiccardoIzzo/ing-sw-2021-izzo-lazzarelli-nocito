@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.constants.GameConstants;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -48,12 +49,12 @@ public class MarketTest {
             i++;
         }
 
-        assertEquals(4, white);
-        assertEquals(2, gray);
-        assertEquals(2, blue);
-        assertEquals(2, yellow);
-        assertEquals(2, purple);
-        assertEquals(1, red);
+        assertEquals(GameConstants.NUM_WHITE_MARBLES, white);
+        assertEquals(GameConstants.NUM_MARBLES, gray);
+        assertEquals(GameConstants.NUM_MARBLES, blue);
+        assertEquals(GameConstants.NUM_MARBLES, yellow);
+        assertEquals(GameConstants.NUM_MARBLES, purple);
+        assertEquals(GameConstants.NUM_RED_MARBLES, red);
     }
 
     /**
