@@ -75,6 +75,18 @@ public class Warehouse {
     }
 
     /**
+     * Method getResourcesSize counts the amount of each resource avaiable on the shelves
+     * @return ResourceMap with the amount of each resource
+     */
+    public ResourceMap getResourcesSize() {
+        ResourceMap res = new ResourceMap();
+        for (Shelf shelf : shelves) {
+            res.addResources(shelf.getResources());
+        }
+        return res;
+    }
+
+    /**
      * Method removeResource tries to remove the last resource unit inside the specified shelf.
      * @return true is the operation was successful
      */
