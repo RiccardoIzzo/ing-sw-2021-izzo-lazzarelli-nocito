@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.card.Card;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Dashboard Class represents a player's dashboard
@@ -48,7 +49,28 @@ public class Dashboard {
     boolean removeFromWarehouse(Resource resource) {
         return warehouse.removeResource(resource);
     }
-
+    /**
+     * Method removeResources tries to remove the specified resources from the shelves (and eventually the strongbox)
+     * @return true if the operation was successful, false otherwise.
+     */
+    boolean removeResources(ResourceMap resources) {
+        ResourceMap res = warehouse.getResourcesSize();
+        res.addResources(strongBox);
+        Map<Resource, Integer> resourcesToTake = resources.getResources();
+        for(Resource resource : resourcesToTake.keySet()) {
+            if (resourcesToTake.get(resource) > res.getResource(resource)) {
+                return false;
+            }
+        }
+        for(Resource resource : resourcesToTake.keySet()) {
+            for (int i = 0; i<resourcesToTake.get(resource); i++) {
+                if (!removeFromWarehouse(resource)) {
+                    removeResource(resource);
+                }
+            }
+        }
+        return true;
+    }
 
 
 
