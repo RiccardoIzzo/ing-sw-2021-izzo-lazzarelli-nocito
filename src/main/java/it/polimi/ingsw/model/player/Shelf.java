@@ -38,6 +38,14 @@ public class Shelf {
     }
 
     /**
+     * Method getResources returns the size of each type of resource stored into the shelf
+     * @return the resources values.
+     */
+
+    public ResourceMap getResources() {
+        return resources;
+    }
+    /**
      * Method getResourceAllowed returns the type of resources allowed to be stored.
      * @return the resourcesAllowed value.
      */
