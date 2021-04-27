@@ -41,6 +41,16 @@ public class Dashboard {
     public ResourceMap getStrongBox() {
         return strongBox;
     }
+    /**
+     * Method removeFromWarehouse tries to remove one resource from the shelves inside warehouse.
+     * @return true if the operation was successful, false otherwise.
+     */
+    boolean removeFromWarehouse(Resource resource) {
+        return warehouse.removeResource(resource);
+    }
+
+
+
 
     /**
      * Method removeResource removes one resource from the strongBox
