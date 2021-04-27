@@ -61,6 +61,20 @@ public class Warehouse {
         shelves.remove(shelves.size()-1);
     }
     /**
+     * Method removeResource with @param Resource tries to remove the first resource it finds that matches the specificed type.
+     * @return true is the operation was successful
+     */
+    public boolean removeResource(Resource resource) {
+        int i = 0;
+        while (i < shelves.size()) {
+           if (shelves.get(i).takeResource(resource)) {
+               return  true;
+           }
+        }
+        return false;
+    }
+
+    /**
      * Method removeResource tries to remove the last resource unit inside the specified shelf.
      * @return true is the operation was successful
      */
