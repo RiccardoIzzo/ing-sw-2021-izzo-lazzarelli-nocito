@@ -121,13 +121,21 @@ public class Player {
     }
 
     /**
-     * Method getResources returns the sum of resources in both the warehouse and the strongbox
+     * Method getTotalResources returns the sum of resources in both the warehouse and the strongbox
      * @return the available resources of this Player
      */
     public ResourceMap getTotalResources() {
         return totalResources;
     }
 
+    /**
+     * Method getResources takes resources from the market by letting slide the marble in the selected index.
+     * If by performing this action a red marble is found, the player moves forward on the faith track.
+     * The resources obtained are finally added to the temporary shelf where they can be managed by the player.
+     * @param pos row/column index.
+     * @param type represent the user choice: 1 = row, 2 = column.
+     * @param market instance of Market.
+     */
     public void getResources(int pos, int type, Market market){
         market.insertMarble(pos, type);
         if(market.findFaith()) myDashboard.incrementFaith(1);
