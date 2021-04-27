@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.constants.GameConstants;
 import it.polimi.ingsw.model.card.CardColor;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.player.Player;
@@ -59,7 +60,7 @@ public class GameTest {
                 size += game.getDeck(0, 0).getCards().size();
             }
         }
-        assertEquals(48, size);
+        assertEquals(GameConstants.NUM_DEVELOPMENT_CARDS, size);
     }
 
     /**

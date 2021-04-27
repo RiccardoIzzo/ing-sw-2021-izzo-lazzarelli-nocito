@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.constants.GameConstants;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
@@ -72,10 +74,10 @@ public class Market {
         Random random = new Random();
         int rand = random.nextInt(12);
 
-        for(int n_white = 0; n_white < 4; n_white++){
+        for(int n_white = 0; n_white < GameConstants.NUM_WHITE_MARBLES; n_white++){
             marketTray.add(MarbleColor.WHITE);
         }
-        for(int n_color = 0; n_color < 2; n_color++){
+        for(int n_color = 0; n_color < GameConstants.NUM_MARBLES; n_color++){
             marketTray.add(MarbleColor.BLUE);
             marketTray.add(MarbleColor.GRAY);
             marketTray.add(MarbleColor.YELLOW);
