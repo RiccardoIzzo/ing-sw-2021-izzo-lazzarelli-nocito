@@ -15,7 +15,6 @@ import java.util.*;
  */
 public class Player {
     private String nickname;
-    private int victoryPoints;
     private Dashboard myDashboard;
     private Set<Card> developments;
     private Set<Card> leaders;
@@ -32,7 +31,6 @@ public class Player {
      */
     public Player(String name, boolean singlePlayer){
         nickname = name;
-        victoryPoints = 0;
         myDashboard = new Dashboard(singlePlayer);
         developments = new HashSet<>();
         leaders = new HashSet<>();
@@ -45,16 +43,16 @@ public class Player {
         return nickname;
     }
 
-    public int getVictoryPoints(){
-        return victoryPoints;
-    }
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
     public void setLeaders(List<LeaderCard> cards){
         leaders.addAll(cards);
+    }
+
+    public Set<Card> getDevelopments(){
+        return developments;
     }
 
     public Set<Card> getLeaders(){
@@ -185,27 +183,26 @@ public class Player {
     }
 
     /**
-     * Method calcPoints calculates the victory points achieved by a player.
+     * Method getVictoryPoints returns the number of victory points achieved by a player.
+     * @return the victory points.
      */
-    public void calcPoints(){
-        Iterator<Card> itrCards = developments.iterator();
-        Iterator<Card> itrLeaders = leaders.iterator();
+    public int getVictoryPoints(){
+        int victoryPoints = 0;
         int numResources = 0;
         // VPs for each Development Card
-        while(itrCards.hasNext()){
-            victoryPoints += itrCards.next().getVictoryPoints();
+        for(Card card : getDevelopments()){
+            victoryPoints += card.getVictoryPoints();
         }
         // VPs for each Leader Card
-        while(itrLeaders.hasNext()){
-            LeaderCard card = (LeaderCard) itrLeaders.next();
-            if(card.isActive()) victoryPoints += card.getVictoryPoints();
+        for(Card card : getLeaders()){
+            if(((LeaderCard) card).isActive()) victoryPoints += card.getVictoryPoints();
         }
-
         for(Resource resource : Resource.values()){
             numResources += totalResources.getResource(resource);
         }
         // VPs for every set of 5 resources of any type + VPs depending on the final position on the faith track + VPs based on the Pope's favor tiles
-        victoryPoints += (numResources % 5) + myDashboard.getPath().getPosVictoryPoints();
+        victoryPoints += (numResources % 5) + myDashboard.getPath().getPosVictoryPoints() + myDashboard.getPath().getPointsForTiles();
+        return victoryPoints;
     }
 
 }
