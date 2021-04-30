@@ -138,15 +138,15 @@ public class Player {
         myDashboard.getWarehouse().addResourcesIntoTemporaryShelf(market.resourceOutput());
     }
 
-
     /**
-     * activateProduction calls the method activatePower of the chosen production
-     * @param index : index of the production to activate
+     * Method activateProduction gets the ProductionPower of the chosen DevelopmentCard and increment the resources
+     * in the strongbox and the faith in the FaithTrack by the output of the ProductionPower
+     * @param developmentCard : the Card which productionPower is to activate
      */
-    public void activateProduction(int index){
-       if ( index < availableProduction.size() ) {
-           availableProduction.get(index).activatePower(this);
-        }
+    public void activateProduction(DevelopmentCard developmentCard){
+        myDashboard.removeResources(developmentCard.getProduction().getInputResource());
+        myDashboard.addResources(developmentCard.getProduction().getOutputResource());
+        myDashboard.incrementFaith(developmentCard.getProduction().getOutputFaith());
     }
 
     /**
