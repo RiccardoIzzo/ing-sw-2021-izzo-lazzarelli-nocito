@@ -24,11 +24,10 @@ public class ExtraShelfLeaderCard extends LeaderCard {
     }
 
     /**
-     * setAbility method adds this.shelf to the list of shelves in the Warehouse.
-     * @param player is the Player which gets the additional shelf
+     * Method getShelf gets the Shelf of this LeaderCard
+     * @return the Shelf of this LeaderCard
      */
-    @Override
-    public void setAbility(Player player) {
-        player.getDashboard().addShelf(shelf);
+    public Shelf getShelf() {
+        return shelf;
     }
 }
