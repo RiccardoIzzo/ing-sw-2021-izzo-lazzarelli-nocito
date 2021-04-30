@@ -42,28 +42,10 @@ public class DevelopmentCard extends Card {
     }
 
     /**
-     * Method ProductionPower gets the productionPower of DevelopmentCard
-     * @return the productionPower of the DevelopmentCard
+     * Method getProduction gets the productionPower of this DevelopmentCard
+     * @return the productionPower of this DevelopmentCard
      */
     public ProductionPower getProduction() {
         return production;
     }
-/*
-
-    */
-    /*
-     * Method equals is overridden, two DevelopmentCard are equals if their attributes are the same.
-     * @param o is the Object instance to compare
-     * @return true if the DevelopmentCard instances have the same attributes
-     */
-    /* There no need for equals() override, in case it will be:
-    - create an equals override in Card first
-    - extends equals of Card
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DevelopmentCard that = (DevelopmentCard) o;
-        return getLevel() == that.getLevel() && getType() == that.getType() && getProduction().equals(that.getProduction());
-    }*/
 }
