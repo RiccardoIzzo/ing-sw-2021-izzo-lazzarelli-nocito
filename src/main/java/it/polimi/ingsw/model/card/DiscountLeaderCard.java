@@ -24,10 +24,10 @@ public class DiscountLeaderCard extends LeaderCard {
     }
 
     /**
-     * Method setAbility adds the discount this DiscountLeaderCard provides to the list of available discounts.
+     * Method getDiscount gets the discount of this LeaderCard
+     * @return the ResourceMap representing the discount of this LeaderCard
      */
-    @Override
-    public void setAbility(Player player) {
-        player.addDiscount(discount);
+    public ResourceMap getDiscount() {
+        return discount;
     }
 }
