@@ -15,6 +15,7 @@ import java.util.*;
  */
 public class Player {
     private String nickname;
+    private Game game;
     private Dashboard myDashboard;
     private Set<Card> developments;
     private Set<Card> leaders;
@@ -29,8 +30,9 @@ public class Player {
      * Constructor Player creates a new Player instance.
      * @param name player nickname.
      */
-    public Player(String name, boolean singlePlayer){
+    public Player(String name, boolean singlePlayer, Game game){
         nickname = name;
+        this.game = game;
         myDashboard = new Dashboard(singlePlayer);
         developments = new HashSet<>();
         leaders = new HashSet<>();
