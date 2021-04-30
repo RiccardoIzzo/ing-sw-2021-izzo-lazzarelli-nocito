@@ -23,11 +23,10 @@ public class ProductionLeaderCard extends LeaderCard {
     }
 
     /**
-     * Method setAbility in ProductionLeaderCard adds this.ProductionPower to availableProduction list in player
-     * @param player is the Player which gets the additional ProductionPower
+     * Method getProduction gets the productionPower of this LeaderCard
+     * @return the productionPower of this LeaderCard
      */
-    @Override
-    public void setAbility(Player player) {
-        production.activatePower(player);
+    public ProductionPower getProduction() {
+        return production;
     }
 }
