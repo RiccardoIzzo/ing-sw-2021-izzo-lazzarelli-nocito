@@ -47,32 +47,4 @@ public class ProductionPower {
     public int getOutputFaith() {
         return outputFaith;
     }
-
-//    Equals method is not used
-//    /**
-//     * Method equals is overridden, two ProductionPower are equals if their attributes are the same.
-//     * @param o is the Object instance to compare
-//     * @return true if the ProductionPower instances have the same attributes
-//     */
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        ProductionPower that = (ProductionPower) o;
-//        return getOutputFaith() == that.getOutputFaith() && getInputResource().equals(that.getInputResource()) && getOutputResource().equals(that.getOutputResource());
-//    }
-
-    /**
-     * Method activatePower adds the ProductionPower to the player's availableProduction list.
-     */
-    public void activatePower(Player player) {
-        player.addProduction(this);
-    }
-
-    /**
-     * Method deactivatePower removes the ProductionPower from the player's availableProduction list.
-     */
-    public void deactivatePower(Player player) {
-        player.removeProduction(this);
-    }
 }
