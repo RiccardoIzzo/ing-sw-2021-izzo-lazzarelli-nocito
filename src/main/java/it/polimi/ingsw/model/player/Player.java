@@ -17,12 +17,12 @@ public class Player {
     private String nickname;
     private Game game;
     private Dashboard myDashboard;
-    private Set<Card> developments;
-    private Set<Card> leaders;
+    private Set<DevelopmentCard> developments;
+    private Set<LeaderCard> leaders;
     private ResourceMap totalResources;
     private CardMap numberOfCard;
     private CardMap levelOfCard;
-    private ArrayList<ProductionPower> availableProduction;
+    private ArrayList<Card> availableProduction;
     private Set<MarbleColor> availableExchange;
     private ResourceMap availableDiscount;
 
@@ -53,11 +53,11 @@ public class Player {
         leaders.addAll(cards);
     }
 
-    public Set<Card> getDevelopments(){
+    public Set<DevelopmentCard> getDevelopments(){
         return developments;
     }
 
-    public Set<Card> getLeaders(){
+    public Set<LeaderCard> getLeaders(){
         return leaders;
     }
 
@@ -179,7 +179,7 @@ public class Player {
      * Method discardLeaderCard discards the selected leader card and increments the player position on the faith track.
      * @param card the leader card that must be discarded.
      */
-    public void discardLeaderCard(Card card){
+    public void discardLeaderCard(LeaderCard card){
         leaders.remove(card);
         myDashboard.incrementFaith(1);
     }
@@ -192,12 +192,12 @@ public class Player {
         int victoryPoints = 0;
         int numResources = 0;
         // VPs for each Development Card
-        for(Card card : getDevelopments()){
+        for(Card card : developments){
             victoryPoints += card.getVictoryPoints();
         }
         // VPs for each Leader Card
-        for(Card card : getLeaders()){
-            if(((LeaderCard) card).isActive()) victoryPoints += card.getVictoryPoints();
+        for(LeaderCard card : leaders){
+            if(card.isActive()) victoryPoints += card.getVictoryPoints();
         }
         for(Resource resource : Resource.values()){
             numResources += totalResources.getResource(resource);
