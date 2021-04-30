@@ -99,38 +99,33 @@ public class Player {
     }
 
     /**
-     * Method addProduction takes as parameter a Production power and adds it to the ArrayList of availableProduction.
-     * Example: when a player buys a DevelopmentCard then its ProductionPower is available to the player.
-     * @param production is the ProductionPower to add the list of availableProductions.
+     * Method buyCard is called when the player buys a DevelopmentCard.
+     * The new DevelopmentCard will be added to availableProduction and placed in:
+     * <ul>
+     * <li>a free slot if the DevelopmentCard's level is I</li>
+     * <li>the slot of a DevelopmentCard of the same type but lower level</li>
+     * </ul>
+     * @param row is the row line in the grid of developmentCard
+     * @param column is the column in the grid of developmentCard
      */
-    public void addProduction(ProductionPower production){
-        availableProduction.add(production);
-    }
+    public void buyCard(int row, int column){
+        DevelopmentCard developmentCard = (DevelopmentCard) game.getGrid()[row][column].draw();
+        int indexPosition = availableProduction.size();
 
-    /**
-     * Method removeProduction takes as parameter a ProductionPower and removes it from the ArrayList of availableProduction.
-     * Example: the ProductionPower belongs to a DevelopmentCard, if this Card is topped by another of the same type but of the
-     * next level then the old ProductionPower is no more available.
-     * @param production is ProductionPower to remove from the list of availableProductions.
-     */
-    public void removeProduction(ProductionPower production){
-        availableProduction.remove(production);
-    }
-
-    /**
-     * Method addExchange takes as parameter a Set<MarbleColor> and adds its values to the Set of availableExchanges.
-     * @param exchange is a Set of MarbleColor, it contains the MarbleColor(s) which can be exchanged for the white marble.
-     */
-    public void addExchange(Set<MarbleColor> exchange){
-        availableExchange.addAll(exchange);
-    }
-
-    /**
-     * Method addDiscount takes as parameter a ResourceMap and adds its values to the ResourceMap of availableDiscounts.
-     * @param discount is a ResourceMap, the values represent the total discount for each Resource
-     */
-    public void addDiscount(ResourceMap discount){
-        availableDiscount.addResources(discount);
+        for(Card card: availableProduction){
+            if (card instanceof DevelopmentCard){
+                if (((DevelopmentCard) card).getType() == developmentCard.getType() && ((DevelopmentCard) card).getLevel()+1 == developmentCard.getLevel()){
+                    indexPosition = availableProduction.indexOf(card);
+                    availableProduction.remove(card);
+                }
+            }
+        }
+        availableProduction.add(indexPosition, developmentCard);
+        developments.add(developmentCard);
+        numberOfCard.addCard(developmentCard.getType(), 1);
+        if (levelOfCard.getCard(developmentCard.getType()) < developmentCard.getLevel()) {
+            levelOfCard.put(developmentCard.getType(), developmentCard.getLevel());
+        }
     }
 
     /**
