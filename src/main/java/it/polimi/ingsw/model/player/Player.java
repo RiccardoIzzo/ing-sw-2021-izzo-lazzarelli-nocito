@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.card.LeaderCard;
-import it.polimi.ingsw.model.card.ProductionPower;
-import it.polimi.ingsw.model.card.Card;
-import it.polimi.ingsw.model.card.CardMap;
+import it.polimi.ingsw.model.card.*;
 
 import java.util.*;
 
@@ -67,6 +64,22 @@ public class Player {
 
     public CardMap getLevelOfCard() {
         return levelOfCard;
+    }
+
+    /**
+     * Method getAvailableProduction gets all the ProductionPower in availableProduction list.
+     * @return List<ProductionPower>, list of the productionPower this Player has.
+     */
+    public List<ProductionPower> getAvailableProduction() {
+        List<ProductionPower> productionPowers = new ArrayList<>();
+        for (Card card: availableProduction) {
+            if (card instanceof DevelopmentCard) {
+                productionPowers.add(((DevelopmentCard) card).getProduction());
+            } else if (card instanceof ProductionLeaderCard) {
+                productionPowers.add(((ProductionLeaderCard) card).getProduction());
+            }
+        }
+        return productionPowers;
     }
 
     public Dashboard getDashboard() {
