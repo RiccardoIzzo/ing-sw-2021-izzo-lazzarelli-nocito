@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.card;
 
-import it.polimi.ingsw.model.player.Player;
-
 /**
  * Class LeaderCard represents the leader card type in the game.
  * @author Gabriele Lazzarelli
@@ -18,13 +16,6 @@ public abstract class LeaderCard extends Card {
     public LeaderCard(int victoryPoints, Requirement requirement) {
         super(victoryPoints, requirement);
         active = false;
-    }
-
-    /**
-     * Method setAbility is called when a LeaderCard is activated.
-     * Has to be overridden by each of the subclasses of LeaderCard.
-     */
-    public void setAbility(Player player) {
     }
 
     /**
