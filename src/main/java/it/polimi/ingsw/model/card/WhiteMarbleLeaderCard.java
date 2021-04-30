@@ -26,11 +26,10 @@ public class WhiteMarbleLeaderCard extends LeaderCard {
     }
 
     /**
-     * Method setAbility adds one (or more) types of possible exchanges for the white marble in the available exchange list.
-     * @param player is the Player which gets the ability to exchange the white marble.
+     * Method getEchange gets the exchange option for the white marble of this LeaderCard
+     * @return the Set<MarbleColor> of possible exchanges this LeaderCard provides
      */
-    @Override
-    public void setAbility(Player player) {
-        player.addExchange(exchange);
+    public Set<MarbleColor> getExchange() {
+        return exchange;
     }
 }
