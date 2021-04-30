@@ -162,12 +162,16 @@ public class Player {
      * Method activateLeaderCard activates a leader card.
      * @param leaderCard the leader card that must be activated.
      */
-    public void activateLeaderCard(Card leaderCard){
-        for (Card card : leaders) {
-            if (card.equals(leaderCard)) {
-                ((LeaderCard) card).setActive(true);
-                ((LeaderCard) card).setAbility(this);
-            }
+    public void activateLeaderCard(LeaderCard leaderCard){
+        leaderCard.setActive(true);
+        if (leaderCard instanceof ProductionLeaderCard){
+            availableProduction.add(leaderCard);
+        } else if (leaderCard instanceof WhiteMarbleLeaderCard){
+            availableExchange.addAll(((WhiteMarbleLeaderCard) leaderCard).getExchange());
+        } else if (leaderCard instanceof DiscountLeaderCard){
+            availableDiscount.addResources(((DiscountLeaderCard) leaderCard).getDiscount());
+        } else if (leaderCard instanceof ExtraShelfLeaderCard){
+            myDashboard.addShelf(((ExtraShelfLeaderCard) leaderCard).getShelf());
         }
     }
 
