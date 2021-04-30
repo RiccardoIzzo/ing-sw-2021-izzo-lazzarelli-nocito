@@ -35,7 +35,7 @@ public class PlayerTest {
      */
     @Test
     public void selectLeaderCardTest(){
-        ArrayList<Card> cards = new ArrayList<>(player.getLeaders());
+        ArrayList<LeaderCard> cards = new ArrayList<>(player.getLeaders());
         Card firstCard = cards.get(0);
         Card secondCard = cards.get(1);
         assertNotEquals(firstCard, secondCard);
@@ -51,9 +51,9 @@ public class PlayerTest {
      */
     @Test
     public void activateLeaderCardTest(){
-        Optional<Card> card = player.getLeaders().stream().findAny();
+        Optional<LeaderCard> card = player.getLeaders().stream().findAny();
         if(card.isPresent()){
-            LeaderCard leaderCard = (LeaderCard) card.get();
+            LeaderCard leaderCard = card.get();
             assertFalse(leaderCard.isActive());
             player.activateLeaderCard(leaderCard);
             assertTrue(leaderCard.isActive());
@@ -65,7 +65,7 @@ public class PlayerTest {
      */
     @Test
     public void discardLeaderTest(){
-        Optional<Card> card = player.getLeaders().stream().findAny();
+        Optional<LeaderCard> card = player.getLeaders().stream().findAny();
         if(card.isPresent()){
             assertEquals(4, player.getLeaders().size());
             assertEquals(0, player.getDashboard().getPath().getPlayerPos());
