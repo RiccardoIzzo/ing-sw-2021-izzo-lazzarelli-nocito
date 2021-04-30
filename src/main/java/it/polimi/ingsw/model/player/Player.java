@@ -86,18 +86,6 @@ public class Player {
         return myDashboard;
     }
 
-
-    public void buyCard(){
-        //code to choose DevelopmentCard
-        //code to check resources
-        //code to decrease resources
-        /*Example
-        DevelopmentCard c - instance of the bought card
-        c.getProduction().activatePower(this) - see ProductionPower
-         */
-        //activatePower needs to be inside ProductionPower (LeaderCard uses it too)
-    }
-
     /**
      * Method buyCard is called when the player buys a DevelopmentCard.
      * The new DevelopmentCard will be added to availableProduction and placed in:
