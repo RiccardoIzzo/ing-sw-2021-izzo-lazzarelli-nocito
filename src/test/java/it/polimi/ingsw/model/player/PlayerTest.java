@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.SinglePlayerGame;
 import it.polimi.ingsw.model.card.Card;
 import it.polimi.ingsw.model.card.LeaderCard;
 import org.junit.Before;
@@ -23,7 +24,7 @@ public class PlayerTest {
      */
     @Before
     public void initialization() {
-        game = new Game();
+        game = new SinglePlayerGame();
         game.addPlayer("Riccardo");
         player = game.getPlayerByName("Riccardo");
         game.generateGrid();

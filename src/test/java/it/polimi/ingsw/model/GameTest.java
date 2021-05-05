@@ -22,7 +22,7 @@ public class GameTest {
      */
     @Before
     public void initialization() {
-        game = new Game();
+        game = new MultiplayerGame();
         game.addPlayer("Riccardo");
         game.addPlayer("Andrea");
         game.addPlayer("Gabriele");
