@@ -16,7 +16,6 @@ public class Player {
     private Dashboard myDashboard;
     private Set<DevelopmentCard> developments;
     private Set<LeaderCard> leaders;
-    private ResourceMap totalResources;
     private CardMap numberOfCard;
     private CardMap levelOfCard;
     private ArrayList<Card> availableProduction;
@@ -121,6 +120,11 @@ public class Player {
      * @return the available resources of this Player
      */
     public ResourceMap getTotalResources() {
+        ResourceMap totalResources = new ResourceMap();
+        totalResources.addResources(myDashboard.getStrongBox());
+        for (Shelf shelf: myDashboard.getWarehouse().getShelves()) {
+            totalResources.addResources(shelf.getResources());
+        }
         return totalResources;
     }
 
@@ -200,7 +204,7 @@ public class Player {
             if(card.isActive()) victoryPoints += card.getVictoryPoints();
         }
         for(Resource resource : Resource.values()){
-            numResources += totalResources.getResource(resource);
+            numResources += getTotalResources().getResource(resource);
         }
         // VPs for every set of 5 resources of any type + VPs depending on the final position on the faith track + VPs based on the Pope's favor tiles
         victoryPoints += (numResources % 5) + myDashboard.getPath().getPosVictoryPoints() + myDashboard.getPath().getPointsForTiles();
