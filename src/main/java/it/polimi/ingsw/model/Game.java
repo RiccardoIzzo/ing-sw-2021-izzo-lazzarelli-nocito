@@ -19,7 +19,7 @@ import java.io.Reader;
  *
  * @author Riccardo Izzo
  */
-public class Game {
+public abstract class Game {
     private final ArrayList<Player> players;
     private final Market market;
     private final Deck[][] grid;
