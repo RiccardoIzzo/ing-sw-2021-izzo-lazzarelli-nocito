@@ -36,6 +36,10 @@ public class Warehouse {
     }
     public int getShelvesSize() {return shelves.size();}
 
+    public ArrayList<Shelf> getShelves() {
+        return shelves;
+    }
+
     public int getNumberShelf() {
         return NUMBER_SHELF;
     }
