@@ -41,7 +41,7 @@ public abstract class LeaderCard extends Card {
      */
     public void setActive(boolean active) {
         this.active = active;
-        pcs.firePropertyChange(ACTIVE, this.active, active);
+        //pcs.firePropertyChange(ACTIVE, this.active, active);
     }
 
     public void addListener(VirtualView virtualView){
