@@ -106,6 +106,7 @@ public class Player {
                 if (((DevelopmentCard) card).getType() == developmentCard.getType() && ((DevelopmentCard) card).getLevel()+1 == developmentCard.getLevel()){
                     indexPosition = availableProduction.indexOf(card);
                     availableProduction.remove(card);
+                    break;
                 }
             }
         }
