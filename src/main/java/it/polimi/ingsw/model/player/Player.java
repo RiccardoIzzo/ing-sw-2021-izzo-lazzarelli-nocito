@@ -32,6 +32,8 @@ public class Player {
         myDashboard = new Dashboard(singlePlayer);
         developments = new HashSet<>();
         leaders = new HashSet<>();
+        numberOfCard = new CardMap();
+        levelOfCard = new CardMap();
         availableProduction = new ArrayList<>();
         availableExchange = new HashSet<>();
         availableDiscount = new ResourceMap();
