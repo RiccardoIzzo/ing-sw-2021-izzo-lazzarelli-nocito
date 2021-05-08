@@ -115,7 +115,7 @@ public abstract class Game {
     public void generateGrid(){
         try (Reader reader = new FileReader(GameConstants.developmentCardsJson)) {
             // Convert JSON file into list of Java object
-            ArrayList<Card> jsonCards = gson.fromJson(reader, new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
+            ArrayList<DevelopmentCard> jsonCards = gson.fromJson(reader, new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
 
             for(int j = 0; j < 4; j++){
                 for(int i = 0; i < 3; i++){

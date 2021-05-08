@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  */
 public class DeckTest {
     private Deck deck;
-    private List<Card> listOfCards;
+    private List<DevelopmentCard> listOfCards;
 
     @Before
     public void setUp() {
@@ -43,7 +43,7 @@ public class DeckTest {
     public void draw() {
         Card oldTopCard = deck.getTopCard();
         Card card = deck.draw();
-        //assertTrue(oldTopCard == card);
+        assertSame(oldTopCard, card);
         assertFalse(deck.getCards().contains(card));
     }
 }
