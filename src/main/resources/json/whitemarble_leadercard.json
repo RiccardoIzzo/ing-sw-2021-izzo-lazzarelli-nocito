@@ -1,9 +1,9 @@
 [
-{"exchange":["PURPLE"],"active":false,"victoryPoints":5,"requirement":{"type":"Number","number":{"cards":{"GREEN":0,"YELLOW":2,"BLUE":1,"PURPLE":0}}}},
+{"exchange":["PURPLE"],"active":false,"cardID":213,"victoryPoints":5,"requirement":{"type":"Number","number":{"cards":{"GREEN":0,"YELLOW":2,"BLUE":1,"PURPLE":0}}}},
 
-{"exchange":["BLUE"],"active":false,"victoryPoints":5,"requirement":{"type":"Number","number":{"cards":{"GREEN":2,"YELLOW":0,"BLUE":0,"PURPLE":1}}}},
+{"exchange":["BLUE"],"active":false,"cardID":214,"victoryPoints":5,"requirement":{"type":"Number","number":{"cards":{"GREEN":2,"YELLOW":0,"BLUE":0,"PURPLE":1}}}},
 
-{"exchange":["GRAY"],"active":false,"victoryPoints":5,"requirement":{"type":"Number","number":{"cards":{"GREEN":0,"YELLOW":1,"BLUE":2,"PURPLE":0}}}},
+{"exchange":["GRAY"],"active":false,"cardID":215,"victoryPoints":5,"requirement":{"type":"Number","number":{"cards":{"GREEN":0,"YELLOW":1,"BLUE":2,"PURPLE":0}}}},
 
-{"exchange":["YELLOW"],"active":false,"victoryPoints":5,"requirement":{"type":"Number","number":{"cards":{"GREEN":1,"YELLOW":0,"BLUE":0,"PURPLE":2}}}}
+{"exchange":["YELLOW"],"active":false,"cardID":216,"victoryPoints":5,"requirement":{"type":"Number","number":{"cards":{"GREEN":1,"YELLOW":0,"BLUE":0,"PURPLE":2}}}}
 ]

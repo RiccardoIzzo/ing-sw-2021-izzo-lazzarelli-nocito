@@ -1,9 +1,9 @@
 [
-{"shelf":{"resourcesAllowed":["STONE"],"capacity":2},"active":false,"victoryPoints":3,"requirement":{"type":"Resource","resources":{"resources":{"STONE":0,"COIN":5,"SHIELD":0,"SERVANT":0}}}},
+{"shelf":{"resourcesAllowed":["STONE"],"capacity":2},"active":false,"cardID":205,"victoryPoints":3,"requirement":{"type":"Resource","resources":{"resources":{"STONE":0,"COIN":5,"SHIELD":0,"SERVANT":0}}}},
 
-{"shelf":{"resourcesAllowed":["SERVANT"],"capacity":2},"active":false,"victoryPoints":3,"requirement":{"type":"Resource","resources":{"resources":{"STONE":5,"COIN":0,"SHIELD":0,"SERVANT":0}}}},
+{"shelf":{"resourcesAllowed":["SERVANT"],"capacity":2},"active":false,"cardID":206,"victoryPoints":3,"requirement":{"type":"Resource","resources":{"resources":{"STONE":5,"COIN":0,"SHIELD":0,"SERVANT":0}}}},
 
-{"shelf":{"resourcesAllowed":["SHIELD"],"capacity":2},"active":false,"victoryPoints":3,"requirement":{"type":"Resource","resources":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":5}}}},
+{"shelf":{"resourcesAllowed":["SHIELD"],"capacity":2},"active":false,"cardID":207,"victoryPoints":3,"requirement":{"type":"Resource","resources":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":5}}}},
 
-{"shelf":{"resourcesAllowed":["COIN"],"capacity":2},"active":false,"victoryPoints":3,"requirement":{"type":"Resource","resources":{"resources":{"STONE":0,"COIN":0,"SHIELD":5,"SERVANT":0}}}}
+{"shelf":{"resourcesAllowed":["COIN"],"capacity":2},"active":false,"cardID":208,"victoryPoints":3,"requirement":{"type":"Resource","resources":{"resources":{"STONE":0,"COIN":0,"SHIELD":5,"SERVANT":0}}}}
 ]

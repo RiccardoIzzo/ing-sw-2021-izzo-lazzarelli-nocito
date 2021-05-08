@@ -1,9 +1,9 @@
 [
-{"production":{"inputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":1,"SERVANT":0}},"outputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputFaith":1},"active":false,"victoryPoints":4,"requirement":{"type":"Level","level":{"cards":{"GREEN":0,"YELLOW":2,"BLUE":0,"PURPLE":0}}}},
+{"production":{"inputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":1,"SERVANT":0}},"outputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputFaith":1},"active":false,"cardID":209,"victoryPoints":4,"requirement":{"type":"Level","level":{"cards":{"GREEN":0,"YELLOW":2,"BLUE":0,"PURPLE":0}}}},
 
-{"production":{"inputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":1}},"outputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputFaith":1},"active":false,"victoryPoints":4,"requirement":{"type":"Level","level":{"cards":{"GREEN":0,"YELLOW":0,"BLUE":2,"PURPLE":0}}}},
+{"production":{"inputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":1}},"outputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputFaith":1},"active":false,"cardID":210,"victoryPoints":4,"requirement":{"type":"Level","level":{"cards":{"GREEN":0,"YELLOW":0,"BLUE":2,"PURPLE":0}}}},
 
-{"production":{"inputResource":{"resources":{"STONE":1,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputFaith":1},"active":false,"victoryPoints":4,"requirement":{"type":"Level","level":{"cards":{"GREEN":0,"YELLOW":0,"BLUE":0,"PURPLE":2}}}},
+{"production":{"inputResource":{"resources":{"STONE":1,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputFaith":1},"active":false,"cardID":211,"victoryPoints":4,"requirement":{"type":"Level","level":{"cards":{"GREEN":0,"YELLOW":0,"BLUE":0,"PURPLE":2}}}},
 
-{"production":{"inputResource":{"resources":{"STONE":0,"COIN":1,"SHIELD":0,"SERVANT":0}},"outputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputFaith":1},"active":false,"victoryPoints":4,"requirement":{"type":"Level","level":{"cards":{"GREEN":2,"YELLOW":0,"BLUE":0,"PURPLE":0}}}}
+{"production":{"inputResource":{"resources":{"STONE":0,"COIN":1,"SHIELD":0,"SERVANT":0}},"outputResource":{"resources":{"STONE":0,"COIN":0,"SHIELD":0,"SERVANT":0}},"outputFaith":1},"active":false,"cardID":212,"victoryPoints":4,"requirement":{"type":"Level","level":{"cards":{"GREEN":2,"YELLOW":0,"BLUE":0,"PURPLE":0}}}}
 ]
