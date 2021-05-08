@@ -35,9 +35,9 @@ public class DevelopmentCardTest {
         resourceRequirementDiff = new ResourceRequirement(resourceMapB);
         productionPower = new ProductionPower(resourceMapB, resourceMapA, 2);
 
-        card1 = new DevelopmentCard(2, resourceRequirement ,CardColor.GREEN, 2, productionPower);
-        card2 = new DevelopmentCard(2, resourceRequirement ,CardColor.GREEN, 2, productionPower);
-        card3 = new DevelopmentCard(2, resourceRequirementDiff ,CardColor.GREEN, 2, productionPower);
+        card1 = new DevelopmentCard(101, 2, resourceRequirement ,CardColor.GREEN, 2, productionPower);
+        card2 = new DevelopmentCard(102, 2, resourceRequirement ,CardColor.GREEN, 2, productionPower);
+        card3 = new DevelopmentCard(103, 2, resourceRequirementDiff ,CardColor.GREEN, 2, productionPower);
     }
 
     @After

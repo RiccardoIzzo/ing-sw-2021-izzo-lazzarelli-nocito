@@ -16,13 +16,14 @@ public abstract class LeaderCard extends Card {
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
-     * Constructor of the superclass Card takes two parameters which are shared among all of the subclasses.
+     * Constructor of the superclass Card takes three parameters which are shared among all of the subclasses.
      * Constructor LeaderCard sets active=false since at the beginning there are not active LeaderCard.
+     * @param cardID is the card's id.'
      * @param victoryPoints are the card's victory points.
      * @param requirement   is the card's requirement.
      */
-    public LeaderCard(int victoryPoints, Requirement requirement) {
-        super(victoryPoints, requirement);
+    public LeaderCard(int cardID, int victoryPoints, Requirement requirement) {
+        super(cardID, victoryPoints, requirement);
         active = false;
     }
 

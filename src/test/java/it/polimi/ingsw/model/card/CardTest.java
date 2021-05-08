@@ -33,9 +33,9 @@ public class CardTest {
         requirement1 = new ResourceRequirement(resourceMap);
         requirement2 = new NumberRequirement(cardMap);
         requirement3 = new LevelRequirement(cardMap);
-        card1 = new Card(18, requirement1);
-        card2 = new Card(19, requirement2);
-        card3 = new Card(20, requirement3);
+        card1 = new Card(101, 18, requirement1);
+        card2 = new Card(102, 19, requirement2);
+        card3 = new Card(103, 20, requirement3);
     }
 
     @After
@@ -62,5 +62,12 @@ public class CardTest {
         assertEquals(card1.getRequirement().getClass(), requirement1.getClass());
         assertEquals(card2.getRequirement().getClass(), requirement2.getClass());
         assertEquals(card3.getRequirement().getClass(), requirement3.getClass());
+    }
+
+    @Test
+    public void getCardID(){
+        assertEquals(101, card1.getCardID());
+        assertEquals(102, card2.getCardID());
+        assertEquals(103, card3.getCardID());
     }
 }

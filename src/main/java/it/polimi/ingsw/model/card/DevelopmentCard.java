@@ -10,16 +10,17 @@ public class DevelopmentCard extends Card {
     private final ProductionPower production;
 
     /**
-     * Constructor Card takes two parameters which are shared among all of the subclasses.
+     * Constructor Card takes three parameters which are shared among all of the subclasses.
      * Constructor DevelopmentCard sets instance's type, level and production.
-     * @param victoryPoints are the card's victory points .
+     * @param cardID is the card's id.
+     * @param victoryPoints are the card's victory points.
      * @param requirement is the card's requirement.
-     * @param type is the CardColor type
-     * @param level is an Integer, can vary from one to three
-     * @param production is the ProductionPower associated
+     * @param type is the CardColor type.
+     * @param level is an Integer, can vary from one to three.
+     * @param production is the ProductionPower associated.
      */
-    public DevelopmentCard(int victoryPoints, Requirement requirement, CardColor type, int level, ProductionPower production) {
-        super(victoryPoints, requirement);
+    public DevelopmentCard(int cardID, int victoryPoints, Requirement requirement, CardColor type, int level, ProductionPower production) {
+        super(cardID, victoryPoints, requirement);
         this.type = type;
         this.level = level;
         this.production = production;
