@@ -26,10 +26,10 @@ public class Player {
      * Constructor Player creates a new Player instance.
      * @param name player nickname.
      */
-    public Player(String name, boolean singlePlayer, Game game){
+    public Player(String name, Game game){
         nickname = name;
         this.game = game;
-        myDashboard = new Dashboard(singlePlayer);
+        myDashboard = new Dashboard(game);
         developments = new HashSet<>();
         leaders = new HashSet<>();
         numberOfCard = new CardMap();
@@ -98,7 +98,7 @@ public class Player {
      * @param column is the column in the grid of developmentCard
      */
     public void buyCard(int row, int column){
-        DevelopmentCard developmentCard = (DevelopmentCard) game.getGrid()[row][column].draw();
+        DevelopmentCard developmentCard = game.getGrid()[row][column].draw();
         int indexPosition = availableProduction.size();
 
         for(Card card: availableProduction){

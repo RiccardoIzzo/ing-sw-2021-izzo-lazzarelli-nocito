@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.MultiplayerGame;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 
@@ -15,7 +16,7 @@ public class DashboardTest {
      */
     @Before
     public void initialization() {
-        dashboard = new Dashboard(true);
+        dashboard = new Dashboard(new MultiplayerGame());
     }
 
     /**
