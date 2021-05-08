@@ -62,6 +62,15 @@ public class Server {
     }
 
     /**
+     * Method isConnected checks if the connection associated with that nickname is currently active.
+     * @param nickname player's nickname.
+     * @return true if the player's connection is active, false otherwise.
+     */
+    public boolean isConnected(String nickname){
+        return connections.contains(connectionMap.get(nickname));
+    }
+
+    /**
      * Method registerPlayer adds a new connection to the map by associating it with the player's name.
      * If the player's name already exists then it means that a disconnection has occurred, in this case the connection associated with that player is updated.
      * @param name the player's nickname.
