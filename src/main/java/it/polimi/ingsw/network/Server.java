@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.events.servermessages.*;
 import java.util.*;
 
@@ -18,6 +19,16 @@ public class Server {
      * Map that associates the player's name with the connection established with his client.
      */
     private Map<String, ClientConnection> connectionMap;
+
+    /**
+     * Map that associates the lobby id with the GameHandler that manages the corresponding game.
+     */
+    private Map<String, GameHandler> lobbies;
+
+    /**
+     * Map that associates the lobby id with the maximum number of players for that lobby.
+     */
+    private Map<String, Integer> playersForLobby;
     private final ServerHandler serverHandler;
     //reference to controller (Controller/GameHandler?)
 
@@ -29,6 +40,8 @@ public class Server {
         serverHandler = new ServerHandler(this, port);
         connections = new ArrayList<>();
         connectionMap = new HashMap<>();
+        lobbies = new HashMap<>();
+        playersForLobby = new HashMap<>();
     }
 
     /**
