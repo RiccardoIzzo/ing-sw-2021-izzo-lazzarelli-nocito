@@ -1,18 +1,18 @@
 package it.polimi.ingsw.events.servermessages;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * SendLobbies message is used to send to the player the list of lobbies currently available.
  */
 public class SendLobbies implements ServerMessage{
-    private final List<String> lobbies;
+    private final Map<String, Integer> lobbies;
 
     /**
      * Constructor SendLobbies creates a new SendLobbies instance.
      * @param lobbies the list of lobbies.
      */
-    public SendLobbies(List<String> lobbies){
+    public SendLobbies(Map<String, Integer> lobbies){
         this.lobbies = lobbies;
     }
 
@@ -20,7 +20,7 @@ public class SendLobbies implements ServerMessage{
      * Method getLobbies returns the list of lobbies currently available.
      * @return the list of lobbies.
      */
-    public List<String> getLobbies(){
+    public Map<String, Integer> getLobbies(){
         return lobbies;
     }
 }
