@@ -6,7 +6,7 @@ import java.util.Optional;
  * JoinLobby message is used to join a lobby with the chosen ID or, if the number of player has been selected, to create one.
  */
 public class JoinLobby implements ClientMessage{
-    private final int lobbyID;
+    private final String lobbyID;
     private final Optional<Integer> numPlayers;
 
     /**
@@ -14,7 +14,7 @@ public class JoinLobby implements ClientMessage{
      * @param id unique id of the lobby.
      * @param num number of players selected by the first player that created the lobby.
      */
-    public JoinLobby(int id, Integer num){
+    public JoinLobby(String id, Integer num){
         this.lobbyID = id;
         this.numPlayers = Optional.ofNullable(num);
     }
@@ -23,7 +23,7 @@ public class JoinLobby implements ClientMessage{
      * Method getLobbyID returns the id of the lobby.
      * @return lobby id.
      */
-    public int getLobbyID(){
+    public String getLobbyID(){
         return lobbyID;
     }
 
