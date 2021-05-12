@@ -1,8 +1,14 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.events.clientmessages.*;
+import it.polimi.ingsw.events.servermessages.*;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.network.Server;
+import it.polimi.ingsw.model.player.Player;
 
 public class GameHandler {
+    private Game game;
+    private Server server;
 
     public void start(){
 
@@ -16,5 +22,17 @@ public class GameHandler {
         else if(message instanceof BuyCard) {}
         else if(message instanceof ActivateLeaderCard) {}
         else if(message instanceof EndTurn) {}
+    }
+
+    /**
+     * Method sendEveryone sends a message to every active client connection.
+     * @param message the message to send.
+     */
+    public void sendEveryone(ServerMessage message){
+        for(Player player : game.getPlayers()){
+            if(server.isConnected(player.getNickname())){
+                server.getConnectionByPlayerName(player.getNickname()).sendToClient(message);
+            }
+        }
     }
 }
