@@ -163,17 +163,103 @@ public class Server {
      */
     public synchronized void removeConnection(ClientConnection clientConnection){
         connections.remove(clientConnection);
-        sendEveryone(new TextMessage(clientConnection.getNickname() + " has disconnected!"));
     }
 
     /**
-     * Method sendEveryone sends a message to every active client connection.
-     * @param message the message to send.
+     * Method handleMessage handles messages coming from the client.
+     * @param connection connection associated to that player.
+     * @param message ClientMessage received from the client that needs to be processed.
      */
-    public void sendEveryone(ServerMessage message){
-        for(ClientConnection connection : connections){
-            connection.sendToClient(message);
+    public void handleMessage(ClientConnection connection, ClientMessage message){
+        /*
+        It manages SetNickname message, if the nickname is available it registers the player on the server.
+         */
+        if(message instanceof SetNickname) {
+            /*
+            Already exists a player with this nickname, it sends an InvalidNickname message.
+             */
+            if(connectionMap.containsKey(connection.getNickname())){
+                connection.sendToClient(new InvalidNickname());
+            }
+            /*
+            This nickname is available, it registers the player with the selected nickname and sends a ValidNickname message.
+             */
+            else{
+                registerPlayer(((SetNickname) message).getNickname(), connection);
+                connection.sendToClient(new ValidNickname());
+            }
         }
+
+        /*
+        It manages GetLobbies message and sends to the client the list of lobbies.
+         */
+        else if(message instanceof GetLobbies) {
+            connection.sendToClient(new SendLobbies(lobbyToNumPlayers));
+        }
+
+        /*
+        It manages CreateLobby message.
+        If there is no lobby associated to that id it creates a new one.
+        Finally it associates the client connection to the lobby he just created.
+         */
+        else if(message instanceof CreateLobby) {
+            String lobbyID = ((CreateLobby) message).getLobbyID();
+            /*
+            Doesn't exist a lobby with this id, it creates a new one.
+             */
+            if(!(lobbies.containsKey(lobbyID))){
+                createLobby(lobbyID);
+                lobbyToNumPlayers.put(lobbyID, ((CreateLobby) message).getNumPlayers());
+                connectionToLobby.put(connection, lobbyID);
+                connection.sendToClient(new LobbyJoined());
+            }
+            /*
+            Already exists a lobby with this id.
+             */
+            else {
+                connection.sendToClient(new TextMessage("Already exists a lobby with this id! Try again."));
+            }
+        }
+
+        /*
+        It manages JoinLobby message, if the lobby is not full it associates the client connection to the lobby he just joined.
+         */
+        else if(message instanceof JoinLobby) {
+            String lobbyID = ((JoinLobby) message).getLobbyID();
+            /*
+            Checks if the selected lobby exists.
+             */
+            if(lobbies.containsKey(lobbyID)){
+                /*
+                Lobby is full, it sends a LobbyFull message to the player.
+                 */
+                if(isFull(((JoinLobby) message).getLobbyID())){
+                    connection.sendToClient(new LobbyFull());
+                }
+                /*
+                Lobby is not full, it adds the player to the lobby and sends a LobbyJoined message.
+                 */
+                else {
+                    connectionToLobby.put(connection, ((JoinLobby) message).getLobbyID());
+                    connection.sendToClient(new LobbyJoined());
+                }
+            }
+            /*
+            Can't join a lobby that doesn't exist.
+             */
+            else {
+                connection.sendToClient(new TextMessage("Error, this lobby doesn't exist."));
+            }
+        }
+
+        else if(message instanceof Disconnection){
+            //to implement
+        }
+
+        /*
+        The other messages are user actions and modify the model, these are handled by the GameHandler.
+         */
+        else getGameHandler(connection.getNickname()).process(connection.getNickname(), message);
     }
 
     /**
