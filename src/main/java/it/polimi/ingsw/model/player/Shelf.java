@@ -1,8 +1,12 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.listeners.LeaderCardListener;
+import it.polimi.ingsw.listeners.ShelfListener;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.network.VirtualView;
 
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 /**
@@ -14,6 +18,9 @@ public class Shelf {
     private Set<Resource> resourcesAllowed;
     private ResourceMap resources;
     private final Integer capacity;
+
+    private String SHELF_CHANGE = "shelfChange"; //property name
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 
     public Shelf(Integer shelfCapacity) {
@@ -73,7 +80,13 @@ public class Shelf {
      * @return true if the operation was successful
      */
     public boolean takeResource(Resource resource) {
-        return (resourcesAllowed.contains(resource) && resources.modifyResource(resource , -1));
+        if (resourcesAllowed.contains(resource) && resources.modifyResource(resource , -1)) {
+            int value =  resources.getResource(resource);
+
+            pcs.firePropertyChange(SHELF_CHANGE, Collections.singletonMap(resource, value+1), Collections.singletonMap(resource, value));
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -96,9 +109,12 @@ public class Shelf {
         if (resourceNotAllowed || this.resources.getMapSize()+totalResources > capacity) {
             return false;
         }
+        Map<Resource, Integer> old_resources = this.resources.getResources();
         for(Resource res : resources.getResources().keySet()) {
             this.resources.modifyResource(res,  resources.getResource(res));
         }
+        pcs.firePropertyChange(SHELF_CHANGE, old_resources, this.resources.getResources());
+
         return true;
     }
 
@@ -109,8 +125,14 @@ public class Shelf {
     public boolean placeResource(Resource resource) {
         if ( resourcesAllowed.contains(resource) && resources.getMapSize() < capacity ) {
             resources.modifyResource(resource, 1);
+            int value =  resources.getResource(resource);
+            pcs.firePropertyChange(SHELF_CHANGE, Collections.singletonMap(resource, value-1), Collections.singletonMap(resource, value));
             return true;
         }
         return false;
+    }
+
+    public void addListener(VirtualView virtualView){
+        pcs.addPropertyChangeListener(SHELF_CHANGE, new ShelfListener(virtualView));
     }
 }
