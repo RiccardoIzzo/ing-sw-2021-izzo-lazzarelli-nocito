@@ -44,7 +44,7 @@ public class Dashboard {
     void addResource(Resource resource) {
         int value =  strongBox.getResource(resource);
         strongBox.modifyResource(resource, 1);
-        pcs.firePropertyChange(STRONGBOX_CHANGE, Collections.singletonMap(resource, value-1), Collections.singletonMap(resource, value));
+//        pcs.firePropertyChange(STRONGBOX_CHANGE, Collections.singletonMap(resource, value-1), Collections.singletonMap(resource, value));
 
     }
 
@@ -56,7 +56,7 @@ public class Dashboard {
         for( Resource res : resources.getResources().keySet()){
             strongBox.modifyResource(res, resources.getResource(res));
         }
-        pcs.firePropertyChange(STRONGBOX_CHANGE, oldStrongbox, strongBox.getResources());
+//        pcs.firePropertyChange(STRONGBOX_CHANGE, oldStrongbox, strongBox.getResources());
 
     }
     public ResourceMap getStrongBox() {
@@ -100,7 +100,7 @@ public class Dashboard {
     boolean removeResource(Resource resource) {
         int value =  strongBox.getResource(resource);
         if (strongBox.modifyResource(resource, -1)) {
-            pcs.firePropertyChange(STRONGBOX_CHANGE, Collections.singletonMap(resource, value+1), Collections.singletonMap(resource, value));
+//            pcs.firePropertyChange(STRONGBOX_CHANGE, Collections.singletonMap(resource, value+1), Collections.singletonMap(resource, value));
             return true;
         }
         return false;
