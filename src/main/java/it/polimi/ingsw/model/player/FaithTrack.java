@@ -1,7 +1,11 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.constants.FaithTrackConstants;
+import it.polimi.ingsw.listeners.FaithTrackListener;
+import it.polimi.ingsw.listeners.LeaderCardListener;
+import it.polimi.ingsw.network.VirtualView;
 
+import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 
 /**
@@ -12,10 +16,17 @@ import java.util.Arrays;
 public class FaithTrack {
     private int posFaithMarker;
     private final Boolean[] popesFavorTiles;
+    private String POS_FAITH_MARKER = "posFaithMarker"; //property name
 
     // tilesUncovered: Value that states if the pope tiles have been uncovered
     private boolean[] tilesUncovered = {false, false, false};
 
+
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
+    public void addListener(VirtualView virtualView){
+        pcs.addPropertyChangeListener(POS_FAITH_MARKER, new FaithTrackListener(virtualView));
+    }
 
     public FaithTrack() {
         posFaithMarker = 0;
