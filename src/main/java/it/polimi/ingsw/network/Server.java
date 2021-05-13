@@ -77,6 +77,21 @@ public class Server {
     }
 
     /**
+     * Method getLobbyID returns the lobby ID relying on the gameHandler.
+     * @param gameHandler is the gameHandler of that lobby.
+     * @return the lobby id or an error message.
+     */
+    public String getLobbyID(GameHandler gameHandler){
+//        return lobbies.get(connectionToLobby.get(connectionMap.get(nickname)));
+        for (Map.Entry<String, GameHandler> values : lobbies.entrySet()) {
+            if(values.getValue().equals(gameHandler)) {
+                return values.getKey();
+            }
+        }
+        return "GameHandler not found";
+    }
+
+    /**
      * Method getConnectionByPlayerName returns the connection from connectionMap based on the player's name.
      * @param nickname the player's nickname.
      * @return the connection associated with that player nickname.
