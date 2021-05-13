@@ -93,6 +93,9 @@ public abstract class Game {
         }
         return null;
     }
+    public Market getMarket() {
+        return market;
+    }
 
     public void startGame(){
 
