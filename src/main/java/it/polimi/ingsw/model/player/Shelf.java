@@ -83,7 +83,7 @@ public class Shelf {
         if (resourcesAllowed.contains(resource) && resources.modifyResource(resource , -1)) {
             int value =  resources.getResource(resource);
 
-            pcs.firePropertyChange(SHELF_CHANGE, Collections.singletonMap(resource, value+1), Collections.singletonMap(resource, value));
+//            pcs.firePropertyChange(SHELF_CHANGE, Collections.singletonMap(resource, value+1), Collections.singletonMap(resource, value));
             return true;
         }
         return false;
@@ -113,7 +113,7 @@ public class Shelf {
         for(Resource res : resources.getResources().keySet()) {
             this.resources.modifyResource(res,  resources.getResource(res));
         }
-        pcs.firePropertyChange(SHELF_CHANGE, old_resources, this.resources.getResources());
+//        pcs.firePropertyChange(SHELF_CHANGE, old_resources, this.resources.getResources());
 
         return true;
     }
@@ -126,7 +126,7 @@ public class Shelf {
         if ( resourcesAllowed.contains(resource) && resources.getMapSize() < capacity ) {
             resources.modifyResource(resource, 1);
             int value =  resources.getResource(resource);
-            pcs.firePropertyChange(SHELF_CHANGE, Collections.singletonMap(resource, value-1), Collections.singletonMap(resource, value));
+//            pcs.firePropertyChange(SHELF_CHANGE, Collections.singletonMap(resource, value-1), Collections.singletonMap(resource, value));
             return true;
         }
         return false;
