@@ -1,9 +1,13 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.listeners.StrongboxListener;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.card.Card;
+import it.polimi.ingsw.network.VirtualView;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -16,6 +20,9 @@ public class Dashboard {
     private final Warehouse warehouse;
     private final ArrayList<Card> cardSlots;
     private final ResourceMap strongBox;
+    private String STRONGBOX_CHANGE = "strongboxChange"; //property name
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
 
     public Dashboard(Game game) {
         path = (game instanceof SinglePlayerGame) ? new SinglePlayerFaithTrack() : new FaithTrack();
@@ -35,7 +42,9 @@ public class Dashboard {
      * Method addResource adds one resource into the strongBox
      */
     void addResource(Resource resource) {
+        int value =  strongBox.getResource(resource);
         strongBox.modifyResource(resource, 1);
+        pcs.firePropertyChange(STRONGBOX_CHANGE, Collections.singletonMap(resource, value-1), Collections.singletonMap(resource, value));
 
     }
 
@@ -43,9 +52,11 @@ public class Dashboard {
      * Method addResources adds the resources into the strongBox
      */
     void addResources(ResourceMap resources) {
+        Map<Resource,Integer> oldStrongbox = strongBox.getResources();
         for( Resource res : resources.getResources().keySet()){
             strongBox.modifyResource(res, resources.getResource(res));
         }
+        pcs.firePropertyChange(STRONGBOX_CHANGE, oldStrongbox, strongBox.getResources());
 
     }
     public ResourceMap getStrongBox() {
@@ -87,7 +98,12 @@ public class Dashboard {
      * Method removeResource removes one resource from the strongBox
      */
     boolean removeResource(Resource resource) {
-        return strongBox.modifyResource(resource, -1);
+        int value =  strongBox.getResource(resource);
+        if (strongBox.modifyResource(resource, -1)) {
+            pcs.firePropertyChange(STRONGBOX_CHANGE, Collections.singletonMap(resource, value+1), Collections.singletonMap(resource, value));
+            return true;
+        }
+        return false;
 
     }
     /**
@@ -113,5 +129,10 @@ public class Dashboard {
 
     public void incrementBlackFaith(){
         ((SinglePlayerFaithTrack) path).moveBlack();
+    }
+
+
+    public void addListener(VirtualView virtualView){
+        pcs.addPropertyChangeListener(STRONGBOX_CHANGE, new StrongboxListener(virtualView));
     }
 }
