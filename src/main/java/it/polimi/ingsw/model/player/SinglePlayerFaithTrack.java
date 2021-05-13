@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.constants.FaithTrackConstants;
+
 /**
  * SinglePlayerFaithTrack Class represents a player's faith track in single player mode
  *
@@ -25,7 +27,7 @@ public class SinglePlayerFaithTrack extends FaithTrack {
 
 
     public boolean checkBlack() {
-        return blackFaithMarker == END;
+        return blackFaithMarker == FaithTrackConstants.END;
     }
 }
 

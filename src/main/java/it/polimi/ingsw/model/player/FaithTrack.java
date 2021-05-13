@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.constants.FaithTrackConstants;
+
 import java.util.Arrays;
 
 /**
@@ -11,17 +13,6 @@ public class FaithTrack {
     private int posFaithMarker;
     private final Boolean[] popesFavorTiles;
 
-    // WINNING_TILES : position and value tiles that give points
-    private static final int[] WINNING_TILES = {3,6,9,12,15,18,21,24};
-    private static final int[] WINNING_VALUES = {1,2,4,6,9,12,16,20};
-    // TILE_POS : position of tiles in the game.
-    private static final int[] TILE_POS = {8,16,24};
-    // POINTS_FOR_TILE : position of tiles in the game.
-    private static final int[] POINTS_FOR_TILE = {2,3,4};
-    // INITIAL OFFSET: offset from the first tile which defines the "point zone"
-    private static final int INITIAL_OFFSET = 4;
-    // END: last tile of the game
-    static final int END = 24;
     // tilesUncovered: Value that states if the pope tiles have been uncovered
     private boolean[] tilesUncovered = {false, false, false};
 
@@ -47,7 +38,7 @@ public class FaithTrack {
         return false;
     }
     public int getEnd() {
-        return END;
+        return FaithTrackConstants.END;
     }
     /**
      * Method moveForward moves the faith marker and calls popeTilePass
@@ -62,7 +53,7 @@ public class FaithTrack {
      */
     public void isInVaticanSpace(Integer space) {
         if (space < popesFavorTiles.length) {
-            popesFavorTiles[space] = posFaithMarker <= TILE_POS[space] && posFaithMarker >= TILE_POS[space] - INITIAL_OFFSET - space;
+            popesFavorTiles[space] = posFaithMarker <= FaithTrackConstants.TILE_POS[space] && posFaithMarker >= FaithTrackConstants.TILE_POS[space] - FaithTrackConstants.INITIAL_OFFSET - space;
         }
     }
 
@@ -70,8 +61,8 @@ public class FaithTrack {
      * Method popeTilePass checks if the position is the same as a tile pass
      */
     public void popeTilePass() {
-        for(int i = 0; i < TILE_POS.length; i++) {
-            if ( posFaithMarker == TILE_POS[i] && !tilesUncovered[i] ) {
+        for(int i = 0; i < FaithTrackConstants.TILE_POS.length; i++) {
+            if ( posFaithMarker == FaithTrackConstants.TILE_POS[i] && !tilesUncovered[i] ) {
                 popesFavorTiles[i] = true;
                 tilesUncovered[i] = true;
             }
@@ -85,7 +76,7 @@ public class FaithTrack {
     public int getPointsForTiles() {
         int counter = 0;
         for (int i = 0; i < popesFavorTiles.length; i++) {
-            counter += popesFavorTiles[i] ? POINTS_FOR_TILE[i] : 0;
+            counter += popesFavorTiles[i] ? FaithTrackConstants.POINTS_FOR_TILE[i] : 0;
         }
         return counter;
     }
@@ -97,8 +88,8 @@ public class FaithTrack {
     public int getPosVictoryPoints() {
         int victoryPoints = 0;
         int i = 0;
-        while (i<WINNING_TILES.length && posFaithMarker >= WINNING_TILES[i]) {
-            victoryPoints += WINNING_VALUES[i];
+        while (i< FaithTrackConstants.WINNING_TILES.length && posFaithMarker >= FaithTrackConstants.WINNING_TILES[i]) {
+            victoryPoints += FaithTrackConstants.WINNING_VALUES[i];
             i++;
         }
         return victoryPoints+getPointsForTiles();
