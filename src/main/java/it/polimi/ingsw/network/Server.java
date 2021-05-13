@@ -120,7 +120,7 @@ public class Server {
      * @param lobbyID lobby id that represents a game.
      */
     public void createLobby(String lobbyID){
-        lobbies.put(lobbyID, new GameHandler());
+        lobbies.put(lobbyID, new GameHandler(this));
     }
 
     /**
