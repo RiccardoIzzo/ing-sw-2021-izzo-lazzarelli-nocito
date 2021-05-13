@@ -16,13 +16,13 @@ import java.util.Arrays;
 public class FaithTrack {
     private int posFaithMarker;
     private final Boolean[] popesFavorTiles;
+
     private String POS_FAITH_MARKER = "posFaithMarker"; //property name
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
 
     // tilesUncovered: Value that states if the pope tiles have been uncovered
     private boolean[] tilesUncovered = {false, false, false};
-
-
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public void addListener(VirtualView virtualView){
         pcs.addPropertyChangeListener(POS_FAITH_MARKER, new FaithTrackListener(virtualView));
@@ -56,6 +56,7 @@ public class FaithTrack {
      */
     public void moveForward() {
         posFaithMarker++;
+        pcs.firePropertyChange(POS_FAITH_MARKER, posFaithMarker-1, posFaithMarker);
         popeTilePass();
     }
 
