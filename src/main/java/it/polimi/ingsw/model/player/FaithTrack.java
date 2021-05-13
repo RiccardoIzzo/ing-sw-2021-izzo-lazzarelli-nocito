@@ -56,7 +56,7 @@ public class FaithTrack {
      */
     public void moveForward() {
         posFaithMarker++;
-        pcs.firePropertyChange(POS_FAITH_MARKER, posFaithMarker-1, posFaithMarker);
+//        pcs.firePropertyChange(POS_FAITH_MARKER, posFaithMarker-1, posFaithMarker);
         popeTilePass();
     }
 
