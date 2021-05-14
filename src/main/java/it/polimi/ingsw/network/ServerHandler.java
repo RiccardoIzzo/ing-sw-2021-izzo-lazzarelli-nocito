@@ -51,7 +51,6 @@ public class ServerHandler implements Runnable{
             try{
                 Socket socket = serverSocket.accept();
                 ClientConnection clientConnection = new ClientConnection(server, socket);
-                server.addConnection(clientConnection);
                 clientConnection.setStatus(true);
                 executors.execute(clientConnection);
                 System.out.println("Connection established with " + socket.getRemoteSocketAddress().toString());

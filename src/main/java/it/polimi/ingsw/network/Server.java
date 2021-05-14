@@ -12,31 +12,31 @@ import java.util.*;
  */
 public class Server {
     private final ServerHandler serverHandler;
+
     /**
-     * List of active connections.
-     * It represents all clients actively connected to the server.
+     * List of player usernames that are registered on the server.
      */
-    private List<ClientConnection> connections;
+    private final List<String> users;
 
     /**
      * Map that associates the player's name with the connection established with his client.
      */
-    private Map<String, ClientConnection> connectionMap;
+    private final Map<String, ClientConnection> connectionMap;
 
     /**
-     * Map that associates a client connection with the lobby id of the game to which it is registered.
+     * Map that associates the player's name with the lobby id of the game to which it is registered.
      */
-    private Map<ClientConnection, String> connectionToLobby;
+    private final Map<String, String> playerToLobby;
 
     /**
      * Map that associates the lobby id with the GameHandler that manages the corresponding game.
      */
-    private Map<String, GameHandler> lobbies;
+    private final Map<String, GameHandler> lobbies;
 
     /**
      * Map that associates the lobby id with the maximum number of players for that lobby.
      */
-    private Map<String, Integer> lobbyToNumPlayers;
+    private final Map<String, Integer> lobbyToNumPlayers;
 
     /**
      * Constructor Server creates a new Server instance.
@@ -44,9 +44,9 @@ public class Server {
      */
     public Server(int port){
         serverHandler = new ServerHandler(this, port);
-        connections = new ArrayList<>();
+        users = new ArrayList<>();
         connectionMap = new HashMap<>();
-        connectionToLobby = new HashMap<>();
+        playerToLobby = new HashMap<>();
         lobbies = new HashMap<>();
         lobbyToNumPlayers = new HashMap<>();
     }
@@ -60,35 +60,24 @@ public class Server {
     }
 
     /**
-     * Method getConnections returns the list of active connections.
-     * @return the list of active connections.
-     */
-    public List<ClientConnection> getConnections() {
-        return connections;
-    }
-
-    /**
      * Method getGameHandler returns the GameHandler relying on the player's name.
      * @param nickname player's name.
      * @return the GameHandler.
      */
-    public GameHandler getGameHandler(String nickname){
-        return lobbies.get(connectionToLobby.get(connectionMap.get(nickname)));
+    public synchronized GameHandler getGameHandler(String nickname){
+        return lobbies.get(playerToLobby.get(nickname));
     }
 
     /**
-     * Method getLobbyID returns the lobby ID relying on the gameHandler.
-     * @param gameHandler is the gameHandler of that lobby.
-     * @return the lobby id or an error message.
+     * Method getLobbyID returns the lobby id relying on the gameHandler.
+     * @param gameHandler is the GameHandler of that lobby.
+     * @return the lobby id or null.
      */
     public String getLobbyID(GameHandler gameHandler){
-//        return lobbies.get(connectionToLobby.get(connectionMap.get(nickname)));
-        for (Map.Entry<String, GameHandler> values : lobbies.entrySet()) {
-            if(values.getValue().equals(gameHandler)) {
-                return values.getKey();
-            }
+        for (String lobbyID : lobbies.keySet()) {
+            if(lobbies.get(lobbyID).equals(gameHandler)) return lobbyID;
         }
-        return "GameHandler not found";
+        return null;
     }
 
     /**
@@ -107,8 +96,23 @@ public class Server {
      */
     public ArrayList<String> getPlayersNameByLobby(String lobbyID){
         ArrayList<String> players = new ArrayList<>();
+        for(String nickname : users){
+            if(playerToLobby.get(nickname).equals(lobbyID)){
+                players.add(nickname);
+            }
+        }
+        return players;
+    }
+
+    /**
+     * Method getActivePlayersByLobby returns the list of active players that have joined the selected lobby.
+     * @param lobbyID the lobby id.
+     * @return a list of player's nickname.
+     */
+    public synchronized ArrayList<String> getActivePlayersByLobby(String lobbyID){
+        ArrayList<String> players = new ArrayList<>();
         for(String nickname : connectionMap.keySet()){
-            if(connectionToLobby.get(getConnectionByPlayerName(nickname)).equals(lobbyID)){
+            if(playerToLobby.get(nickname).equals(lobbyID)){
                 players.add(nickname);
             }
         }
@@ -118,9 +122,11 @@ public class Server {
     /**
      * Method createLobby creates a new lobby (managed by a GameHandler) and associates the lobby id with the new GameHandler instance.
      * @param lobbyID lobby id that represents a game.
+     * @param numPlayers maximum number of players for that lobby.
      */
-    public void createLobby(String lobbyID){
+    public synchronized void createLobby(String lobbyID, int numPlayers){
         lobbies.put(lobbyID, new GameHandler(this));
+        lobbyToNumPlayers.put(lobbyID, numPlayers);
     }
 
     /**
@@ -129,7 +135,7 @@ public class Server {
      * @return true if the player's connection is active, false otherwise.
      */
     public boolean isConnected(String nickname){
-        return connections.contains(connectionMap.get(nickname));
+        return connectionMap.containsKey(nickname);
     }
 
     /**
@@ -139,45 +145,30 @@ public class Server {
      */
     public boolean isFull(String lobbyID){
         int numPlayers = 0;
-        for(ClientConnection connection : connectionToLobby.keySet()){
-            if(connectionToLobby.get(connection).equals(lobbyID)) numPlayers++;
+        for(String nickname : playerToLobby.keySet()){
+            if(playerToLobby.get(nickname).equals(lobbyID)) numPlayers++;
         }
         return numPlayers == lobbyToNumPlayers.get(lobbyID);
     }
 
     /**
      * Method registerPlayer adds a new connection to the map by associating it with the player's name.
-     * If the player's name already exists then it means that a disconnection has occurred, in this case the connection associated with that player is updated.
      * @param name the player's nickname.
-     * @param clientConnection the connection associated with that player nickname.
+     * @param connection the connection associated with that player nickname.
      */
-    public synchronized void registerPlayer(String name, ClientConnection clientConnection){
-        /*
-          New connection, first time that the client connects to the server.
-         */
-        if(!(connectionMap.containsKey(name))) {connectionMap.put(name, clientConnection);}
-        /*
-          Already exists a connection associated to that player's name, a disconnection has occurred and the player is connecting again.
-          Updates socket connection associated to that nickname.
-         */
-        else {connectionMap.replace(name, clientConnection);}
-        clientConnection.sendToClient(new TextMessage("Connected!"));
+    public synchronized void registerPlayer(String name, ClientConnection connection){
+        users.add(name);
+        connectionMap.put(name, connection);
     }
 
     /**
-     * Method addConnection adds the selected connection to the list of active ones.
-     * @param clientConnection the connection to be added.
+     * Method sendEveryone sends a message to every active client connection.
+     * @param message the message to send.
      */
-    public synchronized void addConnection(ClientConnection clientConnection){
-        connections.add(clientConnection);
-    }
-
-    /**
-     * Method removeConnection removes the selected connection from the list of active ones.
-     * @param clientConnection the connection to be removed.
-     */
-    public synchronized void removeConnection(ClientConnection clientConnection){
-        connections.remove(clientConnection);
+    public void sendEveryone(ServerMessage message, String lobbyID){
+        for(String nickname : getActivePlayersByLobby(lobbyID)){
+                getConnectionByPlayerName(nickname).sendToClient(message);
+        }
     }
 
     /**
@@ -186,21 +177,29 @@ public class Server {
      * @param message ClientMessage received from the client that needs to be processed.
      */
     public void handleMessage(ClientConnection connection, ClientMessage message){
+        String nickname = connection.getNickname();
         /*
         It manages SetNickname message, if the nickname is available it registers the player on the server.
          */
         if(message instanceof SetNickname) {
             /*
-            Already exists a player with this nickname, it sends an InvalidNickname message.
+            Already exists a player with this nickname and is actively playing, it sends an InvalidNickname message.
              */
-            if(connectionMap.containsKey(connection.getNickname())){
+            if(users.contains(nickname) && connectionMap.containsKey(nickname)){
                 connection.sendToClient(new InvalidNickname());
+            }
+            /*
+            Reconnection, the player is registered but is not actively playing.
+             */
+            else if(users.contains(nickname) && !connectionMap.containsKey(nickname)){
+                connectionMap.put(nickname, connection);
+                //reload the game for that player, to implement
             }
             /*
             This nickname is available, it registers the player with the selected nickname and sends a ValidNickname message.
              */
             else{
-                registerPlayer(((SetNickname) message).getNickname(), connection);
+                registerPlayer(nickname, connection);
                 connection.sendToClient(new ValidNickname());
             }
         }
@@ -219,13 +218,14 @@ public class Server {
          */
         else if(message instanceof CreateLobby) {
             String lobbyID = ((CreateLobby) message).getLobbyID();
+            int numPlayers = ((CreateLobby) message).getNumPlayers();
             /*
             Doesn't exist a lobby with this id, it creates a new one.
              */
             if(!(lobbies.containsKey(lobbyID))){
-                createLobby(lobbyID);
-                lobbyToNumPlayers.put(lobbyID, ((CreateLobby) message).getNumPlayers());
-                connectionToLobby.put(connection, lobbyID);
+                createLobby(lobbyID, numPlayers);
+                playerToLobby.put(nickname, lobbyID);
+                lobbies.get(lobbyID).setPlayersNumber(numPlayers);
                 connection.sendToClient(new LobbyJoined());
             }
             /*
@@ -255,8 +255,9 @@ public class Server {
                 Lobby is not full, it adds the player to the lobby and sends a LobbyJoined message.
                  */
                 else {
-                    connectionToLobby.put(connection, ((JoinLobby) message).getLobbyID());
+                    playerToLobby.put(nickname, lobbyID);
                     connection.sendToClient(new LobbyJoined());
+                    //if(isFull(playerToLobby.get(nickname))) getGameHandler(nickname).start();
                 }
             }
             /*
@@ -267,14 +268,19 @@ public class Server {
             }
         }
 
+        /*
+        It manages Disconnection message.
+        When an error occurs in the receiveFromClient method in ClientConnection it means that a disconnection has occurred,
+        the connection is removed from the list of active connections.
+         */
         else if(message instanceof Disconnection){
-            //to implement
+            connectionMap.remove(nickname);
         }
 
         /*
         The other messages are user actions and modify the model, these are handled by the GameHandler.
          */
-        else getGameHandler(connection.getNickname()).process(connection.getNickname(), message);
+        else getGameHandler(nickname).process(connection.getNickname(), message);
     }
 
     /**
