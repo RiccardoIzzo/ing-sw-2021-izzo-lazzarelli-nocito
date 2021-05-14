@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class GameHandler {
     private Game game;
-    private Server server;
+    private final Server server;
 
     /**
      * Constructor GameHandler creates a new Server instance.
@@ -48,7 +48,7 @@ public class GameHandler {
             game.addPlayer(nickname);
         }
         game.generateLeaders();
-        sendEveryone(new GameStarted());
+        server.sendEveryone(new GameStarted(), server.getLobbyID(this));
         for ( String nickname : playersNicknames) {
             Set<LeaderCard> leaderCards = game.getPlayerByName(nickname).getLeaders();
             int[] ids = new int[leaderCards.size()];
@@ -124,24 +124,12 @@ public class GameHandler {
                         winner = winnerPoints < points ? player.getNickname() : winner;
                         playersPoints.put(player.getNickname(), points);
                     }
-                    sendEveryone(new EndGame(playersPoints, winner));
+                    server.sendEveryone(new EndGame(playersPoints, winner), server.getLobbyID(this));
                 }
                 else {
                     ((MultiplayerGame) game).nextPlayer();
-                    sendEveryone(new StartTurn(((MultiplayerGame) game).getCurrPlayer().getNickname()));
+                    server.sendEveryone(new StartTurn(((MultiplayerGame) game).getCurrPlayer().getNickname()), server.getLobbyID(this));
                 }
-            }
-        }
-    }
-
-    /**
-     * Method sendEveryone sends a message to every active client connection.
-     * @param message the message to send.
-     */
-    public void sendEveryone(ServerMessage message){
-        for(Player player : game.getPlayers()){
-            if(server.isConnected(player.getNickname())){
-                server.getConnectionByPlayerName(player.getNickname()).sendToClient(message);
             }
         }
     }
