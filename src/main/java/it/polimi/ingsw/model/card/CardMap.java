@@ -48,19 +48,6 @@ public class CardMap {
     }
 
     /**
-     * Methods addCards takes another CardMap as input and for each CardColor key increases this CardColor value
-     * by the CardColor value of the CardMap parameter.
-     * @param cardMap is a CardMap, which contents are added to this CardMap
-     */
-    public void addCards(CardMap cardMap){
-        for (CardColor cardColor : CardColor.values()) {
-            int toIncrement = this.getCard(cardColor);
-            int increment = cardMap.getCard(cardColor);
-            this.put(cardColor, toIncrement + increment);
-        }
-    }
-
-    /**
      * Method flush sets each CardColor key of this CardMap to 0.
      */
     public void flush(){
