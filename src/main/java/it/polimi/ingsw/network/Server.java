@@ -81,6 +81,15 @@ public class Server {
     }
 
     /**
+     * Method getLobbyIDByPlayer returns the lobby id of the game the player participates.
+     * @param nickname player's name.
+     * @return the lobby id.
+     */
+    public String getLobbyIDByPlayerName(String nickname) {
+        return playerToLobby.get(nickname);
+    }
+
+    /**
      * Method getConnectionByPlayerName returns the connection from connectionMap based on the player's name.
      * @param nickname the player's nickname.
      * @return the connection associated with that player nickname.
@@ -193,7 +202,7 @@ public class Server {
              */
             else if(users.contains(nickname) && !connectionMap.containsKey(nickname)){
                 connectionMap.put(nickname, connection);
-                //reload the game for that player, to implement
+                //to implement, reload the game for that player
             }
             /*
             This nickname is available, it registers the player with the selected nickname and sends a ValidNickname message.
@@ -225,7 +234,7 @@ public class Server {
             if(!(lobbies.containsKey(lobbyID))){
                 createLobby(lobbyID, numPlayers);
                 playerToLobby.put(nickname, lobbyID);
-                lobbies.get(lobbyID).setPlayersNumber(numPlayers);
+                lobbies.get(lobbyID).setGameMode(numPlayers);
                 connection.sendToClient(new LobbyJoined());
             }
             /*
