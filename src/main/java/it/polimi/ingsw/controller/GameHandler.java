@@ -2,134 +2,132 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.*;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Market;
-import it.polimi.ingsw.model.MultiplayerGame;
-import it.polimi.ingsw.model.SinglePlayerGame;
-import it.polimi.ingsw.model.card.LeaderCard;
-import it.polimi.ingsw.model.player.FaithTrack;
+import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.network.Server;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.network.VirtualView;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.player.*;
+import it.polimi.ingsw.model.card.LeaderCard;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+
+/**
+ * GameHandler class represents a game and manages the incoming messages from the client.
+ *
+ * @author Andrea Nocito, Riccardo Izzo
+ */
 public class GameHandler {
     private Game game;
     private final Server server;
+    private final String lobbyID;
 
     /**
-     * Constructor GameHandler creates a new Server instance.
-     * @param server server that will be mange the communications between game and clients.
+     * Constructor GameHandler creates a new GameHandler instance.
+     * @param server reference to the server that will manage the communications.
      */
     public GameHandler(Server server) {
         this.server = server;
+        lobbyID = server.getLobbyID(this);
     }
 
 
     /**
-     * Method setPlayersNumber initializes the game as an instance of MultiplayerGame or SinglePlayerGame.
-     * @param numberOfPlayers states the number of players
+     * Method setGameMode initializes the game as an instance of MultiplayerGame or SinglePlayerGame.
+     * @param numberOfPlayers the number of players.
      */
-    public void setPlayersNumber(int numberOfPlayers) {
+    public void setGameMode(int numberOfPlayers) {
         game = numberOfPlayers > 1 ? new MultiplayerGame() : new SinglePlayerGame();
     }
 
 
     /**
-     * Method start sets up the instance of game and starts the first turn.
+     * Method start sets up the game and starts the first turn.
      */
     public void start() {
+        /*
+        Add all registered players to the game.
+         */
+        ArrayList<String> players = server.getPlayersNameByLobby(lobbyID);
+        String firstPlayer;
+        for (String player : players) {
+            game.addPlayer(player);
+            //player.addListeners(new VirtualView(server, player));
+        }
         game.generateGrid();
-        ArrayList<String> playersNicknames = server.getPlayersNameByLobby(server.getLobbyID(this));
-        for ( String nickname : playersNicknames) {
-            game.addPlayer(nickname);
-        }
         game.generateLeaders();
-        server.sendEveryone(new GameStarted(), server.getLobbyID(this));
-        for ( String nickname : playersNicknames) {
-            Set<LeaderCard> leaderCards = game.getPlayerByName(nickname).getLeaders();
-            int[] ids = new int[leaderCards.size()];
+        game.getMarket().generateTray();
+        /*
+        The game is ready, send a GameStarted message to every player.
+         */
+        server.sendEveryone(new GameStarted(), lobbyID);
+        /*
+        Send to every player the four leader cards with a SendLeaderCards message, they must select 2 out of 4 cards.
+         */
+        for (String player : players) {
             int index = 0;
-            for(LeaderCard card : leaderCards) {
-                ids[index] = card.getCardID();
-                index++;
+            int[] ids = new int[4];
+            for(LeaderCard card : game.getPlayerByName(player).getLeaders()){
+                ids[index++] = card.getCardID();
             }
-            if (server.isConnected(nickname)) {
-                server.getConnectionByPlayerName(nickname).sendToClient(new SendLeaderCards(ids));
-            }
+            if (server.isConnected(player)) server.getConnectionByPlayerName(player).sendToClient(new SendLeaderCards(ids));
         }
+
         if (game instanceof MultiplayerGame) {
             ((MultiplayerGame) game).setFirstPlayer();
-            String nickname = ((MultiplayerGame) game).getFirstPlayer().getNickname();
-            if (server.isConnected(nickname)) {
-                server.getConnectionByPlayerName(nickname).sendToClient(new StartTurn(nickname));
-            }
+            firstPlayer = ((MultiplayerGame) game).getFirstPlayer().getNickname();
         }
-        else if (game instanceof SinglePlayerGame) {
-            String nickname = game.getPlayers().get(0).getNickname();
-            if (server.isConnected(nickname)) {
-                server.getConnectionByPlayerName(nickname).sendToClient(new StartTurn(nickname));
-            }
+
+        else{
+            firstPlayer = players.get(0);
         }
+        //to implement, bonus resource/faith based on the player position at the beginning of the game
+        if(server.isConnected(firstPlayer)) server.getConnectionByPlayerName(firstPlayer).sendToClient(new StartTurn(firstPlayer));
     }
 
     /**
-     * Method process reads the messages from the client and does the required actions
-     * @param nickname identifies the current player
-     * @param message identifies the client's request
+     * Method process manages the incoming message from the client and apply the changes to the model.
+     * @param nickname the current player
+     * @param message ClientMessage received from the client
      */
     public void process(String nickname, ClientMessage message){
-        //to implement, instanceof for each message generated by the client
-        if(message instanceof StartGame) {start();}
-        else if(message instanceof SelectLeaderCards) {
-            /*model methods*/
-            Set<LeaderCard> cards = game.getPlayerByName(nickname).getLeaders();
-            LeaderCard firstCard = (LeaderCard) cards.toArray()[((SelectLeaderCards) message).getFirstCardIndex()];
-            LeaderCard secondCard = (LeaderCard) cards.toArray()[((SelectLeaderCards) message).getSecondCardIndex()];
-            game.getPlayerByName(nickname).selectLeaderCard(firstCard, secondCard);
+        Player player = game.getPlayerByName(nickname);
+        if(message instanceof SelectLeaderCards) {
+            LeaderCard[] cards = player.getLeaders().toArray(LeaderCard[]::new);
+            player.selectLeaderCard(cards[((SelectLeaderCards) message).getFirstCardIndex()], cards[((SelectLeaderCards) message).getSecondCardIndex()]);
         }
+
         else if(message instanceof TakeResources) {
-            Market market = game.getMarket();
-            market.insertMarble(((TakeResources) message).getIndex(), ((TakeResources) message).getType());
-            game.getPlayerByName(nickname).getDashboard().getWarehouse().addResourcesIntoTemporaryShelf(market.resourceOutput());
+            player.getResources(((TakeResources) message).getIndex(), ((TakeResources) message).getType(), game.getMarket());
         }
+
         else if(message instanceof BuyCard) {
-            game.getPlayerByName(nickname).buyCard(((BuyCard) message).getRow(), ((BuyCard) message).getColumn());
+            player.buyCard(((BuyCard) message).getRow(), ((BuyCard) message).getColumn());
         }
+
         else if(message instanceof ActivateLeaderCard) {
-            Set<LeaderCard> leaderCards = game.getPlayerByName(nickname).getLeaders();
-            for(LeaderCard card : leaderCards) {
+            for(LeaderCard card : player.getLeaders()) {
                 if (card.getCardID() == ((ActivateLeaderCard) message).getCardID()) {
-                    game.getPlayerByName(nickname).activateLeaderCard(card);
+                    player.activateLeaderCard(card);
                 }
             }
         }
+
         else if(message instanceof ActivateProduction) {
-            for (Integer cardID : ((ActivateProduction) message).getCardsID()) {
-                Player player = game.getPlayerByName(nickname);
+            for(DevelopmentCard card : player.getDevelopments().toArray(DevelopmentCard[]::new)){
+                if(((ActivateProduction) message).getCardsID().contains(card.getCardID())){
+                    player.activateProduction(card);
+                }
             }
         }
+
         else if(message instanceof EndTurn) {
-            if (game instanceof MultiplayerGame) {
-                FaithTrack track = ((MultiplayerGame) game).getCurrPlayer().getDashboard().getPath();
-                if (track.getPlayerPos() == track.getEnd()) {
-                    Map<String,Integer> playersPoints = new HashMap<>();
-                    String winner = "";
-                    int winnerPoints = 0;
-                    for(Player player : game.getPlayers()) {
-                        int points = player.getVictoryPoints();
-                        winner = winnerPoints < points ? player.getNickname() : winner;
-                        playersPoints.put(player.getNickname(), points);
-                    }
-                    server.sendEveryone(new EndGame(playersPoints, winner), server.getLobbyID(this));
-                }
-                else {
-                    ((MultiplayerGame) game).nextPlayer();
-                    server.sendEveryone(new StartTurn(((MultiplayerGame) game).getCurrPlayer().getNickname()), server.getLobbyID(this));
-                }
+            if(game instanceof MultiplayerGame){
+                ((MultiplayerGame) game).nextPlayer();
+            }
+            else if(game instanceof SinglePlayerGame){
+                //to fix: drawToken method signature
+                ((SinglePlayerGame) game).drawToken((SinglePlayerGame) game);
             }
         }
     }
