@@ -266,7 +266,7 @@ public class Server {
                 else {
                     playerToLobby.put(nickname, lobbyID);
                     connection.sendToClient(new LobbyJoined());
-                    //if(isFull(playerToLobby.get(nickname))) getGameHandler(nickname).start();
+                    if(isFull(lobbyID)) getGameHandler(nickname).start();
                 }
             }
             /*
