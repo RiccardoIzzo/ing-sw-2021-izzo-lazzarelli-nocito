@@ -56,9 +56,9 @@ public class ResourceMap {
     /**
      * Method addResources receives a Map of Resources and associated Integers to add.
      */
-    public void addResources(ResourceMap toAdd) {
-        for (Map.Entry<Resource, Integer> entry : toAdd.resources.entrySet()) {
-            resources.replace(entry.getKey() , entry.getValue()+resources.get(entry.getKey()));
+    public void addResources(ResourceMap resourceMap) {
+        for (Resource resource : Resource.values()) {
+            this.modifyResource(resource, resourceMap.getResource(resource));
         }
     }
     /**
@@ -78,7 +78,6 @@ public class ResourceMap {
      * Method flush resets resourceMap to its initial state, with value 0 for each Resource
      */
     public void flush() {
-        resources.clear();
         for (Resource value : Resource.values()) {
             resources.put(value, 0);
         }
