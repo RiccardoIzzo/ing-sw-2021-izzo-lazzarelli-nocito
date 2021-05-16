@@ -1,22 +1,12 @@
 package it.polimi.ingsw.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.Type;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import it.polimi.ingsw.constants.GameConstants;
 import it.polimi.ingsw.listeners.GameListener;
 import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.*;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 
 /**
  * Game class contains the main logic of "Master of Renaissance".
@@ -28,12 +18,6 @@ public abstract class Game {
     private final Market market;
     private final Deck[][] grid;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
-    RuntimeTypeAdapterFactory<Requirement> requirementAdapterFactory = RuntimeTypeAdapterFactory.of(Requirement.class)
-            .registerSubtype(LevelRequirement.class,"Level")
-            .registerSubtype(NumberRequirement.class, "Number")
-            .registerSubtype(ResourceRequirement.class, "Resource");
-    Gson gson = new GsonBuilder().registerTypeAdapterFactory(requirementAdapterFactory).create();
 
     /**
      * Game constructor creates a new Game instance.
@@ -117,44 +101,24 @@ public abstract class Game {
     }
 
     /**
-     * Method generateGrid generates the grid with the 48 development cards from a JSON file.
+     * Method generateGrid gets a list of development cards from JsonCardsCreator and creates the grid with the 48 development cards.
      */
     public void generateGrid(){
-        try (Reader reader = new FileReader(GameConstants.developmentCardsJson)) {
-            // Convert JSON file into list of Java object
-            ArrayList<DevelopmentCard> jsonCards = gson.fromJson(reader, new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
+        ArrayList<DevelopmentCard> cards = JsonCardsCreator.generateDevelopmentCards();
 
-            for(int j = 0; j < 4; j++){
-                for(int i = 0; i < 3; i++){
-                    grid[i][j] = new Deck(jsonCards.subList(0, 4));
-                    jsonCards.removeAll(jsonCards.subList(0, 4));
-                }
+        for(int j = 0; j < 4; j++){
+            for(int i = 0; i < 3; i++){
+                grid[i][j] = new Deck(cards.subList(0, 4));
+                cards.removeAll(cards.subList(0, 4));
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     /**
-     * Method generateLeaders generates the 16 leader cards from a JSON file, shuffles them and distributes them among the players.
+     * Method generateLeaders gets a list of leader cards from JsonCardsCreator, shuffles them and distributes them among the players.
      */
     public void generateLeaders(){
-        List<LeaderCard> leaders = new ArrayList<>();
-        List <Type> types = new ArrayList<>();
-        types.add(new TypeToken<ArrayList<DiscountLeaderCard>>(){}.getType());
-        types.add(new TypeToken<ArrayList<ExtraShelfLeaderCard>>(){}.getType());
-        types.add(new TypeToken<ArrayList<ProductionLeaderCard>>(){}.getType());
-        types.add(new TypeToken<ArrayList<WhiteMarbleLeaderCard>>(){}.getType());
-        int i = 0;
-
-        for(String filePath : GameConstants.leaderCardsJson){
-            try (Reader reader = new FileReader(filePath)){
-                leaders.addAll(gson.fromJson(reader, types.get(i++)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        List<LeaderCard> leaders = JsonCardsCreator.generateLeaderCards();
 
         Collections.shuffle(leaders);
         for(Player player : getPlayers()){
