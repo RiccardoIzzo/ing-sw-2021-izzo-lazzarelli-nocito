@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.constants.FaithTrackConstants;
 import it.polimi.ingsw.listeners.FaithTrackListener;
-import it.polimi.ingsw.listeners.LeaderCardListener;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
+
+import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 /**
  * FaithTrack Class represents a player's faith track
@@ -17,16 +17,10 @@ public class FaithTrack {
     private int posFaithMarker;
     private final Boolean[] popesFavorTiles;
 
-    private String POS_FAITH_MARKER = "posFaithMarker"; //property name
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
+    PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     // tilesUncovered: Value that states if the pope tiles have been uncovered
     private boolean[] tilesUncovered = {false, false, false};
-
-    public void addListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(POS_FAITH_MARKER, new FaithTrackListener(virtualView));
-    }
 
     public FaithTrack() {
         posFaithMarker = 0;
@@ -48,15 +42,13 @@ public class FaithTrack {
         }
         return false;
     }
-    public int getEnd() {
-        return FaithTrackConstants.END;
-    }
+
     /**
      * Method moveForward moves the faith marker and calls popeTilePass
      */
     public void moveForward() {
         posFaithMarker++;
-//        pcs.firePropertyChange(POS_FAITH_MARKER, posFaithMarker-1, posFaithMarker);
+        pcs.firePropertyChange(FAITH_MARKER_POSITION, posFaithMarker-1, posFaithMarker);
         popeTilePass();
     }
 
@@ -65,7 +57,7 @@ public class FaithTrack {
      */
     public void isInVaticanSpace(Integer space) {
         if (space < popesFavorTiles.length) {
-            popesFavorTiles[space] = posFaithMarker <= FaithTrackConstants.TILE_POS[space] && posFaithMarker >= FaithTrackConstants.TILE_POS[space] - FaithTrackConstants.INITIAL_OFFSET - space;
+            popesFavorTiles[space] = posFaithMarker <= TILE_POS[space] && posFaithMarker >= TILE_POS[space] - INITIAL_OFFSET - space;
         }
     }
 
@@ -73,8 +65,8 @@ public class FaithTrack {
      * Method popeTilePass checks if the position is the same as a tile pass
      */
     public void popeTilePass() {
-        for(int i = 0; i < FaithTrackConstants.TILE_POS.length; i++) {
-            if ( posFaithMarker == FaithTrackConstants.TILE_POS[i] && !tilesUncovered[i] ) {
+        for(int i = 0; i < TILE_POS.length; i++) {
+            if ( posFaithMarker == TILE_POS[i] && !tilesUncovered[i] ) {
                 popesFavorTiles[i] = true;
                 tilesUncovered[i] = true;
             }
@@ -88,7 +80,7 @@ public class FaithTrack {
     public int getPointsForTiles() {
         int counter = 0;
         for (int i = 0; i < popesFavorTiles.length; i++) {
-            counter += popesFavorTiles[i] ? FaithTrackConstants.POINTS_FOR_TILE[i] : 0;
+            counter += popesFavorTiles[i] ? POINTS_FOR_TILE[i] : 0;
         }
         return counter;
     }
@@ -100,8 +92,8 @@ public class FaithTrack {
     public int getPosVictoryPoints() {
         int victoryPoints = 0;
         int i = 0;
-        while (i< FaithTrackConstants.WINNING_TILES.length && posFaithMarker >= FaithTrackConstants.WINNING_TILES[i]) {
-            victoryPoints += FaithTrackConstants.WINNING_VALUES[i];
+        while (i< WINNING_TILES.length && posFaithMarker >= WINNING_TILES[i]) {
+            victoryPoints += WINNING_VALUES[i];
             i++;
         }
         return victoryPoints+getPointsForTiles();
@@ -111,4 +103,7 @@ public class FaithTrack {
         return posFaithMarker;
     }
 
+    public void addPropertyListener(VirtualView virtualView){
+        pcs.addPropertyChangeListener(new FaithTrackListener(virtualView));
+    }
 }

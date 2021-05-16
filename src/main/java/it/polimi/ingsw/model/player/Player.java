@@ -1,9 +1,14 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.listeners.PlayerListener;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.card.*;
+import it.polimi.ingsw.network.VirtualView;
 
+import java.beans.PropertyChangeSupport;
 import java.util.*;
+
+import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 /**
  * Player class represents a player in the game.
@@ -21,6 +26,7 @@ public class Player {
     private ArrayList<Card> availableProduction;
     private Set<MarbleColor> availableExchange;
     private ResourceMap availableDiscount;
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
      * Constructor Player creates a new Player instance.
@@ -47,8 +53,13 @@ public class Player {
         this.nickname = nickname;
     }
 
+    /**
+     * Method setLeaders adds a list of LeaderCard to this Player, it is called at the start of the game.
+     * @param cards the cards
+     */
     public void setLeaders(List<LeaderCard> cards){
         leaders.addAll(cards);
+        pcs.firePropertyChange(SET_LEADERS, null, cards);
     }
 
     public Set<DevelopmentCard> getDevelopments(){
@@ -98,19 +109,21 @@ public class Player {
      * @param column is the column in the grid of developmentCard
      */
     public void buyCard(int row, int column){
+        Deck[][] OldGrid = game.getGrid();
         DevelopmentCard developmentCard = game.getGrid()[row][column].draw();
-        int indexPosition = availableProduction.size();
+        pcs.firePropertyChange(GRID_CHANGE, OldGrid, game.getGrid());
+        int indexSlotPlace = availableProduction.size();
 
         for(Card card: availableProduction){
             if (card instanceof DevelopmentCard){
                 if (((DevelopmentCard) card).getType() == developmentCard.getType() && ((DevelopmentCard) card).getLevel()+1 == developmentCard.getLevel()){
-                    indexPosition = availableProduction.indexOf(card);
+                    indexSlotPlace = availableProduction.indexOf(card);
                     availableProduction.remove(card);
                     break;
                 }
             }
         }
-        availableProduction.add(indexPosition, developmentCard);
+        availableProduction.add(indexSlotPlace, developmentCard);
         developments.add(developmentCard);
         numberOfCard.addCard(developmentCard.getType(), 1);
         if (levelOfCard.getCard(developmentCard.getType()) < developmentCard.getLevel()) {
@@ -162,7 +175,9 @@ public class Player {
      * @param secondCard second leader card chosen by the player.
      */
     public void selectLeaderCard(Card firstCard, Card secondCard){
+        Set<LeaderCard> OldLeaders = leaders;
         leaders.removeIf(leader -> !(leader.equals(firstCard)) && !(leader.equals(secondCard)));
+        pcs.firePropertyChange(SELECT_LEADERS, OldLeaders, this.leaders);
     }
 
     /**
@@ -180,6 +195,7 @@ public class Player {
         } else if (leaderCard instanceof ExtraShelfLeaderCard){
             myDashboard.addShelf(((ExtraShelfLeaderCard) leaderCard).getShelf());
         }
+        pcs.firePropertyChange(LEADER_ACTIVATION, leaderCard.getCardID(), leaderCard.getCardID());
     }
 
     /**
@@ -187,8 +203,10 @@ public class Player {
      * @param card the leader card that must be discarded.
      */
     public void discardLeaderCard(LeaderCard card){
+        Set<LeaderCard> oldLeaders = this.leaders;
         leaders.remove(card);
         myDashboard.incrementFaith(1);
+        pcs.firePropertyChange(DISCARD_LEADER, oldLeaders, this.leaders);
     }
 
     /**
@@ -214,4 +232,8 @@ public class Player {
         return victoryPoints;
     }
 
+    public void addPropertyListener(VirtualView virtualView) {
+        pcs.addPropertyChangeListener(new PlayerListener(virtualView));
+        myDashboard.addPropertyListener(virtualView);
+    }
 }

@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.ResourceMap;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import static it.polimi.ingsw.constants.PlayerConstants.NUMBER_SHELF;
 import static org.junit.Assert.*;
 
 public class DashboardTest {
@@ -29,7 +31,7 @@ public class DashboardTest {
             dashboard.addShelf(new Shelf(i));
         }
         Warehouse warehouse = dashboard.getWarehouse();
-        assertEquals(warehouse.getNumberShelf() + numberOfShelfAdded, warehouse.getShelvesSize());
+        assertEquals(NUMBER_SHELF + numberOfShelfAdded, warehouse.getShelvesSize());
     }
     /**
      * Method testAddResource adds one resource in the strongbox and checks if it is there

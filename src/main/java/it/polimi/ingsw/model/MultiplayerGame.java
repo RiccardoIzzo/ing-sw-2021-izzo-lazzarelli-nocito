@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.listeners.LeaderCardListener;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.network.VirtualView;
 
-import java.beans.PropertyChangeSupport;
 import java.util.Random;
+
+import static it.polimi.ingsw.constants.GameConstants.END_TURN;
 
 /**
  * MultiplayerGame class extends Game class and implements the logic of a multiplayer match up to four players.
@@ -16,9 +15,6 @@ public class MultiplayerGame extends Game {
     private Player currPlayer;
     private Player firstPlayer;
     private int playerIndex;
-
-    private String END_TURN = "endTurn"; //property name
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
      * Constructor MultiplayerGame creates a new MultiplayerGame instance.
@@ -74,11 +70,7 @@ public class MultiplayerGame extends Game {
             playerIndex++;
             setCurrPlayer(super.getPlayers().get(playerIndex));
         }
-//        pcs.firePropertyChange(END_TURN, previousPlayer, currPlayer.getNickname());
+        pcs.firePropertyChange(END_TURN, previousPlayer, currPlayer.getNickname());
 
-    }
-
-    public void addListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(END_TURN, new LeaderCardListener(virtualView));
     }
 }

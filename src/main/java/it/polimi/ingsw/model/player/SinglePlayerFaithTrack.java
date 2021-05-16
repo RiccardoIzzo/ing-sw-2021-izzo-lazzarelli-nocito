@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.constants.FaithTrackConstants;
+import it.polimi.ingsw.network.VirtualView;
+
+import static it.polimi.ingsw.constants.PlayerConstants.BLACK_MARKER_POSITION;
 
 /**
  * SinglePlayerFaithTrack Class represents a player's faith track in single player mode
@@ -21,13 +23,12 @@ public class SinglePlayerFaithTrack extends FaithTrack {
 
     public void moveBlack() {
         blackFaithMarker++;
-        checkBlack();
+        pcs.firePropertyChange(BLACK_MARKER_POSITION, blackFaithMarker-1, blackFaithMarker);
     }
 
-
-
-    public boolean checkBlack() {
-        return blackFaithMarker == FaithTrackConstants.END;
+    @Override
+    public void addPropertyListener(VirtualView virtualView) {
+        super.addPropertyListener(virtualView);
     }
 }
 

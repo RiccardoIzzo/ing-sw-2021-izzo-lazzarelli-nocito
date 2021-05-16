@@ -1,10 +1,16 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.constants.GameConstants;
+import it.polimi.ingsw.listeners.MarketListener;
+import it.polimi.ingsw.network.VirtualView;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
+
+import static it.polimi.ingsw.constants.GameConstants.MARKET_CHANGE;
+import static it.polimi.ingsw.constants.GameConstants.SLIDE_MARBLE;
 
 /**
  * Market class represents the market board where the player can buy resources.
@@ -17,6 +23,7 @@ public class Market {
     private MarbleColor specialMarble;
     private ResourceMap outputMarket;
     private boolean foundFaith;
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
      * Constructor Market creates a new Market instance.
@@ -88,6 +95,9 @@ public class Market {
         Collections.shuffle(marketTray);
         slideMarble = marketTray.get(rand);
         marketTray.remove(rand);
+
+        pcs.firePropertyChange(MARKET_CHANGE, null, marketTray);
+        pcs.firePropertyChange(SLIDE_MARBLE, null, slideMarble);
     }
 
     /**
@@ -105,8 +115,14 @@ public class Market {
      * @param type represent the user choice: 1 = row, 2 = column.
      */
     public void insertMarble(int pos, int type){
+        ArrayList<MarbleColor> OldMarketTray = (ArrayList<MarbleColor>) marketTray.clone();
+        MarbleColor OldSlideMarble = this.getSlideMarble();
+
         if(type == 1) selectRow(pos - 1);
         else if(type == 2) selectCol(pos - 1);
+
+        pcs.firePropertyChange(MARKET_CHANGE, OldMarketTray, marketTray);
+        pcs.firePropertyChange(SLIDE_MARBLE, OldSlideMarble, slideMarble);
     }
 
     /**
@@ -170,4 +186,7 @@ public class Market {
         }
     }
 
+    public void addPropertyListener(VirtualView virtualView) {
+        pcs.addPropertyChangeListener(new MarketListener(virtualView));
+    }
 }

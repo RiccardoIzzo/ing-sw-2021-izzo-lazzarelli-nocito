@@ -1,19 +1,11 @@
 package it.polimi.ingsw.model.card;
 
-import it.polimi.ingsw.listeners.LeaderCardListener;
-import it.polimi.ingsw.network.VirtualView;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 /**
  * Class LeaderCard represents the leader card type in the game.
  * @author Gabriele Lazzarelli
  */
 public abstract class LeaderCard extends Card {
     private boolean active;
-    private String ACTIVE = "active"; //property name
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
      * Constructor of the superclass Card takes three parameters which are shared among all of the subclasses.
@@ -42,10 +34,5 @@ public abstract class LeaderCard extends Card {
      */
     public void setActive(boolean active) {
         this.active = active;
-        //pcs.firePropertyChange(ACTIVE, this.active, active);
-    }
-
-    public void addListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(ACTIVE, new LeaderCardListener(virtualView));
     }
 }

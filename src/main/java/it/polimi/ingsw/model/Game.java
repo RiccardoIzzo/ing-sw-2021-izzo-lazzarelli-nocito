@@ -3,11 +3,15 @@ package it.polimi.ingsw.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
+import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Type;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.constants.GameConstants;
+import it.polimi.ingsw.listeners.GameListener;
 import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.network.VirtualView;
 
 import java.util.*;
 import java.io.FileReader;
@@ -23,6 +27,7 @@ public abstract class Game {
     private final ArrayList<Player> players;
     private final Market market;
     private final Deck[][] grid;
+    PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     RuntimeTypeAdapterFactory<Requirement> requirementAdapterFactory = RuntimeTypeAdapterFactory.of(Requirement.class)
             .registerSubtype(LevelRequirement.class,"Level")
@@ -156,5 +161,9 @@ public abstract class Game {
             player.setLeaders(leaders.subList(0, 4));
             leaders.removeAll(leaders.subList(0, 4));
         }
+    }
+
+    public void addPropertyListener(VirtualView virtualView){
+        pcs.addPropertyChangeListener(new GameListener(virtualView));
     }
 }

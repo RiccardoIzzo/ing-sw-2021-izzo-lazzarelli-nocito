@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.ResourceMap;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
+
+import static it.polimi.ingsw.constants.PlayerConstants.NUMBER_SHELF;
 import static org.junit.Assert.*;
 
 import java.util.*;
@@ -54,7 +56,7 @@ public class WarehouseTest {
      */
     @Test
     public void testGetShelvesSize() {
-        assertEquals(warehouse.getNumberShelf(), warehouse.getShelvesSize());
+        assertEquals(NUMBER_SHELF, warehouse.getShelvesSize());
     }
 
     /**
@@ -62,7 +64,7 @@ public class WarehouseTest {
      */
     @Test
     public void testGetNumberShelf() {
-        assertEquals(warehouse.getNumberShelf(), warehouse.getShelvesSize());
+        assertEquals(NUMBER_SHELF, warehouse.getShelvesSize());
     }
 
     /**

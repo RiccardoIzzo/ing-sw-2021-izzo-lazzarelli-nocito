@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.listeners.LeaderCardListener;
 import it.polimi.ingsw.listeners.ShelfListener;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
@@ -8,6 +7,8 @@ import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeSupport;
 import java.util.*;
+
+import static it.polimi.ingsw.constants.PlayerConstants.SHELF_CHANGE;
 
 /**
  * Shelf Class represents a single shelf where the player can store resources
@@ -19,12 +20,12 @@ public class Shelf {
     private ResourceMap resources;
     private final Integer capacity;
 
-    private String SHELF_CHANGE = "shelfChange"; //property name
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 
     public Shelf(Integer shelfCapacity) {
         resourcesAllowed = new HashSet<>();
+        Collections.addAll(resourcesAllowed, Resource.values());
         resources = new ResourceMap();
         capacity = shelfCapacity;
     }
@@ -62,17 +63,15 @@ public class Shelf {
 
 
     /**
-     * Method addResourceAllowed add a type of Resource to the allowed ones that can be stored into the shelf
+     * Method addResource add a Resource into the shelf
      * @return true if the operation was successful.
      */
-    public boolean addResourceAllowed(Resource resourceToAdd) {
-        if (resourcesAllowed.contains(resourceToAdd) ) {
-            return false;
-        }
-        else {
-            resourcesAllowed.add(resourceToAdd);
+    public boolean addResource(Resource resource) {
+        if ((resourcesAllowed.contains(resource) && resources.getMapSize() < capacity)) {
+            resourcesAllowed.add(resource);
             return true;
         }
+        return false;
     }
 
     /**
@@ -80,10 +79,9 @@ public class Shelf {
      * @return true if the operation was successful
      */
     public boolean takeResource(Resource resource) {
-        if (resourcesAllowed.contains(resource) && resources.modifyResource(resource , -1)) {
-            int value =  resources.getResource(resource);
-
-//            pcs.firePropertyChange(SHELF_CHANGE, Collections.singletonMap(resource, value+1), Collections.singletonMap(resource, value));
+        ResourceMap OldResources = resources;
+        if (resourcesAllowed.contains(resource) && resources.modifyResource(resource, -1)) {
+            pcs.firePropertyChange(SHELF_CHANGE, OldResources, this.resources);
             return true;
         }
         return false;
@@ -95,26 +93,29 @@ public class Shelf {
      * @return true if the operation was successful
      */
     public boolean placeResources(ResourceMap resources) {
-        int totalResources = 0;
-        boolean resourceNotAllowed = false;
-        for(Resource res : resources.getResources().keySet()) {
-            if (resources.getResource(res) > 0) {
-                totalResources += resources.getResource(res);
-                if (!resourcesAllowed.contains(res)) {
-                    resourceNotAllowed = true;
-                    break;
+        ResourceMap OldResources = new ResourceMap();
+        OldResources.addResources(resources);
+
+        //Check if the resource to place are allowed in the shelf
+        for(Resource resource : Resource.values()) {
+            if (resources.getResource(resource) > 0) {
+                if (!resourcesAllowed.contains(resource)) {
+                    return false;
                 }
             }
         }
-        if (resourceNotAllowed || this.resources.getMapSize()+totalResources > capacity) {
+
+        //Check if there's enough room to place the resources
+        if (this.resources.getMapSize()+resources.getMapSize() > capacity) {
             return false;
         }
-        Map<Resource, Integer> old_resources = this.resources.getResources();
-        for(Resource res : resources.getResources().keySet()) {
-            this.resources.modifyResource(res,  resources.getResource(res));
-        }
-//        pcs.firePropertyChange(SHELF_CHANGE, old_resources, this.resources.getResources());
 
+        //? : a single resource is allowed per shelf - to fix
+        for(Resource resource : Resource.values()) {
+            this.resources.modifyResource(resource, resources.getResource(resource));
+        }
+
+        pcs.firePropertyChange(SHELF_CHANGE, OldResources, this.resources);
         return true;
     }
 
@@ -123,10 +124,10 @@ public class Shelf {
      * @return true if the operation was successful
      */
     public boolean placeResource(Resource resource) {
-        if ( resourcesAllowed.contains(resource) && resources.getMapSize() < capacity ) {
+        if (resourcesAllowed.contains(resource) && resources.getMapSize() < capacity) {
+            ResourceMap OldResources = resources;
             resources.modifyResource(resource, 1);
-            int value =  resources.getResource(resource);
-//            pcs.firePropertyChange(SHELF_CHANGE, Collections.singletonMap(resource, value-1), Collections.singletonMap(resource, value));
+            pcs.firePropertyChange(SHELF_CHANGE, OldResources, this.resources);
             return true;
         }
         return false;

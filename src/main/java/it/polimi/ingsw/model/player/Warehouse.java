@@ -1,10 +1,16 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.listeners.WarehouseListener;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.network.VirtualView;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Optional;
+
+import static it.polimi.ingsw.constants.PlayerConstants.NUMBER_SHELF;
+import static it.polimi.ingsw.constants.PlayerConstants.TEMPORARY_SHELF;
 
 /**
     * Warehouse Class represents the set of shelves available on a dashboard
@@ -13,7 +19,7 @@ import java.util.Optional;
     */
 public class Warehouse {
     private ArrayList<Shelf> shelves;
-    private static final int NUMBER_SHELF = 3;
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public Warehouse() {
         this.shelves = new ArrayList<>();
@@ -40,9 +46,6 @@ public class Warehouse {
         return shelves;
     }
 
-    public int getNumberShelf() {
-        return NUMBER_SHELF;
-    }
     public Optional<Shelf> getShelf(int shelfIndex) {
         if (shelves.size() > shelfIndex) {
             return Optional.ofNullable(shelves.get(shelfIndex));
@@ -56,6 +59,7 @@ public class Warehouse {
         Shelf tempShelf = new Shelf(resources.getResources().size(), resources.getResources().keySet());
         tempShelf.placeResources(resources);
         shelves.add(tempShelf);
+        pcs.firePropertyChange(TEMPORARY_SHELF, null, resources);
     }
 
     /**
@@ -63,9 +67,11 @@ public class Warehouse {
      */
     public void removeResourcesFromTemporaryShelf() {
         shelves.remove(shelves.size()-1);
+        pcs.firePropertyChange(TEMPORARY_SHELF, null, shelves.get(shelves.size() - 1).getResources());
     }
+
     /**
-     * Method removeResource with @param Resource tries to remove the first resource it finds that matches the specificed type.
+     * Method removeResource with @param Resource tries to remove the first resource it finds that matches the specified type.
      * @return true is the operation was successful
      */
     public boolean removeResource(Resource resource) {
@@ -79,7 +85,7 @@ public class Warehouse {
     }
 
     /**
-     * Method getResourcesSize counts the amount of each resource avaiable on the shelves
+     * Method getResourcesSize counts the amount of each resource available on the shelves
      * @return ResourceMap with the amount of each resource
      */
     public ResourceMap getResourcesSize() {
@@ -116,7 +122,7 @@ public class Warehouse {
         if (shelves.size() > shelfIndexStart && shelves.size() > shelfIndexEnd) {
 
             if (shelves.get(shelfIndexStart).takeResource(firstResource)){
-                if(shelves.get(shelfIndexEnd).takeResource(secondResource)){
+                if (shelves.get(shelfIndexEnd).takeResource(secondResource)){
                     shelves.get(shelfIndexStart).placeResource(secondResource);
                     shelves.get(shelfIndexEnd).placeResource(firstResource);
                     return true;
@@ -127,5 +133,9 @@ public class Warehouse {
             }
         }
         return false;
+    }
+
+    public void addPropertyListener(VirtualView virtualView){
+        pcs.addPropertyChangeListener(new WarehouseListener(virtualView));
     }
 }
