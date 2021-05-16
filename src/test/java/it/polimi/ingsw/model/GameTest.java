@@ -57,7 +57,7 @@ public class GameTest {
         int size = 0;
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
-                size += game.getDeck(0, 0).getCards().size();
+                size += game.getDeck(i, j).getCards().size();
             }
         }
         assertEquals(GameConstants.NUM_DEVELOPMENT_CARDS, size);
@@ -81,13 +81,13 @@ public class GameTest {
     public void gridTest(){
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
-                DevelopmentCard card = (DevelopmentCard) game.getDeck(i, j).draw();
+                DevelopmentCard card = game.getDeck(i, j).draw();
                 DevelopmentCard temp;
                 CardColor color = card.getType();
                 int level = card.getLevel();
 
                 while (!(game.getDeck(i, j).getCards().empty())) {
-                    temp = (DevelopmentCard) game.getDeck(i, j).draw();
+                    temp = game.getDeck(i, j).draw();
                     assertEquals(color, temp.getType());
                     assertEquals(level, temp.getLevel());
                 }
