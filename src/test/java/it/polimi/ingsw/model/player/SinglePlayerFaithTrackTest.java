@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Before;
+
+import static it.polimi.ingsw.constants.PlayerConstants.END_TILE;
 import static org.junit.Assert.*;
 
 import java.util.*;
@@ -25,16 +27,17 @@ public class SinglePlayerFaithTrackTest {
     public void initialization() {
         singlePlayerFaithTrack = new SinglePlayerFaithTrack();
     }
+
     /**
      * Method testGetBlackFaithMarker check that getBlackFaithMarker returns the correct position of blackFaithMarker
      */
     @Test
     public void testGetBlackFaithMarker() {
         assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), 0);
-        for (int i=0; i<singlePlayerFaithTrack.getEnd(); i++) {
+        for (int i=0; i<END_TILE; i++) {
             singlePlayerFaithTrack.moveBlack();
         }
-        assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), singlePlayerFaithTrack.getEnd());
+        assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), END_TILE);
 
     }
 
@@ -47,17 +50,5 @@ public class SinglePlayerFaithTrackTest {
         singlePlayerFaithTrack.moveBlack();
         singlePlayerFaithTrack.moveBlack();
         assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), 2);
-    }
-
-    /**
-     * Method testCheckBlack checks that checkBlack returns true when the blackFaithMarker is on the last tile
-    */
-    @Test
-    public void testCheckBlack() {
-        assertFalse(singlePlayerFaithTrack.checkBlack());
-        for (int i=0; i<singlePlayerFaithTrack.getEnd(); i++) {
-            singlePlayerFaithTrack.moveBlack();
-        }
-        assertTrue(singlePlayerFaithTrack.checkBlack());
     }
 }

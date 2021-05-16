@@ -4,9 +4,9 @@ import it.polimi.ingsw.model.Resource;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import java.util.*;
+import static it.polimi.ingsw.constants.PlayerConstants.END_TILE;
+import static org.junit.Assert.*;
 
 /**
  * FaithTrackTest tests FaithTrack class.
@@ -86,7 +86,7 @@ public class FaithTrackTest{
     @Test
     public void testGetPointsForTiles() {
         assertEquals(faithTrack.getPointsForTiles(), 0);
-        for (int i=0; i<faithTrack.getEnd(); i++) {
+        for (int i=0; i<END_TILE; i++) {
             faithTrack.moveForward();
         }
         assertEquals(faithTrack.getPointsForTiles(), 9);
@@ -102,7 +102,7 @@ public class FaithTrackTest{
         faithTrack.moveForward();
         faithTrack.moveForward();
         assertEquals(faithTrack.getPosVictoryPoints(), 1);
-        for (int i=faithTrack.getPlayerPos()-1; i<faithTrack.getEnd(); i++) {
+        for (int i=faithTrack.getPlayerPos()-1; i<END_TILE; i++) {
             faithTrack.moveForward();
         }
         assertEquals(faithTrack.getPosVictoryPoints(), 79);
