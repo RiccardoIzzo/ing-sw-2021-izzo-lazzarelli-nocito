@@ -77,15 +77,15 @@ public class PlayerTest {
         Optional<LeaderCard> card = player.getLeaders().stream().findAny();
         if(card.isPresent()){
             assertEquals(4, player.getLeaders().size());
-            assertEquals(0, player.getDashboard().getPath().getPlayerPos());
+            assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPos());
             player.discardLeaderCard(card.get());
             assertEquals(3, player.getLeaders().size());
-            assertEquals(1, player.getDashboard().getPath().getPlayerPos());
+            assertEquals(1, player.getDashboard().getFaithTrack().getPlayerPos());
             card = player.getLeaders().stream().findAny();
             if(card.isPresent()){
                 player.discardLeaderCard(card.get());
                 assertEquals(2, player.getLeaders().size());
-                assertEquals(2, player.getDashboard().getPath().getPlayerPos());
+                assertEquals(2, player.getDashboard().getFaithTrack().getPlayerPos());
             }
         }
     }
