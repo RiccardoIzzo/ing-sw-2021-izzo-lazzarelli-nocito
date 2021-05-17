@@ -41,6 +41,13 @@ public class JsonCardsCreator {
     }
 
     /**
+     * Method generateDevelopmentCard generates a DevelopmentCard given its cardID.
+     */
+    public static DevelopmentCard generateDevelopmentCard(int cardID) {
+        return generateDevelopmentCards().stream().filter(x -> x.getCardID() == cardID).findAny().get();
+    }
+
+    /**
      * Method generateLeaderCards generates a list with the 16 leader cards from a JSON file.
      */
     public static ArrayList<LeaderCard> generateLeaderCards(){
@@ -60,5 +67,12 @@ public class JsonCardsCreator {
             }
         }
         return leaders;
+    }
+
+    /**
+     * Method generateLeaderCard generates a LeaderCard given its cardID.
+     */
+    public static LeaderCard generateLeaderCard(int cardID) {
+        return generateLeaderCards().stream().filter(x -> x.getCardID() == cardID).findAny().get();
     }
 }
