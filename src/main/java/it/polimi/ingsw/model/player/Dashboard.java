@@ -108,7 +108,7 @@ public class Dashboard {
     /**
      * Method incrementFaith receives the number of steps to take and makes the path move forward.
      */
-    void incrementFaith(int steps) {
+    public void incrementFaith(int steps) {
         for(int i=0; i<steps; i++) {
             path.moveForward();
         }
