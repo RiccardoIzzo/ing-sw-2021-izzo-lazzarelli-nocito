@@ -10,23 +10,23 @@ import it.polimi.ingsw.events.servermessages.ServerMessage;
  */
 public class VirtualView{
     private final Server server;
-    private final String nickname;
+    private final String lobbyID;
 
     /**
      * Constructor VirtualView creates a new VirtualView instance.
      * @param server server reference.
-     * @param nickname player's name.
+     * @param lobbyID is the name of the lobby
      */
-    public VirtualView(Server server, String nickname) {
+    public VirtualView(Server server, String lobbyID) {
         this.server = server;
-        this.nickname = nickname;
+        this.lobbyID = lobbyID;
     }
 
     /**
      * Method sendToPlayer sends a ServerMessage to the client.
      * @param message ServerMessage to be sent to the client.
      */
-    public void sendToPlayer(ServerMessage message){
+    public void sendToPlayer(String nickname, ServerMessage message){
         server.getConnectionByPlayerName(nickname).sendToClient(message);
     }
 
@@ -35,6 +35,6 @@ public class VirtualView{
      * @param message ServerMessage to be sent to the client.
      */
     public void sendToEveryone(ServerMessage message){
-        server.sendEveryone(message, server.getLobbyIDByPlayerName(nickname));
+        server.sendEveryone(message, lobbyID);
     }
 }
