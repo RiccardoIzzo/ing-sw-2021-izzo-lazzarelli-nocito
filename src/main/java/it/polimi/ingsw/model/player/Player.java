@@ -112,6 +112,20 @@ public class Player {
         Deck[][] OldGrid = game.getGrid();
         DevelopmentCard developmentCard = game.getGrid()[row][column].draw();
         pcs.firePropertyChange(GRID_CHANGE, OldGrid, game.getGrid());
+        addDevelopmentCard(developmentCard);
+    }
+
+    /**
+     * Method addDevelopmentCard adds a DevelopmentCard to this Player and updates its attributes, in particular:
+     * <ul>
+     *     <li>availableProduction: places the given DevelopmentCard in the correct slot</li>
+     *     <li>developments: adds the given DevelopmentCard to the list</li>
+     *     <li>numberOfCard: updates the CardMap</li>
+     *     <li>levelOfCard: updates the CardMap</li>
+     * </ul>
+     * @param developmentCard the DevelopmentCard to add
+     */
+    public void addDevelopmentCard(DevelopmentCard developmentCard){
         int indexSlotPlace = availableProduction.size();
 
         for(Card card: availableProduction){
