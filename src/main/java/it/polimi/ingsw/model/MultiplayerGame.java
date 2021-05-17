@@ -48,6 +48,14 @@ public class MultiplayerGame extends Game {
     }
 
     /**
+     * Method getPlayerIndex returns the index of the current player.
+     * @return index of the current player.
+     */
+    public int getPlayerIndex(){
+        return playerIndex;
+    }
+
+    /**
      * Method setFirstPlayer sets the first player at the beginning of the game.
      * The first player is randomly chosen from the list of players.
      */
