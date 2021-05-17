@@ -77,7 +77,7 @@ public class SinglePlayerGameTest {
      */
     @Test
     public void playTokenTestB() {
-        SinglePlayerFaithTrack path = (SinglePlayerFaithTrack) game.getPlayerByName("Riccardo").getDashboard().getPath();
+        SinglePlayerFaithTrack path = (SinglePlayerFaithTrack) game.getPlayerByName("Riccardo").getDashboard().getFaithTrack();
         assertEquals(0, path.getPlayerPos());
         game.playToken(new MoveBlackMarkerToken(2, false));
         assertEquals(0, path.getPlayerPos());
