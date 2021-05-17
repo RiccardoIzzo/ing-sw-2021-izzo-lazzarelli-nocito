@@ -41,10 +41,14 @@ public class SinglePlayerGame extends Game {
      */
     public void drawToken(SinglePlayerGame game){
         SoloActionToken soloActionToken = tokenStack.draw();
-        this.playToken(soloActionToken);
         pcs.firePropertyChange(TOKEN_DRAWN, null, soloActionToken);
+        this.playToken(soloActionToken);
     }
 
+    /**
+     * Method playToken applies the effect of the selected SoloActionToken.
+     * @param soloActionToken the SoloActionToken which effect is applied.
+     */
     public void playToken(SoloActionToken soloActionToken){
         if (soloActionToken instanceof RemoveCardsToken) {
             CardColor cardColor = ((RemoveCardsToken) soloActionToken).getColor();
