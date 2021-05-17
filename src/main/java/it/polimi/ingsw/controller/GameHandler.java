@@ -33,7 +33,6 @@ public class GameHandler {
         this.virtualView = new VirtualView(server,lobbyID);
     }
 
-
     /**
      * Method setGameMode initializes the game as an instance of MultiplayerGame or SinglePlayerGame.
      * @param numberOfPlayers the number of players.
@@ -41,7 +40,9 @@ public class GameHandler {
     public void setGameMode(int numberOfPlayers) {
         game = numberOfPlayers > 1 ? new MultiplayerGame() : new SinglePlayerGame();
     }
-
+    public Game getGame() {
+        return game;
+    }
 
     /**
      * Method start sets up the game and starts the first turn.
