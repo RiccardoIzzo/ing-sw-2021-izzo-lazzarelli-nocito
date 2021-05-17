@@ -76,6 +76,37 @@ public class GameHandler {
         if (game instanceof MultiplayerGame) {
             ((MultiplayerGame) game).setFirstPlayer();
             firstPlayer = ((MultiplayerGame) game).getFirstPlayer().getNickname();
+            /*
+            The first player to get bonus resources is the 2nd.
+             */
+            int playerOrder = 2;
+            int numPlayers = game.getNumPlayers();
+            int currIndex = ((MultiplayerGame) game).getPlayerIndex();
+            Player player;
+
+            /*
+            Manages bonus resources.
+             */
+            while(playerOrder <= numPlayers){
+                if(currIndex + 1 == numPlayers) currIndex = 0;
+                else currIndex++;
+                player = game.getPlayers().get(currIndex);
+                /*
+                3rd and 4th player gets bonus faith.
+                 */
+                if(playerOrder == 3 || playerOrder == 4) {
+                    player.getDashboard().incrementFaith(1);
+                }
+                /*
+                2nd and 3rd player gets one bonus resource.
+                 */
+                if(playerOrder == 2 || playerOrder == 3) server.getConnectionByPlayerName(player.getNickname()).sendToClient(new BonusResources(1));
+                /*
+                4th player gets two bonus resources.
+                 */
+                else if(playerOrder == 4) server.getConnectionByPlayerName(player.getNickname()).sendToClient(new BonusResources(2));
+                playerOrder++;
+            }
         }
 
         else{
