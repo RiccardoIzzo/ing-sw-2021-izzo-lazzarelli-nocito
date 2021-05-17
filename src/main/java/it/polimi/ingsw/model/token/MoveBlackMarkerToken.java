@@ -38,19 +38,4 @@ public class MoveBlackMarkerToken implements SoloActionToken {
     public boolean hasResetStack() {
         return resetStack;
     }
-
-    /**
-     * Method playToken represents the effect of the token.
-     */
-    @Override
-    public void playToken(Game game) {
-        Dashboard dashboard = game.getPlayers().get(0).getDashboard();
-        for(int i = 0; i < steps; i++){
-            dashboard.incrementBlackFaith();
-        }
-        if(hasResetStack()){
-            ((SinglePlayerGame) game).getTokenStack().reset();
-        }
-    }
-
 }

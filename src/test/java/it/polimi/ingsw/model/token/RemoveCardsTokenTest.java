@@ -12,15 +12,15 @@ import static org.junit.Assert.*;
  * @author Riccardo Izzo
  */
 public class RemoveCardsTokenTest {
-    SinglePlayerGame singlePlayerGame;
+    SinglePlayerGame game;
 
     /**
      * Method initialization creates an instance of SinglePlayerGame and generates the grid of development cards.
      */
     @Before
     public void initialization(){
-        singlePlayerGame = new SinglePlayerGame();
-        singlePlayerGame.generateGrid();
+        game = new SinglePlayerGame();
+        game.generateGrid();
     }
 
     /**
@@ -29,25 +29,23 @@ public class RemoveCardsTokenTest {
     @Test
     public void playTokenTest(){
         //activation of 4 tokens that discard green cards (green cards are in the first column of the grid)
-        assertEquals(4, singlePlayerGame.getDeck(0,0).getCards().size());
-        new RemoveCardsToken(CardColor.GREEN).playToken(singlePlayerGame);
-        assertEquals(2, singlePlayerGame.getDeck(0,0).getCards().size());
-        assertEquals(4, singlePlayerGame.getDeck(1,0).getCards().size());
-        new RemoveCardsToken(CardColor.GREEN).playToken(singlePlayerGame);
-        assertTrue(singlePlayerGame.getDeck(0, 0).getCards().isEmpty());
-        new RemoveCardsToken(CardColor.GREEN).playToken(singlePlayerGame);
-        new RemoveCardsToken(CardColor.GREEN).playToken(singlePlayerGame);
-        assertTrue(singlePlayerGame.getDeck(0, 0).getCards().isEmpty());
-        assertTrue(singlePlayerGame.getDeck(1, 0).getCards().isEmpty());
+        assertEquals(4, game.getDeck(0,0).getCards().size());
+        game.playToken(new RemoveCardsToken(CardColor.GREEN));
+        assertEquals(2, game.getDeck(0,0).getCards().size());
+        assertEquals(4, game.getDeck(1,0).getCards().size());
+        game.playToken(new RemoveCardsToken(CardColor.GREEN));
+        assertTrue(game.getDeck(0, 0).getCards().isEmpty());
+        game.playToken(new RemoveCardsToken(CardColor.GREEN));
+        game.playToken(new RemoveCardsToken(CardColor.GREEN));
+        assertTrue(game.getDeck(0, 0).getCards().isEmpty());
+        assertTrue(game.getDeck(1, 0).getCards().isEmpty());
 
         //activation of 3 tokens that discard blue cards (blue cards are in the third column of the grid)
-        new RemoveCardsToken(CardColor.BLUE).playToken(singlePlayerGame);
-        assertEquals(2, singlePlayerGame.getDeck(0,2).getCards().size());
-        new RemoveCardsToken(CardColor.BLUE).playToken(singlePlayerGame);
-        new RemoveCardsToken(CardColor.BLUE).playToken(singlePlayerGame);
-        assertTrue(singlePlayerGame.getDeck(0, 2).getCards().isEmpty());
-        assertEquals(2, singlePlayerGame.getDeck(1,2).getCards().size());
-
+        game.playToken(new RemoveCardsToken(CardColor.BLUE));
+        assertEquals(2, game.getDeck(0,2).getCards().size());
+        game.playToken(new RemoveCardsToken(CardColor.BLUE));
+        game.playToken(new RemoveCardsToken(CardColor.BLUE));
+        assertTrue(game.getDeck(0, 2).getCards().isEmpty());
+        assertEquals(2, game.getDeck(1,2).getCards().size());
     }
-
 }

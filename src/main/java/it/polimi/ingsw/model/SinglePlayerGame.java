@@ -1,5 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.card.CardColor;
+import it.polimi.ingsw.model.card.Deck;
+import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.player.Dashboard;
+import it.polimi.ingsw.model.token.MoveBlackMarkerToken;
+import it.polimi.ingsw.model.token.RemoveCardsToken;
 import it.polimi.ingsw.model.token.SoloActionToken;
 import it.polimi.ingsw.model.token.TokenDeck;
 
@@ -35,7 +41,34 @@ public class SinglePlayerGame extends Game {
      */
     public void drawToken(SinglePlayerGame game){
         SoloActionToken soloActionToken = tokenStack.draw();
-        soloActionToken.playToken(game);
+        this.playToken(soloActionToken);
         pcs.firePropertyChange(TOKEN_DRAWN, null, soloActionToken);
+    }
+
+    public void playToken(SoloActionToken soloActionToken){
+        if (soloActionToken instanceof RemoveCardsToken) {
+            CardColor cardColor = ((RemoveCardsToken) soloActionToken).getColor();
+            int toRemove = ((RemoveCardsToken) soloActionToken).getNumber();
+
+            for (int level = 1; level <= 3; level++) {
+                while(this.getGrid()[level-1][cardColor.getColumnGrid()].getTopCard() != null && toRemove > 0) {
+                    this.getGrid()[level-1][cardColor.getColumnGrid()].draw();
+                    toRemove--;
+                }
+                if (toRemove == 0) break;
+            }
+
+        } else if (soloActionToken instanceof MoveBlackMarkerToken) {
+            int steps = ((MoveBlackMarkerToken) soloActionToken).getSteps();
+            boolean reset = ((MoveBlackMarkerToken) soloActionToken).hasResetStack();
+
+            for(int i = 0; i < steps; i++){
+                Dashboard dashboard = this.getPlayers().get(0).getDashboard();
+                dashboard.incrementBlackFaith();
+            }
+            if(reset){
+                this.getTokenStack().reset();
+            }
+        }
     }
 }
