@@ -1,14 +1,9 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.listeners.ShelfListener;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
-import it.polimi.ingsw.network.VirtualView;
 
-import java.beans.PropertyChangeSupport;
 import java.util.*;
-
-import static it.polimi.ingsw.constants.PlayerConstants.SHELF_CHANGE;
 
 /**
  * Shelf Class represents a single shelf where the player can store resources
@@ -19,9 +14,6 @@ public class Shelf {
     private Set<Resource> resourcesAllowed;
     private ResourceMap resources;
     private final Integer capacity;
-
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
 
     public Shelf(Integer shelfCapacity) {
         resourcesAllowed = new HashSet<>();
@@ -79,12 +71,7 @@ public class Shelf {
      * @return true if the operation was successful
      */
     public boolean takeResource(Resource resource) {
-        ResourceMap OldResources = resources;
-        if (resourcesAllowed.contains(resource) && resources.modifyResource(resource, -1)) {
-            pcs.firePropertyChange(SHELF_CHANGE, OldResources, this.resources);
-            return true;
-        }
-        return false;
+        return resourcesAllowed.contains(resource) && resources.modifyResource(resource, -1);
     }
 
     /**
@@ -93,9 +80,6 @@ public class Shelf {
      * @return true if the operation was successful
      */
     public boolean placeResources(ResourceMap resources) {
-        ResourceMap OldResources = new ResourceMap();
-        OldResources.addResources(resources);
-
         //Check if the resource to place are allowed in the shelf
         for(Resource resource : Resource.values()) {
             if (resources.getResource(resource) > 0) {
@@ -115,7 +99,6 @@ public class Shelf {
             this.resources.modifyResource(resource, resources.getResource(resource));
         }
 
-        pcs.firePropertyChange(SHELF_CHANGE, OldResources, this.resources);
         return true;
     }
 
@@ -125,15 +108,9 @@ public class Shelf {
      */
     public boolean placeResource(Resource resource) {
         if (resourcesAllowed.contains(resource) && resources.getMapSize() < capacity) {
-            ResourceMap OldResources = resources;
             resources.modifyResource(resource, 1);
-            pcs.firePropertyChange(SHELF_CHANGE, OldResources, this.resources);
             return true;
         }
         return false;
-    }
-
-    public void addListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(SHELF_CHANGE, new ShelfListener(virtualView));
     }
 }
