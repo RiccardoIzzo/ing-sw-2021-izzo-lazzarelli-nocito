@@ -21,6 +21,7 @@ public class GameHandler {
     private Game game;
     private final Server server;
     private final String lobbyID;
+    private final VirtualView virtualView;
 
     /**
      * Constructor GameHandler creates a new GameHandler instance.
@@ -29,6 +30,7 @@ public class GameHandler {
     public GameHandler(Server server) {
         this.server = server;
         lobbyID = server.getLobbyID(this);
+        this.virtualView = new VirtualView(server,lobbyID);
     }
 
 
@@ -52,26 +54,16 @@ public class GameHandler {
         String firstPlayer;
         for (String player : players) {
             game.addPlayer(player);
-            //player.addListeners(new VirtualView(server, player));
+            game.getPlayerByName(player).addPropertyListener(virtualView);
         }
         game.generateGrid();
-        game.generateLeaders();
         game.getMarket().generateTray();
         /*
         The game is ready, send a GameStarted message to every player.
+        Give each player four LeaderCard.
          */
         server.sendEveryone(new GameStarted(), lobbyID);
-        /*
-        Send to every player the four leader cards with a SendLeaderCards message, they must select 2 out of 4 cards.
-         */
-        for (String player : players) {
-            int index = 0;
-            int[] ids = new int[4];
-            for(LeaderCard card : game.getPlayerByName(player).getLeaders()){
-                ids[index++] = card.getCardID();
-            }
-            if (server.isConnected(player)) server.getConnectionByPlayerName(player).sendToClient(new SendLeaderCards(ids));
-        }
+        game.generateLeaders();
 
         if (game instanceof MultiplayerGame) {
             ((MultiplayerGame) game).setFirstPlayer();
@@ -107,9 +99,7 @@ public class GameHandler {
                 else if(playerOrder == 4) server.getConnectionByPlayerName(player.getNickname()).sendToClient(new BonusResources(2));
                 playerOrder++;
             }
-        }
-
-        else{
+        } else {
             firstPlayer = players.get(0);
         }
         //to implement, bonus resource/faith based on the player position at the beginning of the game
