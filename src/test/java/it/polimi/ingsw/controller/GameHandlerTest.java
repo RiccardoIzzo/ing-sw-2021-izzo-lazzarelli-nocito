@@ -24,5 +24,21 @@ public class GameHandlerTest {
         gameHandlerTest = null;
     }
 
+    /**
+     * Method testSetGameMode sets the number of players to 1 and checks that game is set as an instance of SinglePlayerGame,
+     * then sets the numbers of players to 2 and checks  that game is set as an instance of MultiplayerGame
+     * */
+    @Test
+    public void testSetGameMode() {
+        Game game = gameHandlerTest.getGame();
+        assertFalse(game instanceof SinglePlayerGame);
+        assertTrue(game instanceof MultiplayerGame);
+
+        gameHandlerTest.setGameMode(1);
+        game = gameHandlerTest.getGame();
+        assertTrue(game instanceof SinglePlayerGame);
+
+
+    }
 
 }
