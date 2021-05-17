@@ -1,5 +1,7 @@
 package it.polimi.ingsw.listeners;
 
+import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
@@ -14,8 +16,8 @@ public class DashboardListener extends PropertyListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(STRONGBOX_CHANGE)) {
-            //new message
-            //send message
+            ServerMessage serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            virtualView.sendToEveryone(serverMessage);
         }
     }
 }

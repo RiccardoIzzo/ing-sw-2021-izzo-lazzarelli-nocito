@@ -1,5 +1,8 @@
 package it.polimi.ingsw.listeners;
 
+import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.UpdateView;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
@@ -17,29 +20,21 @@ public class PlayerListener extends PropertyListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        ServerMessage serverMessage;
         switch (evt.getPropertyName()) {
-            case LEADER_ACTIVATION:
-                //new message
-                //send message
-                break;
-            case SET_LEADERS:
-                //new message
-                //send message
-                break;
-            case SELECT_LEADERS:
-                //new message
-                //send message
-                break;
-            case DISCARD_LEADER:
-                //new message
-                //send message
-                break;
-            case GRID_CHANGE:
-                //new message
-                //send message
-                break;
+            case SET_LEADERS -> {
+                serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                virtualView.sendToPlayer((String) evt.getSource(), serverMessage);
+            }
+            case SELECT_LEADERS -> {
+                serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                virtualView.sendToPlayer((String) evt.getSource(), serverMessage);
+                virtualView.sendToEveryone(serverMessage);
+            }
+            case DISCARD_LEADER, LEADER_ACTIVATION, GRID_CHANGE -> {
+                serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                virtualView.sendToEveryone(serverMessage);
+            }
         }
     }
-
-
 }

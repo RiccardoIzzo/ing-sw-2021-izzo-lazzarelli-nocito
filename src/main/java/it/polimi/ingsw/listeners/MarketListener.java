@@ -1,5 +1,7 @@
 package it.polimi.ingsw.listeners;
 
+import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
@@ -19,11 +21,11 @@ public class MarketListener extends PropertyListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(MARKET_CHANGE)) {
-            //new message
-            //send message
+            ServerMessage serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            virtualView.sendToEveryone(serverMessage);
         } else if (evt.getPropertyName().equals(SLIDE_MARBLE)) {
-            //new message
-            //send message
+            ServerMessage serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            virtualView.sendToEveryone(serverMessage);
         }
     }
 }

@@ -9,7 +9,7 @@ import java.beans.PropertyChangeListener;
  * @author Gabriele Lazzarelli
  */
 public abstract class PropertyListener implements PropertyChangeListener {
-    private final VirtualView virtualView;
+    final VirtualView virtualView;
 
     protected PropertyListener(VirtualView virtualView) {
         this.virtualView = virtualView;

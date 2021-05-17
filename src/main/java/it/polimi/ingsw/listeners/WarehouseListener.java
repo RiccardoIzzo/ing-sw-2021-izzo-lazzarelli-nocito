@@ -1,5 +1,7 @@
 package it.polimi.ingsw.listeners;
 
+import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
@@ -18,12 +20,13 @@ public class WarehouseListener extends PropertyListener{
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(SHELF_CHANGE)) { //see shelf listener
-            //new message
-            //send message
+        ServerMessage serverMessage;
+        if (evt.getPropertyName().equals(SHELF_CHANGE)) {
+            serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            virtualView.sendToPlayer((String) evt.getSource(), serverMessage);
         } else if (evt.getPropertyName().equals(TEMPORARY_SHELF)) {
-            //new message
-            //send message
+            serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            virtualView.sendToPlayer((String) evt.getSource(), serverMessage);
         }
     }
 }

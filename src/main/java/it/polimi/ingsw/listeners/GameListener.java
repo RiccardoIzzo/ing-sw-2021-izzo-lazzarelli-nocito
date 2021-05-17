@@ -1,5 +1,7 @@
 package it.polimi.ingsw.listeners;
 
+import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
@@ -15,11 +17,11 @@ public class GameListener extends PropertyListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(END_TURN)) {
-            //new message
-            //send message
+            ServerMessage serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            virtualView.sendToEveryone(serverMessage);
         } else if (evt.getPropertyName().equals(TOKEN_DRAWN)) {
-            //new message
-            //send message
+            ServerMessage serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            virtualView.sendToEveryone(serverMessage);
         }
     }
 }
