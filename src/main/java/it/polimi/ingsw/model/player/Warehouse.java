@@ -135,6 +135,15 @@ public class Warehouse {
         return false;
     }
 
+    /**
+     * Method setPropertyChangeSupport sets a PropertyChangeSupport for this Warehouse,
+     * it is called by the Dashboard class which passes its own PropertyChangeSupport
+     * @param pcs, the PropertyChangeSupport of the Player who owns this Warehouse
+     */
+    public void setPropertyChangeSupport(PropertyChangeSupport pcs) {
+        this.pcs = pcs;
+    }
+
     public void addPropertyListener(VirtualView virtualView){
         pcs.addPropertyChangeListener(new WarehouseListener(virtualView));
     }

@@ -16,7 +16,6 @@ import static it.polimi.ingsw.constants.PlayerConstants.*;
 public class FaithTrack {
     private int posFaithMarker;
     private final Boolean[] popesFavorTiles;
-
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     // tilesUncovered: Value that states if the pope tiles have been uncovered
@@ -101,6 +100,15 @@ public class FaithTrack {
 
     public int getPlayerPos() {
         return posFaithMarker;
+    }
+
+    /**
+     * Method setPropertyChangeSupport sets a PropertyChangeSupport for this FaithTrack,
+     * it is called by the Dashboard class which passes its own PropertyChangeSupport
+     * @param pcs, the PropertyChangeSupport of the Dashboard who owns this FaithTrack
+     */
+    public void setPropertyChangeSupport(PropertyChangeSupport pcs) {
+        this.pcs = pcs;
     }
 
     public void addPropertyListener(VirtualView virtualView){

@@ -26,7 +26,7 @@ public class Player {
     private ArrayList<Card> availableProduction;
     private Set<MarbleColor> availableExchange;
     private ResourceMap availableDiscount;
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private PropertyChangeSupport pcs;
 
     /**
      * Constructor Player creates a new Player instance.
@@ -43,6 +43,8 @@ public class Player {
         availableProduction = new ArrayList<>();
         availableExchange = new HashSet<>();
         availableDiscount = new ResourceMap();
+        pcs = new PropertyChangeSupport(name);
+        setPropertyChangeSupport();
     }
 
     public String getNickname() {
@@ -242,8 +244,12 @@ public class Player {
             numResources += getTotalResources().getResource(resource);
         }
         // VPs for every set of 5 resources of any type + VPs depending on the final position on the faith track + VPs based on the Pope's favor tiles
-        victoryPoints += (numResources % 5) + myDashboard.getPath().getPosVictoryPoints() + myDashboard.getPath().getPointsForTiles();
+        victoryPoints += (numResources % 5) + myDashboard.getFaithTrack().getPosVictoryPoints() + myDashboard.getFaithTrack().getPointsForTiles();
         return victoryPoints;
+    }
+
+    public void setPropertyChangeSupport() {
+        myDashboard.setPropertyChangeSupport(this.pcs);
     }
 
     public void addPropertyListener(VirtualView virtualView) {

@@ -16,14 +16,14 @@ import static it.polimi.ingsw.constants.PlayerConstants.STRONGBOX_CHANGE;
  * @author Andrea Nocito
  */
 public class Dashboard {
-    private final FaithTrack path;
+    private final FaithTrack faithTrack;
     private final Warehouse warehouse;
     private final ArrayList<Card> cardSlots;
     private final ResourceMap strongBox;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public Dashboard(Game game) {
-        path = (game instanceof SinglePlayerGame) ? new SinglePlayerFaithTrack() : new FaithTrack();
+        faithTrack = (game instanceof SinglePlayerGame) ? new SinglePlayerFaithTrack() : new FaithTrack();
         warehouse = new Warehouse();
         cardSlots = new ArrayList<>();
         strongBox = new ResourceMap();
@@ -80,8 +80,7 @@ public class Dashboard {
         }
         for(Resource resource : Resource.values()) {
             for (int i = resources.getResource(resource); i > 0; i--) {
-                if (removeFromWarehouse(resource)) {
-                } else {
+                if (!removeFromWarehouse(resource)) {
                     for (int j = i; j > 0; j--) {
                         removeResource(resource);
                     }
@@ -110,7 +109,7 @@ public class Dashboard {
      */
     public void incrementFaith(int steps) {
         for(int i=0; i<steps; i++) {
-            path.moveForward();
+            faithTrack.moveForward();
         }
     }
 
@@ -118,20 +117,31 @@ public class Dashboard {
         return warehouse;
     }
 
-    public FaithTrack getPath() {
-        return path;
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
     }
 
     /**
      * Method incrementBlackFaith makes the path move the black cross forward.
      */
     public void incrementBlackFaith(){
-        ((SinglePlayerFaithTrack) path).moveBlack();
+        ((SinglePlayerFaithTrack) faithTrack).moveBlack();
+    }
+
+    /**
+     * Method setPropertyChangeSupport sets a PropertyChangeSupport for this Dashboard,
+     * it is called by the Player class which passes its own PropertyChangeSupport
+     * @param pcs, the PropertyChangeSupport of the Player who owns this Dashboard
+     */
+    public void setPropertyChangeSupport(PropertyChangeSupport pcs) {
+        this.pcs = pcs;
+        warehouse.setPropertyChangeSupport(pcs);
+        faithTrack.setPropertyChangeSupport(pcs);
     }
 
     public void addPropertyListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(STRONGBOX_CHANGE, new DashboardListener(virtualView));
+        pcs.addPropertyChangeListener(new DashboardListener(virtualView));
         warehouse.addPropertyListener(virtualView);
-        path.addPropertyListener(virtualView);
+        faithTrack.addPropertyListener(virtualView);
     }
 }
