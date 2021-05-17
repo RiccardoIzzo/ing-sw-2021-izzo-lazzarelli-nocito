@@ -27,6 +27,9 @@ public class JsonCardsCreator {
             .registerSubtype(ResourceRequirement.class, "Resource");
     private static final Gson gson = new GsonBuilder().registerTypeAdapterFactory(requirementAdapterFactory).create();
 
+    private static final ArrayList<DevelopmentCard> developmentCards = generateDevelopmentCards();
+    private static final ArrayList<LeaderCard> leaderCards = generateLeaderCards();
+
     /**
      * Method generateDevelopmentCards generates a list with the 48 development cards from a JSON file.
      */
@@ -44,7 +47,7 @@ public class JsonCardsCreator {
      * Method generateDevelopmentCard generates a DevelopmentCard given its cardID.
      */
     public static DevelopmentCard generateDevelopmentCard(int cardID) {
-        return generateDevelopmentCards().stream().filter(x -> x.getCardID() == cardID).findAny().get();
+        return developmentCards.stream().filter(x -> x.getCardID() == cardID).findAny().orElse(null);
     }
 
     /**
@@ -73,6 +76,14 @@ public class JsonCardsCreator {
      * Method generateLeaderCard generates a LeaderCard given its cardID.
      */
     public static LeaderCard generateLeaderCard(int cardID) {
-        return generateLeaderCards().stream().filter(x -> x.getCardID() == cardID).findAny().get();
+        return leaderCards.stream().filter(x -> x.getCardID() == cardID).findAny().orElse(null);
+    }
+
+    public static ArrayList<DevelopmentCard> getDevelopmentCards() {
+        return developmentCards;
+    }
+
+    public static ArrayList<LeaderCard> getLeaderCards() {
+        return leaderCards;
     }
 }
