@@ -8,5 +8,15 @@ public enum CardColor {
     GREEN,
     YELLOW,
     BLUE,
-    PURPLE
+    PURPLE;
+
+    public int getColumnGrid(){
+        return switch (this) {
+            case GREEN -> 0;
+            case PURPLE -> 1;
+            case BLUE -> 2;
+            case YELLOW -> 3;
+        };
+    }
 }
+
