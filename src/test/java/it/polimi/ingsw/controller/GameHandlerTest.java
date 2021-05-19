@@ -16,7 +16,7 @@ public class GameHandlerTest {
     @Before
     public void setUp() {
         serverTest = new Server(1024);
-        gameHandlerTest = new GameHandler(serverTest);
+        gameHandlerTest = new GameHandler(serverTest, "test");
         gameHandlerTest.setGameMode(2);
     }
     @After

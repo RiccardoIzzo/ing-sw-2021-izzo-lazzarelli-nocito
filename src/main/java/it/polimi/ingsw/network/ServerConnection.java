@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.events.servermessages.*;
+import it.polimi.ingsw.view.ActionHandler;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,13 +15,14 @@ import java.net.Socket;
 public class ServerConnection implements Runnable{
     private ObjectInputStream input;
     private boolean status;
-    //private ActionHandler actionHandler;
+    private ActionHandler actionHandler;
 
     /**
      * Constructor ServerConnection creates a new instance of ServerConnection.
      * @param socket instance of socket.
      */
-    public ServerConnection(Socket socket){
+    public ServerConnection(Socket socket, ActionHandler actionHandler){
+        this.actionHandler = actionHandler;
         try {
             input = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
@@ -43,7 +45,7 @@ public class ServerConnection implements Runnable{
     public void receiveFromServer(){
         try {
             ServerMessage message = (ServerMessage) input.readObject();
-            //actionHandler.handle(message);
+            actionHandler.handle(message);
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Can't find server! Quitting...");
             System.exit(0);

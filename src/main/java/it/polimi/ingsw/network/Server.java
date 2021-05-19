@@ -105,8 +105,8 @@ public class Server {
      */
     public ArrayList<String> getPlayersNameByLobby(String lobbyID){
         ArrayList<String> players = new ArrayList<>();
-        for(String nickname : users){
-            if(playerToLobby.get(nickname).equals(lobbyID)){
+        for(String nickname : playerToLobby.keySet()){
+            if(getLobbyIDByPlayerName(nickname).equals(lobbyID)){
                 players.add(nickname);
             }
         }
@@ -134,7 +134,7 @@ public class Server {
      * @param numPlayers maximum number of players for that lobby.
      */
     public synchronized void createLobby(String lobbyID, int numPlayers){
-        lobbies.put(lobbyID, new GameHandler(this));
+        lobbies.put(lobbyID, new GameHandler(this, lobbyID));
         lobbyToNumPlayers.put(lobbyID, numPlayers);
     }
 
@@ -236,12 +236,7 @@ public class Server {
                 playerToLobby.put(nickname, lobbyID);
                 lobbies.get(lobbyID).setGameMode(numPlayers);
                 connection.sendToClient(new LobbyJoined());
-            }
-            /*
-            Already exists a lobby with this id.
-             */
-            else {
-                connection.sendToClient(new TextMessage("Already exists a lobby with this id! Try again."));
+                //to implement: single player game
             }
         }
 
@@ -269,12 +264,6 @@ public class Server {
                     if(isFull(lobbyID)) getGameHandler(nickname).start();
                 }
             }
-            /*
-            Can't join a lobby that doesn't exist.
-             */
-            else {
-                connection.sendToClient(new TextMessage("Error, this lobby doesn't exist."));
-            }
         }
 
         /*
@@ -293,7 +282,7 @@ public class Server {
     }
 
     /**
-     * Server main class.
+     * Server main method.
      * It asks for the server port, creates a new instance of Server and starts the serverHandler.
      * @param args main args.
      */
@@ -306,7 +295,6 @@ public class Server {
             port = new Scanner(System.in).nextInt();
         }
         Server server = new Server(port);
-        System.out.println("Starting server...");
         (new Thread(server.serverHandler)).start();
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.events.clientmessages.*;
+import it.polimi.ingsw.view.ActionHandler;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -32,16 +33,17 @@ public class NetworkHandler {
     /**
      * Method setConnection creates a new socket connection, enables outbound communication and starts a thread that manages inbound communication.
      */
-    public void setConnection(){
+    public void setConnection(ActionHandler actionHandler){
         try {
             socket = new Socket(ip, port);
             output = new ObjectOutputStream(socket.getOutputStream());
-            serverConnection = new ServerConnection(socket);
+            serverConnection = new ServerConnection(socket, actionHandler);
             serverConnection.setStatus(true);
             (new Thread(serverConnection)).start();
             keepAlive();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Can't find server! Quitting...");
+            System.exit(0);
         }
     }
 
