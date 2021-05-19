@@ -27,9 +27,9 @@ public class GameHandler {
      * Constructor GameHandler creates a new GameHandler instance.
      * @param server reference to the server that will manage the communications.
      */
-    public GameHandler(Server server) {
+    public GameHandler(Server server, String lobbyID) {
         this.server = server;
-        lobbyID = server.getLobbyID(this);
+        this.lobbyID = lobbyID;
         this.virtualView = new VirtualView(server,lobbyID);
     }
 
