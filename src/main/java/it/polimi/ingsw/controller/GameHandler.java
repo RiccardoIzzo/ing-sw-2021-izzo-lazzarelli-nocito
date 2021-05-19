@@ -120,7 +120,7 @@ public class GameHandler {
         }
 
         else if(message instanceof TakeResources) {
-            player.getResources(((TakeResources) message).getIndex(), ((TakeResources) message).getType(), game.getMarket());
+            player.takeResourcesFromMarket(((TakeResources) message).getIndex(), ((TakeResources) message).getType());
         }
 
         else if(message instanceof BuyCard) {

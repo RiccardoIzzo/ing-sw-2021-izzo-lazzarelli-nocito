@@ -153,25 +153,22 @@ public class Player {
      */
     public ResourceMap getTotalResources() {
         ResourceMap totalResources = new ResourceMap();
-        totalResources.addResources(myDashboard.getStrongBox());
-        for (Shelf shelf: myDashboard.getWarehouse().getShelves()) {
-            totalResources.addResources(shelf.getResources());
-        }
+        totalResources.addResources(myDashboard.getStrongbox());
+        totalResources.addResources(myDashboard.getWarehouse().getResourcesFromWarehouse());
         return totalResources;
     }
 
     /**
-     * Method getResources takes resources from the market by letting slide the marble in the selected index.
+     * Method takeResourcesFromMarket takes resources from the market by letting slide the marble in the selected index.
      * If by performing this action a red marble is found, the player moves forward on the faith track.
      * The resources obtained are finally added to the temporary shelf where they can be managed by the player.
      * @param pos row/column index.
      * @param type represent the user choice: 1 = row, 2 = column.
-     * @param market instance of Market.
      */
-    public void getResources(int pos, int type, Market market){
-        market.insertMarble(pos, type);
-        if(market.findFaith()) myDashboard.incrementFaith(1);
-        myDashboard.getWarehouse().addResourcesIntoTemporaryShelf(market.resourceOutput());
+    public void takeResourcesFromMarket(int pos, int type){
+        game.getMarket().insertMarble(pos, type);
+        if(game.getMarket().findFaith()) myDashboard.incrementFaith(1);
+        myDashboard.getWarehouse().addResourcesToShelf(TEMPORARY_SHELF, game.getMarket().resourceOutput());
     }
 
     /**
@@ -180,8 +177,8 @@ public class Player {
      * @param developmentCard : the Card which productionPower is to activate
      */
     public void activateProduction(DevelopmentCard developmentCard){
-        myDashboard.removeResources(developmentCard.getProduction().getInputResource());
-        myDashboard.addResources(developmentCard.getProduction().getOutputResource());
+        myDashboard.removeResourcesFromDashboard(developmentCard.getProduction().getInputResource());
+        myDashboard.addResourcesToStrongbox(developmentCard.getProduction().getOutputResource());
         myDashboard.incrementFaith(developmentCard.getProduction().getOutputFaith());
     }
 
@@ -209,7 +206,7 @@ public class Player {
         } else if (leaderCard instanceof DiscountLeaderCard){
             availableDiscount.addResources(((DiscountLeaderCard) leaderCard).getDiscount());
         } else if (leaderCard instanceof ExtraShelfLeaderCard){
-            myDashboard.addShelf(((ExtraShelfLeaderCard) leaderCard).getShelf());
+            myDashboard.getWarehouse().addExtraShelfResource(((ExtraShelfLeaderCard) leaderCard).getResource());
         }
         pcs.firePropertyChange(LEADER_ACTIVATION, leaderCard.getCardID(), leaderCard.getCardID());
     }

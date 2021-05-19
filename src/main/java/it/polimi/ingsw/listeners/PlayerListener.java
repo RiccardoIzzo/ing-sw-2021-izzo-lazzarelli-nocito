@@ -2,7 +2,6 @@ package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
@@ -31,8 +30,12 @@ public class PlayerListener extends PropertyListener {
                 virtualView.sendToPlayer((String) evt.getSource(), serverMessage);
                 virtualView.sendToEveryone(serverMessage);
             }
-            case DISCARD_LEADER, LEADER_ACTIVATION, GRID_CHANGE -> {
+            case DISCARD_LEADER, LEADER_ACTIVATION -> {
                 serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                virtualView.sendToEveryone(serverMessage);
+            }
+            case GRID_CHANGE -> {
+                serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
                 virtualView.sendToEveryone(serverMessage);
             }
         }
