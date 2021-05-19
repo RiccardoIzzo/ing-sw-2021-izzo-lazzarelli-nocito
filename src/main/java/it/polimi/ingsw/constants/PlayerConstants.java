@@ -9,7 +9,10 @@ public final class PlayerConstants {
     public static final int NUMBER_OF_LEADERS = 3;
 
     /*Warehouse constant values*/
-    public static final int NUMBER_SHELF = 3;
+    public static final int FIRST_SHELF = 1; //Shelf number of the first shelf
+    public static final int LAST_SHELF = 4; //Shelf number of the last shelf
+    public static final int TEMPORARY_SHELF = 5; //Shelf number of the temporary shelf
+
 
 
     /*FaithTrack constant values*/
@@ -44,7 +47,7 @@ public final class PlayerConstants {
     public static final String STRONGBOX_CHANGE = "strongboxChange";
 
     //WarehouseListener
-    public static final String TEMPORARY_SHELF = "TemporaryShelf";
+    public static final String TEMPORARY_SHELF_CHANGE = "TemporaryShelf";
 
     //FaithTrackListener
     public static final String FAITH_MARKER_POSITION = "faithMarkerPosition";
