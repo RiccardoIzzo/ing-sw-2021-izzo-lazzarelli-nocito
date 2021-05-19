@@ -34,7 +34,6 @@ public class Warehouse {
 
     public Warehouse() {
         this.shelves = new ArrayList<>(15);
-        flushShelves();
         this.extraShelfResources = new ArrayList<>();
     }
 
@@ -52,7 +51,6 @@ public class Warehouse {
      */
     public void setShelves(ArrayList<Resource> shelves) {
         this.shelves = shelves;
-        flushShelves();
         pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
     }
 
