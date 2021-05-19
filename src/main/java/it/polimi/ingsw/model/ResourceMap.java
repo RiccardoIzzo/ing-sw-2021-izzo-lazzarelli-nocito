@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 /**
@@ -23,7 +24,6 @@ public class ResourceMap {
         }
     }
 
-
     /**
      * Method getResources returns an ArrayList of Integers with all the available quantities of each Resource.
      * @return the an ArrayList of the associated Integers.
@@ -34,44 +34,75 @@ public class ResourceMap {
 
     /**
      * Method getResource returns the available quantity of the specified Resource.
-     * @return the associated Integer.
+     * @param resource the specified Resource
+     * @return the quantity for the specified Resource in this ResourceMap
      */
-    public Integer getResource(Resource type) {
-        return resources.get(type);
+    public Integer getResource(Resource resource) {
+        return resources.get(resource);
     }
 
     /**
-     * Method getMapSize returns  quantity of resources inside ResourceMap
+     * Method size return the amount of resources inside this ResourceMap
      * @return the associated Integer.
      */
-    public Integer getMapSize() {
+    public Integer size() {
         int total = 0;
-        for (Map.Entry<Resource, Integer> entry : resources.entrySet()) {
-            total += entry.getValue();
+        for (Resource resource: Resource.values()) {
+            total += getResource(resource);
         }
         return total;
     }
 
+    /**
+     * Method asList return an ArrayList with all the resource this ResourceMap contains
+     * @return an ArrayList containing all the resource of this ResourceMap
+     */
+    public ArrayList<Resource> asList() {
+        ArrayList<Resource> resourcesList = new ArrayList<>();
+        for (Resource resource: Resource.values()){
+            for (int i = 0; i < this.getResource(resource); i++) {
+                resourcesList.add(resource);
+            }
+        }
+        return resourcesList;
+    }
 
     /**
-     * Method addResources receives a Map of Resources and associated Integers to add.
+     * Method modifyResource receives the resource type and the Integer value to add to such resource.
+     * @return true if the operation was successful
+     */
+    public boolean modifyResource(Resource type, Integer value) {
+        int newValue = this.getResource(type) + value;
+        if(newValue >= 0) {
+            resources.put(type, newValue);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method addResources receives a ResourceMap and adds to this ResourceMap the amount of resources of the ResourceMap received.
      */
     public void addResources(ResourceMap resourceMap) {
         for (Resource resource : Resource.values()) {
             this.modifyResource(resource, resourceMap.getResource(resource));
         }
     }
+
     /**
-     * Method modifyResource receives the resource type and the Integer value to add to such resource.
-     * @return true if the operation was successful
+     * Method removeResource receives a ResourceMap and removes from this ResourceMap the amount of resources of the ResourceMap received.
+     * @return true if the the operation is successful, false if there are not enough resource in this ResourceMap
      */
-    public boolean modifyResource(Resource type, Integer value) {
-        int num = resources.get(type) + value;
-        if(num >= 0) {
-            resources.replace(type, num);
-            return true;
+    public boolean removeResources(ResourceMap resourceMap) {
+        for (Resource resource: Resource.values()) {
+            if (this.getResource(resource) < resourceMap.getResource(resource)) {
+                return false;
+            }
         }
-        return false;
+        for (Resource resource: Resource.values()) {
+            this.modifyResource(resource, -1 * resourceMap.getResource(resource));
+        }
+        return true;
     }
 
     /**

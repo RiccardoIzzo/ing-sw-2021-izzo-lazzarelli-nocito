@@ -74,7 +74,7 @@ public class MarketTest {
     @Test
     public void resetTest(){
         myMarket.reset();
-        for(Resource resource : myMarket.resourceOutput().getResources().keySet()){
+        for(Resource resource : Resource.values()){
             assertEquals(Integer.valueOf(0), myMarket.resourceOutput().getResource(resource));
         }
         assertNull(myMarket.getSpecialMarble());
@@ -104,7 +104,7 @@ public class MarketTest {
         assertEquals(myMarket.getMarble(index + 3), currSlideMarble);
 
         int size = 0;
-        for(Resource resource : myMarket.resourceOutput().getResources().keySet()){
+        for(Resource resource : Resource.values()){
             size += myMarket.resourceOutput().getResource(resource);
         }
         // when selecting a row the max number of resources obtainable is 4
@@ -132,7 +132,7 @@ public class MarketTest {
         assertEquals(myMarket.getMarble(index), currSlideMarble);
 
         int size = 0;
-        for(Resource resource : myMarket.resourceOutput().getResources().keySet()){
+        for(Resource resource : Resource.values()){
             size += myMarket.resourceOutput().getResource(resource);
         }
         // when selecting a column the max number of resources obtainable is 3

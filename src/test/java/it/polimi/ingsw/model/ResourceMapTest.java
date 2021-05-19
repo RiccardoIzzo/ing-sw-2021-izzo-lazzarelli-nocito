@@ -20,12 +20,4 @@ public class ResourceMapTest {
         myResourceMap = new ResourceMap();
     }
 
-    /**
-     * Method generateTrayTest checks that ResourceMap contained a value for each and every Resources
-     */
-    @Test
-    public void getResourcesTest() {
-        assertEquals(myResourceMap.getResources().size(), Resource.values().length);
-    }
-
 }

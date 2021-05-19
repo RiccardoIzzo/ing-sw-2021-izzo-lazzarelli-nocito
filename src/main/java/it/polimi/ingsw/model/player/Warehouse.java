@@ -7,132 +7,168 @@ import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Optional;
 
-import static it.polimi.ingsw.constants.PlayerConstants.NUMBER_SHELF;
-import static it.polimi.ingsw.constants.PlayerConstants.TEMPORARY_SHELF;
+import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 /**
-    * Warehouse Class represents the set of shelves available on a dashboard
-    *
-    * @author Andrea Nocito
-    */
+ * Warehouse Class represents the set of shelves available on the dashboard
+ *
+ * @author Gabriele Lazzarelli
+ */
 public class Warehouse {
-    private ArrayList<Shelf> shelves;
+    /*
+                                      Array[index]
+    Shelf  I   - shelfNumber = 1           0
+    Shelf  II  - shelfNumber = 2          1,2
+    Shelf  III - shelfNumber = 3         3,4,5
+    Shelf  IV  - shelfNumber = 4        6,7,8,9      -> LeaderCardShelfA & LeaderCardShelfB
+    Shelf  V   - shelfNumber = 5     10,11,12,13,14  -> TemporaryShelf
+
+    Note: shelfNumber is both shelf's number and capacity
+     */
+
+    //FIXME: Replace Resource with Optional<Resource> in shelves
+    private ArrayList<Resource> shelves;
+    private ArrayList<Resource> extraShelfResources;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public Warehouse() {
-        this.shelves = new ArrayList<>();
-
-        for(int i=1; i<=NUMBER_SHELF; i++) {
-            shelves.add( new Shelf(i));
-        }
+        this.shelves = new ArrayList<>(15);
+        this.extraShelfResources = new ArrayList<>();
     }
 
-    public void addShelf(Shelf shelf) {
-        shelves.add(shelf);
-    }
-
-    public boolean addResource(Resource resource, int shelfIndex) {
-        if (shelves.size() > shelfIndex) {
-            shelves.get(shelfIndex).placeResource(resource);
-            return true;
-        }
-        return false;
-    }
-    public int getShelvesSize() {return shelves.size();}
-
-    public ArrayList<Shelf> getShelves() {
+    /**
+     * Method getShelves gets the ArrayList of Resource(s) associated with this Warehouse.
+     * @return ArrayList of Resource(s), the Resource(s) associated with this Warehouse.
+     */
+    public ArrayList<Resource> getShelves() {
         return shelves;
     }
 
-    public Optional<Shelf> getShelf(int shelfIndex) {
-        if (shelves.size() > shelfIndex) {
-            return Optional.ofNullable(shelves.get(shelfIndex));
-        }
-        return Optional.empty();
-    }
     /**
-     * Method addResourceIntoTemporaryShelf creates a new temporary Shelf and adds the Resources into it.
+     * Method setShelves sets the ArrayList of Resource(s) associated with this Warehouse.
+     * @param shelves the ArrayList of Resource(s) to set.
      */
-    public void addResourcesIntoTemporaryShelf(ResourceMap resources) {
-        Shelf tempShelf = new Shelf(resources.getResources().size(), resources.getResources().keySet());
-        tempShelf.placeResources(resources);
-        shelves.add(tempShelf);
-        pcs.firePropertyChange(TEMPORARY_SHELF, null, resources);
+    public void setShelves(ArrayList<Resource> shelves) {
+        this.shelves = shelves;
+        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
     }
 
     /**
-     * Method removeResourcesFromTemporaryShelf removes the temporary shelf created by addResourceIntoTemporaryShelf
+     * Method getExtraShelfResources gets the Arraylist of Resource(s) associated with the active ExtraShelfLeaderCard(s)
+     * of the Player who own this Warehouse.
+     * @return ArrayList of Resource(s) of the active ExtraShelfLeaderCard.
      */
-    public void removeResourcesFromTemporaryShelf() {
-        shelves.remove(shelves.size()-1);
-        pcs.firePropertyChange(TEMPORARY_SHELF, null, shelves.get(shelves.size() - 1).getResources());
+    public ArrayList<Resource> getExtraShelfResources() {
+        return extraShelfResources;
     }
 
     /**
-     * Method removeResource with @param Resource tries to remove the first resource it finds that matches the specified type.
-     * @return true is the operation was successful
+     * Method addExtraShelfResource adds a Resource to the ArrayList of Resource(s), the Resource is the Resource allowed in
+     * in the extra shelf provided by the ExtraShelfLeaderCard.
+     * @param resource the resource to add to extraShelfResources.
      */
-    public boolean removeResource(Resource resource) {
-        int i = 0;
-        while (i < shelves.size()) {
-           if (shelves.get(i).takeResource(resource)) {
-               return  true;
-           }
-        }
-        return false;
+    public void addExtraShelfResource(Resource resource) {
+        extraShelfResources.add(resource);
+        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
     }
 
     /**
-     * Method getResourcesSize counts the amount of each resource available on the shelves
-     * @return ResourceMap with the amount of each resource
+     * Method getShelfIndex gets the starting index in shelves of the selected shelf
+     * @param shelfNumber the selected shelf
+     * @return int, the index of the selected shelf
      */
-    public ResourceMap getResourcesSize() {
-        ResourceMap res = new ResourceMap();
-        for (Shelf shelf : shelves) {
-            res.addResources(shelf.getResources());
-        }
-        return res;
+    public int getShelfIndex(int shelfNumber) {
+        return (shelfNumber*shelfNumber - shelfNumber +2)/2 - 1;
     }
 
     /**
-     * Method removeResource tries to remove the last resource unit inside the specified shelf.
-     * @return true is the operation was successful
+     * Method getResourcesFromShelf return a ResourceMap containing all the resources in the specified shelf
+     * @param shelfNumber the specified shelf
+     * @return ResourceMap, the resources in the specified shelf
      */
-    public boolean removeResource(int shelfIndex, Resource resource) {
-        if (shelves.size() > shelfIndex && shelves.get(shelfIndex).getResourceAllowed().contains(resource))  {
-            Shelf tempShelf = shelves.get(shelfIndex);
-            if (tempShelf.takeResource(resource)) {
-                shelves.set(shelfIndex, tempShelf);
-                return true;
-            }
-            else {
-                return false;
+    public ResourceMap getResourcesFromShelf(int shelfNumber) {
+        ResourceMap resourceMap = new ResourceMap();
+        int shelfIndex = getShelfIndex(shelfNumber);
+        for (int i = shelfIndex; i < shelfIndex + shelfNumber; i++) {
+            if (shelves.get(i) != null) {
+                resourceMap.modifyResource(shelves.get(i), 1);
             }
         }
-        return false;
+        return resourceMap;
     }
 
     /**
-     * Method swapResource tries to swap the position fo two resources from two different shelves
-     * @return true is the operation was successful
+     * Method getResourcesFromWarehouse return a ResourceMap containing all the resources in this Warehouse
+     * @return ResourceMap, the resources in this Warehouse
      */
-    public boolean swapResource(int shelfIndexStart, int shelfIndexEnd, Resource firstResource, Resource secondResource) {
-        if (shelves.size() > shelfIndexStart && shelves.size() > shelfIndexEnd) {
+    public ResourceMap getResourcesFromWarehouse() {
+        ResourceMap resourceMap = new ResourceMap();
+        for (int shelfNumber = FIRST_SHELF; shelfNumber <= LAST_SHELF; shelfNumber++) {
+            resourceMap.addResources(getResourcesFromShelf(shelfNumber));
+        }
+        return resourceMap;
+    }
 
-            if (shelves.get(shelfIndexStart).takeResource(firstResource)){
-                if (shelves.get(shelfIndexEnd).takeResource(secondResource)){
-                    shelves.get(shelfIndexStart).placeResource(secondResource);
-                    shelves.get(shelfIndexEnd).placeResource(firstResource);
-                    return true;
-                }
-                else{
-                    shelves.get(shelfIndexStart).placeResource(firstResource);
-                }
+    /**
+     * Method addResourcesToShelf tries to relocate all the Resource(s) in the resourceMap to the selected shelf
+     * @param shelfNumber the number of the selected number
+     * @param resourceMap the resources to allocate
+     * @return true if the resources are allocated, false if there isn't enough place to allocate the resources
+     */
+    public boolean addResourcesToShelf(int shelfNumber, ResourceMap resourceMap) {
+        int shelfIndex = getShelfIndex(shelfNumber);
+        if (resourceMap.size() > shelfNumber) return false;
+        for (Resource resource: resourceMap.asList()) {
+            shelves.set(shelfIndex, resource);
+            shelfIndex++;
+        }
+        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
+        return true;
+    }
+
+    /**
+     * Method removeResourcesFromShelf removes all the resource of the selected shelf
+     * @param shelfNumber the number of the selected number
+     * @return a ResourceMap containing the resources removed
+     */
+    public ResourceMap removeResourcesFromShelf(int shelfNumber) {
+        ResourceMap resourceMap = new ResourceMap();
+        int shelfIndex = getShelfIndex(shelfNumber);
+        for (int i = shelfIndex; i < shelfIndex + shelfNumber; i++) {
+            resourceMap.modifyResource(shelves.get(i), 1);
+            shelves.set(i, null);
+        }
+        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
+        return resourceMap;
+    }
+
+    /**
+     * Method removeResourcesFromWarehouse tries to remove from this Warehouse the resources in the ResourceMap
+     * @param resourceMap the resources to remove from this Warehouse
+     * @return a ResourceMap, the remaining resources to remove
+     */
+    public ResourceMap removeResourcesFromWarehouse(ResourceMap resourceMap) {
+        int firstIndex = getShelfIndex(FIRST_SHELF);
+        int lastIndex = getShelfIndex(LAST_SHELF) + LAST_SHELF;
+        for (int i = firstIndex; i < lastIndex; i++){
+            if(resourceMap.modifyResource(shelves.get(i), -1)){
+                shelves.set(i, null);
             }
         }
-        return false;
+        pcs.firePropertyChange(TEMPORARY_SHELF_CHANGE, null, shelves);
+        return resourceMap;
+    }
+
+    /**
+     * Method flushShelves removes all resources from this Warehouse
+     */
+    public void flushShelves() {
+        int firstIndex = getShelfIndex(FIRST_SHELF);
+        int lastIndex = getShelfIndex(LAST_SHELF) + LAST_SHELF;
+        for (int i = firstIndex; i < lastIndex; i++) {
+            shelves.set(i, null);
+        }
     }
 
     /**
