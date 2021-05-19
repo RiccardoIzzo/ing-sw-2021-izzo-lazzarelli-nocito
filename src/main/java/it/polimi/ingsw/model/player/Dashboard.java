@@ -19,89 +19,51 @@ public class Dashboard {
     private final FaithTrack faithTrack;
     private final Warehouse warehouse;
     private final ArrayList<Card> cardSlots;
-    private final ResourceMap strongBox;
+    private final ResourceMap strongbox;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public Dashboard(Game game) {
         faithTrack = (game instanceof SinglePlayerGame) ? new SinglePlayerFaithTrack() : new FaithTrack();
         warehouse = new Warehouse();
         cardSlots = new ArrayList<>();
-        strongBox = new ResourceMap();
+        strongbox = new ResourceMap();
     }
 
     /**
-     * Method addShelf receives a shelf and adds it to the list
+     * Method addResourcesToStrongbox adds the resources into the strongbox
      */
-    public void addShelf(Shelf shelf) {
-        warehouse.addShelf(shelf);
-    }
-
-    /**
-     * Method addResource adds one resource into the strongBox
-     */
-    void addResource(Resource resource) {
-        strongBox.modifyResource(resource, 1);
-    }
-
-    /**
-     * Method addResources adds the resources into the strongBox
-     */
-    void addResources(ResourceMap resources) {
+    void addResourcesToStrongbox(ResourceMap resources) {
         ResourceMap oldStrongbox = new ResourceMap();
-        oldStrongbox.addResources(strongBox);
+        oldStrongbox.addResources(strongbox);
 
-        strongBox.addResources(resources);
-        pcs.firePropertyChange(STRONGBOX_CHANGE, oldStrongbox, this.strongBox);
+        strongbox.addResources(resources);
+        pcs.firePropertyChange(STRONGBOX_CHANGE, oldStrongbox, this.strongbox);
     }
 
-    public ResourceMap getStrongBox() {
-        return strongBox;
-    }
-
-    /**
-     * Method removeFromWarehouse tries to remove one resource from the shelves inside warehouse.
-     * @return true if the operation was successful, false otherwise.
-     */
-    boolean removeFromWarehouse(Resource resource) {
-        return warehouse.removeResource(resource);
+    public ResourceMap getStrongbox() {
+        return strongbox;
     }
 
     /**
-     * Method removeResources tries to remove the specified resources from the shelves (and eventually the strongbox)
+     * Method removeResourcesFromDashboard tries to remove the specified resources from the shelves (and eventually the strongbox)
      * @return true if the operation was successful, false otherwise.
      */
-    boolean removeResources(ResourceMap resources) {
-        ResourceMap totalResources = warehouse.getResourcesSize();
-        totalResources.addResources(strongBox);
+    boolean removeResourcesFromDashboard(ResourceMap resourceMap) {
+        ResourceMap totalResources = new ResourceMap();
+        totalResources.addResources(warehouse.getResourcesFromWarehouse());
+        totalResources.addResources(strongbox);
+        //check if there are enough resources
         for(Resource resource : Resource.values()) {
-            if (resources.getResource(resource) > totalResources.getResource(resource)) {
+            if (resourceMap.getResource(resource) > totalResources.getResource(resource)) {
                 return false;
             }
         }
-        for(Resource resource : Resource.values()) {
-            for (int i = resources.getResource(resource); i > 0; i--) {
-                if (!removeFromWarehouse(resource)) {
-                    for (int j = i; j > 0; j--) {
-                        removeResource(resource);
-                    }
-                }
-            }
-        }
+        ResourceMap resourcesToRemove = new ResourceMap();
+        resourcesToRemove.addResources(resourceMap); //? : is it necessary to use a copy?
+        resourcesToRemove =  warehouse.removeResourcesFromWarehouse(resourcesToRemove);
+        strongbox.removeResources(resourcesToRemove);
+        pcs.firePropertyChange(STRONGBOX_CHANGE, null, strongbox);
         return true;
-    }
-
-    /**
-     * Method removeResource removes one resource from the strongBox
-     */
-    boolean removeResource(Resource resource) {
-        ResourceMap oldStrongbox = new ResourceMap();
-        oldStrongbox.addResources(strongBox);
-
-        if (strongBox.modifyResource(resource, -1)) {
-            pcs.firePropertyChange(STRONGBOX_CHANGE, oldStrongbox, this.strongBox);
-            return true;
-        }
-        return false;
     }
 
     /**
