@@ -1,37 +1,151 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.events.clientmessages.*;
+import it.polimi.ingsw.events.servermessages.InvalidNickname;
+import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.ValidNickname;
+import it.polimi.ingsw.network.NetworkHandler;
 
-import javax.swing.*;
-import java.io.PrintStream;
+import java.util.Map;
 import java.util.Scanner;
 
-public class CLI {
+/**
+ * CLI class manages the game with a Command Line Interface.
+ */
+public class CLI implements View{
+    private final ActionHandler actionHandler;
     private ActionListener actionListener;
-    private ActionHandler actionHandler;
-    private Game playerGame;
-    private String playerID; //nickname
-
-    private final PrintStream output;
+    private NetworkHandler network;
     private final Scanner input;
 
-    CLI() {
-        actionHandler = new ActionHandler();
-        actionListener = new ActionListener();
-
+    /**
+     * Constructor CLI creates a new CLI instance.
+     */
+    public CLI() {
+        actionHandler = new ActionHandler(this);
         input = new Scanner(System.in);
-        output = new PrintStream(System.out);
-    }
-    public Game getPlayerGame() {
-        return playerGame;
     }
 
-    void startGame() {
-        // Connection etc. , set playerID
-
-        showDashboard();
-        chooseAction();
+    /**
+     * Method setNickname asks for a nickname and sends a SetNickname message to the server with the selected nickname.
+     */
+    @Override
+    public void setNickname() {
+        System.out.println("Choose your nickname:");
+        String name = new Scanner(System.in).next();
+        send(new SetNickname(name));
     }
+
+    /**
+     * Method handleNickname manages the two possible answers to a SetNickname message, ValidNickname and InvalidNickname.
+     * @param message ServerMessage to handle.
+     */
+    @Override
+    public void handleNickname(ServerMessage message){
+        if(message instanceof ValidNickname){
+            System.out.println("The selected nickname is valid and has been successfully registered.");
+            send(new GetLobbies());
+        }
+        else if(message instanceof InvalidNickname){
+            System.out.println("This nickname is not valid! Try again.");
+            setNickname();
+        }
+    }
+
+    /**
+     * Method handleLobbies manages the lobby system.
+     * First of all it prints the list of available lobbies with the corresponding maximum number of players.
+     * Finally it manages two cases: the creation of a lobby and the registration of a player in a lobby.
+     * @param lobbies map that associates the lobby id to the maximum number of players for that lobby.
+     */
+    @Override
+    public void handleLobbies(Map<String, Integer> lobbies){
+        System.out.println("*** LOBBIES ***");
+        for(String lobbyID : lobbies.keySet()){
+            System.out.println("--------------------");
+            System.out.println("ID: " + lobbyID);
+            System.out.println("Number of players: " + lobbies.get(lobbyID));
+            System.out.println("--------------------");
+        }
+        System.out.println("\nDo you want to create your own lobby or join an existing one?");
+        System.out.println("- CREATE\n- JOIN");
+        String choice = input.nextLine();
+        switch (choice.toLowerCase()){
+            case "create" ->{
+                System.out.println("Insert the lobbyID:");
+                String lobbyID = input.nextLine();
+                System.out.println("Insert the number of players:");
+                int numPlayers = input.nextInt();
+                if(!lobbies.containsKey(lobbyID)){
+                    send(new CreateLobby(lobbyID, numPlayers));
+                }
+                else {
+                    System.out.println("Already exists a lobby with this id! Try again.");
+                    send(new GetLobbies());
+                }
+            }
+            case "join" ->{
+                System.out.println("Insert the lobbyID of the lobby you want to join:");
+                String lobbyID = input.nextLine();
+                if(lobbies.containsKey(lobbyID)){
+                    send(new JoinLobby(lobbyID));
+                }
+                else{
+                    System.out.println("Error, this lobby doesn't exist.");
+                    send(new GetLobbies());
+                }
+            }
+        }
+    }
+
+    /**
+     * Method printText prints the given text on the terminal.
+     * @param text text to print.
+     */
+    @Override
+    public void printText(String text){
+        System.out.println(text);
+    }
+
+    /**
+     * Method send dispatch a message to the server.
+     * @param message the ClientMessage to send.
+     */
+    @Override
+    public void send(ClientMessage message) {
+        network.sendToServer(message);
+    }
+
+    /**
+     * Method setupGame manages the initial phase of the game.
+     * @param ip server ip address.
+     * @param port server port.
+     */
+    private void setupGame(String ip, int port) {
+        this.network = new NetworkHandler(ip, port);
+        network.setConnection(actionHandler);
+        setNickname();
+    }
+
+    @Override
+    public void selectBonusResource(int amount) {
+        System.out.println("Select " + amount + " bonus resource.");
+    }
+
+    /**
+     * CLI main method.
+     * @param args main args.
+     */
+    public static void main(String[] args) {
+        System.out.println("MASTERS OF RENAISSANCE - CLI");
+        System.out.println("Insert server ip address:");
+        String ip = new Scanner(System.in).next();
+        System.out.println("Insert server port:");
+        int port = new Scanner(System.in).nextInt();
+        CLI cli = new CLI();
+        cli.setupGame(ip, port);
+    }
+
     void showDashboard(){
         // print dashboard
     }
@@ -94,5 +208,4 @@ public class CLI {
     void updateFaithTrack() {
 
     }
-
 }
