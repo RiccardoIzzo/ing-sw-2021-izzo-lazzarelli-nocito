@@ -64,10 +64,9 @@ public class ResourceRequirementTest {
 
     @Test
     public void checkRequirement() {
-        //TODO
-//        assertTrue(leaderCardA.getRequirement().checkRequirement(player));
-//        assertTrue(developmentCardA.getRequirement().checkRequirement(player));
-//        assertFalse(leaderCardB.getRequirement().checkRequirement(player));
-//        assertFalse(developmentCardB.getRequirement().checkRequirement(player));
+        assertTrue(leaderCardA.getRequirement().checkRequirement(player));
+        assertTrue(developmentCardA.getRequirement().checkRequirement(player));
+        assertFalse(leaderCardB.getRequirement().checkRequirement(player));
+        assertFalse(developmentCardB.getRequirement().checkRequirement(player));
     }
 }

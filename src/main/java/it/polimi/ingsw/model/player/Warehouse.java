@@ -33,7 +33,8 @@ public class Warehouse {
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public Warehouse() {
-        this.shelves = new ArrayList<>(15);
+        this.shelves = new ArrayList<>();
+        flushShelves();
         this.extraShelfResources = new ArrayList<>();
     }
 
@@ -165,9 +166,10 @@ public class Warehouse {
      */
     public void flushShelves() {
         int firstIndex = getShelfIndex(FIRST_SHELF);
-        int lastIndex = getShelfIndex(LAST_SHELF) + LAST_SHELF;
+        int lastIndex = getShelfIndex(TEMPORARY_SHELF) + TEMPORARY_SHELF;
+        shelves.clear();
         for (int i = firstIndex; i < lastIndex; i++) {
-            shelves.set(i, null);
+            shelves.add(null);
         }
     }
 
