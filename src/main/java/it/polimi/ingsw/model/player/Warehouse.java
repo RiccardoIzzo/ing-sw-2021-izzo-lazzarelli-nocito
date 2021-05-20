@@ -71,7 +71,7 @@ public class Warehouse {
      */
     public void addExtraShelfResource(Resource resource) {
         extraShelfResources.add(resource);
-        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
+        pcs.firePropertyChange(SHELF_CHANGE, null, extraShelfResources);
     }
 
     /**
