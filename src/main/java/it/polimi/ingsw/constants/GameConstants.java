@@ -1,10 +1,38 @@
 package it.polimi.ingsw.constants;
 
+import java.util.Map;
+
 /**
  * GameConstants contains all constant values of the Game class and Market class
  */
 public class GameConstants {
     /*Game constant values*/
+
+    /* Initial Bonus
+    +--------+----------------------------+--------------+
+    | Player | Resources of your choosing | Faith Points |
+    +========+============================+==============+
+    |    1   |              0             |       0      |
+    +--------+----------------------------+--------------+
+    |    2   |              1             |       0      |
+    +--------+----------------------------+--------------+
+    |    3   |              1             |       1      |
+    +--------+----------------------------+--------------+
+    |    4   |              2             |       1      |
+    +--------+----------------------------+--------------+
+     */
+    public static final Map<Integer, Integer> BONUS_RESOURCES = Map.of(
+            1,0,
+            2,1,
+            3,1,
+            4,2
+    );
+    public static final Map<Integer, Integer> BONUS_FAITH_POINTS = Map.of(
+            1,0,
+            2,0,
+            3,1,
+            4,1
+    );
 
     //Amount of DevelopmentCard(s) in the whole game
     public static final int NUM_DEVELOPMENT_CARDS = 48;
