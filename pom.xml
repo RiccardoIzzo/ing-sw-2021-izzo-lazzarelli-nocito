@@ -38,6 +38,12 @@
       <version>0.2.2</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>15.0.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -53,6 +59,15 @@
           <source>15</source>
           <!-- Minimum JRE version the JAR will be compatible with -->
           <target>15</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.6</version>
+        <configuration>
+          <mainClass>HelloFX</mainClass>
         </configuration>
       </plugin>
 
