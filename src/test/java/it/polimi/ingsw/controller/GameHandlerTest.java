@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.constants.PlayerConstants;
 import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.model.*;
 
@@ -75,7 +76,7 @@ public class GameHandlerTest {
      * */
     @Test
     public void testProcess() {
-        /*
+
         String nickname = "Andrea";
         Player player = game.getPlayerByName(nickname);
 
@@ -85,11 +86,15 @@ public class GameHandlerTest {
         assertEquals(2, player.getLeaders().size());
 
         // message: TakeResources
-        Integer numberOfResourcesTaken = player.getDashboard().getWarehouse().getResourcesSize().getMapSize();
+        player.getDashboard().getWarehouse().flushShelves();
+        Integer numberOfResourcesTaken = player.getDashboard().getWarehouse().getResourcesFromWarehouse().size();
+//                getResourcesSize().getMapSize();
         assertEquals(0, (int) numberOfResourcesTaken);
         gameHandler.process(nickname, new TakeResources(1, 1));
-        numberOfResourcesTaken = player.getDashboard().getWarehouse().getResourcesSize().getMapSize();
-        assertTrue( numberOfResourcesTaken > 0);
+        ResourceMap marketResources = game.getMarket().resourceOutput();
+        ResourceMap temporaryShelf = player.getDashboard().getWarehouse().getResourcesFromShelf(PlayerConstants.TEMPORARY_SHELF);
+        assertEquals(marketResources.getResources(), temporaryShelf.getResources());
+
 
         // BuyCard
         assertEquals(0, player.getDevelopments().size());
@@ -105,13 +110,13 @@ public class GameHandlerTest {
         assertTrue(leaderCard.isActive());
 
         // ActivateProduction
-        player.getDashboard().getWarehouse().removeResourcesFromTemporaryShelf();
-        ResourceMap resourcesAtStart = player.getDashboard().getWarehouse().getResourcesSize();
-        resourcesAtStart.addResources(player.getDashboard().getStrongBox());
+        player.getDashboard().getWarehouse().flushShelves();
+        ResourceMap resourcesAtStart = player.getDashboard().getWarehouse().getResourcesFromWarehouse();
+        resourcesAtStart.addResources(player.getDashboard().getStrongbox());
 
         DevelopmentCard developmentCard = player.getDevelopments().iterator().next();
         ResourceMap resourcesRequired = developmentCard.getProduction().getInputResource();
-        player.getDashboard().getStrongBox().addResources(resourcesRequired);
+        player.getDashboard().getStrongbox().addResources(resourcesRequired);
 
         ResourceMap resourcesToGet = developmentCard.getProduction().getOutputResource();
         gameHandler.process(nickname, new ActivateProduction(Collections.singletonList(developmentCard.getCardID())));
@@ -123,14 +128,13 @@ public class GameHandlerTest {
         // EndTurn - MultiPlayer
         if (game instanceof MultiplayerGame) {
             ((MultiplayerGame) game).setFirstPlayer();
-            player = ((MultiplayerGame) game).getFirstPlayer();
-            int oldPlayerIndex = ((MultiplayerGame) game).getPlayerIndex();
-            assertEquals(player, game.getPlayers().get(oldPlayerIndex));
-            gameHandler.process(nickname, new EndTurn());
-            assertNotEquals(oldPlayerIndex,  ((MultiplayerGame) game).getPlayerIndex());
-            assertNotEquals(player,  game.getPlayers().get(((MultiplayerGame) game).getPlayerIndex()));
             player = ((MultiplayerGame) game).getCurrPlayer();
-            assertEquals(player,  game.getPlayers().get(((MultiplayerGame) game).getPlayerIndex()));
+            Player firstPlayer = ((MultiplayerGame) game).getFirstPlayer();
+            assertEquals(player, firstPlayer);
+
+            gameHandler.process(nickname, new EndTurn());
+
+            assertNotEquals(firstPlayer,  ((MultiplayerGame) game).getCurrPlayer());
         }
 
         // EndTurn - SinglePlayer
@@ -146,7 +150,7 @@ public class GameHandlerTest {
         gameHandler.process(nickname, new EndTurn());
         assertEquals(numTokens-1, ((SinglePlayerGame) game).getTokenStack().numTokens() );
 
-         */
+
 
     }
 
