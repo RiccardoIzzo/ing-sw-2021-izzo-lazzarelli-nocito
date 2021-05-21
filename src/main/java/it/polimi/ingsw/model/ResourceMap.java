@@ -72,6 +72,9 @@ public class ResourceMap {
      * @return true if the operation was successful
      */
     public boolean modifyResource(Resource type, Integer value) {
+        if ( type == null ) {
+            return false;
+        }
         int newValue = this.getResource(type) + value;
         if(newValue >= 0) {
             resources.put(type, newValue);
