@@ -17,19 +17,20 @@ public class FaithTrackListener extends PropertyListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(FAITH_MARKER_POSITION)) {
-            ServerMessage serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            virtualView.sendToEveryone(serverMessage);
-            if (((Integer) evt.getNewValue()) == END_TILE) {
-                ServerMessage endGame = new EndGame();
-                virtualView.sendToEveryone(endGame);
-            }
-        } else if (evt.getPropertyName().equals(BLACK_MARKER_POSITION)){
-            ServerMessage serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            virtualView.sendToEveryone(serverMessage);
-            if (((Integer) evt.getNewValue()) == END_TILE) {
-                ServerMessage endGame = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                virtualView.sendToEveryone(endGame);
+        ServerMessage serverMessage;
+        String playerSource = (String) evt.getSource();
+        String propertyName = evt.getPropertyName();
+        Object oldValue = evt.getOldValue();
+        Object newValue = evt.getNewValue();
+
+        switch (propertyName) {
+            case FAITH_MARKER_POSITION, BLACK_MARKER_POSITION -> {
+                serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
+                virtualView.sendToEveryone(serverMessage);
+                if (((Integer) evt.getNewValue()) == END_TILE) {
+                    ServerMessage endGame = new EndGame();
+                    virtualView.sendToEveryone(endGame);
+                }
             }
         }
     }

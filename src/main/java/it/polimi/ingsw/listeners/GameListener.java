@@ -16,12 +16,21 @@ public class GameListener extends PropertyListener{
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(END_TURN)) {
-            ServerMessage serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            virtualView.sendToEveryone(serverMessage);
-        } else if (evt.getPropertyName().equals(TOKEN_DRAWN)) {
-            ServerMessage serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            virtualView.sendToEveryone(serverMessage);
+        ServerMessage serverMessage;
+        String playerSource = (String) evt.getSource();
+        String propertyName = evt.getPropertyName();
+        Object oldValue = evt.getOldValue();
+        Object newValue = evt.getNewValue();
+
+        switch (propertyName) {
+            case END_TURN -> {
+                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+                virtualView.sendToEveryone(serverMessage);
+            }
+            case TOKEN_DRAWN -> {
+                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+                virtualView.sendToEveryone(serverMessage);
+            }
         }
     }
 }

@@ -20,12 +20,21 @@ public class MarketListener extends PropertyListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(MARKET_CHANGE)) {
-            ServerMessage serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            virtualView.sendToEveryone(serverMessage);
-        } else if (evt.getPropertyName().equals(SLIDE_MARBLE)) {
-            ServerMessage serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            virtualView.sendToEveryone(serverMessage);
+        ServerMessage serverMessage;
+        String playerSource = (String) evt.getSource();
+        String propertyName = evt.getPropertyName();
+        Object oldValue = evt.getOldValue();
+        Object newValue = evt.getNewValue();
+
+        switch (propertyName) {
+            case MARKET_CHANGE -> {
+                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+                virtualView.sendToEveryone(serverMessage);
+            }
+            case SLIDE_MARBLE -> {
+                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+                virtualView.sendToEveryone(serverMessage);
+            }
         }
     }
 }

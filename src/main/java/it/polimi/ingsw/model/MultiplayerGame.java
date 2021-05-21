@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.Random;
+import java.util.Collections;
 
 import static it.polimi.ingsw.constants.GameConstants.END_TURN;
 
@@ -14,7 +14,6 @@ import static it.polimi.ingsw.constants.GameConstants.END_TURN;
 public class MultiplayerGame extends Game {
     private Player currPlayer;
     private Player firstPlayer;
-    private int playerIndex;
 
     /**
      * Constructor MultiplayerGame creates a new MultiplayerGame instance.
@@ -47,21 +46,14 @@ public class MultiplayerGame extends Game {
         return firstPlayer;
     }
 
-    /**
-     * Method getPlayerIndex returns the index of the current player.
-     * @return index of the current player.
-     */
-    public int getPlayerIndex(){
-        return playerIndex;
-    }
 
     /**
      * Method setFirstPlayer sets the first player at the beginning of the game.
      * The first player is randomly chosen from the list of players.
      */
     public void setFirstPlayer(){
-        playerIndex = new Random().nextInt(getNumPlayers());
-        setCurrPlayer(super.getPlayers().get(playerIndex));
+        Collections.shuffle(getPlayers());
+        currPlayer = getPlayers().get(0);
         firstPlayer = currPlayer;
     }
 
@@ -69,16 +61,9 @@ public class MultiplayerGame extends Game {
      * Method nextPlayer updates the current player after the turn.
      */
     public void nextPlayer(){
-        String previousPlayer = currPlayer.getNickname();
-        if(playerIndex == super.getNumPlayers() - 1){
-            playerIndex = 0;
-            setCurrPlayer(super.getPlayers().get(0));
-        }
-        else{
-            playerIndex++;
-            setCurrPlayer(super.getPlayers().get(playerIndex));
-        }
-        pcs.firePropertyChange(END_TURN, previousPlayer, currPlayer.getNickname());
+        int indexCurrPlayer = getPlayers().indexOf(currPlayer);
+        currPlayer = getPlayers().get((indexCurrPlayer + 1) % getPlayers().size());
+        pcs.firePropertyChange(END_TURN, null, currPlayer.getNickname());
 
     }
 }

@@ -2,9 +2,11 @@ package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
+import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
 
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
@@ -20,22 +22,22 @@ public class PlayerListener extends PropertyListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;
-        switch (evt.getPropertyName()) {
+        String playerSource = (String) evt.getSource();
+        String propertyName = evt.getPropertyName();
+        Object oldValue = evt.getOldValue();
+        Object newValue = evt.getNewValue();
+
+        switch (propertyName) {
             case SET_LEADERS -> {
-                serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                virtualView.sendToPlayer((String) evt.getSource(), serverMessage);
+                serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateLeadersToMap((HashSet<LeaderCard>) newValue));
+                virtualView.sendToPlayer(playerSource, serverMessage);
             }
-            case SELECT_LEADERS -> {
-                serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                virtualView.sendToPlayer((String) evt.getSource(), serverMessage);
-                virtualView.sendToEveryone(serverMessage);
-            }
-            case DISCARD_LEADER, LEADER_ACTIVATION -> {
-                serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            case SELECT_LEADERS, DISCARD_LEADER, LEADER_ACTIVATION -> {
+                serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
                 virtualView.sendToEveryone(serverMessage);
             }
             case GRID_CHANGE -> {
-                serverMessage = new UpdateView(null, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
                 virtualView.sendToEveryone(serverMessage);
             }
         }

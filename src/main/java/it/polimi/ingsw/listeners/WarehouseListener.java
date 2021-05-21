@@ -17,10 +17,15 @@ public class WarehouseListener extends PropertyListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;
-        switch (evt.getPropertyName()) {
+        String playerSource = (String) evt.getSource();
+        String propertyName = evt.getPropertyName();
+        Object oldValue = evt.getOldValue();
+        Object newValue = evt.getNewValue();
+
+        switch (propertyName) {
             case SHELF_CHANGE, TEMPORARY_SHELF_CHANGE -> {
-                serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                virtualView.sendToPlayer((String) evt.getSource(), serverMessage);
+                serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
+                virtualView.sendToPlayer(playerSource, serverMessage);
             }
         }
     }

@@ -15,8 +15,14 @@ public class DashboardListener extends PropertyListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(STRONGBOX_CHANGE)) {
-            ServerMessage serverMessage = new UpdateView((String) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+        ServerMessage serverMessage;
+        String playerSource = (String) evt.getSource();
+        String propertyName = evt.getPropertyName();
+        Object oldValue = evt.getOldValue();
+        Object newValue = evt.getNewValue();
+
+        if (propertyName.equals(STRONGBOX_CHANGE)) {
+            serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
             virtualView.sendToEveryone(serverMessage);
         }
     }

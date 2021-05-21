@@ -61,7 +61,7 @@ public class Player {
      */
     public void setLeaders(List<LeaderCard> cards){
         leaders.addAll(cards);
-        pcs.firePropertyChange(SET_LEADERS, null, cards);
+        pcs.firePropertyChange(SET_LEADERS, null, this.leaders);
     }
 
     public Set<DevelopmentCard> getDevelopments(){
@@ -104,8 +104,8 @@ public class Player {
      * Method buyCard is called when the player buys a DevelopmentCard.
      * The new DevelopmentCard will be added to availableProduction and placed in:
      * <ul>
-     * <li>a free slot if the DevelopmentCard's level is I</li>
-     * <li>the slot of a DevelopmentCard of the same type but lower level</li>
+     *     <li>a free slot if the DevelopmentCard's level is I</li>
+     *     <li>the slot of a DevelopmentCard of the same type but lower level</li>
      * </ul>
      * @param row is the row line in the grid of developmentCard
      * @param column is the column in the grid of developmentCard
