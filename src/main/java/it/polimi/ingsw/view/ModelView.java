@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import static it.polimi.ingsw.constants.GameConstants.*;
@@ -22,14 +23,14 @@ public class ModelView {
         private ArrayList<Resource> extraShelfResources;
         private ArrayList<Integer> faithTrack;
 
-        public DashboardView(String nickname, Map<Integer, Boolean> leaderCards, ArrayList<Integer> developmentCards, ResourceMap strongbox, ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources, ArrayList<Integer> faithTrack) {
+        public DashboardView(String nickname) {
             this.nickname = nickname;
-            this.leaderCards = leaderCards;
-            this.developmentCards = developmentCards;
-            this.strongbox = strongbox;
-            this.warehouse = warehouse;
-            this.extraShelfResources = extraShelfResources;
-            this.faithTrack = faithTrack;
+            this.leaderCards = new HashMap<>();
+            this.developmentCards = new ArrayList<>();
+            this.strongbox = new ResourceMap();
+            this.warehouse = new ArrayList<>();
+            this.extraShelfResources = new ArrayList<>();
+            this.faithTrack = new ArrayList<>();
         }
 
         public String getNickname() {
@@ -102,9 +103,9 @@ public class ModelView {
         this.marketTray = marketTray;
     }
 
-    public void updateModelView(String nickname, String propertyName, Object objectToUpdate) {
-        if (nickname != null) {
-            DashboardView dashboardView = dashboards.stream().filter(dashboard -> dashboard.getNickname().equals(nickname)).findAny().orElse(null);
+    public void updateModelView(String playerSource, String propertyName, Object objectToUpdate) {
+        if (playerSource != null) {
+            DashboardView dashboardView = dashboards.stream().filter(dashboard -> dashboard.getNickname().equals(playerSource)).findAny().orElse(null);
             dashboardView.updateDashboard(propertyName, objectToUpdate);
         } else {
             switch (propertyName) {

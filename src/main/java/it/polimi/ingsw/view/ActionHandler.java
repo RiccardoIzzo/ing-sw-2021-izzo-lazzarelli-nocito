@@ -7,6 +7,7 @@ import it.polimi.ingsw.events.servermessages.*;
  */
 public class ActionHandler {
     private final View view;
+    private final ModelView modelView = new ModelView();
 
     /**
      * Constructor ActionHandler creates a new ActionHandler instance.
@@ -41,6 +42,9 @@ public class ActionHandler {
         }
         else if(message instanceof TextMessage){
             view.printText(((TextMessage) message).getText());
+        }
+        else if (message instanceof UpdateView){
+            modelView.updateModelView(((UpdateView) message).getSourcePlayer(), (String) ((UpdateView) message).getOldValue(), ((UpdateView) message).getNewValue());
         }
     }
 }
