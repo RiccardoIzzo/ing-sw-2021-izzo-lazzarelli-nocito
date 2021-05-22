@@ -118,6 +118,11 @@ public class CLI implements View{
         }
     }
 
+    @Override
+    public void handleLeaders() {
+        //ArrayList<Integer> leaders = modelView.getMyDashboard().
+    }
+
     /**
      * Method printText prints the given text on the terminal.
      * @param text text to print.
