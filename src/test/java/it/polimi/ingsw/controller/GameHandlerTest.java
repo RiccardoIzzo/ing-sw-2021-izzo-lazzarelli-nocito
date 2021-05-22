@@ -8,11 +8,13 @@ import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.Server;
+import it.polimi.ingsw.network.VirtualView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -21,15 +23,21 @@ public class GameHandlerTest {
     private GameHandler gameHandler;
     private Game game;
     private Server serverTest;
+    private String lobbyID = "test";
 
+    private VirtualView virtualView;
     @Before
     public void setUp() {
         serverTest = new Server(0);
+        virtualView = new VirtualView(serverTest, lobbyID);
 
-        gameHandler = new GameHandler(serverTest, "test");
+        gameHandler = new GameHandler(serverTest, lobbyID);
         gameHandler.setGameMode(3);
 
         game = gameHandler.getGame();
+
+//        game.addPropertyListener(virtualView);
+
         game.addPlayer("Andrea");
         game.addPlayer("Gabriele");
         game.addPlayer("Riccardo");
@@ -79,11 +87,27 @@ public class GameHandlerTest {
 
         String nickname = "Andrea";
         Player player = game.getPlayerByName(nickname);
+//        player.addPropertyListener(virtualView);
 
         // message: SelectLeaderCard
         assertEquals(4, player.getLeaders().size());
-        //gameHandler.process(nickname, new DiscardLeaderCard(0, 1));
-        //assertEquals(2, player.getLeaders().size());
+
+        int firstID = 0, secondID = 0;
+        Optional<LeaderCard> firstLeaderCard = player.getLeaders().stream().findAny();
+        if (firstLeaderCard.isPresent()) {
+            firstID = firstLeaderCard.get().getCardID();
+            Optional<LeaderCard> secondLeaderCard = player.getLeaders().stream().filter(x -> x.getCardID() != firstLeaderCard.get().getCardID()).findAny();
+            if (secondLeaderCard.isPresent())
+                secondID = secondLeaderCard.get().getCardID();
+        }
+
+        gameHandler.process(nickname, new DiscardLeaderCard(firstID, secondID));
+
+        for(LeaderCard leaderCard : player.getLeaders()) {
+            assertNotEquals(leaderCard.getCardID(), firstID);
+            assertNotEquals(leaderCard.getCardID(), secondID);
+        }
+        assertEquals(2, player.getLeaders().size());
 
         // message: TakeResources
         player.getDashboard().getWarehouse().flushShelves();
