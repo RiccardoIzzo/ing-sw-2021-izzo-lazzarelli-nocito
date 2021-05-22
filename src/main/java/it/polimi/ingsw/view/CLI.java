@@ -6,6 +6,7 @@ import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.network.NetworkHandler;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -189,6 +190,7 @@ public class CLI implements View{
     void showLeaderCards() {
         // show leader card and see if the player can/wants to play a leader card
     }
+
     //
     void playLeaderCard() {
 
