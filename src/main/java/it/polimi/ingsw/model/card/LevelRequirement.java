@@ -32,4 +32,11 @@ public class LevelRequirement implements Requirement {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "LevelRequirement{" +
+                "level=" + level.toString() +
+                '}';
+    }
 }

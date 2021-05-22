@@ -51,4 +51,10 @@ public class ResourceRequirement implements Requirement {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "ResourceRequirement{" +
+                "resources=" + resources.toString() +
+                '}';
+    }
 }

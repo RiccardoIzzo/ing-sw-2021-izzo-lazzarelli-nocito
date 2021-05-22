@@ -49,4 +49,14 @@ public class DevelopmentCard extends Card {
     public ProductionPower getProduction() {
         return production;
     }
+
+    @Override
+    public String toString() {
+        return "\n cardID: " + super.getCardID()+
+                ",\n points: " + getVictoryPoints() +
+                ", " + getRequirement().toString() +
+                ",\n type=" + type +
+                ",\n level=" + level +
+                ",\n production=" + production.toString();
+    }
 }

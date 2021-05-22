@@ -64,4 +64,11 @@ public class CardMap {
     public void put(CardColor cardColor, int value) {
         cards.put(cardColor, value);
     }
+
+    @Override
+    public String toString() {
+        return "CardMap{" +
+                "cards=" + cards.toString() +
+                '}';
+    }
 }

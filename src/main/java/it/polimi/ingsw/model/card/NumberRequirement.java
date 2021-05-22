@@ -32,4 +32,11 @@ public class NumberRequirement implements Requirement {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "NumberRequirement{" +
+                "number=" + number +
+                '}';
+    }
 }

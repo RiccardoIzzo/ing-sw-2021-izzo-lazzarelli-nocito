@@ -31,4 +31,12 @@ public class DiscountLeaderCard extends LeaderCard {
     public ResourceMap getDiscount() {
         return discount;
     }
+
+    @Override
+    public String toString() {
+        return "\n cardID: " + super.getCardID()+
+                ",\n points: " + getVictoryPoints() +
+                ", " + getRequirement().toString() +
+                ",\n discount=" + discount.toString();
+    }
 }

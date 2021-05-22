@@ -30,4 +30,9 @@ public class ExtraShelfLeaderCard extends LeaderCard {
     public Resource getResource() {
         return resource;
     }
+
+    @Override
+    public String toString() {
+        return null;
+    }
 }

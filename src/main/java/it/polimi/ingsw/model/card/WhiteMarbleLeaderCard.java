@@ -33,4 +33,9 @@ public class WhiteMarbleLeaderCard extends LeaderCard {
     public Set<MarbleColor> getExchange() {
         return exchange;
     }
+
+    @Override
+    public String toString() {
+        return null;
+    }
 }

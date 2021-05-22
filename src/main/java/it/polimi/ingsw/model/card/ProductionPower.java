@@ -47,4 +47,12 @@ public class ProductionPower {
     public int getOutputFaith() {
         return outputFaith;
     }
+
+    @Override
+    public String toString() {
+        return  "\n\t inputResource=" + inputResource.toString() +
+                ",\n\t outputResource=" + outputResource.toString() +
+                ",\n\t outputFaith=" + outputFaith +
+                "\n";
+    }
 }

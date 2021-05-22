@@ -116,4 +116,9 @@ public class ResourceMap {
             resources.put(value, 0);
         }
     }
+
+    @Override
+    public String toString() {
+        return resources.toString();
+    }
 }
