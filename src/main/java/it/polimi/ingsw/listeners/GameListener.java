@@ -17,7 +17,7 @@ public class GameListener extends PropertyListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;
-        String playerSource = (String) evt.getSource();
+//        String playerSource = (String) evt.getSource();
         String propertyName = evt.getPropertyName();
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
