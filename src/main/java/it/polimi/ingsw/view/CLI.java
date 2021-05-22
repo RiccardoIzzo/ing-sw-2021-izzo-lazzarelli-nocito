@@ -14,7 +14,8 @@ import java.util.Scanner;
  */
 public class CLI implements View{
     private final ActionHandler actionHandler;
-    private ActionListener actionListener;
+    private String nickname;
+    private ModelView modelView;
     private NetworkHandler network;
     private final Scanner input;
 
@@ -26,14 +27,33 @@ public class CLI implements View{
         input = new Scanner(System.in);
     }
 
+    @Override
+    public String getNickname() {
+        return nickname;
+    }
+
     /**
      * Method setNickname asks for a nickname and sends a SetNickname message to the server with the selected nickname.
      */
     @Override
     public void setNickname() {
         System.out.println("Choose your nickname:");
-        String name = new Scanner(System.in).next();
-        send(new SetNickname(name));
+        nickname = new Scanner(System.in).next();
+        send(new SetNickname(nickname));
+    }
+
+    public String getInput(ArrayList<String> acceptedInputs) {
+        String input = new Scanner(System.in).next();
+        while(acceptedInputs.contains(input)){
+            System.out.println("Invalid input, type <Help> to see options\n");
+            input = new Scanner(System.in).next();
+            if (input.equals("Help")) {
+                for (String acceptedInput : acceptedInputs){
+                    System.out.println(acceptedInput);
+                }
+            }
+        }
+        return input;
     }
 
     /**
