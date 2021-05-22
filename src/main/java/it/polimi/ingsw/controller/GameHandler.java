@@ -11,6 +11,8 @@ import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.util.*;
 
+import static it.polimi.ingsw.constants.GameConstants.BONUS_RESOURCES;
+
 
 /**
  * GameHandler class represents a game and manages the incoming messages from the client.
@@ -90,9 +92,10 @@ public class GameHandler {
      */
     public void process(String nickname, ClientMessage message){
         Player player = game.getPlayerByName(nickname);
-        if(message instanceof SelectLeaderCards) {
-            LeaderCard[] cards = player.getLeaders().toArray(LeaderCard[]::new);
-            player.selectLeaderCard(cards[((SelectLeaderCards) message).getFirstCardIndex()], cards[((SelectLeaderCards) message).getSecondCardIndex()]);
+        if(message instanceof DiscardLeaderCard) {
+            for (int cardID: ((DiscardLeaderCard) message).getLeadersToDiscard()) {
+                player.discardLeaderCard(cardID);
+            }
         }
 
         else if(message instanceof TakeResources) {

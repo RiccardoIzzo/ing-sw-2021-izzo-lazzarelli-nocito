@@ -183,17 +183,6 @@ public class Player {
     }
 
     /**
-     * Method selectLeaderCard selects two leader cards among the four available at the start of the game and deletes the others.
-     * @param firstCard first leader card chosen by the player.
-     * @param secondCard second leader card chosen by the player.
-     */
-    public void selectLeaderCard(Card firstCard, Card secondCard){
-        Set<LeaderCard> OldLeaders = leaders;
-        leaders.removeIf(leader -> !(leader.equals(firstCard)) && !(leader.equals(secondCard)));
-        pcs.firePropertyChange(SELECT_LEADERS, OldLeaders, this.leaders);
-    }
-
-    /**
      * Method activateLeaderCard activates a leader card.
      * @param leaderCard the leader card that must be activated.
      */
@@ -213,13 +202,12 @@ public class Player {
 
     /**
      * Method discardLeaderCard discards the selected leader card and increments the player position on the faith track.
-     * @param card the leader card that must be discarded.
+     * @param cardID the leader card that must be discarded.
      */
-    public void discardLeaderCard(LeaderCard card){
-        Set<LeaderCard> oldLeaders = this.leaders;
-        leaders.remove(card);
-        myDashboard.incrementFaith(1);
-        pcs.firePropertyChange(DISCARD_LEADER, oldLeaders, this.leaders);
+    public void discardLeaderCard(int cardID){
+        leaders.removeIf(leaderCard -> leaderCard.getCardID() == cardID);
+        if (leaders.size() < 2) myDashboard.incrementFaith(1);
+        pcs.firePropertyChange(DISCARD_LEADER, null, this.leaders);
     }
 
     /**

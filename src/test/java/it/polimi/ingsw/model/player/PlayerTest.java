@@ -40,22 +40,6 @@ public class PlayerTest {
     }
 
     /**
-     * Method selectLeaderCardTest tests selectLeaderCard method when the player at the beginning of the game must choose two leader cards among the four available.
-     */
-    @Test
-    public void selectLeaderCardTest(){
-        ArrayList<LeaderCard> cards = new ArrayList<>(player.getLeaders());
-        Card firstCard = cards.get(0);
-        Card secondCard = cards.get(1);
-        assertNotEquals(firstCard, secondCard);
-        assertEquals(4, player.getLeaders().size());
-        player.selectLeaderCard(firstCard, secondCard);
-        assertEquals(2, player.getLeaders().size());
-        assertTrue(player.getLeaders().contains(firstCard));
-        assertTrue(player.getLeaders().contains(secondCard));
-    }
-
-    /**
      * Method activateLeaderCardTest checks the correct activation of a leader card.
      */
     @Test
@@ -78,14 +62,14 @@ public class PlayerTest {
         if(card.isPresent()){
             assertEquals(4, player.getLeaders().size());
             assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPos());
-            player.discardLeaderCard(card.get());
+            player.discardLeaderCard(card.get().getCardID());
             assertEquals(3, player.getLeaders().size());
-            assertEquals(1, player.getDashboard().getFaithTrack().getPlayerPos());
+            assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPos());
             card = player.getLeaders().stream().findAny();
             if(card.isPresent()){
-                player.discardLeaderCard(card.get());
+                player.discardLeaderCard(card.get().getCardID());
                 assertEquals(2, player.getLeaders().size());
-                assertEquals(2, player.getDashboard().getFaithTrack().getPlayerPos());
+                assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPos());
             }
         }
     }
