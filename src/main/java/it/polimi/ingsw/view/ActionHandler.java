@@ -7,11 +7,12 @@ import it.polimi.ingsw.events.servermessages.*;
  */
 public class ActionHandler {
     private final View view;
-    private final ModelView modelView = new ModelView();
+    private ModelView modelView;
 
     /**
      * Constructor ActionHandler creates a new ActionHandler instance.
      * @param view interface view, represents the CLI or the GUI.
+     *
      */
     public ActionHandler(View view){
         this.view = view;
@@ -36,15 +37,24 @@ public class ActionHandler {
         }
         else if(message instanceof GameStarted){
             view.printText("The game is about to start.");
+            modelView = new ModelView(((GameStarted) message).getPlayers(), view.getNickname());
         }
-        else if(message instanceof BonusResources){
+        else if(message instanceof GetBonusResources){
             //view.selectBonusResource(((BonusResources) message).getAmount());
         }
         else if(message instanceof TextMessage){
             view.printText(((TextMessage) message).getText());
         }
         else if (message instanceof UpdateView){
-            modelView.updateModelView(((UpdateView) message).getSourcePlayer(), (String) ((UpdateView) message).getOldValue(), ((UpdateView) message).getNewValue());
+            UpdateView messageUpdate = (UpdateView) message;
+            String sourcePlayer = messageUpdate.getSourcePlayer();
+            String propertyName = messageUpdate.getPropertyName();
+            modelView.updateModelView(sourcePlayer, (String) ((UpdateView) message).getOldValue(), ((UpdateView) message).getNewValue());
+            switch(propertyName){
+                case "SET_LEADERS" -> {
+                    //view.handleLeaders();
+                }
+            }
         }
     }
 }
