@@ -52,9 +52,9 @@ public class DevelopmentCard extends Card {
 
     @Override
     public String toString() {
-        return "\n cardID: " + super.getCardID()+
-                ",\n points: " + getVictoryPoints() +
-                ", " + getRequirement().toString() +
+        return "\n cardID " + super.getCardID()+
+                "\n points=" + getVictoryPoints() +
+                ",\n " + getRequirement() +
                 ",\n type=" + type +
                 ",\n level=" + level +
                 ",\n production=" + production.toString();

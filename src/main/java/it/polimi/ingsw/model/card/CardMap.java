@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -65,10 +66,18 @@ public class CardMap {
         cards.put(cardColor, value);
     }
 
+    public ArrayList<CardColor> asList(){
+        ArrayList<CardColor> cardColorList = new ArrayList<>();
+        for (CardColor cardColor: CardColor.values()){
+            for (int i = 0; i < this.getCard(cardColor); i++) {
+                cardColorList.add(cardColor);
+            }
+        }
+        return cardColorList;
+    }
+
     @Override
     public String toString() {
-        return "CardMap{" +
-                "cards=" + cards.toString() +
-                '}';
+        return cards.toString();
     }
 }

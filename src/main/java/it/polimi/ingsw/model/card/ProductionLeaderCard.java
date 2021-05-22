@@ -33,6 +33,9 @@ public class ProductionLeaderCard extends LeaderCard {
 
     @Override
     public String toString() {
-        return null;
+        return "\n cardID " + super.getCardID()+
+                "\n points=" + getVictoryPoints() +
+                ",\n " + getRequirement() +
+                ",\n production=" + production.toString();
     }
 }

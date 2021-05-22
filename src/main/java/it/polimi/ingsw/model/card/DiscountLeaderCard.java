@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.card;
 
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.ResourceMap;
 
 /**
@@ -34,9 +33,9 @@ public class DiscountLeaderCard extends LeaderCard {
 
     @Override
     public String toString() {
-        return "\n cardID: " + super.getCardID()+
-                ",\n points: " + getVictoryPoints() +
-                ", " + getRequirement().toString() +
-                ",\n discount=" + discount.toString();
+        return "\n cardID " + super.getCardID()+
+                ",\n points=" + getVictoryPoints() +
+                ",\n " + getRequirement() +
+                ",\n discount=" + "(-1)" + discount.asList().toString();
     }
 }

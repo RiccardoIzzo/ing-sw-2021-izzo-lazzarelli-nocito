@@ -35,8 +35,6 @@ public class NumberRequirement implements Requirement {
 
     @Override
     public String toString() {
-        return "NumberRequirement{" +
-                "number=" + number +
-                '}';
+        return "number requirement=" + number;
     }
 }

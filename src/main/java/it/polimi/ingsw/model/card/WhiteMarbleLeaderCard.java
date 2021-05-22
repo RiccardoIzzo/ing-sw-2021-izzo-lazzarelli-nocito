@@ -36,6 +36,9 @@ public class WhiteMarbleLeaderCard extends LeaderCard {
 
     @Override
     public String toString() {
-        return null;
+        return "\n cardID " + super.getCardID()+
+                "\n points=" + getVictoryPoints() +
+                ",\n " + getRequirement() +
+                ",\n exchange=" + exchange.toString();
     }
 }

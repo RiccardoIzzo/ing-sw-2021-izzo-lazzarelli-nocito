@@ -33,6 +33,9 @@ public class ExtraShelfLeaderCard extends LeaderCard {
 
     @Override
     public String toString() {
-        return null;
+        return "\n cardID " + super.getCardID()+
+                ",\n points=" + getVictoryPoints() +
+                ",\n " + getRequirement() +
+                ",\n additional space=" + "(2)" + resource.toString();
     }
 }

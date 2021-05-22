@@ -35,8 +35,6 @@ public class LevelRequirement implements Requirement {
 
     @Override
     public String toString() {
-        return "LevelRequirement{" +
-                "level=" + level.toString() +
-                '}';
+        return "level requirement=" + level;
     }
 }
