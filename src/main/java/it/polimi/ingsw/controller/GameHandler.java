@@ -54,7 +54,6 @@ public class GameHandler {
         Add all registered players to the game.
          */
         ArrayList<String> players = server.getPlayersNameByLobby(lobbyID);
-        String firstPlayer;
         for (String player : players) {
             game.addPlayer(player);
             game.getPlayerByName(player).addPropertyListener(virtualView);
@@ -65,23 +64,19 @@ public class GameHandler {
         The game is ready, send a GameStarted message to every player.
         Give each player four LeaderCard.
          */
-        server.sendEveryone(new GameStarted(), lobbyID);
+        server.sendEveryone(new GameStarted(players), lobbyID);
         game.generateLeaders();
 
         if (game instanceof MultiplayerGame) {
             ((MultiplayerGame) game).setFirstPlayer();
-            firstPlayer = ((MultiplayerGame) game).getFirstPlayer().getNickname();
-            /*
-            The first player to get bonus resources is the 2nd.
-             */
-
             /*
             Manages bonus resources.
              */
-        } else {
-            firstPlayer = players.get(0);
+            for (String player: players) {
+                virtualView.sendToPlayer(player, new  GetBonusResources(BONUS_RESOURCES.get(game.getPlayers().indexOf(game.getPlayerByName(player)))));
+            }
         }
-        //to implement, bonus resource/faith based on the player position at the beginning of the game
+        String firstPlayer = game.getPlayers().get(0).getNickname();
         if(server.isConnected(firstPlayer)) server.getConnectionByPlayerName(firstPlayer).sendToClient(new StartTurn(firstPlayer));
     }
 
