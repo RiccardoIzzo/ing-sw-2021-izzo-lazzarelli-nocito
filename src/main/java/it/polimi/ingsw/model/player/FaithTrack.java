@@ -112,6 +112,8 @@ public class FaithTrack {
     }
 
     public void addPropertyListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(new FaithTrackListener(virtualView));
+        FaithTrackListener faithTrackListener = new FaithTrackListener(virtualView);
+        pcs.addPropertyChangeListener(FAITH_MARKER_POSITION, faithTrackListener);
+        pcs.addPropertyChangeListener(BLACK_MARKER_POSITION, faithTrackListener);
     }
 }

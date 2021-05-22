@@ -238,7 +238,11 @@ public class Player {
     }
 
     public void addPropertyListener(VirtualView virtualView) {
-        pcs.addPropertyChangeListener(new PlayerListener(virtualView));
+        PlayerListener playerListener = new PlayerListener(virtualView);
+        pcs.addPropertyChangeListener(SET_LEADERS, playerListener);
+        pcs.addPropertyChangeListener(DISCARD_LEADER, playerListener);
+        pcs.addPropertyChangeListener(LEADER_ACTIVATION, playerListener);
+        pcs.addPropertyChangeListener(GRID_CHANGE, playerListener);
         myDashboard.addPropertyListener(virtualView);
     }
 }

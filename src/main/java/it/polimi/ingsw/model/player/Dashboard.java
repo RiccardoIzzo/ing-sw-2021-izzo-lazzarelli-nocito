@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.VirtualView;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.constants.PlayerConstants.SHELF_CHANGE;
 import static it.polimi.ingsw.constants.PlayerConstants.STRONGBOX_CHANGE;
 
 /**
@@ -102,7 +103,8 @@ public class Dashboard {
     }
 
     public void addPropertyListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(new DashboardListener(virtualView));
+        DashboardListener dashboardListener = new DashboardListener(virtualView);
+        pcs.addPropertyChangeListener(STRONGBOX_CHANGE, dashboardListener);
         warehouse.addPropertyListener(virtualView);
         faithTrack.addPropertyListener(virtualView);
     }

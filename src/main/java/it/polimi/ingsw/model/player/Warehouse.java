@@ -183,6 +183,8 @@ public class Warehouse {
     }
 
     public void addPropertyListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(new WarehouseListener(virtualView));
+        WarehouseListener warehouseListener = new WarehouseListener(virtualView);
+        pcs.addPropertyChangeListener(SHELF_CHANGE, warehouseListener);
+        pcs.addPropertyChangeListener(TEMPORARY_SHELF_CHANGE, warehouseListener);
     }
 }
