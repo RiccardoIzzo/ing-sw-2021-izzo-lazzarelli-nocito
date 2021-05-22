@@ -13,6 +13,71 @@ import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 public class ModelView {
     ArrayList<DashboardView> dashboards;
+    private String myNickname;
+    private String currPlayer;
+    private ArrayList<Integer> grid;
+    private MarbleColor slideMarble;
+    private ArrayList<MarbleColor> marketTray;
+    private Integer tokenDrawn;
+
+    public ModelView(ArrayList<String> players, String myNickname) {
+        this.dashboards = new ArrayList<>();
+        for (String player: players) {
+            dashboards.add(new DashboardView(player));
+        }
+        this.myNickname = myNickname;
+        this.currPlayer = "";
+        this.grid = new ArrayList<>(12);
+        this.slideMarble = null;
+        this.marketTray = new ArrayList<>(12);
+        this.tokenDrawn = null;
+    }
+
+    public String getMyNickname() {
+        return myNickname;
+    }
+
+    public String getCurrPlayer() {
+        return currPlayer;
+    }
+
+    public MarbleColor getSlideMarble() {
+        return slideMarble;
+    }
+
+    public Integer getTokenDrawn() {
+        return tokenDrawn;
+    }
+
+    public ArrayList<DashboardView> getDashboards() {
+        return dashboards;
+    }
+
+    public ArrayList<Integer> getGrid() {
+        return grid;
+    }
+
+    public ArrayList<MarbleColor> getMarketTray() {
+        return marketTray;
+    }
+
+    public DashboardView getMyDashboard() {
+        return dashboards.stream().filter(dashboardView -> dashboardView.getNickname().equals(myNickname)).findAny().orElse(null);
+    }
+
+    public void updateModelView(String playerSource, String propertyName, Object objectToUpdate) {
+        if (playerSource != null) {
+            DashboardView dashboardView = dashboards.stream().filter(dashboard -> dashboard.getNickname().equals(playerSource)).findAny().orElse(null);
+            dashboardView.updateDashboard(propertyName, objectToUpdate);
+        } else {
+            switch (propertyName) {
+                case END_TURN -> currPlayer = (String) objectToUpdate;
+                case TOKEN_DRAWN -> tokenDrawn = (Integer) objectToUpdate;
+                case MARKET_CHANGE -> marketTray = (ArrayList<MarbleColor>) objectToUpdate;
+                case SLIDE_MARBLE -> slideMarble = (MarbleColor) objectToUpdate;
+            }
+        }
+    }
 
     private class DashboardView{
         private String nickname;
@@ -37,6 +102,30 @@ public class ModelView {
             return nickname;
         }
 
+        public Map<Integer, Boolean> getLeaderCards() {
+            return leaderCards;
+        }
+
+        public ArrayList<Integer> getDevelopmentCards() {
+            return developmentCards;
+        }
+
+        public ResourceMap getStrongbox() {
+            return strongbox;
+        }
+
+        public ArrayList<Resource> getWarehouse() {
+            return warehouse;
+        }
+
+        public ArrayList<Resource> getExtraShelfResources() {
+            return extraShelfResources;
+        }
+
+        public ArrayList<Integer> getFaithTrack() {
+            return faithTrack;
+        }
+
         public void setNickname(String nickname) {
             this.nickname = nickname;
         }
@@ -48,71 +137,6 @@ public class ModelView {
                 case STRONGBOX_CHANGE -> strongbox = (ResourceMap) objectToUpdate;
                 case TEMPORARY_SHELF_CHANGE, SHELF_CHANGE -> warehouse = (ArrayList<Resource>) objectToUpdate;
                 case FAITH_MARKER_POSITION, BLACK_MARKER_POSITION -> faithTrack = (ArrayList<Integer>) objectToUpdate;
-            }
-        }
-    }
-
-    private String currPlayer;
-    private ArrayList<Integer> grid;
-    private MarbleColor slideMarble;
-    private ArrayList<MarbleColor> marketTray;
-    private Integer tokenDrawn;
-
-    public ModelView() {
-        this.dashboards = new ArrayList<>();
-        this.currPlayer = "";
-        this.grid = new ArrayList<>(12);
-        this.slideMarble = null;
-        this.marketTray = new ArrayList<>(12);
-        this.tokenDrawn = null;
-    }
-
-    /*
-    Retrieve the model view after loosing connection
-     */
-    public ModelView(ModelView modelView) {
-        this.dashboards = modelView.dashboards;
-        this.currPlayer = modelView.currPlayer;
-        this.grid = modelView.grid;
-        this.slideMarble = modelView.slideMarble;
-        this.marketTray = modelView.marketTray;
-        this.tokenDrawn = modelView.tokenDrawn;
-    }
-
-    public ArrayList<DashboardView> getDashboards() {
-        return dashboards;
-    }
-
-    public ArrayList<Integer> getGrid() {
-        return grid;
-    }
-
-    public ArrayList<MarbleColor> getMarketTray() {
-        return marketTray;
-    }
-
-    public void setDashboards(ArrayList<DashboardView> dashboards) {
-        this.dashboards = dashboards;
-    }
-
-    public void setGrid(ArrayList<Integer> grid) {
-        this.grid = grid;
-    }
-
-    public void setMarketTray(ArrayList<MarbleColor> marketTray) {
-        this.marketTray = marketTray;
-    }
-
-    public void updateModelView(String playerSource, String propertyName, Object objectToUpdate) {
-        if (playerSource != null) {
-            DashboardView dashboardView = dashboards.stream().filter(dashboard -> dashboard.getNickname().equals(playerSource)).findAny().orElse(null);
-            dashboardView.updateDashboard(propertyName, objectToUpdate);
-        } else {
-            switch (propertyName) {
-                case END_TURN -> currPlayer = (String) objectToUpdate;
-                case TOKEN_DRAWN -> tokenDrawn = (Integer) objectToUpdate;
-                case MARKET_CHANGE -> marketTray = (ArrayList<MarbleColor>) objectToUpdate;
-                case SLIDE_MARBLE -> slideMarble = (MarbleColor) objectToUpdate;
             }
         }
     }
