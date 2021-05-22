@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * GameConstants contains all constant values of the Game class and Market class
  */
-public class GameConstants {
+public final class GameConstants {
     /*Game constant values*/
 
     /* Initial Bonus
