@@ -51,6 +51,11 @@ public class GUI extends Application implements View {
     }
 
     @Override
+    public void handleLeaders() {
+
+    }
+
+    @Override
     public void setNickname() {
 
     }
@@ -68,5 +73,10 @@ public class GUI extends Application implements View {
     @Override
     public void selectBonusResource(int amount) {
 
+    }
+
+    @Override
+    public String getNickname() {
+        return null;
     }
 }
