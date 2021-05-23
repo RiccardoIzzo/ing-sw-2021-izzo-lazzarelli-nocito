@@ -236,7 +236,7 @@ public class Server {
                 playerToLobby.put(nickname, lobbyID);
                 lobbies.get(lobbyID).setGameMode(numPlayers);
                 connection.sendToClient(new LobbyJoined());
-                //to implement: single player game
+                if(isFull(lobbyID)) getGameHandler(nickname).start();
             }
         }
 
