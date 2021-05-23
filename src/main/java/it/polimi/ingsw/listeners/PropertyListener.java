@@ -1,9 +1,11 @@
 package it.polimi.ingsw.listeners;
 
+import it.polimi.ingsw.model.card.Deck;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -23,6 +25,16 @@ public abstract class PropertyListener implements PropertyChangeListener {
         Map<Integer,Boolean> leaders = new HashMap<>();
         for (LeaderCard leaderCard : leaderCards) leaders.put(leaderCard.getCardID(),leaderCard.isActive());
         return leaders;
+    }
+
+    public ArrayList<Integer> translateGrid(Deck[][] grid){
+        ArrayList<Integer> cards = new ArrayList<>();
+        for (Deck[] decks : grid) {
+            for (Deck deck : decks) {
+                cards.add(deck.getTopCard().getCardID());
+            }
+        }
+        return cards;
     }
 
 }
