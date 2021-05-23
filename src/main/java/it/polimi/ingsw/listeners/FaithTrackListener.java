@@ -23,14 +23,12 @@ public class FaithTrackListener extends PropertyListener {
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
 
-        switch (propertyName) {
-            case FAITH_MARKER_POSITION, BLACK_MARKER_POSITION -> {
-                serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
-                virtualView.sendToEveryone(serverMessage);
-                if (((Integer) evt.getNewValue()) == END_TILE) {
-                    ServerMessage endGame = new EndGame();
-                    virtualView.sendToEveryone(endGame);
-                }
+        if (FAITH_MARKER_POSITION.equals(propertyName) || BLACK_MARKER_POSITION.equals(propertyName)) {
+            serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
+            virtualView.sendToEveryone(serverMessage);
+            if (((Integer) evt.getNewValue()) == END_TILE) {
+                ServerMessage endGame = new EndGame();
+                virtualView.sendToEveryone(endGame);
             }
         }
     }

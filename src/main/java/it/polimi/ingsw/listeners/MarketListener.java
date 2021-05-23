@@ -26,15 +26,12 @@ public class MarketListener extends PropertyListener {
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
 
-        switch (propertyName) {
-            case MARKET_CHANGE -> {
-                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
-                virtualView.sendToEveryone(serverMessage);
-            }
-            case SLIDE_MARBLE -> {
-                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
-                virtualView.sendToEveryone(serverMessage);
-            }
+        if (MARKET_CHANGE.equals(propertyName)) {
+            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            virtualView.sendToEveryone(serverMessage);
+        } else if (SLIDE_MARBLE.equals(propertyName)) {
+            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            virtualView.sendToEveryone(serverMessage);
         }
     }
 }

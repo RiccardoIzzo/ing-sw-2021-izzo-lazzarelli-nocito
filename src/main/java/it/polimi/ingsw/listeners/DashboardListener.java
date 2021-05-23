@@ -21,7 +21,7 @@ public class DashboardListener extends PropertyListener {
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
 
-        if (propertyName.equals(STRONGBOX_CHANGE)) {
+        if (STRONGBOX_CHANGE.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
             virtualView.sendToEveryone(serverMessage);
         }

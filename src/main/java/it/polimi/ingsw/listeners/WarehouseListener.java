@@ -22,11 +22,9 @@ public class WarehouseListener extends PropertyListener{
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
 
-        switch (propertyName) {
-            case SHELF_CHANGE, TEMPORARY_SHELF_CHANGE -> {
-                serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
-                virtualView.sendToPlayer(playerSource, serverMessage);
-            }
+        if (SHELF_CHANGE.equals(propertyName) || TEMPORARY_SHELF_CHANGE.equals(propertyName)) {
+            serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
+            virtualView.sendToPlayer(playerSource, serverMessage);
         }
     }
 }

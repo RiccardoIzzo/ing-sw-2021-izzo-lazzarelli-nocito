@@ -22,15 +22,12 @@ public class GameListener extends PropertyListener{
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
 
-        switch (propertyName) {
-            case END_TURN -> {
-                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
-                virtualView.sendToEveryone(serverMessage);
-            }
-            case TOKEN_DRAWN -> {
-                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
-                virtualView.sendToEveryone(serverMessage);
-            }
+        if (END_TURN.equals(propertyName)) {
+            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            virtualView.sendToEveryone(serverMessage);
+        } else if (TOKEN_DRAWN.equals(propertyName)) {
+            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            virtualView.sendToEveryone(serverMessage);
         }
     }
 }

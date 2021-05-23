@@ -27,19 +27,15 @@ public class PlayerListener extends PropertyListener {
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
 
-        switch (propertyName) {
-            case SET_LEADERS -> {
-                serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateLeadersToMap((HashSet<LeaderCard>) newValue));
-                virtualView.sendToPlayer(playerSource, serverMessage);
-            }
-            case SELECT_LEADERS, DISCARD_LEADER, LEADER_ACTIVATION -> {
-                serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
-                virtualView.sendToEveryone(serverMessage);
-            }
-            case GRID_CHANGE -> {
-                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
-                virtualView.sendToEveryone(serverMessage);
-            }
+        if (SET_LEADERS.equals(propertyName)) {
+            serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateLeadersToMap((HashSet<LeaderCard>) newValue));
+            virtualView.sendToPlayer(playerSource, serverMessage);
+        } else if (SELECT_LEADERS.equals(propertyName) || DISCARD_LEADER.equals(propertyName) || LEADER_ACTIVATION.equals(propertyName)) {
+            serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateLeadersToMap((HashSet<LeaderCard>) newValue));
+            virtualView.sendToEveryone(serverMessage);
+        } else if (GRID_CHANGE.equals(propertyName)) {
+            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            virtualView.sendToEveryone(serverMessage);
         }
     }
 }
