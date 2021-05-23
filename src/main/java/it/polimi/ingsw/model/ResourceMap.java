@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
  * @author Andrea Nocito
  */
 
-public class ResourceMap {
+public class ResourceMap implements Serializable {
     Map<Resource , Integer> resources;
 
     /**
