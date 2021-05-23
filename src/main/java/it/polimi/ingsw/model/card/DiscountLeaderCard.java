@@ -33,9 +33,9 @@ public class DiscountLeaderCard extends LeaderCard {
 
     @Override
     public String toString() {
-        return "\n cardID " + super.getCardID()+
-                ",\n points=" + getVictoryPoints() +
-                ",\n " + getRequirement() +
-                ",\n discount=" + "(-1)" + discount.asList().toString();
+        return "ID: " + super.getCardID() +
+                "\n -VP: " + getVictoryPoints() +
+                "\n " + getRequirement() +
+                "\n -Discount: " + discount.asList().toString();
     }
 }

@@ -50,8 +50,8 @@ public class ProductionPower {
 
     @Override
     public String toString() {
-        return  "\n\t inputResource=" + inputResource.asList().toString() +
-                ",\n\t outputResource=" + outputResource.asList().toString() +
-                ",\n\t outputFaith=" + outputFaith;
+        return  "\n\t Input Resource=" + inputResource.asList().toString() +
+                "\n\t Output Resource=" + outputResource.asList().toString() +
+                "\n\t Output Faith=" + outputFaith;
     }
 }

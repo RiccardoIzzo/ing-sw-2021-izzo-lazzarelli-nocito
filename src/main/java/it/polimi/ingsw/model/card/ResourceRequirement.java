@@ -53,6 +53,6 @@ public class ResourceRequirement implements Requirement {
 
     @Override
     public String toString() {
-        return "resource requirement=" + resources;
+        return "-Resource requirement: " + resources;
     }
 }
