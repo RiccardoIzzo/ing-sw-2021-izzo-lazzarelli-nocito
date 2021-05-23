@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.constants.Colors;
 import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.InvalidNickname;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.model.card.ExtraShelfLeaderCard;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.NetworkHandler;
 
@@ -286,15 +288,45 @@ public class CLI implements View{
         // show grid see if the player can/wants to buy a card
     }
 
-    public static void showWarehouse(ArrayList<Resource> warehouse){
+    public void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources){
         for (int shelf = 1; shelf <=5; shelf++) {
             int index = (shelf*shelf - shelf +2)/2 - 1;
             System.out.print("  ".repeat(5 - shelf));
-            for (int resourceSlot = index; resourceSlot < index + shelf; resourceSlot++){
-                if (warehouse.get(resourceSlot) != null) {
-                    System.out.printf("⎣%s⎦", warehouse.get(resourceSlot).toString());
-                } else {
-                    System.out.print("⎣  ⎦");
+            if (shelf == 4) { //leaderCards' shelves
+                for (int resourceSlot = index; resourceSlot < index + shelf; resourceSlot++){
+                    Resource resourceExtraShelf = null;
+                    if (resourceSlot < 8) {
+                        if (extraShelfResources.size() > 0) resourceExtraShelf = extraShelfResources.get(0);
+                    } else {
+                        if (extraShelfResources.size() > 1) resourceExtraShelf = extraShelfResources.get(1);
+                        else resourceExtraShelf = null;
+                    }
+                    Colors color, r = Colors.ANSI_RESET;
+                    if (resourceExtraShelf == Resource.STONE) {
+                        color = Colors.ANSI_WHITE;
+                    } else if (resourceExtraShelf == Resource.SERVANT) {
+                        color = Colors.ANSI_PURPLE;
+                    } else if (resourceExtraShelf == Resource.SHIELD) {
+                        color = Colors.ANSI_CYAN;
+                    } else if (resourceExtraShelf == Resource.COIN) {
+                        color = Colors.ANSI_YELLOW;
+                    } else {
+                        color = Colors.ANSI_BLACK;
+                    }
+                    if (warehouse.get(resourceSlot) != null) {
+                        System.out.print(color+"⎣"+r + String.format("%s", warehouse.get(resourceSlot).toString()) + color+"⎦"+r);
+                    } else {
+                        System.out.print(color+"⎣"+r + " " + color+"⎦"+r);
+                    }
+                }
+            }
+            else {
+                for (int resourceSlot = index; resourceSlot < index + shelf; resourceSlot++){
+                    if (warehouse.get(resourceSlot) != null) {
+                        System.out.printf("⎣%s⎦", warehouse.get(resourceSlot).toString());
+                    } else {
+                        System.out.print("⎣  ⎦");
+                    }
                 }
             }
             System.out.print("\n");

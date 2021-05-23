@@ -7,10 +7,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class CLITest {
     Warehouse warehouse;
+    ArrayList<Resource> extraShelfResources;
     ResourceMap resourceMapA;
     ResourceMap resourceMapB;
     ResourceMap resourceMapC;
@@ -20,6 +23,9 @@ public class CLITest {
     @Before
     public void setUp() throws Exception {
         warehouse = new Warehouse();
+        extraShelfResources = new ArrayList<>();
+
+        extraShelfResources.add(Resource.COIN);
 
         resourceMapA = new ResourceMap();
         resourceMapA.modifyResource(Resource.STONE, 1);
@@ -52,6 +58,6 @@ public class CLITest {
 
     @Test
     public void showWarehouse() {
-        //CLI.showWarehouse(warehouse.getShelves());
+        //CLI.showWarehouse(warehouse.getShelves(), extraShelfResources);
     }
 }
