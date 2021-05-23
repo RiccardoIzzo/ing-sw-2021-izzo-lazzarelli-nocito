@@ -8,6 +8,8 @@ import it.polimi.ingsw.network.VirtualView;
 
 import java.util.*;
 
+import static it.polimi.ingsw.constants.PlayerConstants.GRID_CHANGE;
+
 /**
  * Game class contains the main logic of "Master of Renaissance".
  *
@@ -58,7 +60,6 @@ public abstract class Game {
      */
     public void addPlayer(String name){
         players.add(new Player(name, this));
-
     }
 
     /**
@@ -112,6 +113,7 @@ public abstract class Game {
                 cards.removeAll(cards.subList(0, 4));
             }
         }
+        pcs.firePropertyChange(GRID_CHANGE, null, grid);
     }
 
     /**

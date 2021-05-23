@@ -199,6 +199,28 @@ public class CLI implements View{
     public void handleTurn() {
         System.out.println("It's your turn!");
         System.out.println("Select your next action: \n- TAKE_RESOURCE\n- BUY_CARD\n- ACTIVATE_PRODUCTION\n- ACTIVATE_LEADER\n- END_TURN");
+        String action = getInput("take_resource|buy_card|activate_production|activate_leader|end_turn");
+        switch(action){
+            case "take_resource" -> handleTakeResource();
+            case "buy_card" -> {
+
+            }
+            case "activate_production" -> {
+
+            }
+            case "activate_leader" -> {
+
+            }
+            case "end_turn" -> {
+
+            }
+        }
+    }
+
+    @Override
+    public void handleTakeResource() {
+        System.out.println("*** MARKET ***");
+        System.out.println(modelView.getMarketTray().toString());
     }
 
     /**

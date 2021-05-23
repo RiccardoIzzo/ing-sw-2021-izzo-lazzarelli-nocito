@@ -21,11 +21,9 @@ public class MarketListener extends PropertyListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;
-        String playerSource = (String) evt.getSource();
         String propertyName = evt.getPropertyName();
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
-
         if (MARKET_CHANGE.equals(propertyName)) {
             serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
             virtualView.sendToEveryone(serverMessage);

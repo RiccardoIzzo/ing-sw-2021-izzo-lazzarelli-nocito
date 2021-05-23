@@ -59,13 +59,15 @@ public class GameHandler {
             game.addPlayer(player);
             game.getPlayerByName(player).addPropertyListener(virtualView);
         }
-        game.generateGrid();
-        game.getMarket().generateTray();
+        game.addPropertyListener(virtualView);
+        game.getMarket().addPropertyListener(virtualView);
         /*
         The game is ready, send a GameStarted message to every player.
         Give each player four LeaderCard.
          */
         server.sendEveryone(new GameStarted(players), lobbyID);
+        game.generateGrid();
+        game.getMarket().generateTray();
         game.generateLeaders();
 
         if (game instanceof MultiplayerGame) {

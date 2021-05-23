@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.constants.GameConstants;
+import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.listeners.MarketListener;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -95,8 +97,7 @@ public class Market {
         Collections.shuffle(marketTray);
         slideMarble = marketTray.get(rand);
         marketTray.remove(rand);
-
-        pcs.firePropertyChange(MARKET_CHANGE, null, marketTray);
+        pcs.firePropertyChange(MARKET_CHANGE, null, marketTray.clone());
         pcs.firePropertyChange(SLIDE_MARBLE, null, slideMarble);
     }
 

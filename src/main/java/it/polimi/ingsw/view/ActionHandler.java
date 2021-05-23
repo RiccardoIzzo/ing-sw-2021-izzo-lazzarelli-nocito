@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.events.servermessages.*;
 
 import static it.polimi.ingsw.constants.PlayerConstants.*;
+import static it.polimi.ingsw.constants.GameConstants.*;
 
 /**
  * ActionHandler class manages the ServerMessage from the server and updates the view.
@@ -57,7 +58,8 @@ public class ActionHandler {
             UpdateView messageUpdate = (UpdateView) message;
             String sourcePlayer = messageUpdate.getSourcePlayer();
             String propertyName = messageUpdate.getPropertyName();
-            modelView.updateModelView(sourcePlayer, propertyName, ((UpdateView) message).getNewValue());
+            Object newValue = messageUpdate.getNewValue();
+            modelView.updateModelView(sourcePlayer, propertyName, newValue);
             if (SET_LEADERS.equals(propertyName)) {
                 view.handleLeaders();
             }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
+import it.polimi.ingsw.model.card.Deck;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -34,7 +35,7 @@ public class PlayerListener extends PropertyListener {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateLeadersToMap((HashSet<LeaderCard>) newValue));
             virtualView.sendToEveryone(serverMessage);
         } else if (GRID_CHANGE.equals(propertyName)) {
-            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            serverMessage = new UpdateView(null, propertyName, oldValue, translateGrid((Deck[][]) newValue));
             virtualView.sendToEveryone(serverMessage);
         }
     }

@@ -71,11 +71,14 @@ public class ModelView {
             DashboardView dashboardView = dashboards.stream().filter(dashboard -> dashboard.getNickname().equals(playerSource)).findAny().orElse(null);
             dashboardView.updateDashboard(propertyName, objectToUpdate);
         } else {
-            switch (propertyName) {
-                case END_TURN -> currPlayer = (String) objectToUpdate;
-                case TOKEN_DRAWN -> tokenDrawn = (Integer) objectToUpdate;
-                case MARKET_CHANGE -> marketTray = (ArrayList<MarbleColor>) objectToUpdate;
-                case SLIDE_MARBLE -> slideMarble = (MarbleColor) objectToUpdate;
+            if (END_TURN.equals(propertyName)) {
+                currPlayer = (String) objectToUpdate;
+            } else if (TOKEN_DRAWN.equals(propertyName)) {
+                tokenDrawn = (Integer) objectToUpdate;
+            } else if (MARKET_CHANGE.equals(propertyName)) {
+                marketTray = (ArrayList<MarbleColor>) objectToUpdate;
+            } else if (SLIDE_MARBLE.equals(propertyName)) {
+                slideMarble = (MarbleColor) objectToUpdate;
             }
         }
     }
