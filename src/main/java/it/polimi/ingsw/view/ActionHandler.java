@@ -2,8 +2,12 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.servermessages.*;
 
+import static it.polimi.ingsw.constants.PlayerConstants.*;
+
 /**
  * ActionHandler class manages the ServerMessage from the server and updates the view.
+ *
+ * @author Riccardo Izzo
  */
 public class ActionHandler {
     private final View view;
@@ -38,22 +42,24 @@ public class ActionHandler {
         else if(message instanceof GameStarted){
             view.printText("The game is about to start.");
             modelView = new ModelView(((GameStarted) message).getPlayers(), view.getNickname());
+            view.setModelView(modelView);
         }
         else if(message instanceof GetBonusResources){
-            //view.selectBonusResource(((BonusResources) message).getAmount());
+            view.handleBonusResource(((GetBonusResources) message).getAmount());
         }
         else if(message instanceof TextMessage){
             view.printText(((TextMessage) message).getText());
         }
-        else if (message instanceof UpdateView){
+        else if(message instanceof StartTurn){
+            view.handleTurn();
+        }
+        else if(message instanceof UpdateView){
             UpdateView messageUpdate = (UpdateView) message;
             String sourcePlayer = messageUpdate.getSourcePlayer();
             String propertyName = messageUpdate.getPropertyName();
-            modelView.updateModelView(sourcePlayer, (String) ((UpdateView) message).getOldValue(), ((UpdateView) message).getNewValue());
-            switch(propertyName){
-                case "SET_LEADERS" -> {
-                    //view.handleLeaders();
-                }
+            modelView.updateModelView(sourcePlayer, propertyName, ((UpdateView) message).getNewValue());
+            if (SET_LEADERS.equals(propertyName)) {
+                view.handleLeaders();
             }
         }
     }

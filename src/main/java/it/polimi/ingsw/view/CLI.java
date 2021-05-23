@@ -4,11 +4,13 @@ import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.InvalidNickname;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
+import it.polimi.ingsw.model.JsonCardsCreator;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.NetworkHandler;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * CLI class manages the game with a Command Line Interface.
@@ -28,6 +30,10 @@ public class CLI implements View{
         input = new Scanner(System.in);
     }
 
+    /**
+     * Method getNickname returns the player's nickname.
+     * @return player's nickname.
+     */
     @Override
     public String getNickname() {
         return nickname;
@@ -43,18 +49,28 @@ public class CLI implements View{
         send(new SetNickname(nickname));
     }
 
-    public String getInput(ArrayList<String> acceptedInputs) {
-        String input = new Scanner(System.in).next();
-        while(acceptedInputs.contains(input)){
-            System.out.println("Invalid input, type <Help> to see options\n");
-            input = new Scanner(System.in).next();
-            if (input.equals("Help")) {
-                for (String acceptedInput : acceptedInputs){
-                    System.out.println(acceptedInput);
-                }
-            }
+    /**
+     * Method setModelView sets the modelView for the current view.
+     * @param modelView the modelView.
+     */
+    @Override
+    public void setModelView(ModelView modelView) {
+        this.modelView = modelView;
+    }
+
+    /**
+     * Method getInput gets the user input and checks the validity by comparing the input with the available options.
+     * @param check available options.
+     * @return the valid user input.
+     */
+    @Override
+    public String getInput(String check) {
+        String option = new Scanner(System.in).nextLine().toLowerCase();
+        while(!option.matches(check)){
+            System.out.println("This option is not available, try again.");
+            option = input.nextLine();
         }
-        return input;
+        return option;
     }
 
     /**
@@ -76,7 +92,7 @@ public class CLI implements View{
     /**
      * Method handleLobbies manages the lobby system.
      * First of all it prints the list of available lobbies with the corresponding maximum number of players.
-     * Finally it manages two cases: the creation of a lobby and the registration of a player in a lobby.
+     * Finally it manages three cases: create a lobby, register a player to a lobby and refresh the list of available lobbies.
      * @param lobbies map that associates the lobby id to the maximum number of players for that lobby.
      */
     @Override
@@ -89,14 +105,18 @@ public class CLI implements View{
             System.out.println("--------------------");
         }
         System.out.println("\nDo you want to create your own lobby or join an existing one?");
-        System.out.println("- CREATE\n- JOIN");
-        String choice = input.nextLine();
-        switch (choice.toLowerCase()){
+        System.out.println("- CREATE\n- JOIN\n- REFRESH");
+        String choice = getInput("create|join|refresh");
+        switch (choice){
             case "create" ->{
                 System.out.println("Insert the lobbyID:");
                 String lobbyID = input.nextLine();
                 System.out.println("Insert the number of players:");
                 int numPlayers = input.nextInt();
+                while(numPlayers > 4){
+                    System.out.println("The maximum number of players is four, choose again.");
+                    numPlayers = input.nextInt();
+                }
                 if(!lobbies.containsKey(lobbyID)){
                     send(new CreateLobby(lobbyID, numPlayers));
                 }
@@ -116,12 +136,67 @@ public class CLI implements View{
                     send(new GetLobbies());
                 }
             }
+            case "refresh" ->{
+                send(new GetLobbies());
+            }
         }
     }
 
+    /**
+     * Method handleLeaders manages the selection of the leader cards at the beginning of the game.
+     */
     @Override
     public void handleLeaders() {
-        //ArrayList<Integer> leaders = modelView.getMyDashboard().
+        Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
+        System.out.println("Select two out of four leader cards...\n");
+        for(Integer id : ids){
+            LeaderCard card = JsonCardsCreator.generateLeaderCard(id);
+            System.out.println(card.toString());
+        }
+
+        System.out.println("Select the first card to discard by typing the id: ");
+        int firstId = input.nextInt();
+        while(!ids.contains(firstId)){
+            System.out.println("Id not valid, choose again.");
+            firstId = input.nextInt();
+        }
+
+        System.out.println("Select the second card to discard by typing the id: ");
+        int secondId = input.nextInt();
+        while(!ids.contains(secondId)){
+            System.out.println("Id not valid, choose again.");
+            secondId = input.nextInt();
+        }
+        send(new DiscardLeaderCard(firstId, secondId));
+    }
+
+    /**
+     * Method handleBonusResources manages the bonus resource system based on the players order at the beginning of the game.
+     * @param amount amount of bonus resources that the player can choose.
+     */
+    @Override
+    public void handleBonusResource(int amount) {
+        ResourceMap bonusResources = new ResourceMap();
+        for(int n = 0; n < amount; n++){
+            System.out.println("Select a bonus resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT\n");
+            String resource = getInput("stone|coin|shield|servant");
+            switch (resource){
+                case "stone" -> bonusResources.modifyResource(Resource.STONE, 1);
+                case "coin" -> bonusResources.modifyResource(Resource.COIN, 1);
+                case "shield" -> bonusResources.modifyResource(Resource.SHIELD, 1);
+                case "servant" -> bonusResources.modifyResource(Resource.SERVANT, 1);
+            }
+        }
+        send(new SendBonusResources(bonusResources));
+    }
+
+    /**
+     * Method handleTurn manages a player's turn and the available user actions.
+     */
+    @Override
+    public void handleTurn() {
+        System.out.println("It's your turn!");
+        System.out.println("Select your next action: \n- TAKE_RESOURCE\n- BUY_CARD\n- ACTIVATE_PRODUCTION\n- ACTIVATE_LEADER\n- END_TURN");
     }
 
     /**
@@ -153,11 +228,6 @@ public class CLI implements View{
         setNickname();
     }
 
-    @Override
-    public void selectBonusResource(int amount) {
-        System.out.println("Select " + amount + " bonus resource.");
-    }
-
     /**
      * CLI main method.
      * @param args main args.
@@ -175,6 +245,7 @@ public class CLI implements View{
     void showDashboard(){
         // print dashboard
     }
+
     void chooseAction() {
         // ask whichAction
 
@@ -187,11 +258,6 @@ public class CLI implements View{
         // execute actions and then show updated dashboard
     }
 
-    void showLeaderCards() {
-        // show leader card and see if the player can/wants to play a leader card
-    }
-
-    //
     void playLeaderCard() {
 
     }
@@ -200,7 +266,7 @@ public class CLI implements View{
     void showMarket() {
         // show market and ask if player wants to take resources
     }
-    //
+
     void takeResources() {
 
     }
@@ -209,30 +275,23 @@ public class CLI implements View{
         // edit shelves configuration
     }
 
-
     void showGrid() {
         // show grid see if the player can/wants to buy a card
     }
-    //
+
     void buyCard() {
 
     }
-    //
+
     void showAvailableProductions() {
         // show available productions and see if the player can/wants to start one
     }
+
     void startProduction() {
 
     }
 
-    //
     void endTurn() {
-
-    }
-    void showResults() {
-
-    }
-    void updateFaithTrack() {
 
     }
 }
