@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,6 +129,10 @@ public class ModelView {
 
         public void setNickname(String nickname) {
             this.nickname = nickname;
+        }
+
+        public void swapResources(int firstResource, int secondResource) {
+            Collections.swap(warehouse, firstResource, secondResource);
         }
 
         public void updateDashboard(String propertyName, Object objectToUpdate) {
