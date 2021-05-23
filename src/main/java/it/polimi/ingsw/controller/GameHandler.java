@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.util.*;
 
+import static it.polimi.ingsw.constants.GameConstants.BONUS_FAITH_POINTS;
 import static it.polimi.ingsw.constants.GameConstants.BONUS_RESOURCES;
 
 
@@ -72,8 +73,13 @@ public class GameHandler {
             /*
             Manages bonus resources.
              */
-            for (String player: players) {
-                virtualView.sendToPlayer(player, new  GetBonusResources(BONUS_RESOURCES.get(game.getPlayers().indexOf(game.getPlayerByName(player)))));
+            int index = 0;
+            for (String player : players) {
+                game.getPlayerByName(player).getDashboard().incrementFaith(BONUS_FAITH_POINTS[index++]);
+                int amount = game.getPlayers().indexOf(game.getPlayerByName(player));
+                if (amount != 0){
+                    virtualView.sendToPlayer(player, new GetBonusResources(BONUS_RESOURCES[amount]));
+                }
             }
         }
         String firstPlayer = game.getPlayers().get(0).getNickname();
@@ -87,10 +93,15 @@ public class GameHandler {
      */
     public void process(String nickname, ClientMessage message){
         Player player = game.getPlayerByName(nickname);
+
         if(message instanceof DiscardLeaderCard) {
             for (int cardID: ((DiscardLeaderCard) message).getLeadersToDiscard()) {
                 player.discardLeaderCard(cardID);
             }
+        }
+
+        else if(message instanceof SendBonusResources){
+            player.getDashboard().getWarehouse().addResourcesToShelf(2, ((SendBonusResources) message).getBonusResource());
         }
 
         else if(message instanceof TakeResources) {
@@ -122,7 +133,6 @@ public class GameHandler {
                 ((MultiplayerGame) game).nextPlayer();
             }
             else if(game instanceof SinglePlayerGame){
-                //to fix: drawToken method signature
                 ((SinglePlayerGame) game).drawToken((SinglePlayerGame) game);
             }
         }

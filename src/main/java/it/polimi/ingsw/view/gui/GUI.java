@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.view.ModelView;
 import it.polimi.ingsw.view.View;
 import javafx.application.Application;
 
@@ -56,8 +57,28 @@ public class GUI extends Application implements View {
     }
 
     @Override
+    public void handleBonusResource(int amount) {
+
+    }
+
+    @Override
+    public void handleTurn() {
+
+    }
+
+    @Override
     public void setNickname() {
 
+    }
+
+    @Override
+    public void setModelView(ModelView modelView) {
+
+    }
+
+    @Override
+    public String getInput(String check) {
+        return null;
     }
 
     @Override
@@ -67,11 +88,6 @@ public class GUI extends Application implements View {
 
     @Override
     public void send(ClientMessage message) {
-
-    }
-
-    @Override
-    public void selectBonusResource(int amount) {
 
     }
 

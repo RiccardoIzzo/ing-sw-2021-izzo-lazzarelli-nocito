@@ -21,18 +21,10 @@ public final class GameConstants {
     |    4   |              2             |       1      |
     +--------+----------------------------+--------------+
      */
-    public static final Map<Integer, Integer> BONUS_RESOURCES = Map.of(
-            1,0,
-            2,1,
-            3,1,
-            4,2
-    );
-    public static final Map<Integer, Integer> BONUS_FAITH_POINTS = Map.of(
-            1,0,
-            2,0,
-            3,1,
-            4,1
-    );
+
+    public static final int[] BONUS_RESOURCES = new int[]{0, 1, 1, 2};
+
+    public static final int[] BONUS_FAITH_POINTS = new int[]{0, 0, 1, 1};
 
     //Amount of DevelopmentCard(s) in the whole game
     public static final int NUM_DEVELOPMENT_CARDS = 48;

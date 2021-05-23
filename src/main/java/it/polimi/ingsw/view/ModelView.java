@@ -79,7 +79,7 @@ public class ModelView {
         }
     }
 
-    private class DashboardView{
+    public class DashboardView{
         private String nickname;
         private Map<Integer, Boolean> leaderCards;
         private ArrayList<Integer> developmentCards;
@@ -131,12 +131,16 @@ public class ModelView {
         }
 
         public void updateDashboard(String propertyName, Object objectToUpdate) {
-            switch (propertyName) {
-                case LEADER_ACTIVATION -> leaderCards.put((Integer) objectToUpdate, true);
-                case SELECT_LEADERS, DISCARD_LEADER -> leaderCards = (Map<Integer, Boolean>) objectToUpdate;
-                case STRONGBOX_CHANGE -> strongbox = (ResourceMap) objectToUpdate;
-                case TEMPORARY_SHELF_CHANGE, SHELF_CHANGE -> warehouse = (ArrayList<Resource>) objectToUpdate;
-                case FAITH_MARKER_POSITION, BLACK_MARKER_POSITION -> faithTrack = (ArrayList<Integer>) objectToUpdate;
+            if (LEADER_ACTIVATION.equals(propertyName)) {
+                leaderCards.put((Integer) objectToUpdate, true);
+            } else if (SET_LEADERS.equals(propertyName) || DISCARD_LEADER.equals(propertyName)) {
+                leaderCards = (Map<Integer, Boolean>) objectToUpdate;
+            } else if (STRONGBOX_CHANGE.equals(propertyName)) {
+                strongbox = (ResourceMap) objectToUpdate;
+            } else if (TEMPORARY_SHELF_CHANGE.equals(propertyName) || SHELF_CHANGE.equals(propertyName)) {
+                warehouse = (ArrayList<Resource>) objectToUpdate;
+            } else if (FAITH_MARKER_POSITION.equals(propertyName) || BLACK_MARKER_POSITION.equals(propertyName)) {
+                faithTrack = (ArrayList<Integer>) objectToUpdate;
             }
         }
     }

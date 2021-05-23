@@ -13,10 +13,13 @@ import java.util.Map;
 public interface View {
     String getNickname();
     void setNickname();
+    void setModelView(ModelView modelView);
+    String getInput(String check);
     void handleNickname(ServerMessage message);
     void handleLobbies(Map<String, Integer> lobbies);
     void handleLeaders();
+    void handleBonusResource(int amount);
+    void handleTurn();
     void printText(String text);
     void send(ClientMessage message);
-    void selectBonusResource(int amount);
 }
