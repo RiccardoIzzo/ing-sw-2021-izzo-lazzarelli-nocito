@@ -279,6 +279,21 @@ public class CLI implements View{
         // show grid see if the player can/wants to buy a card
     }
 
+    public static void showWarehouse(ArrayList<Resource> warehouse){
+        for (int shelf = 1; shelf <=5; shelf++) {
+            int index = (shelf*shelf - shelf +2)/2 - 1;
+            System.out.print("  ".repeat(5 - shelf));
+            for (int resourceSlot = index; resourceSlot < index + shelf; resourceSlot++){
+                if (warehouse.get(resourceSlot) != null) {
+                    System.out.printf("⎣%s⎦", warehouse.get(resourceSlot).toString());
+                } else {
+                    System.out.print("⎣  ⎦");
+                }
+            }
+            System.out.print("\n");
+        }
+    }
+
     void buyCard() {
 
     }

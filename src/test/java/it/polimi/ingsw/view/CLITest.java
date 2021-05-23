@@ -1,23 +1,21 @@
-package it.polimi.ingsw.model.player;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.model.player.Warehouse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * WarehouseTest tests Warehouse class.
- *
- * @author Andrea Nocito
- */
-public class WarehouseTest {
+public class CLITest {
     Warehouse warehouse;
     ResourceMap resourceMapA;
     ResourceMap resourceMapB;
     ResourceMap resourceMapC;
+    ResourceMap resourceMapD;
+    ResourceMap resourceMapE;
 
     @Before
     public void setUp() throws Exception {
@@ -33,32 +31,27 @@ public class WarehouseTest {
         resourceMapC = new ResourceMap();
         resourceMapC.modifyResource(Resource.SHIELD, 3);
 
+        resourceMapD = new ResourceMap();
+        resourceMapD.addResources(resourceMapC);
+        resourceMapD.modifyResource(Resource.SERVANT,1);
+
+        resourceMapE = new ResourceMap();
+        resourceMapE.modifyResource(Resource.SHIELD, 4);
+
         warehouse.addResourcesToShelf(1,resourceMapA);
         warehouse.addResourcesToShelf(2,resourceMapB);
         warehouse.addResourcesToShelf(3,resourceMapC);
+        warehouse.addResourcesToShelf(4,resourceMapD);
+        warehouse.addResourcesToShelf(5,resourceMapE);
+
     }
 
     @After
     public void tearDown() throws Exception {
-        warehouse = null;
-        resourceMapA = null;
-        resourceMapB = null;
-        resourceMapC = null;
     }
 
     @Test
-    public void getResourcesFromShelf() {
-        assertEquals(resourceMapA.getResources(),warehouse.getResourcesFromShelf(1).getResources());
-        assertEquals(resourceMapB.getResources(),warehouse.getResourcesFromShelf(2).getResources());
-        assertEquals(resourceMapC.getResources(),warehouse.getResourcesFromShelf(3).getResources());
-    }
-
-    @Test
-    public void getShelfIndex() {
-        assertEquals(0, warehouse.getShelfIndex(1));
-        assertEquals(1,warehouse.getShelfIndex(2));
-        assertEquals(3,warehouse. getShelfIndex(3));
-        assertEquals(6, warehouse.getShelfIndex(4));
-        assertEquals(10, warehouse.getShelfIndex(5));
+    public void showWarehouse() {
+        //CLI.showWarehouse(warehouse.getShelves());
     }
 }
