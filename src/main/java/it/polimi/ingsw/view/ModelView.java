@@ -90,7 +90,9 @@ public class ModelView {
         private ResourceMap strongbox;
         private ArrayList<Resource> warehouse;
         private ArrayList<Resource> extraShelfResources;
-        private ArrayList<Integer> faithTrack;
+        private Integer faithMarker;
+        private Integer blackMarker;
+        private Boolean[] popesFavorTiles;
 
         public DashboardView(String nickname) {
             this.nickname = nickname;
@@ -99,7 +101,9 @@ public class ModelView {
             this.strongbox = new ResourceMap();
             this.warehouse = new ArrayList<>();
             this.extraShelfResources = new ArrayList<>();
-            this.faithTrack = new ArrayList<>();
+            this.faithMarker = 0;
+            this.blackMarker = 0;
+            this.popesFavorTiles = new Boolean[] {false, false, false};
         }
 
         public String getNickname() {
@@ -126,8 +130,16 @@ public class ModelView {
             return extraShelfResources;
         }
 
-        public ArrayList<Integer> getFaithTrack() {
-            return faithTrack;
+        public Integer getFaithMarker() {
+            return faithMarker;
+        }
+
+        public Integer getBlackMarker() {
+            return blackMarker;
+        }
+
+        public Boolean[] getPopesFavorTiles() {
+            return popesFavorTiles;
         }
 
         public void setNickname(String nickname) {
@@ -147,9 +159,14 @@ public class ModelView {
                 strongbox = (ResourceMap) objectToUpdate;
             } else if (TEMPORARY_SHELF_CHANGE.equals(propertyName) || SHELF_CHANGE.equals(propertyName)) {
                 warehouse = (ArrayList<Resource>) objectToUpdate;
-            } else if (FAITH_MARKER_POSITION.equals(propertyName) || BLACK_MARKER_POSITION.equals(propertyName)) {
-                faithTrack = (ArrayList<Integer>) objectToUpdate;
-            }
+            } else if (FAITH_MARKER_POSITION.equals(propertyName)) {
+                faithMarker = (Integer) objectToUpdate;
+            } else if (BLACK_MARKER_POSITION.equals(propertyName)) {
+                blackMarker = (Integer) objectToUpdate;
+            } else if (POPES_TILES_CHANGE.equals(propertyName)) {
+                popesFavorTiles = (Boolean[]) objectToUpdate;
+            } else if (DEVELOPMENTS_CHANGE.equals(propertyName))
+                developmentCards = (ArrayList<Integer>) objectToUpdate;
         }
     }
 }
