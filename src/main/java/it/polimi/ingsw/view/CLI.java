@@ -6,13 +6,16 @@ import it.polimi.ingsw.events.servermessages.InvalidNickname;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.model.JsonCardsCreator;
+import it.polimi.ingsw.model.MarbleColor;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
-import it.polimi.ingsw.model.card.ExtraShelfLeaderCard;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.NetworkHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 
 /**
  * CLI class manages the game with a Command Line Interface.
@@ -259,11 +262,11 @@ public class CLI implements View{
     public static void main(String[] args) {
         System.out.println(
                 """
-                 __  __           _             ___   __ ____                  _                             \s
-                |  \\/  | __ _ ___| |_ ___ _ __ / _ \\ / _|  _ \\ ___ _ __   __ _(_)___ ___  __ _ _ __   ___ ___\s
-                | |\\/| |/ _` / __| __/ _ \\ '__| | | | |_| |_) / _ \\ '_ \\ / _` | / __/ __|/ _` | '_ \\ / __/ _ \\
-                | |  | | (_| \\__ \\ ||  __/ |  | |_| |  _|  _ <  __/ | | | (_| | \\__ \\__ \\ (_| | | | | (_|  __/
-                |_|  |_|\\__,_|___/\\__\\___|_|   \\___/|_| |_| \\_\\___|_| |_|\\__,_|_|___/___/\\__,_|_| |_|\\___\\___|
+                 __  __           _                 ___   __ ____                  _                             \s
+                |  \\/  | __ _ ___| |_ ___ _ __ ___ / _ \\ / _|  _ \\ ___ _ __   __ _(_)___ ___  __ _ _ __   ___ ___\s
+                | |\\/| |/ _` / __| __/ _ \\ '__/ __| | | | |_| |_) / _ \\ '_ \\ / _` | / __/ __|/ _` | '_ \\ / __/ _ \\
+                | |  | | (_| \\__ \\ ||  __/ |  \\__ \\ |_| |  _|  _ <  __/ | | | (_| | \\__ \\__ \\ (_| | | | | (_|  __/
+                |_|  |_|\\__,_|___/\\__\\___|_|  |___/\\___/|_| |_| \\_\\___|_| |_|\\__,_|_|___/___/\\__,_|_| |_|\\___\\___|
                 """);
         System.out.println("Insert server ip address:");
         String ip = new Scanner(System.in).next();
@@ -294,8 +297,21 @@ public class CLI implements View{
     }
 
 
-    void showMarket() {
-        // show market and ask if player wants to take resources
+    public static void showMarket(ArrayList<MarbleColor> marketTray, MarbleColor slideMarble) {
+        System.out.printf("Slide marble = %s\n\n", slideMarble.toString());
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                System.out.print(marketTray.get(i+j).toString() + "\t");
+            }
+            System.out.printf("<-- %d\n", i + 1);
+        }
+        System.out.println(
+                """
+                ^   ^   ^   ^
+                |   |   |   |
+                7   6   5   4
+                """
+        );
     }
 
     void takeResources() {

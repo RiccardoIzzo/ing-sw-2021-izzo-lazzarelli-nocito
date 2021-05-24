@@ -9,7 +9,8 @@ public enum Colors {
     ANSI_BLUE("\u001B[34m"),
     ANSI_PURPLE("\u001B[35m"),
     ANSI_CYAN("\u001B[36m"),
-    ANSI_WHITE("\u001B[37m");
+    ANSI_WHITE("\u001B[37m"),
+    WHITE_BRIGHT("\033[0;97m");
 
     private String escape;
 
