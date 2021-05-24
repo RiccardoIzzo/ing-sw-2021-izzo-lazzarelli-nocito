@@ -42,6 +42,8 @@ public final class PlayerConstants {
     public static final String SET_LEADERS = "setLeaders";
     public static final String SELECT_LEADERS = "selectLeaders";
     public static final String DISCARD_LEADER = "discardLeader";
+    public static final String DEVELOPMENTS_CHANGE = "developmentsChange";
+    public static final String PRODUCTIONS_CHANGE = "productionsChange";
 
     //DashboardListener
     public static final String STRONGBOX_CHANGE = "strongboxChange";
@@ -52,6 +54,7 @@ public final class PlayerConstants {
     //FaithTrackListener
     public static final String FAITH_MARKER_POSITION = "faithMarkerPosition";
     public static final String BLACK_MARKER_POSITION = "blackMarkerPosition";
+    public static final String POPES_TILES_CHANGE = "popesTilesChange";
 
     //ShelfListener
     public static final String SHELF_CHANGE = "shelfChange";

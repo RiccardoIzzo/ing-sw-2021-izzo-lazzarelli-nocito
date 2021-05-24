@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.*;
-import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.card.Card;
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.model.*;
@@ -123,7 +123,7 @@ public class GameHandler {
         }
 
         else if(message instanceof ActivateProduction) {
-            for(DevelopmentCard card : player.getDevelopments().toArray(DevelopmentCard[]::new)){
+            for (Card card: player.getAvailableProduction()) {
                 if(((ActivateProduction) message).getCardsID().contains(card.getCardID())){
                     player.activateProduction(card);
                 }

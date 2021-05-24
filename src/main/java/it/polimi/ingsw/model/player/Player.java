@@ -81,19 +81,11 @@ public class Player {
     }
 
     /**
-     * Method getAvailableProduction gets all the ProductionPower in availableProduction list.
-     * @return List<ProductionPower>, list of the productionPower this Player has.
+     * Method getAvailableProduction gets all the Card(s) in availableProduction list.
+     * @return ArrayList<Card>, list of the Cards with ProductionPower this Player has.
      */
-    public List<ProductionPower> getAvailableProduction() {
-        List<ProductionPower> productionPowers = new ArrayList<>();
-        for (Card card: availableProduction) {
-            if (card instanceof DevelopmentCard) {
-                productionPowers.add(((DevelopmentCard) card).getProduction());
-            } else if (card instanceof ProductionLeaderCard) {
-                productionPowers.add(((ProductionLeaderCard) card).getProduction());
-            }
-        }
-        return productionPowers;
+    public ArrayList<Card> getAvailableProduction() {
+        return availableProduction;
     }
 
     public Dashboard getDashboard() {
@@ -145,6 +137,8 @@ public class Player {
         if (levelOfCard.getCard(developmentCard.getType()) < developmentCard.getLevel()) {
             levelOfCard.put(developmentCard.getType(), developmentCard.getLevel());
         }
+        pcs.firePropertyChange(DEVELOPMENTS_CHANGE, null, developments);
+        pcs.firePropertyChange(PRODUCTIONS_CHANGE, null, availableProduction);
     }
 
     /**
@@ -172,14 +166,20 @@ public class Player {
     }
 
     /**
-     * Method activateProduction gets the ProductionPower of the chosen DevelopmentCard and increment the resources
+     * Method activateProduction gets the ProductionPower of the chosen Card and increment the resources
      * in the strongbox and the faith in the FaithTrack by the output of the ProductionPower
-     * @param developmentCard : the Card which productionPower is to activate
+     * @param productionCard : the Card which productionPower is activated
      */
-    public void activateProduction(DevelopmentCard developmentCard){
-        myDashboard.removeResourcesFromDashboard(developmentCard.getProduction().getInputResource());
-        myDashboard.addResourcesToStrongbox(developmentCard.getProduction().getOutputResource());
-        myDashboard.incrementFaith(developmentCard.getProduction().getOutputFaith());
+    public void activateProduction(Card productionCard){
+        if (productionCard instanceof DevelopmentCard) {
+            myDashboard.removeResourcesFromDashboard(((DevelopmentCard) productionCard).getProduction().getInputResource());
+            myDashboard.addResourcesToStrongbox(((DevelopmentCard) productionCard).getProduction().getOutputResource());
+            myDashboard.incrementFaith(((DevelopmentCard) productionCard).getProduction().getOutputFaith());
+        } else if (productionCard instanceof ProductionLeaderCard) {
+            myDashboard.removeResourcesFromDashboard(((ProductionLeaderCard) productionCard).getProduction().getInputResource());
+            myDashboard.addResourcesToStrongbox(((ProductionLeaderCard) productionCard).getProduction().getOutputResource());
+            myDashboard.incrementFaith(((ProductionLeaderCard) productionCard).getProduction().getOutputFaith());
+        }
     }
 
     /**
@@ -190,6 +190,7 @@ public class Player {
         leaderCard.setActive(true);
         if (leaderCard instanceof ProductionLeaderCard){
             availableProduction.add(leaderCard);
+            pcs.firePropertyChange(PRODUCTIONS_CHANGE, null, availableProduction);
         } else if (leaderCard instanceof WhiteMarbleLeaderCard){
             availableExchange.addAll(((WhiteMarbleLeaderCard) leaderCard).getExchange());
         } else if (leaderCard instanceof DiscountLeaderCard){
@@ -243,6 +244,8 @@ public class Player {
         pcs.addPropertyChangeListener(DISCARD_LEADER, playerListener);
         pcs.addPropertyChangeListener(LEADER_ACTIVATION, playerListener);
         pcs.addPropertyChangeListener(GRID_CHANGE, playerListener);
+        pcs.addPropertyChangeListener(DEVELOPMENTS_CHANGE, playerListener);
+        pcs.addPropertyChangeListener(PRODUCTIONS_CHANGE, playerListener);
         myDashboard.addPropertyListener(virtualView);
     }
 }

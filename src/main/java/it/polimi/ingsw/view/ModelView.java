@@ -87,6 +87,7 @@ public class ModelView {
         private String nickname;
         private Map<Integer, Boolean> leaderCards;
         private ArrayList<Integer> developmentCards;
+        private ArrayList<Integer> availableProduction;
         private ResourceMap strongbox;
         private ArrayList<Resource> warehouse;
         private ArrayList<Resource> extraShelfResources;
@@ -116,6 +117,10 @@ public class ModelView {
 
         public ArrayList<Integer> getDevelopmentCards() {
             return developmentCards;
+        }
+
+        public ArrayList<Integer> getAvailableProduction() {
+            return availableProduction;
         }
 
         public ResourceMap getStrongbox() {
@@ -165,8 +170,11 @@ public class ModelView {
                 blackMarker = (Integer) objectToUpdate;
             } else if (POPES_TILES_CHANGE.equals(propertyName)) {
                 popesFavorTiles = (Boolean[]) objectToUpdate;
-            } else if (DEVELOPMENTS_CHANGE.equals(propertyName))
+            } else if (DEVELOPMENTS_CHANGE.equals(propertyName)) {
                 developmentCards = (ArrayList<Integer>) objectToUpdate;
+            } else if (PRODUCTIONS_CHANGE.equals(propertyName)) {
+                availableProduction = (ArrayList<Integer>) objectToUpdate;
+            }
         }
     }
 }

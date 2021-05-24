@@ -157,7 +157,7 @@ public class Warehouse {
                 shelves.set(i, null);
             }
         }
-        pcs.firePropertyChange(TEMPORARY_SHELF_CHANGE, null, shelves);
+        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
         return resourceMap;
     }
 
