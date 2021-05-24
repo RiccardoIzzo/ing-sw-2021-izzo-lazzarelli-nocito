@@ -316,8 +316,15 @@ public class CLI implements View{
         cli.setupGame(ip, port);
     }
 
-    void showDashboard(){
-        // print dashboard
+    void showDashboard(ModelView.DashboardView dashboardView){
+        System.out.println("\n*** FAITHTRACK ***");
+        showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
+        System.out.println("\n*** WAREHOUSE ***");
+        showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
+        System.out.println("\n*** LEADER CARDS ***");
+        showCards(dashboardView.getLeaderCards().keySet());
+        System.out.println("\n*** AVAILABLE PRODUCTION ***");
+        showCards(dashboardView.getAvailableProduction());
     }
 
     void chooseAction() {
@@ -362,9 +369,9 @@ public class CLI implements View{
         // edit shelves configuration
     }
 
-    void showGrid(ArrayList<Integer> grid) {
-        for (Integer developmentCard: grid) {
-            System.out.println(JsonCardsCreator.generateDevelopmentCard(developmentCard).toString());
+    void showCards(Collection<Integer> cards) {
+        for (Integer card: cards) {
+            System.out.println(JsonCardsCreator.generateCard(card).toString());
         }
     }
 
