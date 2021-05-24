@@ -38,7 +38,7 @@ public abstract class PropertyListener implements PropertyChangeListener {
         ArrayList<Integer> cards = new ArrayList<>();
         for (Deck[] decks : grid) {
             for (Deck deck : decks) {
-                cards.add(deck.getTopCard().getCardID());
+                if (deck.getTopCard() != null) cards.add(deck.getTopCard().getCardID());
             }
         }
         return cards;
