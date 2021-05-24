@@ -86,4 +86,12 @@ public class JsonCardsCreator {
     public static ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
+
+    public static Card generateCard(int cardID) {
+        if (cardID < 200) {
+            return generateDevelopmentCard(cardID);
+        } else {
+            return generateLeaderCard(cardID);
+        }
+    }
 }
