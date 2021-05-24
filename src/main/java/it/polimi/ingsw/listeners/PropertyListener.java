@@ -7,10 +7,7 @@ import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class Listener is implemented by all the listeners which observe bound properties changes.
@@ -29,7 +26,7 @@ public abstract class PropertyListener implements PropertyChangeListener {
         return leaders;
     }
 
-    public ArrayList<Integer> translateCards(ArrayList<Card> cards) {
+    public ArrayList<Integer> translateCards(Collection<Card> cards) {
         ArrayList<Integer> cardIDs = new ArrayList<>();
         for (Card card : cards) {
             cardIDs.add(card.getCardID());

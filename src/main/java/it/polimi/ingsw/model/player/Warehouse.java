@@ -124,7 +124,7 @@ public class Warehouse {
             shelves.set(shelfIndex, resource);
             shelfIndex++;
         }
-        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
+        pcs.firePropertyChange(TEMPORARY_SHELF_CHANGE, null, shelves);
         return true;
     }
 

@@ -66,6 +66,9 @@ public class ActionHandler {
             else if(END_TURN.equals(propertyName)){
                 view.printText(newValue.toString() + ", ready to play.");
             }
+            else if(TEMPORARY_SHELF_CHANGE.equals(propertyName)){
+                view.handleTemporaryShelf();
+            }
         }
     }
 }

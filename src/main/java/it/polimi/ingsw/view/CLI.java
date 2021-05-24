@@ -10,8 +10,10 @@ import it.polimi.ingsw.model.MarbleColor;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.model.card.LeaderCard;
+import it.polimi.ingsw.model.card.ResourceRequirement;
 import it.polimi.ingsw.network.NetworkHandler;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -138,9 +140,7 @@ public class CLI implements View{
                     send(new GetLobbies());
                 }
             }
-            case "refresh" ->{
-                send(new GetLobbies());
-            }
+            case "refresh" -> send(new GetLobbies());
         }
     }
 
@@ -244,7 +244,48 @@ public class CLI implements View{
 
     @Override
     public void handleBuyCard() {
+        ArrayList<Integer> ids = modelView.getGrid();
+        showCards(ids);
+        System.out.println("Select the card that you want to buy by typing the id: ");
+        ArrayList<Resource> myResources = new ArrayList<>();
+        myResources.addAll(modelView.getMyDashboard().getWarehouse());
+        myResources.addAll(modelView.getMyDashboard().getStrongbox().asList());
 
+        int id;
+        while(true){
+            id = input.nextInt();
+            if(ids.contains(id)){
+                if(myResources.containsAll(((ResourceRequirement) JsonCardsCreator.generateDevelopmentCard(id).getRequirement()).getResources().asList())){
+                    break;
+                }
+                System.out.println("Not enough resources.");
+            }
+            else System.out.println("Id not valid, choose again.");
+        }
+
+        int index = ids.indexOf(id);
+        send(new BuyCard(index / 4, index % 4));
+    }
+
+    @Override
+    public void handleTemporaryShelf() {
+        //TODO
+        System.out.println("Place your resources on the shelves");
+        int firstSlot, secondSlot;
+        while(true){
+            showWarehouse(modelView.getMyDashboard().getWarehouse(),modelView.getMyDashboard().getExtraShelfResources());
+            System.out.println("Select two slots: ");
+            firstSlot = new Scanner(System.in).nextInt();
+            secondSlot = new Scanner(System.in).nextInt();
+            if(firstSlot >= 0 && firstSlot < 15 && secondSlot >= 0 && secondSlot < 15){
+                modelView.getMyDashboard().swapResources(firstSlot, secondSlot);
+            }
+            if(modelView.getMyDashboard().getWarehouse().subList(10, 14).size() > 0){
+                if(modelView.getMyDashboard().getWarehouse().subList(3, 5).size() > 0){
+                    //modelView.getMyDashboard().getWarehouse().subList(3, 5).stream().reduce((a, b) -> a)
+                }
+            }
+        }
     }
 
     @Override

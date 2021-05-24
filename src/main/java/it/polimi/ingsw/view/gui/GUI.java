@@ -108,6 +108,11 @@ public class GUI extends Application implements View {
     }
 
     @Override
+    public void handleTemporaryShelf() {
+
+    }
+
+    @Override
     public void handleTurn() {
 
     }

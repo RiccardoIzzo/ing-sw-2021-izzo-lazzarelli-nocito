@@ -79,6 +79,8 @@ public class ModelView {
                 marketTray = (ArrayList<MarbleColor>) objectToUpdate;
             } else if (SLIDE_MARBLE.equals(propertyName)) {
                 slideMarble = (MarbleColor) objectToUpdate;
+            } else if (GRID_CHANGE.equals(propertyName)) {
+                grid = (ArrayList<Integer>) objectToUpdate;
             }
         }
     }
