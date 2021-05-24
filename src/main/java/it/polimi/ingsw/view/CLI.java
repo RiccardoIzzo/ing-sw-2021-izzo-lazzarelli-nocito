@@ -322,8 +322,10 @@ public class CLI implements View{
         // edit shelves configuration
     }
 
-    void showGrid() {
-        // show grid see if the player can/wants to buy a card
+    void showGrid(ArrayList<Integer> grid) {
+        for (Integer developmentCard: grid) {
+            System.out.println(JsonCardsCreator.generateDevelopmentCard(developmentCard).toString());
+        }
     }
 
     public void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources){
@@ -375,8 +377,10 @@ public class CLI implements View{
 
     }
 
-    void showAvailableProductions() {
-        // show available productions and see if the player can/wants to start one
+    void showAvailableProductions(ArrayList<Integer> productions) {
+        for (int card: productions) {
+            System.out.println(JsonCardsCreator.generateCard(card).toString());
+        }
     }
 
     void startProduction() {
