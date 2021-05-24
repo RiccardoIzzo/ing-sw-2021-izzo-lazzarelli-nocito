@@ -303,13 +303,13 @@ public class CLI implements View{
             for (int j = 0; j < 4; j++) {
                 System.out.print(marketTray.get(i+j).toString() + "\t");
             }
-            System.out.printf("<-- %d\n", i + 1);
+            System.out.printf("<-- %d\n", 7 - i);
         }
         System.out.println(
                 """
                 ^   ^   ^   ^
                 |   |   |   |
-                7   6   5   4
+                1   2   3   4
                 """
         );
     }
