@@ -205,31 +205,23 @@ public class CLI implements View{
             for(int i = 0; i < 5; i++){
                 if(availableActions[i]) System.out.println(actions[i]);
             }
+
             String action = getInput("take_resource|buy_card|activate_production|activate_leader|end_turn");
             switch(action){
-                case "take_resource" -> {
-                    handleTakeResource();
-                }
-                case "buy_card" -> {
-                    //to implement: handleBuyCard
-                }
-                case "activate_production" -> {
-                    //to implement: handleActivateProduction
-                }
-                case "activate_leader" -> {
-                    availableActions[3] = false;
-                    //to implement: handleActivateLeader
-                }
-                case "end_turn" -> {
-                    availableActions[4] = false;
-                    handleEndTurn();
-                }
+                case "take_resource" -> handleTakeResource();
+                case "buy_card" -> handleBuyCard();
+                case "activate_production" -> handleActivateProduction();
+                case "activate_leader" -> handleActivateLeader();
+                case "end_turn" -> handleEndTurn();
             }
+
             if(action.matches("take_resource|buy_card|activate_production")){
                 for(int i = 0; i < 3; i++){
                     availableActions[i] = false;
                 }
             }
+            else if(action.matches("activate_leader")) availableActions[3] = false;
+            else if(action.matches("end_turn")) availableActions[4] = false;
         }
     }
 
@@ -248,6 +240,21 @@ public class CLI implements View{
         }
         if(index > 4) send(new TakeResources(index - 4, 1));
         else send(new TakeResources(index, 2));
+    }
+
+    @Override
+    public void handleBuyCard() {
+
+    }
+
+    @Override
+    public void handleActivateProduction() {
+
+    }
+
+    @Override
+    public void handleActivateLeader() {
+
     }
 
     /**
