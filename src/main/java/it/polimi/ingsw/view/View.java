@@ -20,7 +20,11 @@ public interface View {
     void handleLeaders();
     void handleBonusResource(int amount);
     void handleTurn();
+    void handleEndTurn();
     void handleTakeResource();
+    void handleBuyCard();
+    void handleActivateProduction();
+    void handleActivateLeader();
     void printText(String text);
     void send(ClientMessage message);
 }

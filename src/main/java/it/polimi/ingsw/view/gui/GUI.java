@@ -93,7 +93,27 @@ public class GUI extends Application implements View {
     }
 
     @Override
+    public void handleBuyCard() {
+
+    }
+
+    @Override
+    public void handleActivateProduction() {
+
+    }
+
+    @Override
+    public void handleActivateLeader() {
+
+    }
+
+    @Override
     public void handleTurn() {
+
+    }
+
+    @Override
+    public void handleEndTurn() {
 
     }
 

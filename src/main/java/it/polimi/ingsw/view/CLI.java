@@ -12,10 +12,7 @@ import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.NetworkHandler;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * CLI class manages the game with a Command Line Interface.
@@ -200,30 +197,73 @@ public class CLI implements View{
      */
     @Override
     public void handleTurn() {
-        System.out.println("It's your turn!");
-        System.out.println("Select your next action: \n- TAKE_RESOURCE\n- BUY_CARD\n- ACTIVATE_PRODUCTION\n- ACTIVATE_LEADER\n- END_TURN");
-        String action = getInput("take_resource|buy_card|activate_production|activate_leader|end_turn");
-        switch(action){
-            case "take_resource" -> handleTakeResource();
-            case "buy_card" -> {
-
+        boolean[] availableActions = new boolean[]{true, true, true, true, true};
+        String[] actions = new String[]{"TAKE_RESOURCE", "BUY_CARD", "ACTIVATE_PRODUCTION", "ACTIVATE_LEADER", "END_TURN"};
+        System.out.println("Now it's your turn!");
+        while(availableActions[4]){
+            System.out.println("Select your next action: ");
+            for(int i = 0; i < 5; i++){
+                if(availableActions[i]) System.out.println(actions[i]);
             }
-            case "activate_production" -> {
 
+            String action = getInput("take_resource|buy_card|activate_production|activate_leader|end_turn");
+            switch(action){
+                case "take_resource" -> handleTakeResource();
+                case "buy_card" -> handleBuyCard();
+                case "activate_production" -> handleActivateProduction();
+                case "activate_leader" -> handleActivateLeader();
+                case "end_turn" -> handleEndTurn();
             }
-            case "activate_leader" -> {
 
+            if(action.matches("take_resource|buy_card|activate_production")){
+                for(int i = 0; i < 3; i++){
+                    availableActions[i] = false;
+                }
             }
-            case "end_turn" -> {
-
-            }
+            else if(action.matches("activate_leader")) availableActions[3] = false;
+            else if(action.matches("end_turn")) availableActions[4] = false;
         }
     }
 
+    /**
+     * Method handleTakeResource manages the "TAKE_RESOURCE" action with the player that takes resources from the market.
+     */
     @Override
     public void handleTakeResource() {
-        System.out.println("*** MARKET ***");
-        System.out.println(modelView.getMarketTray().toString());
+        showMarket(modelView.getMarketTray(), modelView.getSlideMarble());
+        System.out.println("Insert the row/column index:");
+        int index;
+        index = new Scanner(System.in).nextInt();
+        while(index < 1 || index > 7){
+            System.out.println("Row/Column index must be between 1 and 7! Try again.");
+            index = new Scanner(System.in).nextInt();
+        }
+        if(index > 4) send(new TakeResources(index - 4, 1));
+        else send(new TakeResources(index, 2));
+    }
+
+    @Override
+    public void handleBuyCard() {
+
+    }
+
+    @Override
+    public void handleActivateProduction() {
+
+    }
+
+    @Override
+    public void handleActivateLeader() {
+
+    }
+
+    /**
+     * Method handleEndTurn manages the "END_TURN" action with the player that decides to end his turn.
+     */
+    @Override
+    public void handleEndTurn() {
+        System.out.println("Your turn is finished.");
+        send(new EndTurn());
     }
 
     /**
@@ -276,8 +316,15 @@ public class CLI implements View{
         cli.setupGame(ip, port);
     }
 
-    void showDashboard(){
-        // print dashboard
+    void showDashboard(ModelView.DashboardView dashboardView){
+        System.out.println("\n*** FAITHTRACK ***");
+        showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
+        System.out.println("\n*** WAREHOUSE ***");
+        showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
+        System.out.println("\n*** LEADER CARDS ***");
+        showCards(dashboardView.getLeaderCards().keySet());
+        System.out.println("\n*** AVAILABLE PRODUCTION ***");
+        showCards(dashboardView.getAvailableProduction());
     }
 
     void chooseAction() {
@@ -322,9 +369,9 @@ public class CLI implements View{
         // edit shelves configuration
     }
 
-    void showGrid(ArrayList<Integer> grid) {
-        for (Integer developmentCard: grid) {
-            System.out.println(JsonCardsCreator.generateDevelopmentCard(developmentCard).toString());
+    void showCards(Collection<Integer> cards) {
+        for (Integer card: cards) {
+            System.out.println(JsonCardsCreator.generateCard(card).toString());
         }
     }
 
@@ -373,21 +420,42 @@ public class CLI implements View{
         }
     }
 
-    void buyCard() {
-
+    /*
+    f = faithMarker
+    b = blackMarker
+    p = popesTile
+     */
+    public static void showFaithTrack(int f, int b, Boolean[] p) {
+        System.out.printf("""
+                        +---------+----+----+----+----+----+----+----+---------+----+----+----+----+----+----+----+----+
+                        |         | %s | %s | %s | %s | %s | %s |    |   %s   |    | %s | %s | %s | %s | %s | %s | %s |
+                        |         +----+----+----+----+----+----+    |         |    +----+----+----+----+----+----+----+
+                        |         | %s |    |   %s   |    | %s |    |         |    | %s |         |   %s   |         |
+                        +----+----+----+    |         |    +----+----+----+----+----+----+         |         |         |
+                        | %s | %s | %s |    |         |    | %s | %s | %s | %s | %s | %s |         |         |         |
+                        +----+----+----+----+---------+----+----+----+----+----+----+----+---------+---------+---------+
+                        %n""", f(4,f,b),f(5,f,b),f(6,f,b),f(7,f,b),f(8,f,b),f(9,f,b),p(p[1],2),
+                                f(18,f,b),f(19,f,b),f(20,f,b),f(21,f,b),f(22,f,b),f(23,f,b),f(24,f,b),
+                                f(3,f,b),p(p[0], 2),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
+                                f(2,f,b),f(11,f,b),f(12,f,b),f(13,f,b),f(14,f,b),f(15,f,b),f(16,f,b));
     }
-
-    void showAvailableProductions(ArrayList<Integer> productions) {
-        for (int card: productions) {
-            System.out.println(JsonCardsCreator.generateCard(card).toString());
+    private static String f(int tile, int faithMarker, int blackMarker){
+        Colors backgroundColor = (tile == blackMarker) ? Colors.ANSI_BLACK_BACKGROUND: Colors.ANSI_RESET;
+        Colors numberColor = (tile == faithMarker) ? Colors.ANSI_CYAN : Colors.ANSI_BLACK;
+        String tileColor;
+        if (tile < 10) {
+            tileColor = String.format("%s%s0%d%s", backgroundColor, numberColor, tile, Colors.ANSI_RESET);
+        } else {
+            tileColor = String.format("%s%s%d%s", backgroundColor, numberColor, tile, Colors.ANSI_RESET);
         }
+        return tileColor;
+    }
+    private static String p(boolean popeTileActive, int points) {
+        Colors numberColor = popeTileActive ? Colors.ANSI_YELLOW_BACKGROUND : Colors.ANSI_RED_BACKGROUND;
+        return String.format("%s%sVP%s", numberColor, points, Colors.ANSI_RESET);
     }
 
     void startProduction() {
-
-    }
-
-    void endTurn() {
 
     }
 }
