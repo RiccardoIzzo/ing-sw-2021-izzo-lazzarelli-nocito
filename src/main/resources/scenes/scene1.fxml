@@ -8,12 +8,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="491.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GUI">
-      <Group layoutX="190.0" layoutY="325.0">
+<Pane fx:controller="it.polimi.ingsw.view.gui.GUI" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/">
+      <Group layoutX="244.5" layoutY="325.0">
             <Button id="setNicknameButton" fx:id="setNicknameButton" layoutX="11.0" mnemonicParsing="false" onAction="#setNicknameButtonClicked" opacity="0.0" text="Set nickname" />
             <Button id="connectButton" fx:id="connectButton" layoutX="25.0" mnemonicParsing="false" onAction="#connectButtonClicked" text="Connect" />
       </Group>
-      <Label id="titleLabel" alignment="CENTER" layoutX="1.0" layoutY="38.0" prefHeight="43.0" prefWidth="491.0" text="Masters of Renaissance">
+      <Label id="titleLabel" alignment="CENTER" layoutX="55.5" layoutY="38.0" prefHeight="43.0" prefWidth="491.0" text="Masters of Renaissance">
          <font>
             <Font name="System Bold" size="35.0" />
          </font>
@@ -21,7 +21,7 @@
             <SepiaTone />
          </effect>
       </Label>
-      <Group layoutX="1.0" layoutY="124.0">
+      <Group layoutX="55.5" layoutY="124.0">
             <Label id="serverLabel" fx:id="serverLabel" alignment="CENTER" prefHeight="17.0" prefWidth="491.0" text="Server" />
             <Label id="ipLabel" fx:id="ipLabel" alignment="CENTER" layoutX="2.0" layoutY="77.0" prefHeight="17.0" prefWidth="491.0" text="IP" />
             <TextField id="serverTextField" fx:id="serverTextField" layoutX="167.0" layoutY="29.0" promptText="Insert server" />

@@ -9,25 +9,25 @@ import it.polimi.ingsw.events.servermessages.ServerMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.geometry.Pos;
+import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-import javax.swing.*;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * GUI class manages the game with a Graphical User Interface.
  */
 public class GUI extends Application implements View {
+    // Connect Scene
     @FXML Label serverLabel;
     @FXML TextField serverTextField;
     @FXML Label ipLabel;
@@ -38,29 +38,37 @@ public class GUI extends Application implements View {
     @FXML Button connectButton;
     @FXML Group nicknameGroup;
 
+    // Lobbies Scene
+    @FXML VBox lobbiesVBox;
+    @FXML TextField lobbyTextField;
+    @FXML TextField numPlayersTextField;
 
+    // Grid Scene
+    public ImageView card1ImageView;
+    public Button card1Button;
+    public ImageView cardSelectedImageView;
+    public Button buyCardButton;
+
+    // Market Scene
+    public Button firstColumnButton;
+    public Button secondColumnButton;
+    public Button thirdColumnButton;
+    public Button fourthColumnButton;
+    public Button firstRowButton;
+    public Button secondRowButton;
+    public Button thirdRowButton;
+
+    //Game over Scene
+    public ListView<String> pointsListView;
+    public ListView<Integer> playersListView;
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/scene1.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/scene3a.fxml"));
         Parent root = loader.load();
 
         stage.setTitle("Master of Renaissance");
         stage.setScene(new Scene(root));
         stage.show();
-
-//        Label label = new Label("lets play");
-//        VBox vBox = new VBox();
-//        Scene scene = new Scene(vBox, 800, 600);
-//        scene.setCursor(Cursor.CROSSHAIR);
-//
-//
-//        stage.setScene(scene);
-//
-//        stage.setOnCloseRequest((event) -> System.out.println("Closing Stage"));
-//        stage.show();
-
-
-
     }
 
     public static void main(String[] args) {
@@ -74,7 +82,6 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleLobbies(Map<String, Integer> lobbies) {
-
     }
 
     @Override
@@ -154,9 +161,32 @@ public class GUI extends Application implements View {
 
     /* ACTION EVENTS */
     public void setNicknameButtonClicked(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/scene2.fxml"));
+        Parent root;
+        try {
+            Scene scene = ((Node) actionEvent.getSource()).getScene();
+            root = loader.load();
+            scene.setRoot(root);
+
+            Map<String, Integer> lobbies = new HashMap<>();
+            lobbies.put("lobby1", 2);
+            lobbies.put("lobby3", 2);
+            lobbies.put("lobby2r", 2);
+            for(Map.Entry<String,Integer> lobby : lobbies.entrySet()) {
+                Label lobbyLabel = new Label();
+                lobbyLabel.setText(lobby.getKey());
+                lobbiesVBox.setAlignment(Pos.CENTER);
+                lobbiesVBox.getChildren().add(lobbyLabel);
+            }
+//            handleLobbies(lobbies);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void connectButtonClicked(ActionEvent actionEvent) {
+    public void connectButtonClicked() {
         serverLabel.setOpacity(0);
         serverTextField.setOpacity(0);
         ipLabel.setOpacity(0);
@@ -168,4 +198,24 @@ public class GUI extends Application implements View {
 
     }
 
+
+    public void joinButtonClicked() {
+    }
+
+    public void createButtonClicked() {
+    }
+
+    public void columnButtonClicked(ActionEvent actionEvent) {
+        Button arrowButton = (Button) actionEvent.getSource();
+        System.out.println(arrowButton.getId());
+
+    }
+
+    public void rowButtonClicked(ActionEvent actionEvent) {
+        Button arrowButton = (Button) actionEvent.getSource();
+        System.out.println(arrowButton.getId());
+    }
+
+    public void cardButtonClicked() {
+    }
 }
