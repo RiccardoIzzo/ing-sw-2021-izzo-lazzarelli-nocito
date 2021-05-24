@@ -22,6 +22,8 @@ public class CLITest {
     ArrayList<MarbleColor> marketTray;
     MarbleColor slideMarble;
 
+    Boolean[] popesTiles;
+
     @Before
     public void setUp() throws Exception {
         /*
@@ -57,13 +59,19 @@ public class CLITest {
         warehouse.addResourcesToShelf(5,resourceMapE);
 
         /*
-        showMarketSetup
+        showMarket setUp
          */
         marketTray = new ArrayList<>();
         slideMarble = MarbleColor.RED;
         for (int i = 0; i < 12; i++){
             marketTray.add(MarbleColor.values()[49*(i+1) % 6]);
         }
+
+        /*
+        showFaithTrack setUp
+         */
+        popesTiles = new Boolean[] {true, false, false};
+
 
     }
 
@@ -72,8 +80,9 @@ public class CLITest {
     }
 
     @Test
-    public void showWarehouse() {
+    public void show() {
         //CLI.showWarehouse(warehouse.getShelves(), extraShelfResources);
-        CLI.showMarket(marketTray, slideMarble);
+        //CLI.showMarket(marketTray, slideMarble);
+        CLI.showFaithTrack(1,3,popesTiles);
     }
 }

@@ -413,10 +413,39 @@ public class CLI implements View{
         }
     }
 
-    void showAvailableProductions(ArrayList<Integer> productions) {
-        for (int card: productions) {
-            System.out.println(JsonCardsCreator.generateCard(card).toString());
+    /*
+    f = faithMarker
+    b = blackMarker
+    p = popesTile
+     */
+    public static void showFaithTrack(int f, int b, Boolean[] p) {
+        System.out.printf("""
+                        +---------+----+----+----+----+----+----+----+---------+----+----+----+----+----+----+----+----+
+                        |         | %s | %s | %s | %s | %s | %s |    |   %s   |    | %s | %s | %s | %s | %s | %s | %s |
+                        |         +----+----+----+----+----+----+    |         |    +----+----+----+----+----+----+----+
+                        |         | %s |    |   %s   |    | %s |    |         |    | %s |         |   %s   |         |
+                        +----+----+----+    |         |    +----+----+----+----+----+----+         |         |         |
+                        | %s | %s | %s |    |         |    | %s | %s | %s | %s | %s | %s |         |         |         |
+                        +----+----+----+----+---------+----+----+----+----+----+----+----+---------+---------+---------+
+                        %n""", f(4,f,b),f(5,f,b),f(6,f,b),f(7,f,b),f(8,f,b),f(9,f,b),p(p[1],2),
+                                f(18,f,b),f(19,f,b),f(20,f,b),f(21,f,b),f(22,f,b),f(23,f,b),f(24,f,b),
+                                f(3,f,b),p(p[0], 2),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
+                                f(2,f,b),f(11,f,b),f(12,f,b),f(13,f,b),f(14,f,b),f(15,f,b),f(16,f,b));
+    }
+    private static String f(int tile, int faithMarker, int blackMarker){
+        Colors backgroundColor = (tile == blackMarker) ? Colors.ANSI_BLACK_BACKGROUND: Colors.ANSI_RESET;
+        Colors numberColor = (tile == faithMarker) ? Colors.ANSI_CYAN : Colors.ANSI_BLACK;
+        String tileColor;
+        if (tile < 10) {
+            tileColor = String.format("%s%s0%d%s", backgroundColor, numberColor, tile, Colors.ANSI_RESET);
+        } else {
+            tileColor = String.format("%s%s%d%s", backgroundColor, numberColor, tile, Colors.ANSI_RESET);
         }
+        return tileColor;
+    }
+    private static String p(boolean popeTileActive, int points) {
+        Colors numberColor = popeTileActive ? Colors.ANSI_YELLOW_BACKGROUND : Colors.ANSI_RED_BACKGROUND;
+        return String.format("%s%sVP%s", numberColor, points, Colors.ANSI_RESET);
     }
 
     void startProduction() {
