@@ -133,6 +133,8 @@ public class GameHandler {
         else if(message instanceof EndTurn) {
             if(game instanceof MultiplayerGame){
                 ((MultiplayerGame) game).nextPlayer();
+                String currPlayer = ((MultiplayerGame) game).getCurrPlayer().getNickname();
+                virtualView.sendToPlayer(currPlayer, new StartTurn(currPlayer));
             }
             else if(game instanceof SinglePlayerGame){
                 ((SinglePlayerGame) game).drawToken((SinglePlayerGame) game);
