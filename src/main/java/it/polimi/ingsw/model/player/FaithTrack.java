@@ -57,6 +57,7 @@ public class FaithTrack {
     public void isInVaticanSpace(Integer space) {
         if (space < popesFavorTiles.length) {
             popesFavorTiles[space] = posFaithMarker <= TILE_POS[space] && posFaithMarker >= TILE_POS[space] - INITIAL_OFFSET - space;
+            pcs.firePropertyChange(POPES_TILES_CHANGE, null, popesFavorTiles.clone());
         }
     }
 
@@ -69,6 +70,7 @@ public class FaithTrack {
                 popesFavorTiles[i] = true;
                 tilesUncovered[i] = true;
             }
+            pcs.firePropertyChange(POPES_TILES_CHANGE, null, popesFavorTiles.clone());
         }
     }
 
@@ -115,5 +117,6 @@ public class FaithTrack {
         FaithTrackListener faithTrackListener = new FaithTrackListener(virtualView);
         pcs.addPropertyChangeListener(FAITH_MARKER_POSITION, faithTrackListener);
         pcs.addPropertyChangeListener(BLACK_MARKER_POSITION, faithTrackListener);
+        pcs.addPropertyChangeListener(POPES_TILES_CHANGE, faithTrackListener);
     }
 }
