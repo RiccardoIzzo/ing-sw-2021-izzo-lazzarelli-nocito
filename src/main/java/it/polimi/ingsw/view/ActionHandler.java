@@ -63,6 +63,9 @@ public class ActionHandler {
             if (SET_LEADERS.equals(propertyName)) {
                 view.handleLeaders();
             }
+            else if(END_TURN.equals(propertyName)){
+                view.printText(newValue.toString() + ", ready to play.");
+            }
         }
     }
 }

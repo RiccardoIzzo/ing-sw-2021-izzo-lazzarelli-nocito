@@ -12,10 +12,7 @@ import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.NetworkHandler;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * CLI class manages the game with a Command Line Interface.
@@ -200,30 +197,66 @@ public class CLI implements View{
      */
     @Override
     public void handleTurn() {
-        System.out.println("It's your turn!");
-        System.out.println("Select your next action: \n- TAKE_RESOURCE\n- BUY_CARD\n- ACTIVATE_PRODUCTION\n- ACTIVATE_LEADER\n- END_TURN");
-        String action = getInput("take_resource|buy_card|activate_production|activate_leader|end_turn");
-        switch(action){
-            case "take_resource" -> handleTakeResource();
-            case "buy_card" -> {
-
+        boolean[] availableActions = new boolean[]{true, true, true, true, true};
+        String[] actions = new String[]{"TAKE_RESOURCE", "BUY_CARD", "ACTIVATE_PRODUCTION", "ACTIVATE_LEADER", "END_TURN"};
+        System.out.println("Now it's your turn!");
+        while(availableActions[4]){
+            System.out.println("Select your next action: ");
+            for(int i = 0; i < 5; i++){
+                if(availableActions[i]) System.out.println(actions[i]);
             }
-            case "activate_production" -> {
-
+            String action = getInput("take_resource|buy_card|activate_production|activate_leader|end_turn");
+            switch(action){
+                case "take_resource" -> {
+                    handleTakeResource();
+                }
+                case "buy_card" -> {
+                    //to implement: handleBuyCard
+                }
+                case "activate_production" -> {
+                    //to implement: handleActivateProduction
+                }
+                case "activate_leader" -> {
+                    availableActions[3] = false;
+                    //to implement: handleActivateLeader
+                }
+                case "end_turn" -> {
+                    availableActions[4] = false;
+                    handleEndTurn();
+                }
             }
-            case "activate_leader" -> {
-
-            }
-            case "end_turn" -> {
-
+            if(action.matches("take_resource|buy_card|activate_production")){
+                for(int i = 0; i < 3; i++){
+                    availableActions[i] = false;
+                }
             }
         }
     }
 
+    /**
+     * Method handleTakeResource manages the "TAKE_RESOURCE" action with the player that takes resources from the market.
+     */
     @Override
     public void handleTakeResource() {
-        System.out.println("*** MARKET ***");
-        System.out.println(modelView.getMarketTray().toString());
+        showMarket(modelView.getMarketTray(), modelView.getSlideMarble());
+        System.out.println("Insert the row/column index:");
+        int index;
+        index = new Scanner(System.in).nextInt();
+        while(index < 1 || index > 7){
+            System.out.println("Row/Column index must be between 1 and 7! Try again.");
+            index = new Scanner(System.in).nextInt();
+        }
+        if(index > 4) send(new TakeResources(index - 4, 1));
+        else send(new TakeResources(index, 2));
+    }
+
+    /**
+     * Method handleEndTurn manages the "END_TURN" action with the player that decides to end his turn.
+     */
+    @Override
+    public void handleEndTurn() {
+        System.out.println("Your turn is finished.");
+        send(new EndTurn());
     }
 
     /**
@@ -373,10 +406,6 @@ public class CLI implements View{
         }
     }
 
-    void buyCard() {
-
-    }
-
     void showAvailableProductions(ArrayList<Integer> productions) {
         for (int card: productions) {
             System.out.println(JsonCardsCreator.generateCard(card).toString());
@@ -384,10 +413,6 @@ public class CLI implements View{
     }
 
     void startProduction() {
-
-    }
-
-    void endTurn() {
 
     }
 }
