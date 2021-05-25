@@ -242,28 +242,28 @@ public class CLI implements View{
         else send(new TakeResources(index, 2));
     }
 
+    /**
+     * Method handleBuyCard manages the "BUY_CARD" action, if the requirements are met the player buys a card from the grid.
+     */
     @Override
     public void handleBuyCard() {
-        ArrayList<Integer> ids = modelView.getGrid();
-        showCards(ids);
+        int id, index;
+        ArrayList<Integer> grid = modelView.getGrid();
+        showCards(grid);
         System.out.println("Select the card that you want to buy by typing the id: ");
-        ArrayList<Resource> myResources = new ArrayList<>();
-        myResources.addAll(modelView.getMyDashboard().getWarehouse());
-        myResources.addAll(modelView.getMyDashboard().getStrongbox().asList());
 
-        int id;
         while(true){
             id = input.nextInt();
-            if(ids.contains(id)){
-                if(myResources.containsAll(((ResourceRequirement) JsonCardsCreator.generateDevelopmentCard(id).getRequirement()).getResources().asList())){
+            if(grid.contains(id)){
+                index = grid.indexOf(id);
+                if(!checkRequirements(id)){
+                    System.out.println("Requirements not met, not enough resources.");
                     break;
                 }
-                System.out.println("Not enough resources.");
             }
             else System.out.println("Id not valid, choose again.");
         }
 
-        int index = ids.indexOf(id);
         send(new BuyCard(index / 4, index % 4));
     }
 
