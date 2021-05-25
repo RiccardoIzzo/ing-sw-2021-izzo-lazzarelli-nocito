@@ -25,6 +25,7 @@ public interface View {
     void handleBuyCard();
     void handleActivateProduction();
     void handleActivateLeader();
+    void handleDiscardLeader();
     void handleTemporaryShelf();
     void printText(String text);
     void send(ClientMessage message);

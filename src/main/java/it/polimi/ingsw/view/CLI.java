@@ -197,31 +197,59 @@ public class CLI implements View{
      */
     @Override
     public void handleTurn() {
-        boolean[] availableActions = new boolean[]{true, true, true, true, true};
-        String[] actions = new String[]{"TAKE_RESOURCE", "BUY_CARD", "ACTIVATE_PRODUCTION", "ACTIVATE_LEADER", "END_TURN"};
+        boolean[] availableActions = new boolean[]{true, true, true, true};
+        String[] actions = new String[]{"BASIC_ACTION", "ACTIVATE_LEADER", "DISCARD_LEADER", "END_TURN"};
         System.out.println("Now it's your turn!");
-        while(availableActions[4]){
+
+        while(availableActions[3]){
             System.out.println("Select your next action: ");
-            for(int i = 0; i < 5; i++){
-                if(availableActions[i]) System.out.println(actions[i]);
+            for(int i = 0; i < 4; i++){
+                if(availableActions[i]) System.out.println(i + ") " + actions[i]);
             }
 
-            String action = getInput("take_resource|buy_card|activate_production|activate_leader|end_turn");
+            int action = input.nextInt();
+            while(action < 0 || action > 3){
+                System.out.println("Action not valid, try again.");
+                action = input.nextInt();
+            }
+
             switch(action){
-                case "take_resource" -> handleTakeResource();
-                case "buy_card" -> handleBuyCard();
-                case "activate_production" -> handleActivateProduction();
-                case "activate_leader" -> handleActivateLeader();
-                case "end_turn" -> handleEndTurn();
-            }
 
-            if(action.matches("take_resource|buy_card|activate_production")){
-                for(int i = 0; i < 3; i++){
-                    availableActions[i] = false;
+                //TAKE_RESOURCE, BUY_CARD, ACTIVATE_PRODUCTION
+                case 0 -> {
+                    System.out.println("Select your basic action: ");
+                    System.out.println("0) TAKE_RESOURCE\n1) BUY_CARD\n2) ACTIVATE_PRODUCTION");
+                    action = input.nextInt();
+                    while(action < 0 || action > 2){
+                        System.out.println("Basic action not valid, try again.");
+                        action = input.nextInt();
+                    }
+                    switch(action){
+                        case 0 -> handleTakeResource();
+                        case 1 -> handleBuyCard();
+                        case 2 -> handleActivateProduction();
+                    }
+                    availableActions[0] = false;
+                }
+
+                //ACTIVATE_LEADER
+                case 1 ->{
+                    handleActivateLeader();
+                    availableActions[1] = false;
+                }
+
+                //DISCARD_LEADER
+                case 2 -> {
+                    handleDiscardLeader();
+                    availableActions[2] = false;
+                }
+
+                //END_TURN
+                case 3 -> {
+                    handleEndTurn();
+                    availableActions[3] = false;
                 }
             }
-            else if(action.matches("activate_leader")) availableActions[3] = false;
-            else if(action.matches("end_turn")) availableActions[4] = false;
         }
     }
 
@@ -316,6 +344,11 @@ public class CLI implements View{
 
     @Override
     public void handleActivateLeader() {
+
+    }
+
+    @Override
+    public void handleDiscardLeader() {
 
     }
 
