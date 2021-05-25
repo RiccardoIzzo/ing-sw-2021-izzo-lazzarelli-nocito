@@ -96,8 +96,8 @@ public class GameHandler {
     public void process(String nickname, ClientMessage message){
         Player player = game.getPlayerByName(nickname);
 
-        if(message instanceof DiscardLeaderCard) {
-            for (int cardID: ((DiscardLeaderCard) message).getLeadersToDiscard()) {
+        if(message instanceof SelectLeaderCards) {
+            for (int cardID: ((SelectLeaderCards) message).getLeadersToDiscard()) {
                 player.discardLeaderCard(cardID);
             }
         }
@@ -120,6 +120,10 @@ public class GameHandler {
                     player.activateLeaderCard(card);
                 }
             }
+        }
+
+        else if(message instanceof DiscardLeaderCard){
+            player.discardLeaderCard(((DiscardLeaderCard) message).getId());
         }
 
         else if(message instanceof ActivateProduction) {

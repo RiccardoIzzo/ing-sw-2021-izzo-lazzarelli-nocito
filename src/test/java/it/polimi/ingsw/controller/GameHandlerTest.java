@@ -101,7 +101,7 @@ public class GameHandlerTest {
                 secondID = secondLeaderCard.get().getCardID();
         }
 
-        gameHandler.process(nickname, new DiscardLeaderCard(firstID, secondID));
+        gameHandler.process(nickname, new SelectLeaderCards(firstID, secondID));
 
         for(LeaderCard leaderCard : player.getLeaders()) {
             assertNotEquals(leaderCard.getCardID(), firstID);
