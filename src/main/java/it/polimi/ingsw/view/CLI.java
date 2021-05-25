@@ -267,6 +267,27 @@ public class CLI implements View{
         send(new BuyCard(index / 4, index % 4));
     }
 
+    /**
+     * Method checkRequirements checks that the total amount of resources owned by the player is enough to meet the card requirements.
+     * @param cardID id of the selected card.
+     * @return true if the requirements are met, false otherwise.
+     */
+    private boolean checkRequirements(int cardID){
+        Map<Resource, Integer> myResources = new HashMap<>();
+        ArrayList<Resource> cardRequirement = ((ResourceRequirement) JsonCardsCreator.generateDevelopmentCard(cardID).getRequirement()).getResources().asList();
+        for(Resource resource : Resource.values()){
+            int amount = 0;
+            amount += Collections.frequency(modelView.getMyDashboard().getWarehouse(), resource);
+            amount += Collections.frequency(modelView.getMyDashboard().getStrongbox().asList(), resource);
+            myResources.put(resource, amount);
+        }
+
+        for(Resource resource : Resource.values()){
+            if(myResources.get(resource) < Collections.frequency(cardRequirement, resource)) return false;
+        }
+        return true;
+    }
+
     @Override
     public void handleTemporaryShelf() {
         //TODO
