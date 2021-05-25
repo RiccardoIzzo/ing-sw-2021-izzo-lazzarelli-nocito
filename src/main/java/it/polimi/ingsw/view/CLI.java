@@ -13,7 +13,6 @@ import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.ResourceRequirement;
 import it.polimi.ingsw.network.NetworkHandler;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -169,7 +168,7 @@ public class CLI implements View{
             System.out.println("Id not valid, choose again.");
             secondId = input.nextInt();
         }
-        send(new DiscardLeaderCard(firstId, secondId));
+        send(new SelectLeaderCards(firstId, secondId));
     }
 
     /**
@@ -347,9 +346,27 @@ public class CLI implements View{
 
     }
 
+    /**
+     * Method handleDiscardLeader manages the "DISCARD_LEADER" action, the player select a leader card to discard.
+     */
     @Override
     public void handleDiscardLeader() {
+        Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
+        if(ids.size() == 0) return;
+        else{
+            for(Integer id : ids){
+                LeaderCard card = JsonCardsCreator.generateLeaderCard(id);
+                System.out.println(card.toString());
+            }
+        }
 
+        System.out.println("Select the leader card to discard by typing the id: ");
+        int id = input.nextInt();
+        while(!ids.contains(id)){
+            System.out.println("Id not valid, choose again.");
+            id = input.nextInt();
+        }
+        send(new DiscardLeaderCard(id));
     }
 
     /**
