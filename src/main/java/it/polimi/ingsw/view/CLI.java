@@ -327,12 +327,10 @@ public class CLI implements View{
             secondSlot = new Scanner(System.in).nextInt();
             if(firstSlot >= 0 && firstSlot < 15 && secondSlot >= 0 && secondSlot < 15){
                 modelView.getMyDashboard().swapResources(firstSlot, secondSlot);
+            } else {
+                System.out.println("Slot number(s) out of index");
             }
-            if(modelView.getMyDashboard().getWarehouse().subList(10, 14).size() > 0){
-                if(modelView.getMyDashboard().getWarehouse().subList(3, 5).size() > 0){
-                    //modelView.getMyDashboard().getWarehouse().subList(3, 5).stream().reduce((a, b) -> a)
-                }
-            }
+            if (modelView.getMyDashboard().checkWarehouse()) break;
         }
     }
 
