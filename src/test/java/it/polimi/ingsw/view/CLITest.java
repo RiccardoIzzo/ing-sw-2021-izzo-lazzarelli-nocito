@@ -83,6 +83,6 @@ public class CLITest {
     public void show() {
         //CLI.showWarehouse(warehouse.getShelves(), extraShelfResources);
         //CLI.showMarket(marketTray, slideMarble);
-        CLI.showFaithTrack(1,3,popesTiles);
+        //CLI.showFaithTrack(1,3,popesTiles);
     }
 }
