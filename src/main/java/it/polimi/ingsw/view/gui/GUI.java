@@ -95,28 +95,28 @@ public class GUI extends Application implements View {
     }
 
     @Override
-    public void handleTakeResource() {
-
+    public boolean handleTakeResource() {
+        return true;
     }
 
     @Override
-    public void handleBuyCard() {
-
+    public boolean handleBuyCard() {
+        return true;
     }
 
     @Override
-    public void handleActivateProduction() {
-
+    public boolean handleActivateProduction() {
+        return true;
     }
 
     @Override
-    public void handleActivateLeader() {
-
+    public boolean handleActivateLeader() {
+        return true;
     }
 
     @Override
-    public void handleDiscardLeader() {
-
+    public boolean handleDiscardLeader() {
+        return true;
     }
 
     @Override
@@ -130,8 +130,8 @@ public class GUI extends Application implements View {
     }
 
     @Override
-    public void handleEndTurn() {
-
+    public boolean handleEndTurn() {
+        return true;
     }
 
     @Override

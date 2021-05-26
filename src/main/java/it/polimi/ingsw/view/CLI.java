@@ -2,21 +2,17 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.constants.Colors;
 import it.polimi.ingsw.events.clientmessages.*;
-import it.polimi.ingsw.events.servermessages.InvalidNickname;
-import it.polimi.ingsw.events.servermessages.ServerMessage;
-import it.polimi.ingsw.events.servermessages.ValidNickname;
-import it.polimi.ingsw.model.JsonCardsCreator;
-import it.polimi.ingsw.model.MarbleColor;
-import it.polimi.ingsw.model.Resource;
-import it.polimi.ingsw.model.ResourceMap;
-import it.polimi.ingsw.model.card.LeaderCard;
-import it.polimi.ingsw.model.card.ResourceRequirement;
+import it.polimi.ingsw.events.servermessages.*;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.network.NetworkHandler;
 
 import java.util.*;
 
 /**
  * CLI class manages the game with a Command Line Interface.
+ *
+ * @author Riccardo Izzo, Gabriele Lazzarelli
  */
 public class CLI implements View{
     private final ActionHandler actionHandler;
@@ -29,6 +25,27 @@ public class CLI implements View{
      */
     public CLI() {
         actionHandler = new ActionHandler(this);
+    }
+
+    /**
+     * CLI main method.
+     * @param args main args.
+     */
+    public static void main(String[] args) {
+        System.out.println(
+                """
+                 __  __           _                 ___   __ ____                  _                             \s
+                |  \\/  | __ _ ___| |_ ___ _ __ ___ / _ \\ / _|  _ \\ ___ _ __   __ _(_)___ ___  __ _ _ __   ___ ___\s
+                | |\\/| |/ _` / __| __/ _ \\ '__/ __| | | | |_| |_) / _ \\ '_ \\ / _` | / __/ __|/ _` | '_ \\ / __/ _ \\
+                | |  | | (_| \\__ \\ ||  __/ |  \\__ \\ |_| |  _|  _ <  __/ | | | (_| | \\__ \\__ \\ (_| | | | | (_|  __/
+                |_|  |_|\\__,_|___/\\__\\___|_|  |___/\\___/|_| |_| \\_\\___|_| |_|\\__,_|_|___/___/\\__,_|_| |_|\\___\\___|
+                """);
+        System.out.println("Insert server ip address:");
+        String ip = new Scanner(System.in).next();
+        System.out.println("Insert server port:");
+        int port = new Scanner(System.in).nextInt();
+        CLI cli = new CLI();
+        cli.setupGame(ip, port);
     }
 
     /**
@@ -60,34 +77,14 @@ public class CLI implements View{
     }
 
     /**
-     * Method getInput gets the user input and checks the validity by comparing the input with the available options.
-     * @param check available options.
-     * @return the valid user input.
+     * Method setupGame manages the initial phase of the game.
+     * @param ip server ip address.
+     * @param port server port.
      */
-    @Override
-    public String getInput(String check) {
-        String option = getString().toLowerCase();
-        while(!option.matches(check)){
-            System.out.println("This option is not available, try again.");
-            option = getString();
-        }
-        return option;
-    }
-
-    /**
-     * Method getString creates a new Scanner and reads a string.
-     * @return the string.
-     */
-    private String getString(){
-        return new Scanner(System.in).nextLine();
-    }
-
-    /**
-     * Method getInt creates a new Scanner and reads an integer.
-     * @return the integer.
-     */
-    private int getInt(){
-        return new Scanner(System.in).nextInt();
+    private void setupGame(String ip, int port) {
+        this.network = new NetworkHandler(ip, port);
+        network.setConnection(actionHandler);
+        setNickname();
     }
 
     /**
@@ -210,84 +207,76 @@ public class CLI implements View{
      */
     @Override
     public void handleTurn() {
-        boolean[] availableActions = new boolean[]{true, true, true, true};
+        boolean[] performedActions = new boolean[]{false, false, false, false};
         String[] actions = new String[]{"BASIC_ACTION", "ACTIVATE_LEADER", "DISCARD_LEADER", "END_TURN"};
         System.out.println("Now it's your turn!");
 
-        while(availableActions[3]){
+        while (!performedActions[3]) {
             System.out.println("Select your next action: ");
-            for(int i = 0; i < 4; i++){
-                if(availableActions[i]) System.out.println(i + ") " + actions[i]);
+            for (int i = 0; i < 4; i++) {
+                if (!performedActions[i]) System.out.println(i + ") " + actions[i]);
             }
-
             int action = getInt();
-            while(action < 0 || action > 3){
+            while (action < 0 || action > 3) {
                 System.out.println("Action not valid, try again.");
                 action = getInt();
             }
 
-            switch(action){
+            switch (action) {
 
                 //TAKE_RESOURCE, BUY_CARD, ACTIVATE_PRODUCTION
                 case 0 -> {
                     System.out.println("Select your basic action: ");
                     System.out.println("0) TAKE_RESOURCE\n1) BUY_CARD\n2) ACTIVATE_PRODUCTION");
                     action = getInt();
-                    while(action < 0 || action > 2){
+                    while (action < 0 || action > 2) {
                         System.out.println("Basic action not valid, try again.");
                         action = getInt();
                     }
-                    switch(action){
-                        case 0 -> handleTakeResource();
-                        case 1 -> handleBuyCard();
-                        case 2 -> handleActivateProduction();
+                    switch (action) {
+                        case 0 -> performedActions[0] = handleTakeResource();
+                        case 1 -> performedActions[0] = handleBuyCard();
+                        case 2 -> performedActions[0] = handleActivateProduction();
                     }
-                    availableActions[0] = false;
                 }
 
                 //ACTIVATE_LEADER
-                case 1 ->{
-                    handleActivateLeader();
-                    availableActions[1] = false;
-                }
+                case 1 -> performedActions[1] = handleActivateLeader();
 
                 //DISCARD_LEADER
-                case 2 -> {
-                    handleDiscardLeader();
-                    availableActions[2] = false;
-                }
+                case 2 -> performedActions[2] = handleDiscardLeader();
 
                 //END_TURN
-                case 3 -> {
-                    handleEndTurn();
-                    availableActions[3] = false;
-                }
+                case 3 -> performedActions[3] = handleEndTurn();
             }
         }
     }
 
     /**
      * Method handleTakeResource manages the "TAKE_RESOURCE" action with the player that takes resources from the market.
+     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public void handleTakeResource() {
+    public boolean handleTakeResource() {
         showMarket(modelView.getMarketTray(), modelView.getSlideMarble());
         System.out.println("Insert the row/column index:");
-        int index;
-        index = new Scanner(System.in).nextInt();
+        int index = new Scanner(System.in).nextInt();
         while(index < 1 || index > 7){
             System.out.println("Row/Column index must be between 1 and 7! Try again.");
+            if(changeAction()) return false;
             index = new Scanner(System.in).nextInt();
         }
         if(index > 4) send(new TakeResources(index - 4, 1));
         else send(new TakeResources(index, 2));
+        return true;
     }
 
     /**
      * Method handleBuyCard manages the "BUY_CARD" action, if the requirements are met the player buys a card from the grid.
+     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public void handleBuyCard() {
+    public boolean handleBuyCard() {
         int id, index;
         ArrayList<Integer> grid = modelView.getGrid();
         showCards(grid);
@@ -299,13 +288,14 @@ public class CLI implements View{
                 index = grid.indexOf(id);
                 if(!checkRequirements(id)){
                     System.out.println("Requirements not met, not enough resources.");
-                    break;
+                    return false;
                 }
+                else break;
             }
             else System.out.println("Id not valid, choose again.");
         }
-
         send(new BuyCard(index / 4, index % 4));
+        return true;
     }
 
     /**
@@ -348,23 +338,32 @@ public class CLI implements View{
         }
     }
 
+    /**
+     * Method handleActivateProduction manages the "ACTIVATE_PRODUCTION" action, the player activate the production.
+     * @return true if the action is completed, false otherwise.
+     */
     @Override
-    public void handleActivateProduction() {
-
+    public boolean handleActivateProduction() {
+        return true;
     }
 
+    /**
+     * Method handleActivateLeader manages the "ACTIVATE_LEADER" action, the player activates a leader card.
+     * @return true if the action is completed, false otherwise.
+     */
     @Override
-    public void handleActivateLeader() {
-
+    public boolean handleActivateLeader() {
+        return true;
     }
 
     /**
      * Method handleDiscardLeader manages the "DISCARD_LEADER" action, the player select a leader card to discard.
+     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public void handleDiscardLeader() {
+    public boolean handleDiscardLeader() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
-        if(ids.size() == 0) return;
+        if(ids.size() == 0) return true;
         else{
             for(Integer id : ids){
                 LeaderCard card = JsonCardsCreator.generateLeaderCard(id);
@@ -376,18 +375,67 @@ public class CLI implements View{
         int id = getInt();
         while(!ids.contains(id)){
             System.out.println("Id not valid, choose again.");
+            if(changeAction()) return false;
             id = getInt();
         }
         send(new DiscardLeaderCard(id));
+        return true;
     }
 
     /**
      * Method handleEndTurn manages the "END_TURN" action with the player that decides to end his turn.
+     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public void handleEndTurn() {
+    public boolean handleEndTurn() {
         System.out.println("Your turn is finished.");
         send(new EndTurn());
+        return true;
+    }
+
+    /**
+     * Method changeAction asks the user if he wants to change action.
+     * @return true if the user wants to change action, false otherwise.
+     */
+    private boolean changeAction(){
+        System.out.println("Do you want to change action? y/n");
+        String option = getInput("y|n");
+        if(option.equals(("y"))) return true;
+        else{
+            System.out.println("Continue with your current action.");
+            return false;
+        }
+    }
+
+    /**
+     * Method getInput gets the user input and checks the validity by comparing the input with the available options.
+     * @param check available options.
+     * @return the valid user input.
+     */
+    @Override
+    public String getInput(String check) {
+        String option = getString().toLowerCase();
+        while(!option.matches(check)){
+            System.out.println("This option is not available, try again.");
+            option = getString();
+        }
+        return option;
+    }
+
+    /**
+     * Method getString creates a new Scanner and reads a string.
+     * @return the string.
+     */
+    private String getString(){
+        return new Scanner(System.in).nextLine();
+    }
+
+    /**
+     * Method getInt creates a new Scanner and reads an integer.
+     * @return the integer.
+     */
+    private int getInt(){
+        return new Scanner(System.in).nextInt();
     }
 
     /**
@@ -408,38 +456,6 @@ public class CLI implements View{
         network.sendToServer(message);
     }
 
-    /**
-     * Method setupGame manages the initial phase of the game.
-     * @param ip server ip address.
-     * @param port server port.
-     */
-    private void setupGame(String ip, int port) {
-        this.network = new NetworkHandler(ip, port);
-        network.setConnection(actionHandler);
-        setNickname();
-    }
-
-    /**
-     * CLI main method.
-     * @param args main args.
-     */
-    public static void main(String[] args) {
-        System.out.println(
-                """
-                 __  __           _                 ___   __ ____                  _                             \s
-                |  \\/  | __ _ ___| |_ ___ _ __ ___ / _ \\ / _|  _ \\ ___ _ __   __ _(_)___ ___  __ _ _ __   ___ ___\s
-                | |\\/| |/ _` / __| __/ _ \\ '__/ __| | | | |_| |_) / _ \\ '_ \\ / _` | / __/ __|/ _` | '_ \\ / __/ _ \\
-                | |  | | (_| \\__ \\ ||  __/ |  \\__ \\ |_| |  _|  _ <  __/ | | | (_| | \\__ \\__ \\ (_| | | | | (_|  __/
-                |_|  |_|\\__,_|___/\\__\\___|_|  |___/\\___/|_| |_| \\_\\___|_| |_|\\__,_|_|___/___/\\__,_|_| |_|\\___\\___|
-                """);
-        System.out.println("Insert server ip address:");
-        String ip = new Scanner(System.in).next();
-        System.out.println("Insert server port:");
-        int port = new Scanner(System.in).nextInt();
-        CLI cli = new CLI();
-        cli.setupGame(ip, port);
-    }
-
     void showDashboard(ModelView.DashboardView dashboardView){
         System.out.println("\n*** FAITHTRACK ***");
         showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
@@ -450,23 +466,6 @@ public class CLI implements View{
         System.out.println("\n*** AVAILABLE PRODUCTION ***");
         showCards(dashboardView.getAvailableProduction());
     }
-
-    void chooseAction() {
-        // ask whichAction
-
-        // showLeaderCards
-        // showMarker
-        // showGrid
-        // arrangeShelves
-        // showAvailableProductions
-
-        // execute actions and then show updated dashboard
-    }
-
-    void playLeaderCard() {
-
-    }
-
 
     public static void showMarket(ArrayList<MarbleColor> marketTray, MarbleColor slideMarble) {
         System.out.printf("Slide marble = %s\n\n", slideMarble.toString());
@@ -483,14 +482,6 @@ public class CLI implements View{
                 1   2   3   4
                 """
         );
-    }
-
-    void takeResources() {
-
-    }
-
-    void arrangeShelves() {
-        // edit shelves configuration
     }
 
     void showCards(Collection<Integer> cards) {
@@ -563,6 +554,7 @@ public class CLI implements View{
                                 f(3,f,b),p(p[0], 2),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
                                 f(2,f,b),f(11,f,b),f(12,f,b),f(13,f,b),f(14,f,b),f(15,f,b),f(16,f,b));
     }
+
     private static String f(int tile, int faithMarker, int blackMarker){
         Colors backgroundColor = (tile == blackMarker) ? Colors.ANSI_BLACK_BACKGROUND: Colors.ANSI_RESET;
         Colors numberColor = (tile == faithMarker) ? Colors.ANSI_CYAN : Colors.ANSI_BLACK;
@@ -574,12 +566,9 @@ public class CLI implements View{
         }
         return tileColor;
     }
+
     private static String p(boolean popeTileActive, int points) {
         Colors numberColor = popeTileActive ? Colors.ANSI_YELLOW_BACKGROUND : Colors.ANSI_RED_BACKGROUND;
         return String.format("%s%sVP%s", numberColor, points, Colors.ANSI_RESET);
-    }
-
-    void startProduction() {
-
     }
 }
