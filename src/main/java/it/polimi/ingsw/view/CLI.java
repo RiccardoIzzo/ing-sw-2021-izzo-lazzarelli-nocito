@@ -23,14 +23,12 @@ public class CLI implements View{
     private String nickname;
     private ModelView modelView;
     private NetworkHandler network;
-    private final Scanner input;
 
     /**
      * Constructor CLI creates a new CLI instance.
      */
     public CLI() {
         actionHandler = new ActionHandler(this);
-        input = new Scanner(System.in);
     }
 
     /**
@@ -68,12 +66,28 @@ public class CLI implements View{
      */
     @Override
     public String getInput(String check) {
-        String option = new Scanner(System.in).nextLine().toLowerCase();
+        String option = getString().toLowerCase();
         while(!option.matches(check)){
             System.out.println("This option is not available, try again.");
-            option = input.nextLine();
+            option = getString();
         }
         return option;
+    }
+
+    /**
+     * Method getString creates a new Scanner and reads a string.
+     * @return the string.
+     */
+    private String getString(){
+        return new Scanner(System.in).nextLine();
+    }
+
+    /**
+     * Method getInt creates a new Scanner and reads an integer.
+     * @return the integer.
+     */
+    private int getInt(){
+        return new Scanner(System.in).nextInt();
     }
 
     /**
@@ -113,24 +127,24 @@ public class CLI implements View{
         switch (choice){
             case "create" ->{
                 System.out.println("Insert the lobbyID:");
-                String lobbyID = input.nextLine();
+                String lobbyID = getString();
                 if(lobbies.containsKey(lobbyID)){
                     System.out.println("Already exists a lobby with this id! Try again.");
                     send(new GetLobbies());
                 }
                 else {
                     System.out.println("Insert the number of players:");
-                    int numPlayers = input.nextInt();
+                    int numPlayers = getInt();
                     while(numPlayers > 4){
                         System.out.println("The maximum number of players is four, choose again.");
-                        numPlayers = input.nextInt();
+                        numPlayers = getInt();
                     }
                     send(new CreateLobby(lobbyID, numPlayers));
                 }
             }
             case "join" ->{
                 System.out.println("Insert the lobbyID of the lobby you want to join:");
-                String lobbyID = input.nextLine();
+                String lobbyID = getString();
                 if(lobbies.containsKey(lobbyID)){
                     send(new JoinLobby(lobbyID));
                 }
@@ -156,17 +170,17 @@ public class CLI implements View{
         }
 
         System.out.println("Select the first card to discard by typing the id: ");
-        int firstId = input.nextInt();
+        int firstId = getInt();
         while(!ids.contains(firstId)){
             System.out.println("Id not valid, choose again.");
-            firstId = input.nextInt();
+            firstId = getInt();
         }
 
         System.out.println("Select the second card to discard by typing the id: ");
-        int secondId = input.nextInt();
+        int secondId = getInt();
         while(!ids.contains(secondId)){
             System.out.println("Id not valid, choose again.");
-            secondId = input.nextInt();
+            secondId = getInt();
         }
         send(new SelectLeaderCards(firstId, secondId));
     }
@@ -206,10 +220,10 @@ public class CLI implements View{
                 if(availableActions[i]) System.out.println(i + ") " + actions[i]);
             }
 
-            int action = input.nextInt();
+            int action = getInt();
             while(action < 0 || action > 3){
                 System.out.println("Action not valid, try again.");
-                action = input.nextInt();
+                action = getInt();
             }
 
             switch(action){
@@ -218,10 +232,10 @@ public class CLI implements View{
                 case 0 -> {
                     System.out.println("Select your basic action: ");
                     System.out.println("0) TAKE_RESOURCE\n1) BUY_CARD\n2) ACTIVATE_PRODUCTION");
-                    action = input.nextInt();
+                    action = getInt();
                     while(action < 0 || action > 2){
                         System.out.println("Basic action not valid, try again.");
-                        action = input.nextInt();
+                        action = getInt();
                     }
                     switch(action){
                         case 0 -> handleTakeResource();
@@ -280,7 +294,7 @@ public class CLI implements View{
         System.out.println("Select the card that you want to buy by typing the id: ");
 
         while(true){
-            id = input.nextInt();
+            id = getInt();
             if(grid.contains(id)){
                 index = grid.indexOf(id);
                 if(!checkRequirements(id)){
@@ -359,10 +373,10 @@ public class CLI implements View{
         }
 
         System.out.println("Select the leader card to discard by typing the id: ");
-        int id = input.nextInt();
+        int id = getInt();
         while(!ids.contains(id)){
             System.out.println("Id not valid, choose again.");
-            id = input.nextInt();
+            id = getInt();
         }
         send(new DiscardLeaderCard(id));
     }
