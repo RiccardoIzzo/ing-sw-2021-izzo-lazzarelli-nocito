@@ -114,18 +114,18 @@ public class CLI implements View{
             case "create" ->{
                 System.out.println("Insert the lobbyID:");
                 String lobbyID = input.nextLine();
-                System.out.println("Insert the number of players:");
-                int numPlayers = input.nextInt();
-                while(numPlayers > 4){
-                    System.out.println("The maximum number of players is four, choose again.");
-                    numPlayers = input.nextInt();
-                }
-                if(!lobbies.containsKey(lobbyID)){
-                    send(new CreateLobby(lobbyID, numPlayers));
-                }
-                else {
+                if(lobbies.containsKey(lobbyID)){
                     System.out.println("Already exists a lobby with this id! Try again.");
                     send(new GetLobbies());
+                }
+                else {
+                    System.out.println("Insert the number of players:");
+                    int numPlayers = input.nextInt();
+                    while(numPlayers > 4){
+                        System.out.println("The maximum number of players is four, choose again.");
+                        numPlayers = input.nextInt();
+                    }
+                    send(new CreateLobby(lobbyID, numPlayers));
                 }
             }
             case "join" ->{
