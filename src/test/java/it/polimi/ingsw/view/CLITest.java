@@ -33,6 +33,7 @@ public class CLITest {
         extraShelfResources = new ArrayList<>();
 
         extraShelfResources.add(Resource.COIN);
+        extraShelfResources.add(Resource.SHIELD);
 
         resourceMapA = new ResourceMap();
         resourceMapA.modifyResource(Resource.STONE, 1);
@@ -84,5 +85,6 @@ public class CLITest {
         //CLI.showWarehouse(warehouse.getShelves(), extraShelfResources);
         //CLI.showMarket(marketTray, slideMarble);
         //CLI.showFaithTrack(1,3,popesTiles);
+        //CLI.showStrongbox(resourceMapE);
     }
 }

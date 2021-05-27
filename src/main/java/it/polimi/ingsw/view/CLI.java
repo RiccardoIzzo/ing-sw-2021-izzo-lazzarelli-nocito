@@ -490,49 +490,42 @@ public class CLI implements View{
         }
     }
 
-    public void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources){
-        for (int shelf = 1; shelf <=5; shelf++) {
-            int index = (shelf*shelf - shelf +2)/2 - 1;
-            System.out.print("  ".repeat(5 - shelf));
-            if (shelf == 4) { //leaderCards' shelves
-                for (int resourceSlot = index; resourceSlot < index + shelf; resourceSlot++){
-                    Resource resourceExtraShelf = null;
-                    if (resourceSlot < 8) {
-                        if (extraShelfResources.size() > 0) resourceExtraShelf = extraShelfResources.get(0);
-                    } else {
-                        if (extraShelfResources.size() > 1) resourceExtraShelf = extraShelfResources.get(1);
-                        else resourceExtraShelf = null;
-                    }
-                    Colors color, r = Colors.ANSI_RESET;
-                    if (resourceExtraShelf == Resource.STONE) {
-                        color = Colors.ANSI_WHITE;
-                    } else if (resourceExtraShelf == Resource.SERVANT) {
-                        color = Colors.ANSI_PURPLE;
-                    } else if (resourceExtraShelf == Resource.SHIELD) {
-                        color = Colors.ANSI_CYAN;
-                    } else if (resourceExtraShelf == Resource.COIN) {
-                        color = Colors.ANSI_YELLOW;
-                    } else {
-                        color = Colors.ANSI_BLACK;
-                    }
-                    if (warehouse.get(resourceSlot) != null) {
-                        System.out.print(color+"⎣"+r + String.format("%s", warehouse.get(resourceSlot).toString()) + color+"⎦"+r);
-                    } else {
-                        System.out.print(color+"⎣"+r + " " + color+"⎦"+r);
-                    }
-                }
-            }
-            else {
-                for (int resourceSlot = index; resourceSlot < index + shelf; resourceSlot++){
-                    if (warehouse.get(resourceSlot) != null) {
-                        System.out.printf("⎣%s⎦", warehouse.get(resourceSlot).toString());
-                    } else {
-                        System.out.print("⎣  ⎦");
-                    }
-                }
-            }
-            System.out.print("\n");
+    public static void showStrongbox(ResourceMap strongbox){
+        System.out.printf("""
+                            ╔══
+                            ║   %s
+                            ║   %s
+                            ║   %s
+                            ║   %s
+                            ╚══
+                        %n""", Resource.STONE + " x " + strongbox.getResource(Resource.STONE).toString(),
+                        Resource.SERVANT + " x " + strongbox.getResource(Resource.SERVANT).toString(),
+                        Resource.SHIELD + " x " + strongbox.getResource(Resource.SHIELD).toString(),
+                        Resource.COIN + " x " + strongbox.getResource(Resource.COIN).toString());
+    }
+
+    public static void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources){
+        String firstExtraShelf = "", firstIndexPair = "", secondExtraShelf = "", secondIndexPair = "";
+        if (extraShelfResources.size() > 0){
+            firstIndexPair = "6   7";
+            firstExtraShelf = String.format("⎣%s⎦ ⎣%s⎦  <-- 1st Leader card shelf {%s}", warehouse.get(6),warehouse.get(7), extraShelfResources.get(0));
         }
+        if (extraShelfResources.size() > 1){
+            secondIndexPair = "8   9";
+            secondExtraShelf = String.format("⎣%s⎦ ⎣%s⎦  <-- 2nd Leader card shelf {%s}", warehouse.get(8),warehouse.get(9), extraShelfResources.get(1));
+        }
+        System.out.printf("""
+                                                 +-0-+             %s
+                                                 | %s |            %s
+                                               +-1-+-2-+
+                                               | %s | %s |           %s
+                                             +-3-+-4-+-5-+        %s
+                                             | %s | %s | %s |
+                                             +---+---+---+
+                                            10  11   12  13
+                                            ⎣%s⎦ ⎣%s⎦ ⎣%s⎦ ⎣%s⎦
+                        %n""", firstIndexPair, warehouse.get(0), firstExtraShelf, warehouse.get(1), warehouse.get(2), secondIndexPair, secondExtraShelf, warehouse.get(3), warehouse.get(4), warehouse.get(5),
+                warehouse.get(10), warehouse.get(11), warehouse.get(12), warehouse.get(13));
     }
 
     /*
@@ -541,23 +534,24 @@ public class CLI implements View{
     p = popesTile
      */
     public static void showFaithTrack(int f, int b, Boolean[] p) {
-        System.out.printf("""
-                        +---------+----+----+----+----+----+----+----+---------+----+----+----+----+----+----+----+----+
-                        |         | %s | %s | %s | %s | %s | %s |    |   %s   |    | %s | %s | %s | %s | %s | %s | %s |
-                        |         +----+----+----+----+----+----+    |         |    +----+----+----+----+----+----+----+
-                        |         | %s |    |   %s   |    | %s |    |         |    | %s |         |   %s   |         |
-                        +----+----+----+    |         |    +----+----+----+----+----+----+         |         |         |
-                        | %s | %s | %s |    |         |    | %s | %s | %s | %s | %s | %s |         |         |         |
-                        +----+----+----+----+---------+----+----+----+----+----+----+----+---------+---------+---------+
-                        %n""", f(4,f,b),f(5,f,b),f(6,f,b),f(7,f,b),f(8,f,b),f(9,f,b),p(p[1],2),
-                                f(18,f,b),f(19,f,b),f(20,f,b),f(21,f,b),f(22,f,b),f(23,f,b),f(24,f,b),
-                                f(3,f,b),p(p[0], 2),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
-                                f(2,f,b),f(11,f,b),f(12,f,b),f(13,f,b),f(14,f,b),f(15,f,b),f(16,f,b));
+        System.out.printf(
+                """
+                          +----╔═══════════════════╗----+    ╔═════════╗    +----╔═════════════════════════════╗
+                          | %s ║ %s | %s | %s | %s ║ %s |    ║   %s   ║    | %s ║ %s | %s | %s | %s | %s | %s ║
+                          +----╚════╗----+----╔════╝----+    ║         ║    +----╚═════════╗----+----╔═════════╝
+                          | %s |    ║   %s   ║    | %s |    ║         ║    | %s |         ║   %s   ║         
+                +----+----+----+    ║         ║    +----╔════╝----+----╚═════════╗         ║         ║         
+                | %s | %s | %s |    ║         ║    | %s ║ %s | %s | %s | %s | %s ║         ║         ║         
+                +----+----+----+    ╚═════════╝    +----╚════════════════════════╝         ╚═════════╝
+                %n""", f(4,f,b),f(5,f,b),f(6,f,b),f(7,f,b),f(8,f,b),f(9,f,b),p(p[1],2),
+                        f(18,f,b),f(19,f,b),f(20,f,b),f(21,f,b),f(22,f,b),f(23,f,b),f(24,f,b),
+                        f(3,f,b),p(p[0], 2),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
+                        f(2,f,b),f(11,f,b),f(12,f,b),f(13,f,b),f(14,f,b),f(15,f,b),f(16,f,b));
     }
 
     private static String f(int tile, int faithMarker, int blackMarker){
         Colors backgroundColor = (tile == blackMarker) ? Colors.ANSI_BLACK_BACKGROUND: Colors.ANSI_RESET;
-        Colors numberColor = (tile == faithMarker) ? Colors.ANSI_CYAN : Colors.ANSI_BLACK;
+        Colors numberColor = (tile == faithMarker) ? Colors.ANSI_RED : Colors.ANSI_WHITE;
         String tileColor;
         if (tile < 10) {
             tileColor = String.format("%s%s0%d%s", backgroundColor, numberColor, tile, Colors.ANSI_RESET);
