@@ -8,8 +8,11 @@ import javafx.application.Application;
 
 import it.polimi.ingsw.events.clientmessages.ClientMessage;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -18,7 +21,7 @@ import java.util.Map;
 public class GUI extends Application implements View {
     static Stage mainStage;
     SetupController setupController;
-
+    static LobbiesController lobbiesController;
     private ActionHandler actionHandler;
     private String nickname;
     private ModelView modelView;
@@ -34,7 +37,14 @@ public class GUI extends Application implements View {
         setupController.start();
 
     }
-
+    public static void startLobbies(Scene scene, Map<String, Integer> lobbies) {
+        lobbiesController = new LobbiesController(lobbies);
+        try {
+            lobbiesController.start(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);

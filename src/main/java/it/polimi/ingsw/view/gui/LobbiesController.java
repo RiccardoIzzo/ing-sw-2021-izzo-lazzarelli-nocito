@@ -23,16 +23,14 @@ public class LobbiesController {
     Scene scene;
     LobbiesController(Map<String,Integer> lobbies) {
         this.lobbies = lobbies;
-//        lobbiesVBox = new VBox();
     }
     public void start(Scene scene) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/scenes/scene2.fxml"));
-//        System.out.println("Loader: " + loader.toString());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/scene2.fxml"));
         Parent root = loader.load();
-            GUI.mainStage.close();
-            GUI.mainStage.setScene(new Scene(root));
-            GUI.mainStage.show();
 
+        GUI.mainStage.close();
+        GUI.mainStage.setScene(new Scene(root));
+        GUI.mainStage.show();
 
 //        lobbiesVBox.getChildren().removeAll();
             for(Map.Entry<String,Integer> lobby : lobbies.entrySet()) {

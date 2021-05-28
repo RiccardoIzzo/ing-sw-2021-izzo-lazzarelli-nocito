@@ -9,8 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane fx:controller="it.polimi.ingsw.view.gui.LobbiesController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
-<!--<Pane fx:controller="it.polimi.ingsw.view.gui.LobbiesController" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">-->
+<Pane fx:controller="it.polimi.ingsw.view.gui.LobbiesController" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/">
       <Button layoutX="148.0" layoutY="320.0" onAction="#joinButtonClicked" prefHeight="26.0" prefWidth="100.0" text="Join" />
       <Label id="titleLabel" alignment="CENTER" layoutY="41.0" prefHeight="43.0" prefWidth="600.0" text="Lobbies">
          <font>

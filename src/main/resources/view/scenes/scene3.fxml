@@ -12,6 +12,6 @@
       <Button layoutX="519.0" layoutY="33.0" mnemonicParsing="false" text="Market" />
       <Button layoutX="519.0" layoutY="61.0" mnemonicParsing="false" text="Grid" />
       <ImageView fitHeight="320.0" fitWidth="473.0" layoutX="44.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@/images/dashboard.jpg" />
+            <Image url="@/view/images/dashboard.jpg" />
       </ImageView>
 </Pane>

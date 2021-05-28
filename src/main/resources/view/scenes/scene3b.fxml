@@ -12,112 +12,112 @@
       <Button fx:id="card1Button" layoutX="16.0" layoutY="20.0" mnemonicParsing="false" onAction="#cardButtonClicked" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card1ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card2Button" layoutX="91.0" layoutY="20.0" mnemonicParsing="false" onAction="#cardButtonClicked" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card2ImageView" fitHeight="83.0" fitWidth="56.0" translateY="1.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card3Button" layoutX="167.0" layoutY="20.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card3ImageView" fitHeight="83.0" fitWidth="56.0" translateY="1.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card4Button" layoutX="242.0" layoutY="20.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card4ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card5Button" layoutX="16.0" layoutY="109.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card5ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card6Button" layoutX="91.0" layoutY="109.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card6ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card7Button" layoutX="167.0" layoutY="109.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card7ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card8Button" layoutX="242.0" layoutY="109.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card8ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card9Button" layoutX="16.0" layoutY="198.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card9ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card10Button" layoutX="90.0" layoutY="198.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card10ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card11Button" layoutX="167.0" layoutY="198.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card11ImageView" fitHeight="83.0" fitWidth="56.0">
-                   <Image url="@/images/cardBack.png" />
+                   <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card12Button" layoutX="242.0" layoutY="198.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card12ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card13Button" layoutX="16.0" layoutY="287.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card13ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card14Button" layoutX="90.0" layoutY="287.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card14ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card15Button" layoutX="167.0" layoutY="287.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card15ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
       <Button fx:id="card16Button" layoutX="242.0" layoutY="287.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="62.0" style="-fx-background-color: transparent;" translateX="230.0">
          <graphic>
             <ImageView fx:id="card16ImageView" fitHeight="83.0" fitWidth="56.0">
-                <Image url="@/images/cardBack.png" />
+                <Image url="@/view/images/cardBack.png" />
             </ImageView>
          </graphic>
       </Button>
@@ -130,7 +130,7 @@
          </effect>
       </Label>
       <ImageView fx:id="cardSelectedImageView" fitHeight="216.0" fitWidth="147.0" layoutX="55.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
-          <Image url="@/images/cardBack.png" />
+          <Image url="@/view/images/cardBack.png" />
       </ImageView>
       <Button fx:id="buyCardButton"  onAction="#buyCardButtonClicked"  layoutX="101.0" layoutY="334.0" mnemonicParsing="false" text="Buy card" />
 </Pane>
