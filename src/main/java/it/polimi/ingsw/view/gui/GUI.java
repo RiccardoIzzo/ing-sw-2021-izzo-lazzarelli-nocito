@@ -38,7 +38,8 @@ public class GUI extends Application implements View {
 
     }
     public static void startLobbies(Scene scene, Map<String, Integer> lobbies) {
-        lobbiesController = new LobbiesController(lobbies);
+        lobbiesController = new LobbiesController();
+        lobbiesController.setLobbies(lobbies);
         try {
             lobbiesController.start(scene);
         } catch (IOException e) {

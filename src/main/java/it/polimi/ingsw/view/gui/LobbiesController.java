@@ -6,45 +6,53 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class LobbiesController {
+    public ListView<String> lobbiesListView;
+    public VBox lobbiesNumberVBox;
     // Lobbies Scene
-    @FXML VBox lobbiesVBox;
     @FXML TextField lobbyTextField;
     @FXML TextField numPlayersTextField;
 
     Map<String, Integer> lobbies;
-    Scene scene;
-    LobbiesController(Map<String,Integer> lobbies) {
+    public void setLobbies(Map<String,Integer> lobbies) {
         this.lobbies = lobbies;
     }
+
     public void start(Scene scene) throws IOException {
+        GUI.mainStage.close();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/scene2.fxml"));
         Parent root = loader.load();
 
-        GUI.mainStage.close();
-        GUI.mainStage.setScene(new Scene(root));
-        GUI.mainStage.show();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
 
-//        lobbiesVBox.getChildren().removeAll();
+        LobbiesController controller = loader.getController();
+
             for(Map.Entry<String,Integer> lobby : lobbies.entrySet()) {
-                Label lobbyLabel = new Label();
-                lobbyLabel.setText(lobby.getKey());
-//                lobbiesVBox.setAlignment(Pos.CENTER);
-//                lobbiesVBox.getChildren().add(lobbyLabel);
+                controller.lobbiesListView.getItems().add("["+lobby.getValue()+" players] - " + lobby.getKey());
             }
-//            handleLobbies(lobbies);
+        controller.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     }
     public void joinButtonClicked() {
+        String selectedItem = lobbiesListView.getSelectionModel().getSelectedItem();
+        String lobbyID = selectedItem.substring(selectedItem.indexOf(" - ")+3);
+        System.out.println("LobbyID: " + lobbyID);
+
     }
 
     public void createButtonClicked() {
+        System.out.println(lobbyTextField.getText() + " - " + numPlayersTextField.getText());
     }
 }
