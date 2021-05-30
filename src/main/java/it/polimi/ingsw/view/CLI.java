@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.network.NetworkHandler;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * CLI class manages the game with a Command Line Interface.
@@ -283,7 +284,21 @@ public class CLI implements View{
         System.out.println("Select the card that you want to buy by typing the id: ");
 
         int id = getInt();
-        if(grid.contains(id)) send(new CheckRequirement(id));
+        if(grid.contains(id)) {
+            DevelopmentCard cardToBuy = JsonCardsCreator.generateDevelopmentCard(id);
+            List<DevelopmentCard> cardsToCover = modelView.getMyDashboard().getActiveDevelopments().stream()
+                    .map(JsonCardsCreator::generateDevelopmentCard)
+                    .filter(card -> card.getLevel() == cardToBuy.getLevel() - 1).collect(Collectors.toList());
+            if (cardToBuy.getLevel() > 1 && cardsToCover.size() == 0) {
+                System.out.println("Cannot buy card. You don't own a level " + (cardToBuy.getLevel()-1)+ " card.");
+                handleTurn();
+            } else if (cardToBuy.getLevel() == 1 && modelView.getMyDashboard().getActiveDevelopments().size() > 2){
+                System.out.println("Cannot buy card. Not enough space for a level 1 card.");
+                handleTurn();
+            } else {
+                send(new CheckRequirement(id));
+            }
+        }
         else {
             System.out.println("Id not valid, choose again.");
             handleTurn();
@@ -313,6 +328,7 @@ public class CLI implements View{
                 System.out.println("Slot number(s) out of index");
             }
             if(modelView.getMyDashboard().checkWarehouse()) {
+                showWarehouse(modelView.getMyDashboard().getWarehouse(),modelView.getMyDashboard().getExtraShelfResources());
                 System.out.println("Are you ok with this resource configuration? y/n");
                 enable = !getInput("y|n").equals("y");
             }
@@ -335,7 +351,7 @@ public class CLI implements View{
     @Override
     public void handleActivateLeader() {
         showCards(modelView.getMyDashboard().getLeaderCards().keySet());
-        System.out.println("Select the card that you want to buy by typing the id: ");
+        System.out.println("Select the card that you want to activate by typing the id: ");
 
         int id = getInt();
         if(modelView.getMyDashboard().getLeaderCards().containsKey(id)){
@@ -363,8 +379,22 @@ public class CLI implements View{
          */
         if(id < 200){
             if(result) {
+                DevelopmentCard cardToBuy = JsonCardsCreator.generateDevelopmentCard(id);
+                int slotIndex;
+                while(true){
+                    System.out.println("Select the slot where you want to place the card:");
+                    slotIndex = getInt();
+                    Integer cardToCover = modelView.getMyDashboard().getActiveDevelopments().get(slotIndex);
+                    if (cardToBuy.getLevel() > 1 && JsonCardsCreator.generateDevelopmentCard(cardToCover).getLevel() < cardToBuy.getLevel()) {
+                        break;
+                    } else if (cardToBuy.getLevel() == 1 && cardToCover == null){
+                        break;
+                    } else {
+                        System.out.println("Cannot place your card at slot number " + slotIndex + ".");
+                    }
+                }
                 int index = modelView.getGrid().indexOf(id);
-                send(new BuyCard(index / 4, index % 4));
+                send(new BuyCard(index / 4, index % 4, slotIndex));
                 basicActionPlayed();
             }
             else System.out.println("Requirement not met.");
@@ -462,7 +492,15 @@ public class CLI implements View{
      */
     private int getInt(){
         input.reset();
-        int n = input.nextInt();
+        int n = - 1;
+        while (input.hasNext()){
+            if (input.hasNextInt()){
+                n = input.nextInt();
+                break;
+            } else {
+                input.next();
+            }
+        }
         input.nextLine();
         return n;
     }
@@ -485,7 +523,7 @@ public class CLI implements View{
         network.sendToServer(message);
     }
 
-    void showDashboard(ModelView.DashboardView dashboardView){
+    public void showDashboard(ModelView.DashboardView dashboardView){
         System.out.println("\n*** FAITHTRACK ***");
         showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
         System.out.println("\n*** WAREHOUSE ***");
@@ -493,14 +531,15 @@ public class CLI implements View{
         System.out.println("\n*** LEADER CARDS ***");
         showCards(dashboardView.getLeaderCards().keySet());
         System.out.println("\n*** AVAILABLE PRODUCTION ***");
-        showCards(dashboardView.getAvailableProduction());
+        showCards(dashboardView.getActiveDevelopments().stream().filter(Objects::nonNull).collect(Collectors.toList()));
+        handleTurn();
     }
 
     public static void showMarket(ArrayList<MarbleColor> marketTray, MarbleColor slideMarble) {
         System.out.printf("Slide marble = %s\n\n", slideMarble.toString());
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-                System.out.print(marketTray.get(i+j).toString() + "\t");
+                System.out.print(marketTray.get(i*4+j).toString() + "\t");
             }
             System.out.printf("<-- %d\n", 7 - i);
         }
