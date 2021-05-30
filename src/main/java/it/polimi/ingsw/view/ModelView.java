@@ -203,6 +203,8 @@ public class ModelView {
                         } else if (shelf.stream().filter(Objects::nonNull).distinct().count() == 1) {
                             Resource resource = shelf.stream().filter(Objects::nonNull).findAny().orElse(null);
                             if (temporaryShelf.contains(resource)) return false;
+                        } else if(shelfResources(shelf) == 0) {
+                            return false;
                         }
                     }
                 }

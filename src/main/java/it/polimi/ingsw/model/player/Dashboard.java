@@ -60,7 +60,7 @@ public class Dashboard {
             }
         }
         ResourceMap resourcesToRemove = new ResourceMap();
-        resourcesToRemove.addResources(resourceMap); //? : is it necessary to use a copy?
+        resourcesToRemove.addResources(resourceMap);
         resourcesToRemove =  warehouse.removeResourcesFromWarehouse(resourcesToRemove);
         strongbox.removeResources(resourcesToRemove);
         pcs.firePropertyChange(STRONGBOX_CHANGE, null, strongbox);

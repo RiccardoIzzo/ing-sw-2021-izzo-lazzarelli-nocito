@@ -2,32 +2,30 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.servermessages.*;
 
-import static it.polimi.ingsw.constants.PlayerConstants.*;
-import static it.polimi.ingsw.constants.GameConstants.*;
-
 /**
  * ActionHandler class manages the ServerMessage from the server and updates the view.
  *
- * @author Riccardo Izzo
+ * @author Riccardo Izzo, Gabriele Lazzarelli
  */
-public class ActionHandler {
+public class ActionHandler implements Runnable{
     private final View view;
-    private ModelView modelView;
+    private final ServerMessage message;
 
     /**
      * Constructor ActionHandler creates a new ActionHandler instance.
      * @param view interface view, represents the CLI or the GUI.
+     * @param message ServerMessage to handle.
      *
      */
-    public ActionHandler(View view){
+    public ActionHandler(View view, ServerMessage message){
         this.view = view;
+        this.message = message;
     }
 
     /**
      * Method handle updates the view.
-     * @param message the ServerMessage to handle.
      */
-    public void handle(ServerMessage message){
+    public void handle(){
         if(message instanceof ValidNickname || message instanceof InvalidNickname){
             view.handleNickname(message);
         }
@@ -42,8 +40,7 @@ public class ActionHandler {
         }
         else if(message instanceof GameStarted){
             view.printText("The game is about to start.");
-            modelView = new ModelView(((GameStarted) message).getPlayers(), view.getNickname());
-            view.setModelView(modelView);
+            view.setModelView(new ModelView(((GameStarted) message).getPlayers(), view.getNickname()));
         }
         else if(message instanceof GetBonusResources){
             view.handleBonusResource(((GetBonusResources) message).getAmount());
@@ -52,23 +49,19 @@ public class ActionHandler {
             view.printText(((TextMessage) message).getText());
         }
         else if(message instanceof StartTurn){
+            view.startTurn();
             view.handleTurn();
         }
-        else if(message instanceof UpdateView){
-            UpdateView messageUpdate = (UpdateView) message;
-            String sourcePlayer = messageUpdate.getSourcePlayer();
-            String propertyName = messageUpdate.getPropertyName();
-            Object newValue = messageUpdate.getNewValue();
-            modelView.updateModelView(sourcePlayer, propertyName, newValue);
-            if (SET_LEADERS.equals(propertyName)) {
-                view.handleLeaders();
-            }
-            else if(END_TURN.equals(propertyName)){
-                view.printText(newValue.toString() + ", ready to play.");
-            }
-            else if(TEMPORARY_SHELF_CHANGE.equals(propertyName)){
-                view.handleTemporaryShelf();
-            }
+        else if(message instanceof CheckRequirementResult){
+            view.handleCheckRequirement(((CheckRequirementResult) message).isRequirementMet(), ((CheckRequirementResult) message).getId());
         }
+    }
+
+    /**
+     * Runnable class method that handle a single ServerMessage.
+     */
+    @Override
+    public void run() {
+        handle();
     }
 }

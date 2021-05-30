@@ -8,7 +8,6 @@ import javafx.application.Application;
 
 import it.polimi.ingsw.events.clientmessages.ClientMessage;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -31,7 +30,7 @@ public class GUI extends Application implements View {
 
     @Override
     public void start(Stage stage) throws Exception {
-        actionHandler = new ActionHandler(this);
+        //actionHandler = new ActionHandler(this);
         mainStage = stage;
         setupController = new SetupController();
         setupController.start();
@@ -71,32 +70,42 @@ public class GUI extends Application implements View {
     }
 
     @Override
-    public boolean handleTakeResource() {
-        return true;
+    public void handleTakeResource() {
     }
 
     @Override
-    public boolean handleBuyCard() {
-        return true;
+    public void handleBuyCard() {
     }
 
     @Override
-    public boolean handleActivateProduction() {
-        return true;
+    public void handleActivateProduction() {
     }
 
     @Override
-    public boolean handleActivateLeader() {
-        return true;
+    public void handleActivateLeader() {
     }
 
     @Override
-    public boolean handleDiscardLeader() {
-        return true;
+    public void handleDiscardLeader() {
     }
 
     @Override
     public void handleTemporaryShelf() {
+
+    }
+
+    @Override
+    public void handleCheckRequirement(boolean result, int id) {
+
+    }
+
+    @Override
+    public void startTurn() {
+
+    }
+
+    @Override
+    public void basicActionPlayed() {
 
     }
 
@@ -106,8 +115,7 @@ public class GUI extends Application implements View {
     }
 
     @Override
-    public boolean handleEndTurn() {
-        return true;
+    public void handleEndTurn() {
     }
 
     @Override

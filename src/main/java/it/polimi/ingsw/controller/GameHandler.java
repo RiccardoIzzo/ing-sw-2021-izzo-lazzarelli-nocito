@@ -103,7 +103,7 @@ public class GameHandler {
         }
 
         else if(message instanceof SendBonusResources){
-            player.getDashboard().getWarehouse().addResourcesToShelf(2, ((SendBonusResources) message).getBonusResource());
+            player.getDashboard().getWarehouse().addResourcesToShelf(5, ((SendBonusResources) message).getBonusResource());
         }
 
         else if(message instanceof TakeResources) {
@@ -132,6 +132,12 @@ public class GameHandler {
                     player.activateProduction(card);
                 }
             }
+        }
+
+        else if(message instanceof CheckRequirement){
+            Card card = JsonCardsCreator.generateCard(((CheckRequirement) message).getId());
+            boolean result = card.getRequirement().checkRequirement(player);
+            server.getConnectionByPlayerName(nickname).sendToClient(new CheckRequirementResult(result, card.getCardID()));
         }
 
         else if(message instanceof EndTurn) {

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.events.clientmessages.*;
-import it.polimi.ingsw.view.ActionHandler;
+import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -19,25 +19,36 @@ public class NetworkHandler {
     private Socket socket;
     private ServerConnection serverConnection;
     private ObjectOutputStream output;
+    private final View view;
 
     /**
      * Constructor NetworkHandler creates a new instance of NetworkHandler.
      * @param ip server address.
      * @param port server port.
+     * @param view view interface.
      */
-    public NetworkHandler(String ip, int port){
+    public NetworkHandler(String ip, int port, View view){
         this.ip = ip;
         this.port = port;
+        this.view = view;
+    }
+
+    /**
+     * Method getServerConnection returns the ServerConnection associated to this NetworkHandler.
+     * @return the server connection.
+     */
+    public ServerConnection getServerConnection() {
+        return serverConnection;
     }
 
     /**
      * Method setConnection creates a new socket connection, enables outbound communication and starts a thread that manages inbound communication.
      */
-    public void setConnection(ActionHandler actionHandler){
+    public void setConnection(){
         try {
             socket = new Socket(ip, port);
             output = new ObjectOutputStream(socket.getOutputStream());
-            serverConnection = new ServerConnection(socket, actionHandler);
+            serverConnection = new ServerConnection(socket, view);
             serverConnection.setStatus(true);
             (new Thread(serverConnection)).start();
             keepAlive();
