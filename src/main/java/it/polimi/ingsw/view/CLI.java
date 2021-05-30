@@ -343,9 +343,7 @@ public class CLI implements View{
                 System.out.println("Card" + id + "already active");
                 handleTurn();
             }
-            else if(modelView.getMyDashboard().getLeaderCards().get(id)) {
-                send(new CheckRequirement(id));
-            }
+            else send(new CheckRequirement(id));
         }
         else {
             System.out.println("Id not valid, choose again.");
