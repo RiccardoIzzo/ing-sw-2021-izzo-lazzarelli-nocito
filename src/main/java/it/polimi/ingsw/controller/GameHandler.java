@@ -150,5 +150,9 @@ public class GameHandler {
                 ((SinglePlayerGame) game).drawToken((SinglePlayerGame) game);
             }
         }
+
+        else if(message instanceof SetWarehouse) {
+            player.getDashboard().getWarehouse().setShelves(((SetWarehouse) message).getWarehouse());
+        }
     }
 }

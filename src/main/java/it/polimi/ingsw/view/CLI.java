@@ -317,6 +317,7 @@ public class CLI implements View{
                 enable = !getInput("y|n").equals("y");
             }
         }
+        send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
         handleTurn();
     }
 
