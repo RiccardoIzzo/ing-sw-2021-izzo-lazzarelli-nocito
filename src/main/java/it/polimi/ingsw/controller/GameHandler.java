@@ -111,7 +111,7 @@ public class GameHandler {
         }
 
         else if(message instanceof BuyCard) {
-            player.buyCard(((BuyCard) message).getRow(), ((BuyCard) message).getColumn());
+            player.buyCard(((BuyCard) message).getRow(), ((BuyCard) message).getColumn(), ((BuyCard) message).getIndex());
         }
 
         else if(message instanceof ActivateLeaderCard) {

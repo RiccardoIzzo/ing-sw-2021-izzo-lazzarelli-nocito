@@ -43,7 +43,7 @@ public final class PlayerConstants {
     public static final String SELECT_LEADERS = "selectLeaders";
     public static final String DISCARD_LEADER = "discardLeader";
     public static final String DEVELOPMENTS_CHANGE = "developmentsChange";
-    public static final String PRODUCTIONS_CHANGE = "productionsChange";
+    public static final String ACTIVE_DEVELOPMENTS_CHANGE = "productionsChange";
 
     //DashboardListener
     public static final String STRONGBOX_CHANGE = "strongboxChange";

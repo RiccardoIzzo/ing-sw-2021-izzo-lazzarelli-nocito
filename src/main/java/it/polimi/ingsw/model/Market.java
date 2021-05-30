@@ -97,7 +97,7 @@ public class Market {
         Collections.shuffle(marketTray);
         slideMarble = marketTray.get(rand);
         marketTray.remove(rand);
-        pcs.firePropertyChange(MARKET_CHANGE, null, marketTray.clone());
+        pcs.firePropertyChange(MARKET_CHANGE, null, marketTray);
         pcs.firePropertyChange(SLIDE_MARBLE, null, slideMarble);
     }
 

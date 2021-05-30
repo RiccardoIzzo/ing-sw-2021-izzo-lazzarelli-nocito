@@ -21,7 +21,6 @@ public class ServerConnection implements Runnable{
     private boolean status;
     private final View view;
     private ModelView modelView;
-    private final ExecutorService executors;
 
     /**
      * Constructor ServerConnection creates a new instance of ServerConnection.
@@ -30,7 +29,6 @@ public class ServerConnection implements Runnable{
      */
     public ServerConnection(Socket socket, View view){
         this.view = view;
-        executors = Executors.newCachedThreadPool();
         try {
             input = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
@@ -69,7 +67,11 @@ public class ServerConnection implements Runnable{
                 updater.start();
                 updater.join();
             }
-            else executors.execute(new ActionHandler(view, message));
+            else {
+                ActionHandler actionHandler = new ActionHandler(view, message);
+                actionHandler.start();
+                actionHandler.join();
+            }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
             System.out.println("Can't find server! Quitting...");
             System.exit(0);

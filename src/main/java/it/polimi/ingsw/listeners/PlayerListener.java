@@ -4,15 +4,12 @@ import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.model.card.Card;
 import it.polimi.ingsw.model.card.Deck;
-import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
@@ -45,7 +42,7 @@ public class PlayerListener extends PropertyListener {
         } else if (DEVELOPMENTS_CHANGE.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateCards((Collection<Card>) newValue));
             virtualView.sendToEveryone(serverMessage);
-        } else if (PRODUCTIONS_CHANGE.equals(propertyName)) {
+        } else if (ACTIVE_DEVELOPMENTS_CHANGE.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateCards((Collection<Card>) newValue));
             virtualView.sendToEveryone(serverMessage);
         }

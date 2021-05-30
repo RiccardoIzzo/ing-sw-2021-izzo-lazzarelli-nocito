@@ -22,13 +22,12 @@ public class MarketListener extends PropertyListener {
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;
         String propertyName = evt.getPropertyName();
-        Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
         if (MARKET_CHANGE.equals(propertyName)) {
-            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            serverMessage = new UpdateView(null, propertyName, null, newValue);
             virtualView.sendToEveryone(serverMessage);
         } else if (SLIDE_MARBLE.equals(propertyName)) {
-            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            serverMessage = new UpdateView(null, propertyName, null, newValue);
             virtualView.sendToEveryone(serverMessage);
         }
     }

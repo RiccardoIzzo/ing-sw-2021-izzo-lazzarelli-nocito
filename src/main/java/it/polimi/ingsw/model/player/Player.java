@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeSupport;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
@@ -23,7 +24,7 @@ public class Player {
     private Set<LeaderCard> leaders;
     private CardMap numberOfCard;
     private CardMap levelOfCard;
-    private ArrayList<Card> availableProduction;
+    private ArrayList<DevelopmentCard> activeDevelopments;
     private Set<MarbleColor> availableExchange;
     private ResourceMap availableDiscount;
     private PropertyChangeSupport pcs;
@@ -40,7 +41,7 @@ public class Player {
         leaders = new HashSet<>();
         numberOfCard = new CardMap();
         levelOfCard = new CardMap();
-        availableProduction = new ArrayList<>();
+        activeDevelopments = new ArrayList<>(Collections.nCopies(3,null));
         availableExchange = new HashSet<>();
         availableDiscount = new ResourceMap();
         pcs = new PropertyChangeSupport(name);
@@ -81,10 +82,24 @@ public class Player {
     }
 
     /**
-     * Method getAvailableProduction gets all the Card(s) in availableProduction list.
-     * @return ArrayList<Card>, list of the Cards with ProductionPower this Player has.
+     * Method getActiveDevelopments gets all the Card(s) in activeDevelopments list.
+     * @return ArrayList<DevelopmentCard>, list of the Cards with ProductionPower this Player has.
+     */
+    public ArrayList<DevelopmentCard> getActiveDevelopments() {
+        return activeDevelopments;
+    }
+
+    /**
+     * Method getAvailableProductions gets all the Card(s) with an active ProductionPower.
+     * @return ArrayList<Card>, list of the Cards (Development and Leader) with an active ProductionPower this Player has.
      */
     public ArrayList<Card> getAvailableProduction() {
+        ArrayList<Card> availableProduction = new ArrayList<>();
+        availableProduction.addAll(activeDevelopments.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+        availableProduction.addAll(leaders.stream()
+                .filter(leaderCard -> leaderCard instanceof ProductionLeaderCard)
+                .filter(LeaderCard::isActive)
+                .collect(Collectors.toList()));
         return availableProduction;
     }
 
@@ -94,7 +109,7 @@ public class Player {
 
     /**
      * Method buyCard is called when the player buys a DevelopmentCard.
-     * The new DevelopmentCard will be added to availableProduction and placed in:
+     * The new DevelopmentCard will be added to activeDevelopments and placed in:
      * <ul>
      *     <li>a free slot if the DevelopmentCard's level is I</li>
      *     <li>the slot of a DevelopmentCard of the same type but lower level</li>
@@ -102,17 +117,19 @@ public class Player {
      * @param row is the row line in the grid of developmentCard
      * @param column is the column in the grid of developmentCard
      */
-    public void buyCard(int row, int column){
+    public void buyCard(int row, int column, int index){
         Deck[][] OldGrid = game.getGrid();
         DevelopmentCard developmentCard = game.getGrid()[row][column].draw();
-        pcs.firePropertyChange(GRID_CHANGE, OldGrid, game.getGrid());
+        activeDevelopments.set(index, developmentCard);
+        pcs.firePropertyChange(ACTIVE_DEVELOPMENTS_CHANGE, null, activeDevelopments);
+        pcs.firePropertyChange(GRID_CHANGE, null, game.getGrid());
         addDevelopmentCard(developmentCard);
     }
 
     /**
      * Method addDevelopmentCard adds a DevelopmentCard to this Player and updates its attributes, in particular:
      * <ul>
-     *     <li>availableProduction: places the given DevelopmentCard in the correct slot</li>
+     *     <li>activeDevelopments: places the given DevelopmentCard in the correct slot</li>
      *     <li>developments: adds the given DevelopmentCard to the list</li>
      *     <li>numberOfCard: updates the CardMap</li>
      *     <li>levelOfCard: updates the CardMap</li>
@@ -120,25 +137,12 @@ public class Player {
      * @param developmentCard the DevelopmentCard to add
      */
     public void addDevelopmentCard(DevelopmentCard developmentCard){
-        int indexSlotPlace = availableProduction.size();
-
-        for(Card card: availableProduction){
-            if (card instanceof DevelopmentCard){
-                if (((DevelopmentCard) card).getType() == developmentCard.getType() && ((DevelopmentCard) card).getLevel()+1 == developmentCard.getLevel()){
-                    indexSlotPlace = availableProduction.indexOf(card);
-                    availableProduction.remove(card);
-                    break;
-                }
-            }
-        }
-        availableProduction.add(indexSlotPlace, developmentCard);
         developments.add(developmentCard);
         numberOfCard.addCard(developmentCard.getType(), 1);
         if (levelOfCard.getCard(developmentCard.getType()) < developmentCard.getLevel()) {
             levelOfCard.put(developmentCard.getType(), developmentCard.getLevel());
         }
         pcs.firePropertyChange(DEVELOPMENTS_CHANGE, null, developments);
-        pcs.firePropertyChange(PRODUCTIONS_CHANGE, null, availableProduction);
     }
 
     /**
@@ -188,10 +192,7 @@ public class Player {
      */
     public void activateLeaderCard(LeaderCard leaderCard){
         leaderCard.setActive(true);
-        if (leaderCard instanceof ProductionLeaderCard){
-            availableProduction.add(leaderCard);
-            pcs.firePropertyChange(PRODUCTIONS_CHANGE, null, availableProduction);
-        } else if (leaderCard instanceof WhiteMarbleLeaderCard){
+        if (leaderCard instanceof WhiteMarbleLeaderCard){
             availableExchange.addAll(((WhiteMarbleLeaderCard) leaderCard).getExchange());
         } else if (leaderCard instanceof DiscountLeaderCard){
             availableDiscount.addResources(((DiscountLeaderCard) leaderCard).getDiscount());
@@ -245,7 +246,7 @@ public class Player {
         pcs.addPropertyChangeListener(LEADER_ACTIVATION, playerListener);
         pcs.addPropertyChangeListener(GRID_CHANGE, playerListener);
         pcs.addPropertyChangeListener(DEVELOPMENTS_CHANGE, playerListener);
-        pcs.addPropertyChangeListener(PRODUCTIONS_CHANGE, playerListener);
+        pcs.addPropertyChangeListener(ACTIVE_DEVELOPMENTS_CHANGE, playerListener);
         myDashboard.addPropertyListener(virtualView);
     }
 }

@@ -86,7 +86,7 @@ public class ModelView {
         private String nickname;
         private Map<Integer, Boolean> leaderCards;
         private ArrayList<Integer> developmentCards;
-        private ArrayList<Integer> availableProduction;
+        private ArrayList<Integer> activeDevelopments;
         private ResourceMap strongbox;
         private ArrayList<Resource> warehouse;
         private ArrayList<Resource> extraShelfResources;
@@ -98,8 +98,9 @@ public class ModelView {
             this.nickname = nickname;
             this.leaderCards = new HashMap<>();
             this.developmentCards = new ArrayList<>();
+            this.activeDevelopments = new ArrayList<>(Collections.nCopies(3,null));
             this.strongbox = new ResourceMap();
-            this.warehouse = new ArrayList<>();
+            this.warehouse = new ArrayList<>(Collections.nCopies(14,null));
             this.extraShelfResources = new ArrayList<>();
             this.faithMarker = 0;
             this.blackMarker = 0;
@@ -118,8 +119,8 @@ public class ModelView {
             return developmentCards;
         }
 
-        public ArrayList<Integer> getAvailableProduction() {
-            return availableProduction;
+        public ArrayList<Integer> getActiveDevelopments() {
+            return activeDevelopments;
         }
 
         public ResourceMap getStrongbox() {
@@ -234,8 +235,8 @@ public class ModelView {
                 popesFavorTiles = (Boolean[]) objectToUpdate;
             } else if (DEVELOPMENTS_CHANGE.equals(propertyName)) {
                 developmentCards = (ArrayList<Integer>) objectToUpdate;
-            } else if (PRODUCTIONS_CHANGE.equals(propertyName)) {
-                availableProduction = (ArrayList<Integer>) objectToUpdate;
+            } else if (ACTIVE_DEVELOPMENTS_CHANGE.equals(propertyName)) {
+                activeDevelopments = (ArrayList<Integer>) objectToUpdate;
             }
         }
     }
