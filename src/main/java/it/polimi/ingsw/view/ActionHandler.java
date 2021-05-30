@@ -7,7 +7,7 @@ import it.polimi.ingsw.events.servermessages.*;
  *
  * @author Riccardo Izzo, Gabriele Lazzarelli
  */
-public class ActionHandler implements Runnable{
+public class ActionHandler extends Thread{
     private final View view;
     private final ServerMessage message;
 
