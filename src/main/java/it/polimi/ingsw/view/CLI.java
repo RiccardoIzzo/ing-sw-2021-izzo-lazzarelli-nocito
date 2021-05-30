@@ -15,16 +15,20 @@ import java.util.*;
  * @author Riccardo Izzo, Gabriele Lazzarelli
  */
 public class CLI implements View{
-    private final ActionHandler actionHandler;
     private String nickname;
     private ModelView modelView;
-    private NetworkHandler network;
+    private final NetworkHandler network;
+    private final Scanner input;
 
     /**
-     * Constructor CLI creates a new CLI instance.
+     * Constructor CLI creates a new CLI instance and prepares the network connection.
+     * @param ip server address.
+     * @param port server port.
      */
-    public CLI() {
-        actionHandler = new ActionHandler(this);
+    public CLI(String ip, int port) {
+        network = new NetworkHandler(ip, port, this);
+        network.setConnection();
+        input = new Scanner(System.in);
     }
 
     /**
@@ -44,8 +48,8 @@ public class CLI implements View{
         String ip = new Scanner(System.in).next();
         System.out.println("Insert server port:");
         int port = new Scanner(System.in).nextInt();
-        CLI cli = new CLI();
-        cli.setupGame(ip, port);
+        CLI cli = new CLI(ip, port);
+        cli.setNickname();
     }
 
     /**
@@ -68,23 +72,13 @@ public class CLI implements View{
     }
 
     /**
-     * Method setModelView sets the modelView for the current view.
+     * Method setModelView sets the modelView for this view and for the network.
      * @param modelView the modelView.
      */
     @Override
     public void setModelView(ModelView modelView) {
         this.modelView = modelView;
-    }
-
-    /**
-     * Method setupGame manages the initial phase of the game.
-     * @param ip server ip address.
-     * @param port server port.
-     */
-    private void setupGame(String ip, int port) {
-        this.network = new NetworkHandler(ip, port);
-        network.setConnection(actionHandler);
-        setNickname();
+        network.getServerConnection().setModelView(modelView);
     }
 
     /**
@@ -190,7 +184,7 @@ public class CLI implements View{
     public void handleBonusResource(int amount) {
         ResourceMap bonusResources = new ResourceMap();
         for(int n = 0; n < amount; n++){
-            System.out.println("Select a bonus resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT\n");
+            System.out.println("Select a bonus resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT");
             String resource = getInput("stone|coin|shield|servant");
             switch (resource){
                 case "stone" -> bonusResources.modifyResource(Resource.STONE, 1);
@@ -203,167 +197,199 @@ public class CLI implements View{
     }
 
     /**
+     * Method getValidAction returns a list of valid user action.
+     * @return the list of actions.
+     */
+    public ArrayList<Action> getValidActions(){
+        ArrayList<Action> actions = new ArrayList<>();
+        for(Action action : Action.values()){
+            if(action.enabled) actions.add(action);
+        }
+        return actions;
+    }
+
+    /**
+     * Method basicActionPlayed disables the three mutually exclusive basic actions.
+     */
+    @Override
+    public void basicActionPlayed(){
+        Action.TAKE_RESOURCE.enabled = false;
+        Action.BUY_CARD.enabled = false;
+        Action.ACTIVATE_PRODUCTION.enabled = false;
+    }
+
+    /**
+     * Method startTurn at the beginning of the player turn re-enable all actions.
+     */
+    public void startTurn(){
+        for(Action action : Action.values()){
+            action.enabled = true;
+        }
+    }
+
+    /**
      * Method handleTurn manages a player's turn and the available user actions.
+     * If there are available actions, it displays them and asks the player to select one.
      */
     @Override
     public void handleTurn() {
-        boolean[] performedActions = new boolean[]{false, false, false, false};
-        String[] actions = new String[]{"BASIC_ACTION", "ACTIVATE_LEADER", "DISCARD_LEADER", "END_TURN"};
-        System.out.println("Now it's your turn!");
+        if(getValidActions().size() == 0) return;
+        System.out.println("Select your next action: ");
+        for(Action action : getValidActions()) {
+            System.out.println(action);
+        }
+        int action = getInt();
+        while (action < 0 || action > 6) {
+            System.out.println("Action not valid, try again.");
+            action = getInt();
+        }
 
-        while (!performedActions[3]) {
-            System.out.println("Select your next action: ");
-            for (int i = 0; i < 4; i++) {
-                if (!performedActions[i]) System.out.println(i + ") " + actions[i]);
-            }
-            int action = getInt();
-            while (action < 0 || action > 3) {
-                System.out.println("Action not valid, try again.");
-                action = getInt();
-            }
-
-            switch (action) {
-
-                //TAKE_RESOURCE, BUY_CARD, ACTIVATE_PRODUCTION
-                case 0 -> {
-                    System.out.println("Select your basic action: ");
-                    System.out.println("0) TAKE_RESOURCE\n1) BUY_CARD\n2) ACTIVATE_PRODUCTION");
-                    action = getInt();
-                    while (action < 0 || action > 2) {
-                        System.out.println("Basic action not valid, try again.");
-                        action = getInt();
-                    }
-                    switch (action) {
-                        case 0 -> performedActions[0] = handleTakeResource();
-                        case 1 -> performedActions[0] = handleBuyCard();
-                        case 2 -> performedActions[0] = handleActivateProduction();
-                    }
-                }
-
-                //ACTIVATE_LEADER
-                case 1 -> performedActions[1] = handleActivateLeader();
-
-                //DISCARD_LEADER
-                case 2 -> performedActions[2] = handleDiscardLeader();
-
-                //END_TURN
-                case 3 -> performedActions[3] = handleEndTurn();
-            }
+        switch (action) {
+            case 0 -> handleTakeResource();
+            case 1 -> handleBuyCard();
+            case 2 -> handleActivateProduction();
+            case 3 -> handleActivateLeader();
+            case 4 -> handleDiscardLeader();
+            case 5 -> showDashboard(modelView.getMyDashboard());
+            case 6 -> handleEndTurn();
         }
     }
 
     /**
      * Method handleTakeResource manages the "TAKE_RESOURCE" action with the player that takes resources from the market.
-     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public boolean handleTakeResource() {
+    public void handleTakeResource() {
         showMarket(modelView.getMarketTray(), modelView.getSlideMarble());
         System.out.println("Insert the row/column index:");
-        int index = new Scanner(System.in).nextInt();
+        int index = getInt();
         while(index < 1 || index > 7){
             System.out.println("Row/Column index must be between 1 and 7! Try again.");
-            if(changeAction()) return false;
-            index = new Scanner(System.in).nextInt();
+            if(changeAction()) handleTurn();
+            index = getInt();
         }
         if(index > 4) send(new TakeResources(index - 4, 1));
         else send(new TakeResources(index, 2));
-        return true;
+        basicActionPlayed();
     }
 
     /**
      * Method handleBuyCard manages the "BUY_CARD" action, if the requirements are met the player buys a card from the grid.
-     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public boolean handleBuyCard() {
-        int id, index;
+    public void handleBuyCard() {
         ArrayList<Integer> grid = modelView.getGrid();
         showCards(grid);
         System.out.println("Select the card that you want to buy by typing the id: ");
 
-        while(true){
-            id = getInt();
-            if(grid.contains(id)){
-                index = grid.indexOf(id);
-                if(!checkRequirements(id)){
-                    System.out.println("Requirements not met, not enough resources.");
-                    return false;
-                }
-                else break;
-            }
-            else System.out.println("Id not valid, choose again.");
+        int id = getInt();
+        if(grid.contains(id)) send(new CheckRequirement(id));
+        else {
+            System.out.println("Id not valid, choose again.");
+            handleTurn();
         }
-        send(new BuyCard(index / 4, index % 4));
-        return true;
     }
 
     /**
-     * Method checkRequirements checks that the total amount of resources owned by the player is enough to meet the card requirements.
-     * @param cardID id of the selected card.
-     * @return true if the requirements are met, false otherwise.
+     * Method handleTemporaryShelf manages the placement of the resources in the warehouse.
+     * If the resource configuration in the warehouse is not acceptable or if the player wants to modify the current
+     * configuration, the warehouse is shown to the player and he can swap resources by typing the starting slot
+     * and the ending slot for the selected resource.
      */
-    private boolean checkRequirements(int cardID){
-        Map<Resource, Integer> myResources = new HashMap<>();
-        ArrayList<Resource> cardRequirement = ((ResourceRequirement) JsonCardsCreator.generateDevelopmentCard(cardID).getRequirement()).getResources().asList();
-        for(Resource resource : Resource.values()){
-            int amount = 0;
-            amount += Collections.frequency(modelView.getMyDashboard().getWarehouse(), resource);
-            amount += Collections.frequency(modelView.getMyDashboard().getStrongbox().asList(), resource);
-            myResources.put(resource, amount);
-        }
-
-        for(Resource resource : Resource.values()){
-            if(myResources.get(resource) < Collections.frequency(cardRequirement, resource)) return false;
-        }
-        return true;
-    }
-
     @Override
     public void handleTemporaryShelf() {
-        //TODO
         System.out.println("Place your resources on the shelves");
         int firstSlot, secondSlot;
-        while(true){
+        boolean enable = true;
+        while(!modelView.getMyDashboard().checkWarehouse() || enable){
             showWarehouse(modelView.getMyDashboard().getWarehouse(),modelView.getMyDashboard().getExtraShelfResources());
-            System.out.println("Select two slots: ");
-            firstSlot = new Scanner(System.in).nextInt();
-            secondSlot = new Scanner(System.in).nextInt();
+            System.out.println("Select the starting slot: ");
+            firstSlot = getInt();
+            System.out.println("Select the ending slot: ");
+            secondSlot = getInt();
             if(firstSlot >= 0 && firstSlot < 15 && secondSlot >= 0 && secondSlot < 15){
                 modelView.getMyDashboard().swapResources(firstSlot, secondSlot);
             } else {
                 System.out.println("Slot number(s) out of index");
             }
-            if (modelView.getMyDashboard().checkWarehouse()) break;
+            if(modelView.getMyDashboard().checkWarehouse()) {
+                System.out.println("Are you ok with this resource configuration? y/n");
+                enable = !getInput("y|n").equals("y");
+            }
         }
+        handleTurn();
     }
 
     /**
      * Method handleActivateProduction manages the "ACTIVATE_PRODUCTION" action, the player activate the production.
-     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public boolean handleActivateProduction() {
-        return true;
+    public void handleActivateProduction() {
+
     }
 
     /**
      * Method handleActivateLeader manages the "ACTIVATE_LEADER" action, the player activates a leader card.
-     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public boolean handleActivateLeader() {
-        return true;
+    public void handleActivateLeader() {
+        showCards(modelView.getMyDashboard().getLeaderCards().keySet());
+        System.out.println("Select the card that you want to buy by typing the id: ");
+
+        int id = getInt();
+        if(modelView.getMyDashboard().getLeaderCards().containsKey(id)){
+            if(modelView.getMyDashboard().getLeaderCards().get(id)){
+                System.out.println("Card" + id + "already active");
+                handleTurn();
+            }
+            else if(modelView.getMyDashboard().getLeaderCards().get(id)) {
+                send(new CheckRequirement(id));
+            }
+        }
+        else {
+            System.out.println("Id not valid, choose again.");
+            handleTurn();
+        }
+    }
+
+    /**
+     * Method handleCheckRequirement manages CheckRequirement message in two different cases: "BUY_CARD" and "ACTIVATE_LEADER" actions.
+     * @param result outcome of the requirement check.
+     * @param id card id.
+     */
+    @Override
+    public void handleCheckRequirement(boolean result, int id) {
+        /*
+        Requirement for development cards.
+         */
+        if(id < 200){
+            if(result) {
+                int index = modelView.getGrid().indexOf(id);
+                send(new BuyCard(index / 4, index % 4));
+                basicActionPlayed();
+            }
+            else System.out.println("Requirement not met.");
+        }
+        /*
+        Requirement for leader cards.
+         */
+        else {
+            if(result) send(new ActivateLeaderCard(id));
+            else System.out.println("Requirement not met.");
+        }
+        handleTurn();
     }
 
     /**
      * Method handleDiscardLeader manages the "DISCARD_LEADER" action, the player select a leader card to discard.
-     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public boolean handleDiscardLeader() {
+    public void handleDiscardLeader() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
-        if(ids.size() == 0) return true;
+        if(ids.size() == 0) {
+            System.out.println("No remaining leader cards.");
+            handleTurn();
+        }
         else{
             for(Integer id : ids){
                 LeaderCard card = JsonCardsCreator.generateLeaderCard(id);
@@ -375,22 +401,20 @@ public class CLI implements View{
         int id = getInt();
         while(!ids.contains(id)){
             System.out.println("Id not valid, choose again.");
-            if(changeAction()) return false;
+            if(changeAction()) handleTurn();
             id = getInt();
         }
         send(new DiscardLeaderCard(id));
-        return true;
+        handleTurn();
     }
 
     /**
      * Method handleEndTurn manages the "END_TURN" action with the player that decides to end his turn.
-     * @return true if the action is completed, false otherwise.
      */
     @Override
-    public boolean handleEndTurn() {
+    public void handleEndTurn() {
         System.out.println("Your turn is finished.");
         send(new EndTurn());
-        return true;
     }
 
     /**
@@ -423,19 +447,25 @@ public class CLI implements View{
     }
 
     /**
-     * Method getString creates a new Scanner and reads a string.
+     * Method getString reads a string after resetting the scanner.
+     * Finally it returns the string.
      * @return the string.
      */
     private String getString(){
-        return new Scanner(System.in).nextLine();
+        input.reset();
+        return input.nextLine();
     }
 
     /**
-     * Method getInt creates a new Scanner and reads an integer.
+     * Method getInt resets the scanner, process any remaining characters and reads an integer.
+     * Finally it returns the integer.
      * @return the integer.
      */
     private int getInt(){
-        return new Scanner(System.in).nextInt();
+        input.reset();
+        int n = input.nextInt();
+        input.nextLine();
+        return n;
     }
 
     /**
