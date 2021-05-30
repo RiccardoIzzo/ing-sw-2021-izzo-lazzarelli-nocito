@@ -1,7 +1,5 @@
 package it.polimi.ingsw.constants;
 
-import java.util.Map;
-
 /**
  * GameConstants contains all constant values of the Game class and Market class
  */
@@ -36,14 +34,14 @@ public final class GameConstants {
     public static final int NUM_TOKENS = 7;
 
     //Filepath to the list of DevelopmentCard to generate
-    public static final String developmentCardsJson = "src/main/resources/json/development_card.json";
+    public static final String developmentCardsJson = "/json/development_card.json";
 
     //Filepath to the lists of LeaderCard to generate
     public static final String[] leaderCardsJson = {
-            "src/main/resources/json/discount_leadercard.json",
-            "src/main/resources/json/extrashelf_leadercard.json",
-            "src/main/resources/json/production_leadercard.json",
-            "src/main/resources/json/whitemarble_leadercard.json"
+            "/json/discount_leadercard.json",
+            "/json/extrashelf_leadercard.json",
+            "/json/production_leadercard.json",
+            "/json/whitemarble_leadercard.json"
     };
 
 

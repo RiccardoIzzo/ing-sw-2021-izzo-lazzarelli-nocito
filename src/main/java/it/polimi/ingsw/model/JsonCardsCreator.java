@@ -7,6 +7,7 @@ import it.polimi.ingsw.constants.GameConstants;
 import it.polimi.ingsw.model.card.*;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public class JsonCardsCreator {
      */
     public static ArrayList<DevelopmentCard> generateDevelopmentCards(){
         ArrayList<DevelopmentCard> cards = new ArrayList<>();
-        try (Reader reader = new FileReader(GameConstants.developmentCardsJson)) {
-            cards = gson.fromJson(reader, new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
+        try (Reader reader = new InputStreamReader(JsonCardsCreator.class.getResourceAsStream(GameConstants.developmentCardsJson))) {
+            cards = gson.fromJson(reader , new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +64,7 @@ public class JsonCardsCreator {
         int i = 0;
 
         for(String filePath : GameConstants.leaderCardsJson){
-            try (Reader reader = new FileReader(filePath)){
+            try (Reader reader = new InputStreamReader(JsonCardsCreator.class.getResourceAsStream(filePath))){
                 leaders.addAll(gson.fromJson(reader, types.get(i++)));
             } catch (IOException e) {
                 e.printStackTrace();
