@@ -27,7 +27,6 @@ public class Warehouse {
     Note: shelfNumber is both shelf's number and capacity
      */
 
-    //FIXME: Replace Resource with Optional<Resource> in shelves
     private ArrayList<Resource> shelves;
     private ArrayList<Resource> extraShelfResources;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);

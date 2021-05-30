@@ -538,11 +538,11 @@ public class CLI implements View{
         String firstExtraShelf = "", firstIndexPair = "", secondExtraShelf = "", secondIndexPair = "";
         if (extraShelfResources.size() > 0){
             firstIndexPair = "6   7";
-            firstExtraShelf = String.format("⎣%s⎦ ⎣%s⎦  <-- 1st Leader card shelf {%s}", warehouse.get(6),warehouse.get(7), extraShelfResources.get(0));
+            firstExtraShelf = String.format("⎣%s⎦ ⎣%s⎦  <-- 1st Leader card shelf {%s}", warehouseGet(warehouse,6),warehouseGet(warehouse,7), extraShelfResources.get(0));
         }
         if (extraShelfResources.size() > 1){
             secondIndexPair = "8   9";
-            secondExtraShelf = String.format("⎣%s⎦ ⎣%s⎦  <-- 2nd Leader card shelf {%s}", warehouse.get(8),warehouse.get(9), extraShelfResources.get(1));
+            secondExtraShelf = String.format("⎣%s⎦ ⎣%s⎦  <-- 2nd Leader card shelf {%s}",warehouseGet(warehouse,8),warehouseGet(warehouse,9), extraShelfResources.get(1));
         }
         System.out.printf("""
                                                  +-0-+             %s
@@ -554,8 +554,16 @@ public class CLI implements View{
                                              +---+---+---+
                                             10  11   12  13
                                             ⎣%s⎦ ⎣%s⎦ ⎣%s⎦ ⎣%s⎦
-                        %n""", firstIndexPair, warehouse.get(0), firstExtraShelf, warehouse.get(1), warehouse.get(2), secondIndexPair, secondExtraShelf, warehouse.get(3), warehouse.get(4), warehouse.get(5),
-                warehouse.get(10), warehouse.get(11), warehouse.get(12), warehouse.get(13));
+                        %n""", firstIndexPair, warehouseGet(warehouse,0), firstExtraShelf, warehouseGet(warehouse,1), warehouseGet(warehouse,2),
+                secondIndexPair, secondExtraShelf, warehouseGet(warehouse,3), warehouseGet(warehouse,4), warehouseGet(warehouse,5),
+                warehouseGet(warehouse,10), warehouseGet(warehouse,11), warehouseGet(warehouse,12), warehouseGet(warehouse,13));
+    }
+    private static String warehouseGet(ArrayList<Resource> warehouse, int index) {
+        if (warehouse.get(index) == null) {
+            return " ";
+        } else {
+            return warehouse.get(index).toString();
+        }
     }
 
     /*
@@ -569,9 +577,9 @@ public class CLI implements View{
                           +----╔═══════════════════╗----+    ╔═════════╗    +----╔═════════════════════════════╗
                           | %s ║ %s | %s | %s | %s ║ %s |    ║   %s   ║    | %s ║ %s | %s | %s | %s | %s | %s ║
                           +----╚════╗----+----╔════╝----+    ║         ║    +----╚═════════╗----+----╔═════════╝
-                          | %s |    ║   %s   ║    | %s |    ║         ║    | %s |         ║   %s   ║         
-                +----+----+----+    ║         ║    +----╔════╝----+----╚═════════╗         ║         ║         
-                | %s | %s | %s |    ║         ║    | %s ║ %s | %s | %s | %s | %s ║         ║         ║         
+                          | %s |    ║   %s   ║    | %s |    ║         ║    | %s |         ║   %s   ║
+                +----+----+----+    ║         ║    +----╔════╝----+----╚═════════╗         ║         ║
+                | %s | %s | %s |    ║         ║    | %s ║ %s | %s | %s | %s | %s ║         ║         ║
                 +----+----+----+    ╚═════════╝    +----╚════════════════════════╝         ╚═════════╝
                 %n""", f(4,f,b),f(5,f,b),f(6,f,b),f(7,f,b),f(8,f,b),f(9,f,b),p(p[1],2),
                         f(18,f,b),f(19,f,b),f(20,f,b),f(21,f,b),f(22,f,b),f(23,f,b),f(24,f,b),
