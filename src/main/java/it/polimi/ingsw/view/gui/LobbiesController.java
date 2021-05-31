@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.events.clientmessages.CreateLobby;
+import it.polimi.ingsw.events.clientmessages.GetLobbies;
+import it.polimi.ingsw.events.clientmessages.JoinLobby;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -28,7 +31,7 @@ public class LobbiesController {
         this.lobbies = lobbies;
     }
 
-    public void start(Scene scene) throws IOException {
+    public void start() throws IOException {
         GUI.mainStage.close();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/scene2.fxml"));
         Parent root = loader.load();
