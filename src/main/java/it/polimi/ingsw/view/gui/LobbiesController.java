@@ -57,7 +57,11 @@ public class LobbiesController {
 
     public void createButtonClicked() {
         String lobbyID = lobbyTextField.getText();
-        if ( lobbies.containsKey(lobbyID) ) {
+        if (lobbyID == null || lobbyID.length() < 1) {
+            GUI.showAlert("Insert a lobby ID!", Alert.AlertType.ERROR);
+            return;
+        }
+        if (lobbiesListView.getItems().contains(lobbyID) ) {
             GUI.showAlert("Already exists a lobby with this id! Try again.", Alert.AlertType.ERROR);
             GUI.sendMessage(new GetLobbies());
         }
