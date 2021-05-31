@@ -50,9 +50,13 @@ public class LobbiesController {
     }
     public void joinButtonClicked() {
         String selectedItem = lobbiesListView.getSelectionModel().getSelectedItem();
-        String lobbyID = selectedItem.substring(selectedItem.indexOf(" - ")+3);
-        System.out.println("LobbyID: " + lobbyID);
-
+        if (selectedItem == null) {
+            GUI.showAlert("Select the lobby you want to join", Alert.AlertType.ERROR);
+        }
+        else {
+            String lobbyID = selectedItem.substring(selectedItem.indexOf(" - ")+3);
+            GUI.sendMessage(new JoinLobby(lobbyID));
+        }
     }
 
     public void createButtonClicked() {
