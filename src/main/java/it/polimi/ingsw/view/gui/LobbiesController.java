@@ -56,6 +56,35 @@ public class LobbiesController {
     }
 
     public void createButtonClicked() {
+        String lobbyID = lobbyTextField.getText();
         System.out.println(lobbyTextField.getText() + " - " + numPlayersTextField.getText());
+        if ( lobbies.containsKey(lobbyID) ) {
+            GUI.showAlert("Already exists a lobby with this id! Try again.", Alert.AlertType.ERROR);
+            GUI.sendMessage(new GetLobbies());
+        }
+        else {
+
+            if (isParsable(numPlayersTextField.getText())) {
+                int numPlayers = Integer.parseInt(numPlayersTextField.getText());
+                if (numPlayers > 4 )
+                    GUI.showAlert("The maximum number of players is four, choose again.", Alert.AlertType.ERROR);
+                else {
+                    GUI.sendMessage(new CreateLobby(lobbyID, numPlayers));
+                }
+            }
+            else {
+                GUI.showAlert("Choose a number between one and four!", Alert.AlertType.ERROR);
+            }
+        }
+
+    }
+
+    public static boolean isParsable(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (final NumberFormatException e) {
+            return false;
+        }
     }
 }
