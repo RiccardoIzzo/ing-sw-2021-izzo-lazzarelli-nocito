@@ -1,10 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.events.clientmessages.SetNickname;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,8 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SetupController {
     // Connect Scene
@@ -36,14 +34,17 @@ public class SetupController {
         GUI.mainStage.show();
     }
     public void setNicknameButtonClicked(ActionEvent actionEvent) {
+        String nickname = nicknameTextField.getText();
+        if ( nickname.length() > 0 )
+            GUI.sendMessage(new SetNickname(nickname));
 
-        Map<String, Integer> lobbies = new HashMap<>();
-        lobbies.put("lobby1", 2);
-        lobbies.put("lobby3", 2);
-        lobbies.put("lobby2r", 2);
 
-//        openLobbyList(((Node) actionEvent.getSource()).getScene(), lobbies);
-        GUI.startLobbies(((Node) actionEvent.getSource()).getScene(), lobbies);
+//        Map<String, Integer> lobbies = new HashMap<>();
+//        lobbies.put("lobby1", 2);
+//        lobbies.put("lobby3", 2);
+//        lobbies.put("lobby2r", 2);
+
+//        GUI.startLobbies(((Node) actionEvent.getSource()).getScene(), lobbies);
 
     }
 
