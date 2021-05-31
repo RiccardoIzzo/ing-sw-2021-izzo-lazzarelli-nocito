@@ -57,7 +57,6 @@ public class LobbiesController {
 
     public void createButtonClicked() {
         String lobbyID = lobbyTextField.getText();
-        System.out.println(lobbyTextField.getText() + " - " + numPlayersTextField.getText());
         if ( lobbies.containsKey(lobbyID) ) {
             GUI.showAlert("Already exists a lobby with this id! Try again.", Alert.AlertType.ERROR);
             GUI.sendMessage(new GetLobbies());
@@ -73,7 +72,7 @@ public class LobbiesController {
                 }
             }
             else {
-                GUI.showAlert("Choose a number between one and four!", Alert.AlertType.ERROR);
+                GUI.showAlert("Input not valid! Choose a number between one and four!", Alert.AlertType.ERROR);
             }
         }
 
