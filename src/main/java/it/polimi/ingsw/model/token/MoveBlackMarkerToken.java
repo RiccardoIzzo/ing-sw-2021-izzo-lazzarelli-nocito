@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.token;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.SinglePlayerGame;
-import it.polimi.ingsw.model.player.Dashboard;
+import it.polimi.ingsw.constants.Colors;
 
 /**
  * MoveBlackMarkerToken class implements SoloActionToken interface and represents the token that move forward the black cross marker.
@@ -37,5 +35,12 @@ public class MoveBlackMarkerToken implements SoloActionToken {
      */
     public boolean hasResetStack() {
         return resetStack;
+    }
+
+    @Override
+    public String toString() {
+        String reset = "";
+        if (resetStack) reset = "↺";
+        return "+" + steps + Colors.ANSI_BLACK + "✝" + Colors.ANSI_RESET + reset;
     }
 }
