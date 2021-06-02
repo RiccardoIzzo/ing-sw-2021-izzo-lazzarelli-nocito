@@ -23,15 +23,16 @@ public class Market {
     private final ArrayList<MarbleColor> marketTray;
     private MarbleColor slideMarble;
     private MarbleColor specialMarble;
-    private ResourceMap outputMarket;
+    private final ResourceMap outputMarket;
     private boolean foundFaith;
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
      * Constructor Market creates a new Market instance.
      */
     public Market(){
         marketTray = new ArrayList<>();
+        specialMarble = null;
         outputMarket = new ResourceMap();
     }
 
@@ -183,6 +184,7 @@ public class Market {
         else if(marble == MarbleColor.WHITE) {
             if(getSpecialMarble() != null){
                 resourceConverter(getSpecialMarble());
+                specialMarble = null;
             }
         }
     }
