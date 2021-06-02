@@ -11,7 +11,7 @@ import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 public class ModelView {
     ArrayList<DashboardView> dashboards;
-    private String myNickname;
+    private final String myNickname;
     private String currPlayer;
     private ArrayList<Integer> grid;
     private MarbleColor slideMarble;
@@ -89,7 +89,7 @@ public class ModelView {
         private ArrayList<Integer> activeDevelopments;
         private ResourceMap strongbox;
         private ArrayList<Resource> warehouse;
-        private ArrayList<Resource> extraShelfResources;
+        private final ArrayList<Resource> extraShelfResources;
         private Integer faithMarker;
         private Integer blackMarker;
         private Boolean[] popesFavorTiles;
@@ -177,7 +177,7 @@ public class ModelView {
             shelfThree = warehouse.subList(3,6);
             extraShelf1 = warehouse.subList(6,8);
             extraShelf2 = warehouse.subList(8,10);
-            temporaryShelf = warehouse.subList(10,15);
+            temporaryShelf = warehouse.subList(10,14);
 
             List<List<Resource>> shelves = new ArrayList<>();
             shelves.add(shelfOne);
