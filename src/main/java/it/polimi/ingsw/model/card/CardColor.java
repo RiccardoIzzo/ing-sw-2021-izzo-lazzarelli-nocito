@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.card;
 
+import it.polimi.ingsw.constants.Colors;
+
 /**
  * Enum CardColor provides a enumeration of all the Card color types in the game.
  * @author Gabriele Lazzarelli
@@ -16,6 +18,16 @@ public enum CardColor {
             case PURPLE -> 1;
             case BLUE -> 2;
             case YELLOW -> 3;
+        };
+    }
+
+    @Override
+    public String toString() {
+        return switch (this) {
+            case GREEN -> Colors.ANSI_GREEN + "█" + Colors.ANSI_RESET;
+            case YELLOW -> Colors.ANSI_YELLOW + "█" + Colors.ANSI_RESET;
+            case BLUE -> Colors.ANSI_BLUE + "█" + Colors.ANSI_RESET;
+            case PURPLE -> Colors.ANSI_PURPLE + "█" + Colors.ANSI_RESET;
         };
     }
 }
