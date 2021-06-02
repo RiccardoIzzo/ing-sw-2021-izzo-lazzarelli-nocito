@@ -45,7 +45,7 @@ public class ExtraShelfLeaderCardTest {
         String outputString = extraShelfLeaderCard.toString();
         assertTrue(outputString.contains("ID: " + cardID));
         assertTrue(outputString.contains("VP: " + victoryPoints));
-        assertTrue(outputString.contains("2 " + allowedResource.toString()));
+        assertTrue(outputString.contains("2[" + allowedResource.toString() + "]"));
     }
 
 
