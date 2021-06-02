@@ -55,6 +55,7 @@ public class MultiplayerGame extends Game {
         Collections.shuffle(getPlayers());
         currPlayer = getPlayers().get(0);
         firstPlayer = currPlayer;
+        pcs.firePropertyChange(END_TURN, null, currPlayer.getNickname());
     }
 
     /**
@@ -64,6 +65,5 @@ public class MultiplayerGame extends Game {
         int indexCurrPlayer = getPlayers().indexOf(currPlayer);
         currPlayer = getPlayers().get((indexCurrPlayer + 1) % getPlayers().size());
         pcs.firePropertyChange(END_TURN, null, currPlayer.getNickname());
-
     }
 }
