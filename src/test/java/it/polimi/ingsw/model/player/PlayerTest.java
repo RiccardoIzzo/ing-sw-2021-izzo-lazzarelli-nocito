@@ -89,26 +89,26 @@ public class PlayerTest {
      */
     @Test
     public void buyCardTestA(){
-        player.buyCard(0,1,0); //purple - lv 1
+        player.buyCard(0,1,1); //purple - lv 1
         assertEquals(player.getLevelOfCard().getCard(CardColor.PURPLE), 1);
         assertEquals(player.getNumberOfCard().getCard(CardColor.PURPLE), 1);
 
-        player.buyCard(0,0,0); //green  - lv 1
+        player.buyCard(0,0,2); //green  - lv 1
         assertEquals(player.getLevelOfCard().getCard(CardColor.GREEN), 1);
         assertEquals(player.getNumberOfCard().getCard(CardColor.GREEN), 1);
 
-        player.buyCard(1,1,0); //purple - lv 2
+        player.buyCard(1,1,1); //purple - lv 2
         assertEquals(player.getLevelOfCard().getCard(CardColor.PURPLE), 2);
         assertEquals(player.getNumberOfCard().getCard(CardColor.PURPLE), 2);
 
 
-        player.buyCard(0,3,0); //yellow - lv 1
+        player.buyCard(0,3,3); //yellow - lv 1
         assertEquals(player.getLevelOfCard().getCard(CardColor.YELLOW), 1);
         assertEquals(player.getNumberOfCard().getCard(CardColor.YELLOW), 1);
-        player.buyCard(1,3,0); //yellow - lv 2
+        player.buyCard(1,3,3); //yellow - lv 2
         assertEquals(player.getLevelOfCard().getCard(CardColor.YELLOW), 2);
         assertEquals(player.getNumberOfCard().getCard(CardColor.YELLOW), 2);
-        player.buyCard(2,3,0); //yellow - lv 3
+        player.buyCard(2,3,3); //yellow - lv 3
         assertEquals(player.getLevelOfCard().getCard(CardColor.GREEN), 1);
         assertEquals(player.getNumberOfCard().getCard(CardColor.GREEN), 1);
         assertEquals(player.getLevelOfCard().getCard(CardColor.PURPLE), 2);
@@ -136,26 +136,26 @@ public class PlayerTest {
      */
     @Test
     public void buyCardTestB(){
-        player.buyCard(0,2,0); //blue - lv 1
+        player.buyCard(0,2,1); //blue - lv 1
         assertEquals(player.getLevelOfCard().getCard(CardColor.BLUE), 1);
         assertEquals(player.getNumberOfCard().getCard(CardColor.BLUE), 1);
 
-        player.buyCard(0,0,0); //green  - lv 1
+        player.buyCard(0,0,2); //green  - lv 1
         assertEquals(player.getLevelOfCard().getCard(CardColor.GREEN), 1);
         assertEquals(player.getNumberOfCard().getCard(CardColor.GREEN), 1);
 
-        player.buyCard(1,2,0); //blue - lv 2
+        player.buyCard(1,2,1); //blue - lv 2
         assertEquals(player.getLevelOfCard().getCard(CardColor.BLUE), 2);
         assertEquals(player.getNumberOfCard().getCard(CardColor.BLUE), 2);
 
 
-        player.buyCard(0,0,0); //green - lv 1
+        player.buyCard(0,0,3); //green - lv 1
         assertEquals(player.getLevelOfCard().getCard(CardColor.GREEN), 1);
         assertEquals(player.getNumberOfCard().getCard(CardColor.GREEN), 2);
-        player.buyCard(1,0,0); //green - lv 2
+        player.buyCard(1,0,3); //green - lv 2
         assertEquals(player.getLevelOfCard().getCard(CardColor.GREEN), 2);
         assertEquals(player.getNumberOfCard().getCard(CardColor.GREEN), 3);
-        player.buyCard(2,0,0); //green - lv 3
+        player.buyCard(2,0,3); //green - lv 3
         assertEquals(player.getLevelOfCard().getCard(CardColor.GREEN), 3);
         assertEquals(player.getNumberOfCard().getCard(CardColor.GREEN), 4);
         assertEquals(player.getLevelOfCard().getCard(CardColor.BLUE), 2);

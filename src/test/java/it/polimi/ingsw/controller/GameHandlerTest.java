@@ -121,7 +121,7 @@ public class GameHandlerTest {
         // BuyCard
         assertEquals(0, player.getDevelopments().size());
         DevelopmentCard card = game.getGrid()[1][1].getTopCard();
-        player.buyCard(1, 1, 0);
+        player.buyCard(1, 1, 1);
         assertEquals(1, player.getDevelopments().size());
         assertTrue(player.getDevelopments().contains(card));
 
