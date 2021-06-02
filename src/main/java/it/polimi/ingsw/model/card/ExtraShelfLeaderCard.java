@@ -36,6 +36,6 @@ public class ExtraShelfLeaderCard extends LeaderCard {
         return "ID: " + super.getCardID() +
                 "\n -VP: " + getVictoryPoints() +
                 "\n " + getRequirement() +
-                "\n -Additional space: 2 " + resource.toString();
+                "\n -Additional space: 2[" + resource.toString() + "]";
     }
 }
