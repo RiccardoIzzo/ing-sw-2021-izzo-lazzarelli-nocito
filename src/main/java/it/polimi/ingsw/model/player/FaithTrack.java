@@ -19,7 +19,7 @@ public class FaithTrack {
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     // tilesUncovered: Value that states if the pope tiles have been uncovered
-    private boolean[] tilesUncovered = {false, false, false};
+    private final boolean[] tilesUncovered = {false, false, false};
 
     public FaithTrack() {
         posFaithMarker = 0;
@@ -47,7 +47,7 @@ public class FaithTrack {
      */
     public void moveForward() {
         posFaithMarker++;
-        pcs.firePropertyChange(FAITH_MARKER_POSITION, posFaithMarker-1, posFaithMarker);
+        pcs.firePropertyChange(FAITH_MARKER_POSITION, null, posFaithMarker);
         popeTilePass();
     }
 
@@ -70,8 +70,8 @@ public class FaithTrack {
                 popesFavorTiles[i] = true;
                 tilesUncovered[i] = true;
             }
-            pcs.firePropertyChange(POPES_TILES_CHANGE, null, popesFavorTiles.clone());
         }
+        pcs.firePropertyChange(POPES_TILES_CHANGE, null, popesFavorTiles.clone());
     }
 
     /**
