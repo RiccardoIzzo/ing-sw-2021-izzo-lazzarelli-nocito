@@ -96,8 +96,8 @@ public class ClientConnection implements Runnable{
     public synchronized void receiveFromClient(){
         try {
             ClientMessage message = (ClientMessage) input.readObject();
-            System.out.println(message.getClass().getSimpleName() + " from " + socket.getRemoteSocketAddress().toString());
             if (!(message instanceof Heartbeat)) {
+                System.out.println(message.getClass().getSimpleName() + " from " + socket.getRemoteSocketAddress().toString());
                 if(message instanceof SetNickname) setNickname(((SetNickname) message).getNickname());
                 server.handleMessage(this, message);
             }
