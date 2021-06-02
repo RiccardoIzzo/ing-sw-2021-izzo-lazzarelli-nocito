@@ -11,8 +11,7 @@ import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.util.*;
 
-import static it.polimi.ingsw.constants.GameConstants.BONUS_FAITH_POINTS;
-import static it.polimi.ingsw.constants.GameConstants.BONUS_RESOURCES;
+import static it.polimi.ingsw.constants.GameConstants.*;
 
 
 /**
@@ -84,6 +83,7 @@ public class GameHandler {
                 }
             }
         }
+
         String firstPlayer = game.getPlayers().get(0).getNickname();
         if(server.isConnected(firstPlayer)) server.getConnectionByPlayerName(firstPlayer).sendToClient(new StartTurn(firstPlayer));
     }
@@ -97,13 +97,15 @@ public class GameHandler {
         Player player = game.getPlayerByName(nickname);
 
         if(message instanceof SelectLeaderCards) {
-            for (int cardID: ((SelectLeaderCards) message).getLeadersToDiscard()) {
-                player.discardLeaderCard(cardID);
-            }
+            player.removeLeaders(((SelectLeaderCards) message).getLeadersToDiscard());
         }
 
         else if(message instanceof SendBonusResources){
-            player.getDashboard().getWarehouse().addResourcesToShelf(5, ((SendBonusResources) message).getBonusResource());
+            int indexResource = 0;
+            for(Resource resource: ((SendBonusResources) message).getBonusResource().asList()) {
+                player.getDashboard().getWarehouse().getShelves().set(indexResource, resource);
+                indexResource++;
+            }
         }
 
         else if(message instanceof TakeResources) {
@@ -147,12 +149,19 @@ public class GameHandler {
                 virtualView.sendToPlayer(currPlayer, new StartTurn(currPlayer));
             }
             else if(game instanceof SinglePlayerGame){
-                ((SinglePlayerGame) game).drawToken((SinglePlayerGame) game);
+                ((SinglePlayerGame) game).drawToken();
             }
         }
 
         else if(message instanceof SetWarehouse) {
             player.getDashboard().getWarehouse().setShelves(((SetWarehouse) message).getWarehouse());
+            int faith = player.getDashboard().getWarehouse().removeResourcesFromShelf(5).size();
+            for (Player playerToAdd: game.getPlayers()) {
+                if (playerToAdd != player) {
+                    playerToAdd.getDashboard().incrementFaith(faith);
+                }
+            }
+
         }
     }
 }
