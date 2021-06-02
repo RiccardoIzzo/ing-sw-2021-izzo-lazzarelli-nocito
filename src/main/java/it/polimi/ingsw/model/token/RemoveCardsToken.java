@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model.token;
 
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.constants.Colors;
 import it.polimi.ingsw.model.card.CardColor;
-import it.polimi.ingsw.model.card.Deck;
-import it.polimi.ingsw.model.card.DevelopmentCard;
 
 /**
  * RemoveCardsToken class implements SoloActionToken interface and represents the token that discards two development cards of the indicated type
@@ -37,5 +35,10 @@ public class RemoveCardsToken implements SoloActionToken {
      */
     public int getNumber() {
         return number;
+    }
+
+    @Override
+    public String toString() {
+        return "-" + Colors.ANSI_RED + number + Colors.ANSI_RESET + color;
     }
 }
