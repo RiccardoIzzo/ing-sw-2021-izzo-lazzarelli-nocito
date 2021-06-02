@@ -33,7 +33,7 @@ public class PlayerListener extends PropertyListener {
         if (SET_LEADERS.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateLeadersToMap((HashSet<LeaderCard>) newValue));
             virtualView.sendToPlayer(playerSource, serverMessage);
-        } else if (SELECT_LEADERS.equals(propertyName) || DISCARD_LEADER.equals(propertyName) || LEADER_ACTIVATION.equals(propertyName)) {
+        } else if (DISCARD_LEADER.equals(propertyName) || LEADER_ACTIVATION.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateLeadersToMap((HashSet<LeaderCard>) newValue));
             virtualView.sendToEveryone(serverMessage);
         } else if (GRID_CHANGE.equals(propertyName)) {

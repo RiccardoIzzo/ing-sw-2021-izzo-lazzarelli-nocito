@@ -63,12 +63,12 @@ public class PlayerTest {
             assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPos());
             player.discardLeaderCard(card.get().getCardID());
             assertEquals(3, player.getLeaders().size());
-            assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPos());
+            assertEquals(1, player.getDashboard().getFaithTrack().getPlayerPos());
             card = player.getLeaders().stream().findAny();
             if(card.isPresent()){
                 player.discardLeaderCard(card.get().getCardID());
                 assertEquals(2, player.getLeaders().size());
-                assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPos());
+                assertEquals(2, player.getDashboard().getFaithTrack().getPlayerPos());
             }
         }
     }

@@ -18,16 +18,16 @@ import static it.polimi.ingsw.constants.PlayerConstants.*;
  */
 public class Player {
     private String nickname;
-    private Game game;
-    private Dashboard myDashboard;
-    private Set<DevelopmentCard> developments;
-    private Set<LeaderCard> leaders;
-    private CardMap numberOfCard;
-    private CardMap levelOfCard;
-    private ArrayList<DevelopmentCard> activeDevelopments;
-    private Set<MarbleColor> availableExchange;
-    private ResourceMap availableDiscount;
-    private PropertyChangeSupport pcs;
+    private final Game game;
+    private final Dashboard myDashboard;
+    private final Set<DevelopmentCard> developments;
+    private final Set<LeaderCard> leaders;
+    private final CardMap numberOfCard;
+    private final CardMap levelOfCard;
+    private final ArrayList<DevelopmentCard> activeDevelopments;
+    private final Set<MarbleColor> availableExchange;
+    private final ResourceMap availableDiscount;
+    private final PropertyChangeSupport pcs;
 
     /**
      * Constructor Player creates a new Player instance.
@@ -167,6 +167,7 @@ public class Player {
         game.getMarket().insertMarble(pos, type);
         if(game.getMarket().findFaith()) myDashboard.incrementFaith(1);
         myDashboard.getWarehouse().addResourcesToShelf(TEMPORARY_SHELF, game.getMarket().resourceOutput());
+        game.getMarket().reset();
     }
 
     /**
@@ -199,7 +200,7 @@ public class Player {
         } else if (leaderCard instanceof ExtraShelfLeaderCard){
             myDashboard.getWarehouse().addExtraShelfResource(((ExtraShelfLeaderCard) leaderCard).getResource());
         }
-        pcs.firePropertyChange(LEADER_ACTIVATION, leaderCard.getCardID(), leaderCard.getCardID());
+        pcs.firePropertyChange(LEADER_ACTIVATION, null, leaderCard.getCardID());
     }
 
     /**
@@ -208,7 +209,18 @@ public class Player {
      */
     public void discardLeaderCard(int cardID){
         leaders.removeIf(leaderCard -> leaderCard.getCardID() == cardID);
-        if (leaders.size() < 2) myDashboard.incrementFaith(1);
+        getDashboard().incrementFaith(1);
+        pcs.firePropertyChange(DISCARD_LEADER, null, this.leaders);
+    }
+
+    /**
+     * Method removeLeaderCard removes the selected leader cards.
+     * @param cardIDs the leaders to remove
+     */
+    public void removeLeaders(ArrayList<Integer> cardIDs){
+        for (int cardID : cardIDs) {
+            leaders.removeIf(leaderCard -> leaderCard.getCardID() == cardID);
+        }
         pcs.firePropertyChange(DISCARD_LEADER, null, this.leaders);
     }
 
