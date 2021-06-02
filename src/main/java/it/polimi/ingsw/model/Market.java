@@ -1,14 +1,11 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.constants.GameConstants;
-import it.polimi.ingsw.events.servermessages.ServerMessage;
-import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.listeners.MarketListener;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Collections;
 
 import static it.polimi.ingsw.constants.GameConstants.MARKET_CHANGE;
@@ -81,9 +78,6 @@ public class Market {
      * Method generateTray creates the market tray with 12 marbles randomly generated and select the marble that can slide.
      */
     public void generateTray(){
-        Random random = new Random();
-        int rand = random.nextInt(12);
-
         for(int n_white = 0; n_white < GameConstants.NUM_WHITE_MARBLES; n_white++){
             marketTray.add(MarbleColor.WHITE);
         }
@@ -96,8 +90,7 @@ public class Market {
         marketTray.add(MarbleColor.RED);
 
         Collections.shuffle(marketTray);
-        slideMarble = marketTray.get(rand);
-        marketTray.remove(rand);
+        slideMarble = marketTray.remove(0);
         pcs.firePropertyChange(MARKET_CHANGE, null, marketTray);
         pcs.firePropertyChange(SLIDE_MARBLE, null, slideMarble);
     }
@@ -117,14 +110,11 @@ public class Market {
      * @param type represent the user choice: 1 = row, 2 = column.
      */
     public void insertMarble(int pos, int type){
-        ArrayList<MarbleColor> OldMarketTray = (ArrayList<MarbleColor>) marketTray.clone();
-        MarbleColor OldSlideMarble = this.getSlideMarble();
-
         if(type == 1) selectRow(pos - 1);
         else if(type == 2) selectCol(pos - 1);
 
-        pcs.firePropertyChange(MARKET_CHANGE, OldMarketTray, marketTray);
-        pcs.firePropertyChange(SLIDE_MARBLE, OldSlideMarble, slideMarble);
+        pcs.firePropertyChange(MARKET_CHANGE, null, marketTray);
+        pcs.firePropertyChange(SLIDE_MARBLE, null, slideMarble);
     }
 
     /**
