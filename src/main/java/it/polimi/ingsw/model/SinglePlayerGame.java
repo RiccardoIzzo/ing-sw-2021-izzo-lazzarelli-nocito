@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.card.CardColor;
-import it.polimi.ingsw.model.card.Deck;
-import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.player.Dashboard;
 import it.polimi.ingsw.model.token.MoveBlackMarkerToken;
 import it.polimi.ingsw.model.token.RemoveCardsToken;
@@ -39,7 +37,7 @@ public class SinglePlayerGame extends Game {
     /**
      * Method drawToken activates the token at the top of the stack.
      */
-    public void drawToken(SinglePlayerGame game){
+    public void drawToken(){
         SoloActionToken soloActionToken = tokenStack.draw();
         pcs.firePropertyChange(TOKEN_DRAWN, null, soloActionToken);
         this.playToken(soloActionToken);

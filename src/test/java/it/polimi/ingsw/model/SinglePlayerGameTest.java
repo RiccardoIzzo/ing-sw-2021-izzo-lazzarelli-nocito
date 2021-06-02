@@ -39,7 +39,7 @@ public class SinglePlayerGameTest {
         SoloActionToken token;
         for(int i = 0; i < NUM_TOKENS; i++){
             token = game.getTokenStack().getTokens().peek();
-            game.drawToken(game);
+            game.drawToken();
             if((token instanceof MoveBlackMarkerToken) && ((MoveBlackMarkerToken) token).getSteps() == 1) stack_size = 7;
             else stack_size--;
             assertEquals(stack_size, game.getTokenStack().numTokens());

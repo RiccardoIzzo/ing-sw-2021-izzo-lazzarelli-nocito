@@ -1,10 +1,10 @@
 package it.polimi.ingsw.events.servermessages;
 
 public class UpdateView implements ServerMessage {
-    private String sourcePlayer;
-    private String propertyName;
-    private Object oldValue;
-    private Object newValue;
+    private final String sourcePlayer;
+    private final String propertyName;
+    private final Object oldValue;
+    private final Object newValue;
 
     public UpdateView(String sourcePlayer, String propertyName, Object oldValue, Object newValue) {
         this.sourcePlayer = sourcePlayer;

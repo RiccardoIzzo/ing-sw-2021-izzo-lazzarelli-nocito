@@ -28,7 +28,7 @@ public class Warehouse {
      */
 
     private ArrayList<Resource> shelves;
-    private ArrayList<Resource> extraShelfResources;
+    private final ArrayList<Resource> extraShelfResources;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public Warehouse() {
@@ -51,7 +51,6 @@ public class Warehouse {
      */
     public void setShelves(ArrayList<Resource> shelves) {
         this.shelves = shelves;
-        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
     }
 
     /**

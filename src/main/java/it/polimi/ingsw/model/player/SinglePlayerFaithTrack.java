@@ -23,7 +23,7 @@ public class SinglePlayerFaithTrack extends FaithTrack {
 
     public void moveBlack() {
         blackFaithMarker++;
-        pcs.firePropertyChange(BLACK_MARKER_POSITION, blackFaithMarker-1, blackFaithMarker);
+        pcs.firePropertyChange(BLACK_MARKER_POSITION, null, blackFaithMarker);
     }
 
     @Override
