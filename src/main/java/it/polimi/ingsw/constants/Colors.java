@@ -16,7 +16,7 @@ public enum Colors {
     ANSI_RED_BACKGROUND("\u001B[41m"),
     ANSI_BLUE_BACKGROUND("\u001B[44m");
 
-    private String escape;
+    private final String escape;
 
     Colors(String escape) {
         this.escape = escape;
