@@ -289,20 +289,21 @@ public class CLI implements View{
     @Override
     public void handleBuyCard() {
         ArrayList<Integer> grid = modelView.getGrid();
+        ArrayList<Integer> activeDevelopments = modelView.getMyDashboard().getActiveDevelopments();
         showCards(grid);
         System.out.println("Select the card that you want to buy by typing the id: ");
 
         int id = getInt();
         if(grid.contains(id)) {
             DevelopmentCard cardToBuy = JsonCardsCreator.generateDevelopmentCard(id);
-            List<DevelopmentCard> cardsToCover = modelView.getMyDashboard().getActiveDevelopments().stream()
+            List<DevelopmentCard> cardsToCover = activeDevelopments.stream()
                     .filter(Objects::nonNull)
                     .map(JsonCardsCreator::generateDevelopmentCard)
                     .filter(card -> card.getLevel() == cardToBuy.getLevel() - 1).collect(Collectors.toList());
             if (cardToBuy.getLevel() > 1 && cardsToCover.size() == 0) {
                 System.out.println("Cannot buy card. You don't own a level " + (cardToBuy.getLevel()-1)+ " card.");
                 handleTurn();
-            } else if (cardToBuy.getLevel() == 1 && modelView.getMyDashboard().getActiveDevelopments().size() > 2){
+            } else if (cardToBuy.getLevel() == 1 && activeDevelopments.stream().filter(Objects::nonNull).count() > 2){
                 System.out.println("Cannot buy card. Not enough space for a level 1 card.");
                 handleTurn();
             } else {
@@ -405,8 +406,10 @@ public class CLI implements View{
                     System.out.println("Select the slot where you want to place the card:");
                     slotIndex = getInt();
                     Integer cardToCover = modelView.getMyDashboard().getActiveDevelopments().get(slotIndex);
-                    if (cardToBuy.getLevel() > 1 && JsonCardsCreator.generateDevelopmentCard(cardToCover).getLevel() < cardToBuy.getLevel()) {
-                        break;
+                    if (cardToBuy.getLevel() > 1 && cardToCover != null) {
+                        if (JsonCardsCreator.generateDevelopmentCard(cardToCover).getLevel() + 1 == cardToBuy.getLevel()) {
+                            break;
+                        }
                     } else if (cardToBuy.getLevel() == 1 && cardToCover == null){
                         break;
                     } else {
@@ -419,8 +422,8 @@ public class CLI implements View{
             }
             else {
                 System.out.println("Requirement not met.");
-                handleTurn();
             }
+            handleTurn();
         }
         /*
         Requirement for leader cards.
@@ -567,7 +570,7 @@ public class CLI implements View{
         showStrongbox(dashboardView.getStrongbox());
         System.out.println("\n*** LEADER CARDS ***");
         showCards(dashboardView.getLeaderCards().keySet());
-        System.out.println("\n*** AVAILABLE PRODUCTION ***");
+        System.out.println("\n*** ACTIVE DEVELOPMENTS ***");
         showCards(dashboardView.getActiveDevelopments().stream().filter(Objects::nonNull).collect(Collectors.toList()));
         handleTurn();
     }

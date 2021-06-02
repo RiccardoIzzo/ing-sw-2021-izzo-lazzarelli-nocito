@@ -29,7 +29,11 @@ public abstract class PropertyListener implements PropertyChangeListener {
     public ArrayList<Integer> translateCards(Collection<Card> cards) {
         ArrayList<Integer> cardIDs = new ArrayList<>();
         for (Card card : cards) {
-            cardIDs.add(card.getCardID());
+            if (card != null){
+                cardIDs.add(card.getCardID());
+            } else {
+                cardIDs.add(null);
+            }
         }
         return cardIDs;
     }

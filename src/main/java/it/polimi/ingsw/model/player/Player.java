@@ -118,9 +118,8 @@ public class Player {
      * @param column is the column in the grid of developmentCard
      */
     public void buyCard(int row, int column, int index){
-        Deck[][] OldGrid = game.getGrid();
         DevelopmentCard developmentCard = game.getGrid()[row][column].draw();
-        activeDevelopments.set(index, developmentCard);
+        activeDevelopments.set(index - 1, developmentCard);
         pcs.firePropertyChange(ACTIVE_DEVELOPMENTS_CHANGE, null, activeDevelopments);
         pcs.firePropertyChange(GRID_CHANGE, null, game.getGrid());
         addDevelopmentCard(developmentCard);
