@@ -87,10 +87,6 @@ public abstract class Game {
         return market;
     }
 
-    public void startGame(){
-
-    }
-
     /**
      * Method getDeck returns the deck of development cards at the specified indexes.
      * @param row row index.
