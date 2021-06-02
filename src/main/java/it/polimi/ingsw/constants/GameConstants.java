@@ -1,5 +1,9 @@
 package it.polimi.ingsw.constants;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 /**
  * GameConstants contains all constant values of the Game class and Market class
  */
@@ -66,4 +70,10 @@ public final class GameConstants {
     public static final String MARKET_CHANGE = "marketChange";
     public static final String SLIDE_MARBLE = "slideMarble";
 
+
+    /*Card IDs values*/
+    public static final List<Integer> DEVELOPMENTCARDIDS = IntStream.rangeClosed(101, 148)
+            .boxed().collect(Collectors.toList());
+    public static final List<Integer> LEADERCARDIDS = IntStream.rangeClosed(201, 216)
+            .boxed().collect(Collectors.toList());
 }
