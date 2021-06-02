@@ -33,4 +33,5 @@ public interface View {
     void handleTemporaryShelf();
     void printText(String text);
     void send(ClientMessage message);
+    void handleSoloActionToken();
 }

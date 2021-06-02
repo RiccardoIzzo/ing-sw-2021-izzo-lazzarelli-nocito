@@ -154,6 +154,11 @@ public class GUI extends Application implements View {
     }
 
     @Override
+    public void handleSoloActionToken() {
+
+    }
+
+    @Override
     public String getNickname() {
         return null;
     }
