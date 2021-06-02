@@ -13,6 +13,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.constants.GameConstants.DEVELOPMENTCARDIDS;
+import static it.polimi.ingsw.constants.GameConstants.LEADERCARDIDS;
+
 /**
  * JsonCardsCreator class manages the cards creation from a JSON file.
  *
@@ -89,10 +92,12 @@ public class JsonCardsCreator {
     }
 
     public static Card generateCard(int cardID) {
-        if (cardID < 200) {
+        if (DEVELOPMENTCARDIDS.contains(cardID)) {
             return generateDevelopmentCard(cardID);
-        } else {
+        } else if (LEADERCARDIDS.contains(cardID)){
             return generateLeaderCard(cardID);
+        } else {
+            return null;
         }
     }
 }
