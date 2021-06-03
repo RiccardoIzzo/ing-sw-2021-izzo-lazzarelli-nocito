@@ -363,7 +363,31 @@ public class CLI implements View{
      */
     @Override
     public void handleActivateProduction() {
-
+        showCards(modelView.getMyDashboard().getAvailableProduction());
+        System.out.println("Select the productions you want to activate: ");
+        ArrayList<Integer> productions = new ArrayList<>();
+        ResourceMap requiredResources = new ResourceMap();
+        while(true){
+            System.out.println("Add production by typing the id: ");
+            int id = getInt();
+            if(modelView.getMyDashboard().getAvailableProduction().contains(id)) productions.add(id);
+            else System.out.println("Id not valid.");
+            System.out.println("Add more? y/n");
+            if(getInput("y|n").equals("n")) {
+                for(Integer production : productions){
+                    Card card = JsonCardsCreator.generateCard(production);
+                    if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
+                    else requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
+                }
+                if(requiredResources.removeResources(modelView.getMyDashboard().getTotalResources())) {
+                    send(new ActivateProduction(productions));
+                    basicActionPlayed();
+                }
+                else System.out.println("Not enough resources.");
+                break;
+            }
+        }
+        handleTurn();
     }
 
     /**
@@ -372,7 +396,7 @@ public class CLI implements View{
     @Override
     public void handleActivateLeader() {
         showCards(modelView.getMyDashboard().getLeaderCards().keySet());
-        System.out.println("Select the card that you want to activate by typing the id: ");
+        System.out.println("Select the card you want to activate by typing the id: ");
 
         int id = getInt();
         if(modelView.getMyDashboard().getLeaderCards().containsKey(id)){
