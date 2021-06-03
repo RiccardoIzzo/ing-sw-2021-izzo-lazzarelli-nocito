@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.constants.GameConstants.*;
 import static it.polimi.ingsw.constants.PlayerConstants.*;
@@ -117,6 +118,22 @@ public class ModelView {
 
         public ArrayList<Integer> getDevelopmentCards() {
             return developmentCards;
+        }
+
+        public ArrayList<Integer> getAvailableProduction(){
+            ArrayList<Integer> powerProductionCards = new ArrayList<>();
+            for(Integer id : leaderCards.keySet()){
+                if(leaderCards.get(id))  powerProductionCards.add(id);
+            }
+            powerProductionCards.addAll(activeDevelopments.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+            return powerProductionCards;
+        }
+
+        public ResourceMap getTotalResources(){
+            ResourceMap myResources = new ResourceMap();
+            myResources.addResources(strongbox);
+            for(Resource resource : warehouse.stream().filter(Objects::nonNull).collect(Collectors.toList())) myResources.modifyResource(resource, 1);
+            return myResources;
         }
 
         public ArrayList<Integer> getActiveDevelopments() {
