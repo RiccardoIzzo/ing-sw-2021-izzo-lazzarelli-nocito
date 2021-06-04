@@ -43,6 +43,10 @@ public class GUI extends Application implements View {
 
 //        handleLeaders();
     }
+    public void connect(String ip, int port) {
+        network = new NetworkHandler(ip, port, this);
+        network.setConnection();
+    }
     public static void startLobbies(Map<String, Integer> lobbies) {
         lobbiesController = new LobbiesController();
         lobbiesController.setLobbies(lobbies);
