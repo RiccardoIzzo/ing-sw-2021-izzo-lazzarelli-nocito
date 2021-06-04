@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane fx:controller="it.polimi.ingsw.view.gui.SelectLeaderController" id="selectLeaderCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+      <Button fx:id="card1Button" id="card1" onAction="#cardButtonClicked" layoutX="42.0" layoutY="100.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="136.0">
+         <graphic>
+            <ImageView fx:id="card1ImageView" fitHeight="224.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic>
+      </Button>
+      <Button fx:id="card2Button" id="card2" onAction="#cardButtonClicked" layoutX="206.0" layoutY="100.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="136.0">
+         <graphic>
+            <ImageView fx:id="card2ImageView" fitHeight="224.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic>
+      </Button>
+      <Button fx:id="card3Button" id="card3" onAction="#cardButtonClicked" layoutX="371.0" layoutY="100.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="136.0">
+         <graphic>
+            <ImageView fx:id="card3ImageView" fitHeight="224.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />7
+         </graphic>
+      </Button>
+      <Button fx:id="card4Button" id="card4" onAction="#cardButtonClicked" layoutX="536.0" layoutY="100.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="136.0">
+         <graphic>
+            <ImageView fx:id="card4ImageView" fitHeight="224.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic>
+      </Button>
+
+      <Label layoutX="252.0" layoutY="10.0" text="Leader Cards">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label layoutX="329.0" layoutY="65.0" text="Select two" />
+      <Button fx:id="selectButton" layoutX="320.0" layoutY="340.0" mnemonicParsing="false" text="Confirm" onAction="#selectButtonClicked" />
+</Pane>

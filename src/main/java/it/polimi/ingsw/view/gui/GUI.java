@@ -15,7 +15,9 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * GUI class manages the game with a Graphical User Interface.
@@ -24,6 +26,7 @@ public class GUI extends Application implements View {
     static Stage mainStage;
     SetupController setupController;
     static LobbiesController lobbiesController;
+    static SelectLeaderController selectLeaderController;
     private ActionHandler actionHandler;
     private String nickname;
     private ModelView modelView;
@@ -36,8 +39,9 @@ public class GUI extends Application implements View {
         //actionHandler = new ActionHandler(this);
         mainStage = stage;
         setupController = new SetupController();
-        setupController.start();
+//        setupController.start();
 
+        handleLeaders();
     }
     public static void startLobbies(Map<String, Integer> lobbies) {
         lobbiesController = new LobbiesController();
@@ -71,6 +75,14 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleLeaders() {
+        Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
+        selectLeaderController = new SelectLeaderController();
+        selectLeaderController.setLeadersIds(ids);
+        try {
+            selectLeaderController.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
