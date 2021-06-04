@@ -45,7 +45,6 @@ public class PlayerListener extends PropertyListener {
         } else if (ACTIVE_DEVELOPMENTS_CHANGE.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateCards((Collection<Card>) newValue));
             virtualView.sendToEveryone(serverMessage);
-            System.out.println("ACTIVE DEV CHANGE SENT: "+ translateCards((Collection<Card>) newValue));
         }
     }
 }
