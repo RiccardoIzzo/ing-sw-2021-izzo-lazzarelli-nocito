@@ -7,11 +7,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SetupController {
     // Connect Scene
@@ -35,21 +38,28 @@ public class SetupController {
     }
     public void setNicknameButtonClicked(ActionEvent actionEvent) {
         String nickname = nicknameTextField.getText();
-        if ( nickname.length() > 0 )
-            GUI.sendMessage(new SetNickname(nickname));
+        if ( nickname.length() < 1 ) {
+            GUI.showAlert("Nickname not valid!", Alert.AlertType.ERROR);
+            return;
+        }
+
+        GUI.sendMessage(new SetNickname(nickname));
 
 
-//        Map<String, Integer> lobbies = new HashMap<>();
-//        lobbies.put("lobby1", 2);
-//        lobbies.put("lobby3", 2);
-//        lobbies.put("lobby2r", 2);
+        Map<String, Integer> lobbies = new HashMap<>();
+        lobbies.put("lobby1", 2);
+        lobbies.put("lobby3", 2);
+        lobbies.put("lobby2r", 2);
 
-//        GUI.startLobbies(((Node) actionEvent.getSource()).getScene(), lobbies);
+        GUI.startLobbies(lobbies);
 
     }
 
     public void connectButtonClicked() {
-
+        if(serverTextField.getText().length() < 1 || ipTextField.getText().length() < 1) {
+            GUI.showAlert("Error or IP not valid!", Alert.AlertType.ERROR);
+            return;
+        }
 
         serverLabel.setOpacity(0);
         serverTextField.setOpacity(0);

@@ -39,9 +39,9 @@ public class GUI extends Application implements View {
         //actionHandler = new ActionHandler(this);
         mainStage = stage;
         setupController = new SetupController();
-//        setupController.start();
+        setupController.start();
 
-        handleLeaders();
+//        handleLeaders();
     }
     public static void startLobbies(Map<String, Integer> lobbies) {
         lobbiesController = new LobbiesController();
