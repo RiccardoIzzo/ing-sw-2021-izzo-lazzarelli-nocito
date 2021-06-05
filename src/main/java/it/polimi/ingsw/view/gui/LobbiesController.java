@@ -5,18 +5,13 @@ import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.JoinLobby;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class LobbiesController {
@@ -26,14 +21,21 @@ public class LobbiesController {
     @FXML TextField lobbyTextField;
     @FXML TextField numPlayersTextField;
 
+    private static GUI gui;
     Map<String, Integer> lobbies;
+
     public void setLobbies(Map<String,Integer> lobbies) {
         this.lobbies = lobbies;
     }
 
+
+    public void setGUI(GUI gui) {
+        LobbiesController.gui = gui;
+    }
+
     public void start() throws IOException {
-        GUI.mainStage.close();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/scene2.fxml"));
+//        gui.mainStage.close();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies"));
         Parent root = loader.load();
 
         Stage stage = new Stage();
@@ -51,36 +53,36 @@ public class LobbiesController {
     public void joinButtonClicked() {
         String selectedItem = lobbiesListView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
-            GUI.showAlert("Select the lobby you want to join", Alert.AlertType.ERROR);
+            gui.showAlert("Select the lobby you want to join", Alert.AlertType.ERROR);
         }
         else {
             String lobbyID = selectedItem.substring(selectedItem.indexOf(" - ")+3);
-            GUI.sendMessage(new JoinLobby(lobbyID));
+            gui.send(new JoinLobby(lobbyID));
         }
     }
 
     public void createButtonClicked() {
         String lobbyID = lobbyTextField.getText();
         if (lobbyID == null || lobbyID.length() < 1) {
-            GUI.showAlert("Insert a lobby ID!", Alert.AlertType.ERROR);
+            gui.showAlert("Insert a lobby ID!", Alert.AlertType.ERROR);
             return;
         }
         if (lobbiesListView.getItems().contains(lobbyID) ) {
-            GUI.showAlert("Already exists a lobby with this id! Try again.", Alert.AlertType.ERROR);
-            GUI.sendMessage(new GetLobbies());
+            gui.showAlert("Already exists a lobby with this id! Try again.", Alert.AlertType.ERROR);
+            gui.send(new GetLobbies());
         }
         else {
 
             if (isParsable(numPlayersTextField.getText())) {
                 int numPlayers = Integer.parseInt(numPlayersTextField.getText());
                 if (numPlayers > 4 )
-                    GUI.showAlert("The maximum number of players is four, choose again.", Alert.AlertType.ERROR);
+                    gui.showAlert("The maximum number of players is four, choose again.", Alert.AlertType.ERROR);
                 else {
-                    GUI.sendMessage(new CreateLobby(lobbyID, numPlayers));
+                    gui.send(new CreateLobby(lobbyID, numPlayers));
                 }
             }
             else {
-                GUI.showAlert("Input not valid! Choose a number between one and four!", Alert.AlertType.ERROR);
+                gui.showAlert("Input not valid! Choose a number between one and four!", Alert.AlertType.ERROR);
             }
         }
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.events.clientmessages.GetLobbies;
+import it.polimi.ingsw.events.clientmessages.SetNickname;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.network.NetworkHandler;
 import it.polimi.ingsw.view.ActionHandler;
@@ -10,6 +11,7 @@ import javafx.application.Application;
 
 import it.polimi.ingsw.events.clientmessages.ClientMessage;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -23,14 +25,15 @@ import java.util.Set;
  * GUI class manages the game with a Graphical User Interface.
  */
 public class GUI extends Application implements View {
-    static Stage mainStage;
+    Stage mainStage;
+    private static NetworkHandler network;
     SetupController setupController;
     static LobbiesController lobbiesController;
     static SelectLeaderController selectLeaderController;
     private ActionHandler actionHandler;
     private String nickname;
     private ModelView modelView;
-    private NetworkHandler network;
+//    private NetworkHandler network;
 
 
 
@@ -39,6 +42,7 @@ public class GUI extends Application implements View {
         //actionHandler = new ActionHandler(this);
         mainStage = stage;
         setupController = new SetupController();
+        setupController.setGUI(this);
         setupController.start();
 
 //        handleLeaders();
@@ -47,8 +51,9 @@ public class GUI extends Application implements View {
         network = new NetworkHandler(ip, port, this);
         network.setConnection();
     }
-    public static void startLobbies(Map<String, Integer> lobbies) {
+    public void startLobbies(Map<String, Integer> lobbies) {
         lobbiesController = new LobbiesController();
+        lobbiesController.setGUI(this);
         lobbiesController.setLobbies(lobbies);
         try {
             lobbiesController.start();
@@ -74,7 +79,8 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleLobbies(Map<String, Integer> lobbies) {
-        startLobbies(lobbies);
+        System.out.println("Handle lobbies!");
+        Platform.runLater(() -> startLobbies(lobbies));
     }
 
     @Override
@@ -146,12 +152,13 @@ public class GUI extends Application implements View {
 
     @Override
     public void setNickname() {
-
+        send(new SetNickname(nickname));
     }
 
     @Override
     public void setModelView(ModelView modelView) {
-
+        this.modelView = modelView;
+        network.getServerConnection().setModelView(modelView);
     }
 
     @Override
@@ -161,12 +168,12 @@ public class GUI extends Application implements View {
 
     @Override
     public void printText(String text) {
-
+        System.out.println(text);
     }
 
     @Override
     public void send(ClientMessage message) {
-
+        network.sendToServer(message);
     }
 
     @Override
@@ -176,16 +183,13 @@ public class GUI extends Application implements View {
 
     @Override
     public String getNickname() {
-        return null;
+        return nickname;
     }
 
 
-    public static void sendMessage(ClientMessage message) {
+    /* Alerts */
 
-    }
-    /* ALerts */
-
-    public static void showAlert(String header, Alert.AlertType type) {
+    public void showAlert(String header, Alert.AlertType type) {
         Alert a = new Alert(type);
         a.setHeaderText(header);
         a.show();

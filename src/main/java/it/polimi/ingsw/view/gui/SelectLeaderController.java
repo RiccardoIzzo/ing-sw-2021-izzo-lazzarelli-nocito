@@ -25,8 +25,14 @@ public class SelectLeaderController {
     public Button selectButton;
     Set<Integer> leaderIds;
 
+    private static GUI gui;
+
+    public void setGUI(GUI gui) {
+        SelectLeaderController.gui = gui;
+    }
+
+
     public void start() throws IOException {
-        GUI.mainStage.close();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneSelectLeaders.fxml"));
         Parent root = loader.load();
 
