@@ -275,7 +275,10 @@ public class CLI implements View{
         int index = getInt();
         while(index < 1 || index > 7){
             System.out.println("Row/Column index must be between 1 and 7! Try again.");
-            if(changeAction()) handleTurn();
+            if(changeAction()) {
+                handleTurn();
+                return;
+            }
             index = getInt();
         }
         if(index > 4) send(new TakeResources(index - 4, 1));
@@ -336,8 +339,12 @@ public class CLI implements View{
             validSlots.removeAll(Arrays.asList(8,9));
         }
 
-        boolean enable = true;
-        while(!modelView.getMyDashboard().checkWarehouse() || enable){
+        while(true){
+            if(modelView.getMyDashboard().checkWarehouse()) {
+                showWarehouse(modelView.getMyDashboard().getWarehouse(),modelView.getMyDashboard().getExtraShelfResources());
+                System.out.println("Are you ok with this resource configuration? y/n");
+                if(getInput("y|n").equals("y")) break;
+            }
             showWarehouse(modelView.getMyDashboard().getWarehouse(),modelView.getMyDashboard().getExtraShelfResources());
             System.out.println("Select the starting slot: ");
             firstSlot = getInt();
@@ -347,11 +354,6 @@ public class CLI implements View{
                 modelView.getMyDashboard().swapResources(firstSlot, secondSlot);
             } else {
                 System.out.println("Slot numbers are not valid. Choose two slots among:\n" + validSlots);
-            }
-            if(modelView.getMyDashboard().checkWarehouse()) {
-                showWarehouse(modelView.getMyDashboard().getWarehouse(),modelView.getMyDashboard().getExtraShelfResources());
-                System.out.println("Are you ok with this resource configuration? y/n");
-                enable = !getInput("y|n").equals("y");
             }
         }
         send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
@@ -363,10 +365,12 @@ public class CLI implements View{
      */
     @Override
     public void handleActivateProduction() {
-        showCards(modelView.getMyDashboard().getAvailableProduction());
-        System.out.println("Select the productions you want to activate: ");
+        ResourceMap totalResources = modelView.getMyDashboard().getTotalResources();
         ArrayList<Integer> productions = new ArrayList<>();
         ResourceMap requiredResources = new ResourceMap();
+        System.out.println("My resources: " + totalResources);
+        showCards(modelView.getMyDashboard().getAvailableProduction());
+        System.out.println("Select the productions you want to activate: ");
         while(true){
             System.out.println("Add production by typing the id: ");
             int id = getInt();
@@ -377,11 +381,12 @@ public class CLI implements View{
                 for(Integer production : productions){
                     Card card = JsonCardsCreator.generateCard(production);
                     if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
-                    else requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
+                    else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
                 }
-                if(requiredResources.removeResources(modelView.getMyDashboard().getTotalResources())) {
+                if(totalResources.removeResources(requiredResources)) {
                     send(new ActivateProduction(productions));
                     basicActionPlayed();
+                    System.out.println("Production activated!");
                 }
                 else System.out.println("Not enough resources.");
                 break;
@@ -472,6 +477,7 @@ public class CLI implements View{
         if(ids.size() == 0) {
             System.out.println("No remaining leader cards.");
             handleTurn();
+            return;
         }
         else{
             for(Integer id : ids){
@@ -484,7 +490,10 @@ public class CLI implements View{
         int id = getInt();
         while(!ids.contains(id)){
             System.out.println("Id not valid, choose again.");
-            if(changeAction()) handleTurn();
+            if(changeAction()) {
+                handleTurn();
+                return;
+            }
             id = getInt();
         }
         send(new DiscardLeaderCard(id));
@@ -680,7 +689,7 @@ public class CLI implements View{
                 +----+----+----+    ╚═════════╝    +----╚════════════════════════╝         ╚═════════╝
                 %n""", f(4,f,b),f(5,f,b),f(6,f,b),f(7,f,b),f(8,f,b),f(9,f,b),p(p[1],2),
                         f(18,f,b),f(19,f,b),f(20,f,b),f(21,f,b),f(22,f,b),f(23,f,b),f(24,f,b),
-                        f(3,f,b),p(p[0], 2),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
+                        f(3,f,b),p(p[0], 3),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
                         f(2,f,b),f(11,f,b),f(12,f,b),f(13,f,b),f(14,f,b),f(15,f,b),f(16,f,b));
     }
 
@@ -696,8 +705,14 @@ public class CLI implements View{
         return tileColor;
     }
 
-    private static String p(boolean popeTileActive, int points) {
-        Colors numberColor = popeTileActive ? Colors.ANSI_YELLOW_BACKGROUND : Colors.ANSI_RED_BACKGROUND;
-        return String.format("%s%sVP%s", numberColor, points, Colors.ANSI_RESET);
+    private static String p(Boolean popeTileActive, int points) {
+        Colors numberColor;
+        if(popeTileActive != null) {
+            numberColor = popeTileActive ? Colors.ANSI_YELLOW_BACKGROUND : Colors.ANSI_RED_BACKGROUND;
+            return String.format("%s%sVP%s", numberColor, points, Colors.ANSI_RESET);
+        }
+        else {
+            return "   ";
+        }
     }
 }

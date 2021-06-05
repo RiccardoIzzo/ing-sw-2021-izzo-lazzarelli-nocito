@@ -82,6 +82,8 @@ public class CLITest {
 
     @Test
     public void show() {
+        Boolean value = null;
+        if(value) System.out.println("ciao");
         //CLI.showWarehouse(warehouse.getShelves(), extraShelfResources);
         //CLI.showMarket(marketTray, slideMarble);
         //CLI.showFaithTrack(1,3,popesTiles);

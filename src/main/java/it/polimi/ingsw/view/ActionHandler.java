@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.events.clientmessages.SetFinalTurn;
 import it.polimi.ingsw.events.servermessages.*;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -60,6 +61,10 @@ public class ActionHandler extends Thread{
         }
         else if(message instanceof CheckRequirementResult){
             view.handleCheckRequirement(((CheckRequirementResult) message).isRequirementMet(), ((CheckRequirementResult) message).getId());
+        }
+        else if(message instanceof EndGame){
+            view.printText("The game is about to finish.\nWaiting for the remaining players to play theirs last turn...");
+            view.send(new SetFinalTurn());
         }
         else if(message instanceof UpdateView){
             UpdateView updateView = (UpdateView) message;

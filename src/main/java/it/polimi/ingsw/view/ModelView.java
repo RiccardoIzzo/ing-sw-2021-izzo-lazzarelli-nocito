@@ -15,6 +15,7 @@ public class ModelView {
     private final String myNickname;
     private String currPlayer;
     private ArrayList<Integer> grid;
+    private Boolean[] tilesUncovered;
     private MarbleColor slideMarble;
     private ArrayList<MarbleColor> marketTray;
     private Integer tokenDrawn;
@@ -26,9 +27,10 @@ public class ModelView {
         }
         this.myNickname = myNickname;
         this.currPlayer = "";
-        this.grid = new ArrayList<>(12);
+        this.grid = new ArrayList<>();
+        this.tilesUncovered = new Boolean[]{false, false, false};
         this.slideMarble = null;
-        this.marketTray = new ArrayList<>(12);
+        this.marketTray = new ArrayList<>();
         this.tokenDrawn = null;
     }
 
@@ -79,6 +81,9 @@ public class ModelView {
                 slideMarble = (MarbleColor) objectToUpdate;
             } else if (GRID_CHANGE.equals(propertyName)) {
                 grid = (ArrayList<Integer>) objectToUpdate;
+            } else if (TILES_UNCOVERED_CHANGE.equals(propertyName)) {
+                System.out.println("TILES: " + tilesUncovered);
+                tilesUncovered = (Boolean[]) objectToUpdate;
             }
         }
     }
@@ -132,7 +137,9 @@ public class ModelView {
         public ResourceMap getTotalResources(){
             ResourceMap myResources = new ResourceMap();
             myResources.addResources(strongbox);
-            for(Resource resource : warehouse.stream().filter(Objects::nonNull).collect(Collectors.toList())) myResources.modifyResource(resource, 1);
+            for(Resource resource : Resource.values()) {
+                myResources.modifyResource(resource, (int) warehouse.stream().filter(Objects::nonNull).filter(res -> res == resource).count());
+            }
             return myResources;
         }
 

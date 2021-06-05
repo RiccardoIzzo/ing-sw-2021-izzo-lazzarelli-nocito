@@ -1,5 +1,8 @@
 package it.polimi.ingsw.constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * PlayerConstants contains all constant values of the Player class and related classes (Dashboard, Warehouse, Shelf, FaithTrack)
  */
@@ -22,7 +25,7 @@ public final class PlayerConstants {
     public static final int[] WINNING_VALUES = {1,2,4,6,9,12,16,20};
 
     // TILE_POS : position of tiles in the game.
-    public static final int[] TILE_POS = {8,16,24};
+    public static final ArrayList<Integer> TILE_POS = new ArrayList<>(Arrays.asList(8,16,24));
 
     // POINTS_FOR_TILE : position of tiles in the game.
     public static final int[] POINTS_FOR_TILE = {2,3,4};
@@ -40,7 +43,6 @@ public final class PlayerConstants {
     //PlayerListener
     public static final String LEADER_ACTIVATION = "leaderActivation";
     public static final String SET_LEADERS = "setLeaders";
-    public static final String SELECT_LEADERS = "selectLeaders";
     public static final String DISCARD_LEADER = "discardLeader";
     public static final String DEVELOPMENTS_CHANGE = "developmentsChange";
     public static final String ACTIVE_DEVELOPMENTS_CHANGE = "productionsChange";
@@ -55,6 +57,7 @@ public final class PlayerConstants {
     public static final String FAITH_MARKER_POSITION = "faithMarkerPosition";
     public static final String BLACK_MARKER_POSITION = "blackMarkerPosition";
     public static final String POPES_TILES_CHANGE = "popesTilesChange";
+    public static final String TILES_UNCOVERED_CHANGE = "tilesUncoveredChange";
 
     //ShelfListener
     public static final String SHELF_CHANGE = "shelfChange";
