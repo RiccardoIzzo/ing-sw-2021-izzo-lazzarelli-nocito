@@ -249,7 +249,7 @@ public class CLI implements View{
             System.out.println(action);
         }
         int action = getInt();
-        while (action < 0 || action > 6) {
+        while (!getValidActions().stream().map(Enum::ordinal).collect(Collectors.toList()).contains(action)) {
             System.out.println("Action not valid, try again.");
             action = getInt();
         }
