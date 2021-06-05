@@ -33,20 +33,12 @@ public class FaithTrackTest{
         assertEquals(faithTrack.getPlayerPos(), 1);
     }
 
-    /**
-     * Method testSetTilesUncovered checks that is possible to set to true the available tilesUncovered elements of the array
-     */
-    @Test
-    public void testSetTilesUncovered() {
-        assertTrue(faithTrack.setTilesUncovered(0, true));
-        assertTrue(faithTrack.setTilesUncovered(1, true));
-        assertTrue(faithTrack.setTilesUncovered(2, true));
-        assertFalse(faithTrack.setTilesUncovered(3, true));
-    }
 
-    /**
+
+    /*
      * Method testIsInVaticanSpace checks that the method isInVaticanSpace assigns the correct points to the player if it is in the correct area.
      */
+    /*
     @Test
     public void testIsInVaticanSpace() {
         assertEquals(faithTrack.getPointsForTiles(), 0);
@@ -66,6 +58,8 @@ public class FaithTrackTest{
         faithTrack.isInVaticanSpace(2);
         assertEquals(faithTrack.getPointsForTiles(), 9);
     }
+
+     */
 
     /**
      * Method testPopeTilePass checks that PopeTilePass sets the correct points and tilesUncovered value when the player gets to a pope tile.

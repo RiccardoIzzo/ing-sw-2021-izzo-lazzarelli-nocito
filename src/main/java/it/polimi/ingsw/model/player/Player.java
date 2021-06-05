@@ -119,6 +119,7 @@ public class Player {
      */
     public void buyCard(int row, int column, int index){
         DevelopmentCard developmentCard = game.getGrid()[row][column].draw();
+        myDashboard.removeResourcesFromDashboard(((ResourceRequirement) developmentCard.getRequirement()).getResources());
         activeDevelopments.set(index - 1, developmentCard);
         pcs.firePropertyChange(ACTIVE_DEVELOPMENTS_CHANGE, null, activeDevelopments);
         pcs.firePropertyChange(GRID_CHANGE, null, game.getGrid());
@@ -164,7 +165,9 @@ public class Player {
      */
     public void takeResourcesFromMarket(int pos, int type){
         game.getMarket().insertMarble(pos, type);
-        if(game.getMarket().findFaith()) myDashboard.incrementFaith(1);
+        if(game.getMarket().findFaith()){
+            if(myDashboard.incrementFaith(1)) game.vaticanReport();
+        }
         myDashboard.getWarehouse().addResourcesToShelf(TEMPORARY_SHELF, game.getMarket().resourceOutput());
         game.getMarket().reset();
     }
@@ -178,11 +181,11 @@ public class Player {
         if (productionCard instanceof DevelopmentCard) {
             myDashboard.removeResourcesFromDashboard(((DevelopmentCard) productionCard).getProduction().getInputResource());
             myDashboard.addResourcesToStrongbox(((DevelopmentCard) productionCard).getProduction().getOutputResource());
-            myDashboard.incrementFaith(((DevelopmentCard) productionCard).getProduction().getOutputFaith());
+            if(myDashboard.incrementFaith(((DevelopmentCard) productionCard).getProduction().getOutputFaith())) game.vaticanReport();
         } else if (productionCard instanceof ProductionLeaderCard) {
             myDashboard.removeResourcesFromDashboard(((ProductionLeaderCard) productionCard).getProduction().getInputResource());
             myDashboard.addResourcesToStrongbox(((ProductionLeaderCard) productionCard).getProduction().getOutputResource());
-            myDashboard.incrementFaith(((ProductionLeaderCard) productionCard).getProduction().getOutputFaith());
+            if(myDashboard.incrementFaith(((ProductionLeaderCard) productionCard).getProduction().getOutputFaith())) game.vaticanReport();
         }
     }
 
@@ -208,7 +211,7 @@ public class Player {
      */
     public void discardLeaderCard(int cardID){
         leaders.removeIf(leaderCard -> leaderCard.getCardID() == cardID);
-        getDashboard().incrementFaith(1);
+        if(getDashboard().incrementFaith(1)) game.vaticanReport();
         pcs.firePropertyChange(DISCARD_LEADER, null, this.leaders);
     }
 
@@ -238,13 +241,13 @@ public class Player {
         for(LeaderCard card : leaders){
             if(card.isActive()) victoryPoints += card.getVictoryPoints();
         }
-        for(Resource resource : Resource.values()){
-            numResources += getTotalResources().getResource(resource);
-        }
+        numResources += getTotalResources().size();
         // VPs for every set of 5 resources of any type + VPs depending on the final position on the faith track + VPs based on the Pope's favor tiles
         victoryPoints += (numResources % 5) + myDashboard.getFaithTrack().getPosVictoryPoints() + myDashboard.getFaithTrack().getPointsForTiles();
         return victoryPoints;
     }
+
+
 
     public void setPropertyChangeSupport() {
         myDashboard.setPropertyChangeSupport(this.pcs);

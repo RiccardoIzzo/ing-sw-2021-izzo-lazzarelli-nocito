@@ -34,11 +34,8 @@ public class Dashboard {
      * Method addResourcesToStrongbox adds the resources into the strongbox
      */
     void addResourcesToStrongbox(ResourceMap resources) {
-        ResourceMap oldStrongbox = new ResourceMap();
-        oldStrongbox.addResources(strongbox);
-
         strongbox.addResources(resources);
-        pcs.firePropertyChange(STRONGBOX_CHANGE, oldStrongbox, this.strongbox);
+        pcs.firePropertyChange(STRONGBOX_CHANGE, null, this.strongbox);
     }
 
     public ResourceMap getStrongbox() {
@@ -70,10 +67,12 @@ public class Dashboard {
     /**
      * Method incrementFaith receives the number of steps to take and makes the path move forward.
      */
-    public void incrementFaith(int steps) {
+    public boolean incrementFaith(int steps) {
+        boolean vaticanReport = false;
         for(int i=0; i<steps; i++) {
-            faithTrack.moveForward();
+            if(faithTrack.moveForward()) vaticanReport = true;
         }
+        return vaticanReport;
     }
 
     public Warehouse getWarehouse() {

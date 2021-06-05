@@ -16,10 +16,9 @@ import static it.polimi.ingsw.constants.PlayerConstants.*;
 public class FaithTrack {
     private int posFaithMarker;
     private final Boolean[] popesFavorTiles;
+    private Boolean[] tilesUncovered;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-    // tilesUncovered: Value that states if the pope tiles have been uncovered
-    private final boolean[] tilesUncovered = {false, false, false};
 
     public FaithTrack() {
         posFaithMarker = 0;
@@ -34,44 +33,54 @@ public class FaithTrack {
         return false;
     }
 
-    public boolean setTilesUncovered(int index, boolean value) {
-        if (index < tilesUncovered.length) {
-            tilesUncovered[index] = value;
-            return true;
-        }
-        return false;
+    public void setTilesUncovered(Boolean[] tilesUncovered) {
+        this.tilesUncovered = tilesUncovered;
     }
 
     /**
      * Method moveForward moves the faith marker and calls popeTilePass
      */
-    public void moveForward() {
+    public boolean moveForward() {
         posFaithMarker++;
         pcs.firePropertyChange(FAITH_MARKER_POSITION, null, posFaithMarker);
-        popeTilePass();
+        if(TILE_POS.contains(posFaithMarker)) return popeTilePass();
+        else return false;
     }
 
     /**
      * Method isInVaticanSpace checks if the position is eligible for the pope tile points
      */
-    public void isInVaticanSpace(Integer space) {
-        if (space < popesFavorTiles.length) {
-            popesFavorTiles[space] = posFaithMarker <= TILE_POS[space] && posFaithMarker >= TILE_POS[space] - INITIAL_OFFSET - space;
-            pcs.firePropertyChange(POPES_TILES_CHANGE, null, popesFavorTiles.clone());
+    public void isInVaticanSpace() {
+        int lastTileUncovered = 0;
+        while (tilesUncovered[lastTileUncovered + 1] && lastTileUncovered < 2) lastTileUncovered++;
+        switch (lastTileUncovered){
+            case 0 -> {
+                if(posFaithMarker >= 5) popesFavorTiles[lastTileUncovered] = true;
+                else popesFavorTiles[lastTileUncovered] = null;
+            }
+            case 1 -> {
+                if(posFaithMarker >= 12) popesFavorTiles[lastTileUncovered] = true;
+                else popesFavorTiles[lastTileUncovered] = null;
+            }
+            case 2 -> {
+                if(posFaithMarker >= 19) popesFavorTiles[lastTileUncovered] = true;
+                else popesFavorTiles[lastTileUncovered] = null;
+            }
         }
+        pcs.firePropertyChange(POPES_TILES_CHANGE, null, popesFavorTiles.clone());
     }
 
     /**
      * Method popeTilePass checks if the position is the same as a tile pass
      */
-    public void popeTilePass() {
-        for(int i = 0; i < TILE_POS.length; i++) {
-            if ( posFaithMarker == TILE_POS[i] && !tilesUncovered[i] ) {
-                popesFavorTiles[i] = true;
-                tilesUncovered[i] = true;
-            }
+    public boolean popeTilePass() {
+        int index = TILE_POS.indexOf(posFaithMarker);
+        if (!tilesUncovered[index]) {
+            tilesUncovered[index] = true;
+            pcs.firePropertyChange(TILES_UNCOVERED_CHANGE, null, tilesUncovered.clone());
+            return true;
         }
-        pcs.firePropertyChange(POPES_TILES_CHANGE, null, popesFavorTiles.clone());
+        return false;
     }
 
     /**
@@ -93,11 +102,11 @@ public class FaithTrack {
     public int getPosVictoryPoints() {
         int victoryPoints = 0;
         int i = 0;
-        while (i< WINNING_TILES.length && posFaithMarker >= WINNING_TILES[i]) {
+        while (i < WINNING_TILES.length && posFaithMarker >= WINNING_TILES[i]) {
             victoryPoints += WINNING_VALUES[i];
             i++;
         }
-        return victoryPoints+getPointsForTiles();
+        return victoryPoints;
     }
 
     public int getPlayerPos() {

@@ -30,6 +30,9 @@ public class FaithTrackListener extends PropertyListener {
                 ServerMessage endGame = new EndGame();
                 virtualView.sendToEveryone(endGame);
             }
+        } else if (TILES_UNCOVERED_CHANGE.equals(propertyName)) {
+            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+            virtualView.sendToEveryone(serverMessage);
         } else if (POPES_TILES_CHANGE.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
             virtualView.sendToEveryone(serverMessage);

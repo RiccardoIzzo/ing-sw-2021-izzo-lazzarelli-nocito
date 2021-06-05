@@ -17,7 +17,7 @@ import static it.polimi.ingsw.constants.GameConstants.*;
 /**
  * GameHandler class represents a game and manages the incoming messages from the client.
  *
- * @author Andrea Nocito, Riccardo Izzo
+ * @author Andrea Nocito, Riccardo Izzo, Gabriele Lazzarelli
  */
 public class GameHandler {
     private Game game;
@@ -146,11 +146,15 @@ public class GameHandler {
             if(game instanceof MultiplayerGame){
                 ((MultiplayerGame) game).nextPlayer();
                 String currPlayer = ((MultiplayerGame) game).getCurrPlayer().getNickname();
+                if(game.isFinalTurn() && currPlayer.equals(((MultiplayerGame) game).getFirstPlayer().getNickname())){
+                    //virtualView.sendToEveryone(new GameStats());
+                }
                 virtualView.sendToPlayer(currPlayer, new StartTurn(currPlayer));
             }
             else if(game instanceof SinglePlayerGame){
                 ((SinglePlayerGame) game).drawToken();
             }
+
         }
 
         else if(message instanceof SetWarehouse) {
@@ -158,10 +162,14 @@ public class GameHandler {
             int faith = player.getDashboard().getWarehouse().removeResourcesFromShelf(5).size();
             for (Player playerToAdd: game.getPlayers()) {
                 if (playerToAdd != player) {
-                    playerToAdd.getDashboard().incrementFaith(faith);
+                    if(playerToAdd.getDashboard().incrementFaith(faith)) game.vaticanReport();
                 }
             }
 
+        }
+
+        else if(message instanceof SetFinalTurn){
+            game.setFinalTurn(true);
         }
     }
 }
