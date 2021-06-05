@@ -19,6 +19,11 @@ public abstract class Game {
     private final ArrayList<Player> players;
     private final Market market;
     private final Deck[][] grid;
+    private boolean isFinalTurn = false;
+    /**
+     * tilesUncovered: Each value states if the corresponding pope tiles has been uncovered
+     */
+    private final Boolean[] tilesUncovered;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
@@ -28,6 +33,7 @@ public abstract class Game {
         players = new ArrayList<>();
         market = new Market();
         grid = new Deck[3][4];
+        tilesUncovered = new Boolean[]{false, false, false};
     }
 
     /**
@@ -46,6 +52,14 @@ public abstract class Game {
         return grid;
     }
 
+    public boolean isFinalTurn() {
+        return isFinalTurn;
+    }
+
+    public void setFinalTurn(boolean finalTurn) {
+        isFinalTurn = finalTurn;
+    }
+
     /**
      * Method getNumPlayers returns the number of players.
      * @return the number of players.
@@ -59,7 +73,9 @@ public abstract class Game {
      * @param name name of the player to be added.
      */
     public void addPlayer(String name){
-        players.add(new Player(name, this));
+        Player player = new Player(name, this);
+        players.add(player);
+        player.getDashboard().getFaithTrack().setTilesUncovered(tilesUncovered);
     }
 
     /**
@@ -123,6 +139,19 @@ public abstract class Game {
             player.setLeaders(leaders.subList(0, 4));
             leaders.removeAll(leaders.subList(0, 4));
         }
+    }
+
+    public void vaticanReport(){
+        for(Player player : players) player.getDashboard().getFaithTrack().isInVaticanSpace();
+    }
+
+    public Map<String, Integer> getGameStats(){
+        Map<String, Integer> stats = new HashMap<>();
+        for(Player player : players){
+            stats.put(player.getNickname(), player.getVictoryPoints());
+        }
+        stats.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> stats.put(x.getKey(), x.getValue()));
+        return stats;
     }
 
     public void addPropertyListener(VirtualView virtualView){
