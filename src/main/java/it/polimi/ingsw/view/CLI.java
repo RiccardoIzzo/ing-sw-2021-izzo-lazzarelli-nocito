@@ -2,9 +2,17 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.constants.Colors;
 import it.polimi.ingsw.events.clientmessages.*;
-import it.polimi.ingsw.events.servermessages.*;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.card.*;
+import it.polimi.ingsw.events.servermessages.InvalidNickname;
+import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.ValidNickname;
+import it.polimi.ingsw.model.JsonCardsCreator;
+import it.polimi.ingsw.model.MarbleColor;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.model.card.Card;
+import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.card.LeaderCard;
+import it.polimi.ingsw.model.card.ProductionLeaderCard;
 import it.polimi.ingsw.network.NetworkHandler;
 
 import java.util.*;
@@ -602,9 +610,9 @@ public class CLI implements View{
         System.out.println("\n*** STRONGBOX ***");
         showStrongbox(dashboardView.getStrongbox());
         System.out.println("\n*** LEADER CARDS ***");
-        showCards(dashboardView.getLeaderCards().keySet());
+        showLeaders(dashboardView.getLeaderCards());
         System.out.println("\n*** ACTIVE DEVELOPMENTS ***");
-        showCards(dashboardView.getActiveDevelopments().stream().filter(Objects::nonNull).collect(Collectors.toList()));
+        showActiveDevelopments(dashboardView.getActiveDevelopments());
         handleTurn();
     }
 
@@ -625,7 +633,7 @@ public class CLI implements View{
         );
     }
 
-    void showCards(Collection<Integer> cards) {
+    public static void showCards(Collection<Integer> cards) {
         for (Integer card: cards) {
             System.out.println(JsonCardsCreator.generateCard(card).toString());
         }
@@ -713,6 +721,44 @@ public class CLI implements View{
         }
         else {
             return "   ";
+        }
+    }
+
+    public static void showLeaders(Map<Integer,Boolean> leaders){
+        for (Integer id: leaders.keySet()){
+            if (leaders.get(id)) {
+                System.out.println(Colors.ANSI_GREEN_BOLD + "\nACTIVE" + Colors.ANSI_RESET);
+            } else {
+                System.out.println(Colors.ANSI_RED + "\nNOT ACTIVE" + Colors.ANSI_RESET);
+            }
+            showCards(Set.of(id));
+        }
+    }
+
+    public static void showActiveDevelopments(ArrayList<Integer> activeDevelopments) {
+        int slot = 0;
+        for (Integer id: activeDevelopments) {
+            System.out.printf("\nSLOT #%d\n", slot + 1);
+            if (id != null) {
+                showCards(Collections.singleton(id));
+            } else {
+                System.out.print(" -- Empty slot -- ");
+                System.out.println();
+            }
+            slot++;
+        }
+    }
+
+    public static void showStats(Map<String, Integer> gameStats){
+        boolean firstPlayer = true;
+
+        for (String player : gameStats.keySet()) {
+            if (firstPlayer){
+                System.out.printf(Colors.ANSI_GREEN_BOLD + "WINNER\n" + "%-20s" + "%10d" + Colors.ANSI_RESET + "\n", player, gameStats.get(player));
+                firstPlayer = false;
+            } else {
+                System.out.printf("%-20s" + "%10d" + "\n", player,gameStats.get(player));
+            }
         }
     }
 }
