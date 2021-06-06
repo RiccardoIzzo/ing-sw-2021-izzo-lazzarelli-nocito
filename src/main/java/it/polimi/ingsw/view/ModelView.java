@@ -18,7 +18,6 @@ public class ModelView {
     private Boolean[] tilesUncovered;
     private MarbleColor slideMarble;
     private ArrayList<MarbleColor> marketTray;
-    private Integer tokenDrawn;
 
     public ModelView(ArrayList<String> players, String myNickname) {
         this.dashboards = new ArrayList<>();
@@ -31,7 +30,6 @@ public class ModelView {
         this.tilesUncovered = new Boolean[]{false, false, false};
         this.slideMarble = null;
         this.marketTray = new ArrayList<>();
-        this.tokenDrawn = null;
     }
 
     public String getMyNickname() {
@@ -44,10 +42,6 @@ public class ModelView {
 
     public MarbleColor getSlideMarble() {
         return slideMarble;
-    }
-
-    public Integer getTokenDrawn() {
-        return tokenDrawn;
     }
 
     public ArrayList<DashboardView> getDashboards() {
@@ -73,8 +67,6 @@ public class ModelView {
         } else {
             if (END_TURN.equals(propertyName)) {
                 currPlayer = (String) objectToUpdate;
-            } else if (TOKEN_DRAWN.equals(propertyName)) {
-                tokenDrawn = (Integer) objectToUpdate;
             } else if (MARKET_CHANGE.equals(propertyName)) {
                 marketTray = (ArrayList<MarbleColor>) objectToUpdate;
             } else if (SLIDE_MARBLE.equals(propertyName)) {

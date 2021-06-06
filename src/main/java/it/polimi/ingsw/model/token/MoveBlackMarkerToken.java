@@ -41,6 +41,6 @@ public class MoveBlackMarkerToken implements SoloActionToken {
     public String toString() {
         String reset = "";
         if (resetStack) reset = "↺";
-        return "+" + steps + Colors.ANSI_BLACK + "✝" + Colors.ANSI_RESET + reset;
+        return "+" + steps + Colors.ANSI_BLACK + "✝" + Colors.ANSI_RESET + " " + reset;
     }
 }

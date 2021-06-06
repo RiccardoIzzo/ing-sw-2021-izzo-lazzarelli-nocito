@@ -34,4 +34,5 @@ public interface View {
     void printText(String text);
     void send(ClientMessage message);
     void handleSoloActionToken();
+    void showStats(Map<String, Integer> map);
 }

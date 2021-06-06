@@ -147,9 +147,10 @@ public class GameHandler {
                 ((MultiplayerGame) game).nextPlayer();
                 String currPlayer = ((MultiplayerGame) game).getCurrPlayer().getNickname();
                 if(game.isFinalTurn() && currPlayer.equals(((MultiplayerGame) game).getFirstPlayer().getNickname())){
-                    //virtualView.sendToEveryone(new GameStats());
+                    Map<String, Integer> gameStats = game.getGameStats();
+                    virtualView.sendToEveryone(new GameStats(gameStats, gameStats.keySet().iterator().next()));
                 }
-                virtualView.sendToPlayer(currPlayer, new StartTurn(currPlayer));
+                else virtualView.sendToPlayer(currPlayer, new StartTurn(currPlayer));
             }
             else if(game instanceof SinglePlayerGame){
                 ((SinglePlayerGame) game).drawToken();

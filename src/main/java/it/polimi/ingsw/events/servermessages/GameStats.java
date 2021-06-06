@@ -2,7 +2,7 @@ package it.polimi.ingsw.events.servermessages;
 
 import java.util.Map;
 
-public class GameStats {
+public class GameStats implements ServerMessage{
     private final Map<String, Integer> playerPoints;
     private final String winner;
 

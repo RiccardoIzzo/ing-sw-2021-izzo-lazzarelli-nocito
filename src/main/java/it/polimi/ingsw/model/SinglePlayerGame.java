@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.token.SoloActionToken;
 import it.polimi.ingsw.model.token.TokenDeck;
 
 import static it.polimi.ingsw.constants.GameConstants.TOKEN_DRAWN;
+import static it.polimi.ingsw.constants.PlayerConstants.GRID_CHANGE;
 
 /**
  * SinglePlayerGame class extends Game class and implements the logic of a single player match.
@@ -59,7 +60,7 @@ public class SinglePlayerGame extends Game {
                 }
                 if (toRemove == 0) break;
             }
-
+            pcs.firePropertyChange(GRID_CHANGE, null, getGrid());
         } else if (soloActionToken instanceof MoveBlackMarkerToken) {
             int steps = ((MoveBlackMarkerToken) soloActionToken).getSteps();
             boolean reset = ((MoveBlackMarkerToken) soloActionToken).hasResetStack();

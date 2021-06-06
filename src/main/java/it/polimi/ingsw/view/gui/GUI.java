@@ -182,6 +182,11 @@ public class GUI extends Application implements View {
     }
 
     @Override
+    public void showStats(Map<String, Integer> map) {
+
+    }
+
+    @Override
     public String getNickname() {
         return nickname;
     }

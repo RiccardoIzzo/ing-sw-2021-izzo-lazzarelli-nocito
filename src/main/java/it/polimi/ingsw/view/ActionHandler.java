@@ -6,7 +6,6 @@ import it.polimi.ingsw.events.servermessages.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.constants.GameConstants.END_TURN;
-import static it.polimi.ingsw.constants.GameConstants.TOKEN_DRAWN;
 import static it.polimi.ingsw.constants.PlayerConstants.SET_LEADERS;
 import static it.polimi.ingsw.constants.PlayerConstants.TEMPORARY_SHELF_CHANGE;
 
@@ -66,6 +65,18 @@ public class ActionHandler extends Thread{
             view.printText("The game is about to finish.\nWaiting for the remaining players to play theirs last turn...");
             view.send(new SetFinalTurn());
         }
+        else if(message instanceof GameStats){
+            view.showStats(((GameStats) message).getPlayerPoints());
+        }
+        else if(message instanceof TokenDrawn){
+            view.printText("\nToken drawn.\n" + ((TokenDrawn) message).getToken().toString() + "\n");
+            view.startTurn();
+            view.handleTurn();
+        }
+        else if(message instanceof Defeat){
+            view.printText("You lost!");
+            //finish game
+        }
         else if(message instanceof UpdateView){
             UpdateView updateView = (UpdateView) message;
             String propertyName = updateView.getPropertyName();
@@ -78,9 +89,6 @@ public class ActionHandler extends Thread{
             }
             else if (TEMPORARY_SHELF_CHANGE.equals(propertyName)){
                 view.handleTemporaryShelf();
-            }
-            else if (TOKEN_DRAWN.equals(propertyName)){
-                view.handleSoloActionToken();
             }
         }
     }

@@ -146,12 +146,26 @@ public abstract class Game {
     }
 
     public Map<String, Integer> getGameStats(){
-        Map<String, Integer> stats = new HashMap<>();
+        Map<String, Integer> stats = new LinkedHashMap<>();
         for(Player player : players){
             stats.put(player.getNickname(), player.getVictoryPoints());
         }
         stats.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> stats.put(x.getKey(), x.getValue()));
+        // count resources
         return stats;
+    }
+
+    public class myComparator implements Comparator<String>{
+        @Override
+        public int compare(String player1, String player2) {
+            Player playerOne = getPlayerByName(player1);
+            Player playerTwo = getPlayerByName(player2);
+            if(playerOne.getVictoryPoints() == playerTwo.getVictoryPoints()){
+                if(playerOne.getTotalResources().size() < playerTwo.getTotalResources().size()) return 1;
+                else return -1;
+            }
+            else return 0;
+        }
     }
 
     public void addPropertyListener(VirtualView virtualView){

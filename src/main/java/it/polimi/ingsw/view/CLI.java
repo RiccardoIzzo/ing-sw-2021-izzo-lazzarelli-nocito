@@ -749,7 +749,7 @@ public class CLI implements View{
         }
     }
 
-    public static void showStats(Map<String, Integer> gameStats){
+    public void showStats(Map<String, Integer> gameStats){
         boolean firstPlayer = true;
 
         for (String player : gameStats.keySet()) {

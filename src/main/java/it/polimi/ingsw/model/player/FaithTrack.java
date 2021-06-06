@@ -52,7 +52,10 @@ public class FaithTrack {
      */
     public void isInVaticanSpace() {
         int lastTileUncovered = 0;
-        while (tilesUncovered[lastTileUncovered + 1] && lastTileUncovered < 2) lastTileUncovered++;
+        while (tilesUncovered[lastTileUncovered + 1]) {
+            lastTileUncovered++;
+            if(lastTileUncovered == 2) break;
+        }
         switch (lastTileUncovered){
             case 0 -> {
                 if(posFaithMarker >= 5) popesFavorTiles[lastTileUncovered] = true;
@@ -90,7 +93,7 @@ public class FaithTrack {
     public int getPointsForTiles() {
         int counter = 0;
         for (int i = 0; i < popesFavorTiles.length; i++) {
-            counter += popesFavorTiles[i] ? POINTS_FOR_TILE[i] : 0;
+            if(popesFavorTiles[i] != null) counter += popesFavorTiles[i] ? POINTS_FOR_TILE[i] : 0;
         }
         return counter;
     }
