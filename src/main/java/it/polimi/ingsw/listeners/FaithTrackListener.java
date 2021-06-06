@@ -1,5 +1,6 @@
 package it.polimi.ingsw.listeners;
 
+import it.polimi.ingsw.events.servermessages.Defeat;
 import it.polimi.ingsw.events.servermessages.EndGame;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
@@ -23,19 +24,28 @@ public class FaithTrackListener extends PropertyListener {
         Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
 
-        if (FAITH_MARKER_POSITION.equals(propertyName) || BLACK_MARKER_POSITION.equals(propertyName)) {
+        if (BLACK_MARKER_POSITION.equals(propertyName)) {
+            serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
+            virtualView.sendToEveryone(serverMessage);
+            if (((Integer) evt.getNewValue()) == END_TILE) {
+                ServerMessage message = new Defeat();
+                virtualView.sendToPlayer(playerSource, message);
+            }
+        } else if (FAITH_MARKER_POSITION.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
             virtualView.sendToEveryone(serverMessage);
             if (((Integer) evt.getNewValue()) == END_TILE) {
                 ServerMessage endGame = new EndGame();
                 virtualView.sendToEveryone(endGame);
             }
-        } else if (TILES_UNCOVERED_CHANGE.equals(propertyName)) {
-            serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
-            virtualView.sendToEveryone(serverMessage);
-        } else if (POPES_TILES_CHANGE.equals(propertyName)) {
-            serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
-            virtualView.sendToEveryone(serverMessage);
+        } else {
+            if (TILES_UNCOVERED_CHANGE.equals(propertyName)) {
+                serverMessage = new UpdateView(null, propertyName, oldValue, newValue);
+                virtualView.sendToEveryone(serverMessage);
+            } else if (POPES_TILES_CHANGE.equals(propertyName)) {
+                serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
+                virtualView.sendToEveryone(serverMessage);
+            }
         }
     }
 }
