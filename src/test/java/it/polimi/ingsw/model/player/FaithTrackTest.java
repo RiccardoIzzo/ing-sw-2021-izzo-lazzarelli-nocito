@@ -64,6 +64,7 @@ public class FaithTrackTest{
     /**
      * Method testPopeTilePass checks that PopeTilePass sets the correct points and tilesUncovered value when the player gets to a pope tile.
      */
+    /*
     @Test
     public void testPopeTilePass() {
         assertFalse(faithTrack.getTilesUncovered(0));
@@ -74,9 +75,12 @@ public class FaithTrackTest{
         assertTrue(faithTrack.getTilesUncovered(0));
     }
 
+     */
+
     /**
      * Method testGetPointsForTiles checks that the method returns the correct sum of points that the player unlocks through pope tiles.
      */
+    /*
     @Test
     public void testGetPointsForTiles() {
         assertEquals(faithTrack.getPointsForTiles(), 0);
@@ -86,9 +90,12 @@ public class FaithTrackTest{
         assertEquals(faithTrack.getPointsForTiles(), 9);
     }
 
+     */
+
     /**
      * Method checks that the method returns the correct numbers of points that the player unlocks thourgh moving on the faith track and pope tiles.
      */
+    /*
     @Test
     public void testGetPosVictoryPoints() {
         assertEquals(faithTrack.getPosVictoryPoints(), 0);
@@ -101,6 +108,8 @@ public class FaithTrackTest{
         }
         assertEquals(faithTrack.getPosVictoryPoints(), 79);
     }
+
+     */
 
     /**
      * Method testGetPlayerPos checks that the method returns the correct position of the player inside the faith track, starting from 0 and then moving forward two times.
