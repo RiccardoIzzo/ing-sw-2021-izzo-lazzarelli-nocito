@@ -9,6 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CLITest {
     Warehouse warehouse;
@@ -23,6 +26,12 @@ public class CLITest {
     MarbleColor slideMarble;
 
     Boolean[] popesTiles;
+
+    Map<String, Integer> gameStats;
+
+    ArrayList<Integer> activeDevelopments;
+
+    Map<Integer, Boolean> leaders;
 
     @Before
     public void setUp() throws Exception {
@@ -73,7 +82,28 @@ public class CLITest {
          */
         popesTiles = new Boolean[] {true, false, false};
 
+        /*
+        showStats setUp
+        */
+        gameStats = new HashMap<>();
+        gameStats.put("Alpha", 50);
+        gameStats.put("Bravo", 55);
+        gameStats.put("Charlie", 40);
+        gameStats.put("Delta", 23);
 
+        /*
+        showActiveDevelopments setUp
+        */
+        activeDevelopments = new ArrayList<>(Collections.nCopies(3,null));
+        activeDevelopments.set(0,101);
+        activeDevelopments.set(2,109);
+
+        /*
+        showLeaders setUp
+        */
+        leaders = new HashMap<>();
+        leaders.put(201, false);
+        leaders.put(216, true);
     }
 
     @After
@@ -82,11 +112,12 @@ public class CLITest {
 
     @Test
     public void show() {
-        Boolean value = null;
-        if(value) System.out.println("ciao");
         //CLI.showWarehouse(warehouse.getShelves(), extraShelfResources);
         //CLI.showMarket(marketTray, slideMarble);
         //CLI.showFaithTrack(1,3,popesTiles);
         //CLI.showStrongbox(resourceMapE);
+        //CLI.showStats(gameStats);
+        //CLI.showActiveDevelopments(activeDevelopments);
+        //CLI.showLeaders(leaders);
     }
 }
