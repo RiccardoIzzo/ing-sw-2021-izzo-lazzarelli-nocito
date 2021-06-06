@@ -14,7 +14,8 @@ public enum Colors {
     ANSI_YELLOW_BACKGROUND("\u001B[43m"),
     ANSI_BLACK_BACKGROUND("\u001B[40m"),
     ANSI_RED_BACKGROUND("\u001B[41m"),
-    ANSI_BLUE_BACKGROUND("\u001B[44m");
+    ANSI_BLUE_BACKGROUND("\u001B[44m"),
+    ANSI_GREEN_BOLD("\u001B[32;1m");
 
     private final String escape;
 
