@@ -9,18 +9,14 @@ import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.MarbleColor;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
-import it.polimi.ingsw.model.card.Card;
-import it.polimi.ingsw.model.card.DevelopmentCard;
-import it.polimi.ingsw.model.card.LeaderCard;
-import it.polimi.ingsw.model.card.ProductionLeaderCard;
+import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.network.NetworkHandler;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static it.polimi.ingsw.constants.GameConstants.DEVELOPMENTCARDIDS;
-import static it.polimi.ingsw.constants.GameConstants.LEADERCARDIDS;
+import static it.polimi.ingsw.constants.GameConstants.*;
 
 /**
  * CLI class manages the game with a Command Line Interface.
@@ -278,6 +274,25 @@ public class CLI implements View{
      */
     @Override
     public void handleTakeResource() {
+        ArrayList<Integer> activeWhiteMarbleLeaders = (ArrayList<Integer>) modelView.getMyDashboard().getLeaderCards()
+                .entrySet()
+                .stream()
+                .filter(Map.Entry::getValue)
+                .map(Map.Entry::getKey)
+                .filter(leader -> JsonCardsCreator.generateLeaderCard(leader) instanceof WhiteMarbleLeaderCard)
+                .collect(Collectors.toList());
+        int leaderID = 0;
+        if (activeWhiteMarbleLeaders.size() == 2){
+            System.out.println("Select one the two possible exchange for the white marble:");
+            showCards(activeWhiteMarbleLeaders);
+            leaderID = getInt();
+            while (!activeWhiteMarbleLeaders.contains(leaderID)){
+                System.out.println("Not a valid id.");
+                leaderID = getInt();
+            }
+        } else if (activeWhiteMarbleLeaders.size() == 1){
+            leaderID = activeWhiteMarbleLeaders.get(0);
+        }
         showMarket(modelView.getMarketTray(), modelView.getSlideMarble());
         System.out.println("Insert the row/column index:");
         int index = getInt();
@@ -289,8 +304,13 @@ public class CLI implements View{
             }
             index = getInt();
         }
-        if(index > 4) send(new TakeResources(index - 4, 1));
-        else send(new TakeResources(index, 2));
+        if (leaderID != 0) {
+            if(index > 4) send(new TakeResources(index - 4, 1, leaderID));
+            else send(new TakeResources(index, 2, leaderID));
+        } else {
+            if(index > 4) send(new TakeResources(index - 4, 1));
+            else send(new TakeResources(index, 2));
+        }
         basicActionPlayed();
     }
 
