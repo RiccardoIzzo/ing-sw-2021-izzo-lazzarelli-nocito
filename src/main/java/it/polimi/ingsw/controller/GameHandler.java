@@ -109,7 +109,8 @@ public class GameHandler {
         }
 
         else if(message instanceof TakeResources) {
-            player.takeResourcesFromMarket(((TakeResources) message).getIndex(), ((TakeResources) message).getType());
+            TakeResources takeResources = (TakeResources) message;
+            player.takeResourcesFromMarket(takeResources.getIndex(), takeResources.getType(), takeResources.getWhiteMarbleExchange());
         }
 
         else if(message instanceof BuyCard) {

@@ -163,8 +163,9 @@ public class Player {
      * @param pos row/column index.
      * @param type represent the user choice: 1 = row, 2 = column.
      */
-    public void takeResourcesFromMarket(int pos, int type){
+    public void takeResourcesFromMarket(int pos, int type, MarbleColor whiteMarbleExchange){
         game.getMarket().insertMarble(pos, type);
+        game.getMarket().setSpecialMarble(whiteMarbleExchange);
         if(game.getMarket().findFaith()){
             if(myDashboard.incrementFaith(1)) game.vaticanReport();
         }
