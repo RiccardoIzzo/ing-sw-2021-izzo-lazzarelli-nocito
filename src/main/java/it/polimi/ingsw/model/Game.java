@@ -150,7 +150,6 @@ public abstract class Game {
         for(Player player : players){
             stats.put(player.getNickname(), player.getVictoryPoints());
         }
-        stats.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> stats.put(x.getKey(), x.getValue()));
         stats.entrySet().stream().sorted((o1, o2) -> {
             Player playerOne = getPlayerByName(o1.getKey());
             Player playerTwo = getPlayerByName(o2.getKey());
