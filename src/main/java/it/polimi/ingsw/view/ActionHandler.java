@@ -67,6 +67,7 @@ public class ActionHandler extends Thread{
         }
         else if(message instanceof GameStats){
             view.showStats(((GameStats) message).getPlayerPoints());
+            System.exit(0);
         }
         else if(message instanceof TokenDrawn){
             view.printText("\nToken drawn.\n" + ((TokenDrawn) message).getToken().toString() + "\n");
@@ -75,7 +76,7 @@ public class ActionHandler extends Thread{
         }
         else if(message instanceof Defeat){
             view.printText("You lost!");
-            //finish game
+            System.exit(0);
         }
         else if(message instanceof UpdateView){
             UpdateView updateView = (UpdateView) message;
