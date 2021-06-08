@@ -35,7 +35,7 @@ public class LobbiesController {
 
     public void start() throws IOException {
 //        gui.mainStage.close();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies.fxml"));
         Parent root = loader.load();
 
         Stage stage = new Stage();
