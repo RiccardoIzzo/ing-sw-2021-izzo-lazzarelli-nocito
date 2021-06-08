@@ -6,8 +6,7 @@ import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
 
-import static it.polimi.ingsw.constants.PlayerConstants.SHELF_CHANGE;
-import static it.polimi.ingsw.constants.PlayerConstants.TEMPORARY_SHELF_CHANGE;
+import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 public class WarehouseListener extends PropertyListener{
     public WarehouseListener(VirtualView virtualView) {
@@ -19,14 +18,13 @@ public class WarehouseListener extends PropertyListener{
         ServerMessage serverMessage;
         String playerSource = (String) evt.getSource();
         String propertyName = evt.getPropertyName();
-        Object oldValue = evt.getOldValue();
         Object newValue = evt.getNewValue();
 
-        if (SHELF_CHANGE.equals(propertyName)) {
-            serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
+        if (SHELF_CHANGE.equals(propertyName) || EXTRA_SHELF_CHANGE.equals(propertyName)) {
+            serverMessage = new UpdateView(playerSource, propertyName, null, newValue);
             virtualView.sendToEveryone(serverMessage);
         } else if (TEMPORARY_SHELF_CHANGE.equals(propertyName)) {
-            serverMessage = new UpdateView(playerSource, propertyName, oldValue, newValue);
+            serverMessage = new UpdateView(playerSource, propertyName, null, newValue);
             virtualView.sendToPlayer(playerSource, serverMessage);
         }
     }

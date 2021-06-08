@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.card.WhiteMarbleLeaderCard;
 public class TakeResources implements ClientMessage{
     private final int index;
     private final int type;
-    private MarbleColor whiteMarbleExchange = MarbleColor.WHITE;
+    private MarbleColor whiteMarbleExchange = null;
 
     /**
      * Constructor TakeResources creates a new TakeResources instance.
@@ -22,10 +22,10 @@ public class TakeResources implements ClientMessage{
         this.type = type;
     }
 
-    public TakeResources(int index, int type, int whiteMarbleLeaderCard) {
+    public TakeResources(int index, int type, int leaderID) {
         this.index = index;
         this.type = type;
-        this.whiteMarbleExchange = (MarbleColor) ((WhiteMarbleLeaderCard) JsonCardsCreator.generateLeaderCard(whiteMarbleLeaderCard)).getExchange().toArray()[0];
+        this.whiteMarbleExchange = ((WhiteMarbleLeaderCard) JsonCardsCreator.generateLeaderCard(leaderID)).getExchange().stream().findFirst().orElse(null);
     }
 
     /**

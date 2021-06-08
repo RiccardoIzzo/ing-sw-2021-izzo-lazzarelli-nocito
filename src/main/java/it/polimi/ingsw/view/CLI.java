@@ -16,8 +16,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static it.polimi.ingsw.constants.GameConstants.*;
-
 /**
  * CLI class manages the game with a Command Line Interface.
  *
@@ -248,7 +246,7 @@ public class CLI implements View{
             return;
         }
 
-        System.out.println("Select your next action: ");
+        System.out.println("\nSelect your next action: ");
         for(Action action : getValidActions()) {
             System.out.println(action);
         }
@@ -321,24 +319,64 @@ public class CLI implements View{
     public void handleBuyCard() {
         ArrayList<Integer> grid = modelView.getGrid();
         ArrayList<Integer> activeDevelopments = modelView.getMyDashboard().getActiveDevelopments();
+        ResourceMap discount = modelView.getMyDashboard().getLeaderCards()
+                .entrySet()
+                .stream()
+                .filter(Map.Entry::getValue)
+                .map(Map.Entry::getKey)
+                .filter(leader -> JsonCardsCreator.generateLeaderCard(leader) instanceof DiscountLeaderCard)
+                .map(leader -> ((DiscountLeaderCard) JsonCardsCreator.generateLeaderCard(leader)).getDiscount())
+                .reduce(new ResourceMap(), ResourceMap::addResources);
+
         showCards(grid);
         System.out.println("Select the card that you want to buy by typing the id: ");
 
         int id = getInt();
         if(grid.contains(id)) {
             DevelopmentCard cardToBuy = JsonCardsCreator.generateDevelopmentCard(id);
+
             List<DevelopmentCard> cardsToCover = activeDevelopments.stream()
                     .filter(Objects::nonNull)
                     .map(JsonCardsCreator::generateDevelopmentCard)
                     .filter(card -> card.getLevel() == cardToBuy.getLevel() - 1).collect(Collectors.toList());
-            if (cardToBuy.getLevel() > 1 && cardsToCover.size() == 0) {
+
+            if (!modelView.getMyDashboard().getTotalResources().addResources(discount).removeResources(((ResourceRequirement) cardToBuy.getRequirement()).getResources())) {
+                System.out.println("Cannot buy card. Not enough resources:" +
+                        "\nMy resources: " + modelView.getMyDashboard().getTotalResources() +
+                        "\nDiscount: " + discount +
+                        "\nRequired resources: " + cardToBuy.getRequirement());
+                handleTurn();
+            } else if (cardToBuy.getLevel() > 1 && cardsToCover.size() == 0) {
                 System.out.println("Cannot buy card. You don't own a level " + (cardToBuy.getLevel()-1)+ " card.");
                 handleTurn();
             } else if (cardToBuy.getLevel() == 1 && activeDevelopments.stream().filter(Objects::nonNull).count() > 2){
                 System.out.println("Cannot buy card. Not enough space for a level 1 card.");
                 handleTurn();
             } else {
-                send(new CheckRequirement(id));
+                int slotIndex;
+                showActiveDevelopments(modelView.getMyDashboard().getActiveDevelopments());
+                System.out.println("\nSelect the slot where you want to place the card:");
+                while(true){
+                    slotIndex = getInt();
+                    if (slotIndex < 1 || slotIndex > 3) {
+                        System.out.println("Invalid slot number: choose among {1,2,3}.");
+                        continue;
+                    }
+                    Integer cardToCover = modelView.getMyDashboard().getActiveDevelopments().get(slotIndex-1);
+                    if (cardToBuy.getLevel() > 1 && cardToCover != null) {
+                        if (JsonCardsCreator.generateDevelopmentCard(cardToCover).getLevel() + 1 == cardToBuy.getLevel()) {
+                            break;
+                        }
+                    } else if (cardToBuy.getLevel() == 1 && cardToCover == null){
+                        break;
+                    } else {
+                        System.out.println("Cannot place your card at slot number " + slotIndex + "." + "Try again:");
+                    }
+                }
+                int index = modelView.getGrid().indexOf(id);
+                send(new BuyCard(index / 4, index % 4, slotIndex));
+                basicActionPlayed();
+                handleTurn();
             }
         }
         else {
@@ -405,7 +443,7 @@ public class CLI implements View{
             if(modelView.getMyDashboard().getAvailableProduction().contains(id)) productions.add(id);
             else System.out.println("Id not valid.");
             System.out.println("Add more? y/n");
-            if(getInput("y|n").equals("n")) {
+            if(getInput("y|n").equals("n") && productions.size() > 0) {
                 for(Integer production : productions){
                     Card card = JsonCardsCreator.generateCard(production);
                     if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
@@ -428,16 +466,24 @@ public class CLI implements View{
      */
     @Override
     public void handleActivateLeader() {
-        showCards(modelView.getMyDashboard().getLeaderCards().keySet());
+        ArrayList<Integer> inactiveLeaders = (ArrayList<Integer>) modelView.getMyDashboard().getLeaderCards()
+                .entrySet()
+                .stream()
+                .filter(leader -> !leader.getValue())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        if (inactiveLeaders.size() == 0) {
+            System.out.println("There are 0 inactive leaders left.");
+            handleTurn();
+            return;
+        }
+
+        showCards(inactiveLeaders);
         System.out.println("Select the card you want to activate by typing the id: ");
 
         int id = getInt();
-        if(modelView.getMyDashboard().getLeaderCards().containsKey(id)){
-            if(modelView.getMyDashboard().getLeaderCards().get(id)){
-                System.out.println("Card" + id + "already active");
-                handleTurn();
-            }
-            else send(new CheckRequirement(id));
+        if(inactiveLeaders.contains(id)){
+            send(new CheckRequirement(id));
         }
         else {
             System.out.println("Id not valid, choose again.");
@@ -446,54 +492,23 @@ public class CLI implements View{
     }
 
     /**
-     * Method handleCheckRequirement manages CheckRequirement message in two different cases: "BUY_CARD" and "ACTIVATE_LEADER" actions.
+     * Method handleCheckRequirement manages CheckRequirement message.
      * @param result outcome of the requirement check.
      * @param id card id.
      */
     @Override
     public void handleCheckRequirement(boolean result, int id) {
         /*
-        Requirement for development cards.
-         */
-        if(DEVELOPMENTCARDIDS.contains(id)){
-            if(result) {
-                DevelopmentCard cardToBuy = JsonCardsCreator.generateDevelopmentCard(id);
-                int slotIndex;
-                while(true){
-                    System.out.println("Select the slot where you want to place the card:");
-                    slotIndex = getInt();
-                    Integer cardToCover = modelView.getMyDashboard().getActiveDevelopments().get(slotIndex);
-                    if (cardToBuy.getLevel() > 1 && cardToCover != null) {
-                        if (JsonCardsCreator.generateDevelopmentCard(cardToCover).getLevel() + 1 == cardToBuy.getLevel()) {
-                            break;
-                        }
-                    } else if (cardToBuy.getLevel() == 1 && cardToCover == null){
-                        break;
-                    } else {
-                        System.out.println("Cannot place your card at slot number " + slotIndex + ".");
-                    }
-                }
-                int index = modelView.getGrid().indexOf(id);
-                send(new BuyCard(index / 4, index % 4, slotIndex));
-                basicActionPlayed();
-            }
-            else {
-                System.out.println("Requirement not met.");
-            }
-            handleTurn();
-        }
-        /*
         Requirement for leader cards.
          */
-        else if (LEADERCARDIDS.contains(id)) {
-            if(result) {
-                send(new ActivateLeaderCard(id));
-            }
-            else {
-                System.out.println("Requirement not met.");
-                handleTurn();
-            }
+        if(result) {
+            send(new ActivateLeaderCard(id));
+            System.out.println("Leader activated!");
         }
+        else {
+            System.out.println("Requirement not met.");
+        }
+        handleTurn();
     }
 
     /**
@@ -640,7 +655,7 @@ public class CLI implements View{
         System.out.printf("Slide marble = %s\n\n", slideMarble.toString());
         for (int i = 2; i >= 0; i--) {
             for (int j = 0; j < 4; j++) {
-                System.out.print(marketTray.get(i*4+j).toString() + "\t");
+                System.out.print(marketTray.get(i*4+j).toString() + "   ");
             }
             System.out.printf("<-- %d\n", 5 + i);
         }
@@ -655,8 +670,9 @@ public class CLI implements View{
 
     public static void showCards(Collection<Integer> cards) {
         for (Integer card: cards) {
-            System.out.println(JsonCardsCreator.generateCard(card).toString());
+            System.out.println(Objects.requireNonNull(JsonCardsCreator.generateCard(card)));
         }
+        System.out.println();
     }
 
     public static void showStrongbox(ResourceMap strongbox){
@@ -715,9 +731,9 @@ public class CLI implements View{
                 +----+----+----+    ║         ║    +----╔════╝----+----╚═════════╗         ║         ║
                 | %s | %s | %s |    ║         ║    | %s ║ %s | %s | %s | %s | %s ║         ║         ║
                 +----+----+----+    ╚═════════╝    +----╚════════════════════════╝         ╚═════════╝
-                %n""", f(4,f,b),f(5,f,b),f(6,f,b),f(7,f,b),f(8,f,b),f(9,f,b),p(p[1],2),
+                %n""", f(4,f,b),f(5,f,b),f(6,f,b),f(7,f,b),f(8,f,b),f(9,f,b),p(p[1],3),
                         f(18,f,b),f(19,f,b),f(20,f,b),f(21,f,b),f(22,f,b),f(23,f,b),f(24,f,b),
-                        f(3,f,b),p(p[0], 3),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
+                        f(3,f,b),p(p[0], 2),f(10,f,b),f(17,f,b),p(p[2],4),f(0,f,b),f(1,f,b),
                         f(2,f,b),f(11,f,b),f(12,f,b),f(13,f,b),f(14,f,b),f(15,f,b),f(16,f,b));
     }
 

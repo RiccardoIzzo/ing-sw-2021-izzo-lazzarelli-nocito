@@ -61,6 +61,7 @@ public final class PlayerConstants {
 
     //ShelfListener
     public static final String SHELF_CHANGE = "shelfChange";
+    public static final String EXTRA_SHELF_CHANGE = "extraShelfChange";
 
     //GridListener
     public static final String GRID_CHANGE = "gridChange";

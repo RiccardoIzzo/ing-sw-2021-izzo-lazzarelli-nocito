@@ -174,7 +174,6 @@ public class Market {
         else if(marble == MarbleColor.WHITE) {
             if(getSpecialMarble() != null){
                 resourceConverter(getSpecialMarble());
-                specialMarble = null;
             }
         }
     }

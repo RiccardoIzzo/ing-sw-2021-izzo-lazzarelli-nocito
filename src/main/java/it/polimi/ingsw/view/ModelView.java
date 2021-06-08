@@ -74,7 +74,7 @@ public class ModelView {
             } else if (GRID_CHANGE.equals(propertyName)) {
                 grid = (ArrayList<Integer>) objectToUpdate;
             } else if (TILES_UNCOVERED_CHANGE.equals(propertyName)) {
-                System.out.println("TILES: " + tilesUncovered);
+                System.out.println("TILES: " + Arrays.toString(tilesUncovered));
                 tilesUncovered = (Boolean[]) objectToUpdate;
             }
         }
@@ -87,7 +87,7 @@ public class ModelView {
         private ArrayList<Integer> activeDevelopments;
         private ResourceMap strongbox;
         private ArrayList<Resource> warehouse;
-        private final ArrayList<Resource> extraShelfResources;
+        private ArrayList<Resource> extraShelfResources;
         private Integer faithMarker;
         private Integer blackMarker;
         private Boolean[] popesFavorTiles;
@@ -230,19 +230,25 @@ public class ModelView {
                 if (shelf.stream().filter(Objects::nonNull).distinct().count() > 1) {
                     return false;
                 }
+                if (shelf == extraShelf1 && !(shelf.stream().filter(Objects::nonNull).distinct().findAny().orElse(extraShelfResources.get(0)) == extraShelfResources.get(0))) {
+                    return false;
+                }
+                else if (shelf == extraShelf2 && !(shelf.stream().filter(Objects::nonNull).distinct().findAny().orElse(extraShelfResources.get(1)) == extraShelfResources.get(1))) {
+                    return false;
+                }
             }
             return true;
         }
 
         public void updateDashboard(String propertyName, Object objectToUpdate) {
-            if (LEADER_ACTIVATION.equals(propertyName)) {
-                leaderCards.put((Integer) objectToUpdate, true);
-            } else if (SET_LEADERS.equals(propertyName) || DISCARD_LEADER.equals(propertyName)) {
+            if (SET_LEADERS.equals(propertyName) || DISCARD_LEADER.equals(propertyName) || LEADER_ACTIVATION.equals(propertyName)) {
                 leaderCards = (Map<Integer, Boolean>) objectToUpdate;
             } else if (STRONGBOX_CHANGE.equals(propertyName)) {
                 strongbox = (ResourceMap) objectToUpdate;
             } else if (TEMPORARY_SHELF_CHANGE.equals(propertyName) || SHELF_CHANGE.equals(propertyName)) {
                 warehouse = (ArrayList<Resource>) objectToUpdate;
+            } else if (EXTRA_SHELF_CHANGE.equals(propertyName)) {
+                extraShelfResources = (ArrayList<Resource>) objectToUpdate;
             } else if (FAITH_MARKER_POSITION.equals(propertyName)) {
                 faithMarker = (Integer) objectToUpdate;
             } else if (BLACK_MARKER_POSITION.equals(propertyName)) {

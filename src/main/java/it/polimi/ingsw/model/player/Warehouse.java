@@ -69,7 +69,7 @@ public class Warehouse {
      */
     public void addExtraShelfResource(Resource resource) {
         extraShelfResources.add(resource);
-        pcs.firePropertyChange(SHELF_CHANGE, null, extraShelfResources);
+        pcs.firePropertyChange(EXTRA_SHELF_CHANGE, null, extraShelfResources);
     }
 
     /**
@@ -184,5 +184,6 @@ public class Warehouse {
         WarehouseListener warehouseListener = new WarehouseListener(virtualView);
         pcs.addPropertyChangeListener(SHELF_CHANGE, warehouseListener);
         pcs.addPropertyChangeListener(TEMPORARY_SHELF_CHANGE, warehouseListener);
+        pcs.addPropertyChangeListener(EXTRA_SHELF_CHANGE, warehouseListener);
     }
 }

@@ -25,8 +25,6 @@ public class Player {
     private final CardMap numberOfCard;
     private final CardMap levelOfCard;
     private final ArrayList<DevelopmentCard> activeDevelopments;
-    private final Set<MarbleColor> availableExchange;
-    private final ResourceMap availableDiscount;
     private final PropertyChangeSupport pcs;
 
     /**
@@ -42,8 +40,6 @@ public class Player {
         numberOfCard = new CardMap();
         levelOfCard = new CardMap();
         activeDevelopments = new ArrayList<>(Collections.nCopies(3,null));
-        availableExchange = new HashSet<>();
-        availableDiscount = new ResourceMap();
         pcs = new PropertyChangeSupport(name);
         setPropertyChangeSupport();
     }
@@ -164,8 +160,8 @@ public class Player {
      * @param type represent the user choice: 1 = row, 2 = column.
      */
     public void takeResourcesFromMarket(int pos, int type, MarbleColor whiteMarbleExchange){
-        game.getMarket().insertMarble(pos, type);
         game.getMarket().setSpecialMarble(whiteMarbleExchange);
+        game.getMarket().insertMarble(pos, type);
         if(game.getMarket().findFaith()){
             if(myDashboard.incrementFaith(1)) game.vaticanReport();
         }
@@ -196,14 +192,10 @@ public class Player {
      */
     public void activateLeaderCard(LeaderCard leaderCard){
         leaderCard.setActive(true);
-        if (leaderCard instanceof WhiteMarbleLeaderCard){
-            availableExchange.addAll(((WhiteMarbleLeaderCard) leaderCard).getExchange());
-        } else if (leaderCard instanceof DiscountLeaderCard){
-            availableDiscount.addResources(((DiscountLeaderCard) leaderCard).getDiscount());
-        } else if (leaderCard instanceof ExtraShelfLeaderCard){
+        if (leaderCard instanceof ExtraShelfLeaderCard){
             myDashboard.getWarehouse().addExtraShelfResource(((ExtraShelfLeaderCard) leaderCard).getResource());
         }
-        pcs.firePropertyChange(LEADER_ACTIVATION, null, leaderCard.getCardID());
+        pcs.firePropertyChange(LEADER_ACTIVATION, null, leaders);
     }
 
     /**

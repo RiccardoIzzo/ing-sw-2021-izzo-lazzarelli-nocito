@@ -87,10 +87,11 @@ public class ResourceMap implements Serializable {
     /**
      * Method addResources receives a ResourceMap and adds to this ResourceMap the amount of resources of the ResourceMap received.
      */
-    public void addResources(ResourceMap resourceMap) {
+    public ResourceMap addResources(ResourceMap resourceMap) {
         for (Resource resource : Resource.values()) {
             this.modifyResource(resource, resourceMap.getResource(resource));
         }
+        return this;
     }
 
     /**
