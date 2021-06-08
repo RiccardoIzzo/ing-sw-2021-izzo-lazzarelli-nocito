@@ -85,8 +85,7 @@ public class GUI extends Application implements View {
         Platform.runLater(() -> startLobbies(lobbies));
     }
 
-    @Override
-    public void handleLeaders() {
+    public void startLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
         selectLeaderController = new SelectLeaderController();
         selectLeaderController.setGUI(this);
@@ -96,6 +95,10 @@ public class GUI extends Application implements View {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public void handleLeaders() {
+            Platform.runLater(this::startLeaders);
 
     }
 
