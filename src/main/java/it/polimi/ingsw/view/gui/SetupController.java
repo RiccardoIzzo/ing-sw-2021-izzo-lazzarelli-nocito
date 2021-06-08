@@ -29,7 +29,6 @@ public class SetupController {
     @FXML Button setNicknameButton;
     @FXML Button connectButton;
     @FXML Group nicknameGroup;
-    public String nickname;
 
 
     private static GUI gui;
@@ -47,17 +46,17 @@ public class SetupController {
         gui.mainStage.show();
     }
     public void setNicknameButtonClicked(ActionEvent actionEvent) {
-        nickname = nicknameTextField.getText();
+        String nickname = nicknameTextField.getText();
         if ( nickname.length() < 1 ) {
             gui.showAlert("Nickname not valid!", Alert.AlertType.ERROR);
             return;
         }
-
+        gui.setNickname(nickname);
         gui.send(new SetNickname(nickname));
 
 //        gui.startLobbies(lobbies);
 
-        gui.send(new GetLobbies());
+//        gui.send(new GetLobbies());
 
         gui.mainStage.close();
     }

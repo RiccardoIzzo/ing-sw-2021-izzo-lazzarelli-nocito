@@ -31,7 +31,7 @@ public class GUI extends Application implements View {
     static LobbiesController lobbiesController;
     static SelectLeaderController selectLeaderController;
     private ActionHandler actionHandler;
-    private String nickname;
+    static String nickname;
     private ModelView modelView;
 //    private NetworkHandler network;
 
@@ -46,6 +46,9 @@ public class GUI extends Application implements View {
         setupController.start();
 
 //        handleLeaders();
+    }
+    public void setNickname(String name) {
+        nickname = name;
     }
     public void connect(String ip, int port) {
         network = new NetworkHandler(ip, port, this);
@@ -79,7 +82,6 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleLobbies(Map<String, Integer> lobbies) {
-        System.out.println("Handle lobbies!");
         Platform.runLater(() -> startLobbies(lobbies));
     }
 
@@ -87,6 +89,7 @@ public class GUI extends Application implements View {
     public void handleLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
         selectLeaderController = new SelectLeaderController();
+        selectLeaderController.setGUI(this);
         selectLeaderController.setLeadersIds(ids);
         try {
             selectLeaderController.start();
