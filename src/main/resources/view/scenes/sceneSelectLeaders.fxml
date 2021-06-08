@@ -20,7 +20,7 @@
       </Button>
       <Button fx:id="card3Button" id="card3" onAction="#cardButtonClicked" layoutX="371.0" layoutY="100.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="136.0">
          <graphic>
-            <ImageView fx:id="card3ImageView" fitHeight="224.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />7
+            <ImageView fx:id="card3ImageView" fitHeight="224.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
          </graphic>
       </Button>
       <Button fx:id="card4Button" id="card4" onAction="#cardButtonClicked" layoutX="536.0" layoutY="100.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="136.0">
