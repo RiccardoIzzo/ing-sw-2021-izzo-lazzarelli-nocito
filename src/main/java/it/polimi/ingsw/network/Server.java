@@ -3,6 +3,8 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.*;
+import it.polimi.ingsw.model.MultiplayerGame;
+
 import java.util.*;
 
 /**
@@ -202,7 +204,8 @@ public class Server {
              */
             else if(users.contains(nickname) && !connectionMap.containsKey(nickname)){
                 connectionMap.put(nickname, connection);
-                //to implement, reload the game for that player
+                sendEveryone(new TextMessage(nickname + " is back online!"), getLobbyIDByPlayerName(nickname));
+                getGameHandler(nickname).reloadModelView(nickname);
             }
             /*
             This nickname is available, it registers the player with the selected nickname and sends a ValidNickname message.
@@ -267,18 +270,25 @@ public class Server {
         }
 
         /*
-        It manages Disconnection message.
-        When an error occurs in the receiveFromClient method in ClientConnection it means that a disconnection has occurred,
-        the connection is removed from the list of active connections.
-         */
-        else if(message instanceof Disconnection){
-            connectionMap.remove(nickname);
-        }
-
-        /*
         The other messages are user actions and modify the model, these are handled by the GameHandler.
          */
         else getGameHandler(nickname).process(connection.getNickname(), message);
+    }
+
+    /**
+     * Method disconnect manages a player disconnection.
+     * When an error occurs in the receiveFromClient method in ClientConnection it means that a disconnection has occurred,
+     * the connection is removed from the list of active connections.
+     * @param connection connection associated to the disconnected player.
+     */
+    public void disconnect(ClientConnection connection){
+        String nickname = connection.getNickname();
+        connectionMap.remove(nickname, connection);
+        sendEveryone(new TextMessage(nickname + " is offline!"), getLobbyIDByPlayerName(nickname));
+        if(((MultiplayerGame) getGameHandler(nickname).getGame()).getCurrPlayer().getNickname().equals(nickname)){
+            getGameHandler(nickname).process(nickname, new EndTurn());
+        }
+        connection.close();
     }
 
     /**
