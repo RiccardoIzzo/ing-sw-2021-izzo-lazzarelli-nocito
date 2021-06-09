@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.*;
+import it.polimi.ingsw.listeners.DisconnectionListener;
 import it.polimi.ingsw.model.card.Card;
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.network.VirtualView;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.player.*;
 import it.polimi.ingsw.model.card.LeaderCard;
 
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 import static it.polimi.ingsw.constants.GameConstants.*;
@@ -24,6 +26,7 @@ public class GameHandler {
     private final Server server;
     private final String lobbyID;
     private final VirtualView virtualView;
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**
      * Constructor GameHandler creates a new GameHandler instance.
@@ -46,6 +49,10 @@ public class GameHandler {
         return game;
     }
 
+    public VirtualView getVirtualView() {
+        return virtualView;
+    }
+
     /**
      * Method start sets up the game and starts the first turn.
      */
@@ -65,6 +72,7 @@ public class GameHandler {
         Give each player four LeaderCard.
          */
         server.sendEveryone(new GameStarted(players), lobbyID);
+        addPropertyListener(virtualView, game);
         game.generateGrid();
         game.getMarket().generateTray();
         game.generateLeaders();
@@ -145,18 +153,25 @@ public class GameHandler {
 
         else if(message instanceof EndTurn) {
             if(game instanceof MultiplayerGame){
-                ((MultiplayerGame) game).nextPlayer();
-                String currPlayer = ((MultiplayerGame) game).getCurrPlayer().getNickname();
-                if(game.isFinalTurn() && currPlayer.equals(((MultiplayerGame) game).getFirstPlayer().getNickname())){
-                    Map<String, Integer> gameStats = game.getGameStats();
-                    virtualView.sendToEveryone(new GameStats(gameStats, gameStats.keySet().iterator().next()));
+                while(server.getActivePlayersByLobby(lobbyID).size() != 0){
+                    ((MultiplayerGame) game).nextPlayer();
+                    String currPlayer = ((MultiplayerGame) game).getCurrPlayer().getNickname();
+
+                    if(game.isFinalTurn() && currPlayer.equals(((MultiplayerGame) game).getFirstPlayer().getNickname())){
+                        Map<String, Integer> gameStats = game.getGameStats();
+                        virtualView.sendToEveryone(new GameStats(gameStats, gameStats.keySet().iterator().next()));
+                    }
+
+                    if(server.isConnected(currPlayer)) {
+                        virtualView.sendToPlayer(currPlayer, new StartTurn(currPlayer));
+                        break;
+                    }
                 }
-                else virtualView.sendToPlayer(currPlayer, new StartTurn(currPlayer));
             }
+
             else if(game instanceof SinglePlayerGame){
                 ((SinglePlayerGame) game).drawToken();
             }
-
         }
 
         else if(message instanceof SetWarehouse) {
@@ -173,5 +188,14 @@ public class GameHandler {
         else if(message instanceof SetFinalTurn){
             game.setFinalTurn(true);
         }
+    }
+
+    public void reloadModelView(String nickname){
+        pcs.firePropertyChange(nickname, null, null);
+    }
+
+    public void addPropertyListener(VirtualView virtualView, Game game){
+        DisconnectionListener serverListener = new DisconnectionListener(virtualView, game);
+        pcs.addPropertyChangeListener(serverListener);
     }
 }
