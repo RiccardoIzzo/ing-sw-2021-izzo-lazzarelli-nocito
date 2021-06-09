@@ -74,7 +74,6 @@ public class ModelView {
             } else if (GRID_CHANGE.equals(propertyName)) {
                 grid = (ArrayList<Integer>) objectToUpdate;
             } else if (TILES_UNCOVERED_CHANGE.equals(propertyName)) {
-                System.out.println("TILES: " + Arrays.toString(tilesUncovered));
                 tilesUncovered = (Boolean[]) objectToUpdate;
             }
         }

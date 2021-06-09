@@ -103,15 +103,14 @@ public class ClientConnection implements Runnable{
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Disconnected! Connection lost with " + socket.getRemoteSocketAddress().toString());
-            server.handleMessage(this, new Disconnection());
-            close();
+            server.disconnect(this);
         }
     }
 
     /**
      * Method close terminates the server connection by closing the socket and the stream of data.
      */
-    private void close(){
+    public void close(){
         try {
             setStatus(false);
             input.close();

@@ -26,11 +26,12 @@ public class FaithTrack {
         Arrays.fill(popesFavorTiles, false);
 
     }
-    public boolean getTilesUncovered(int index) {
-        if (index < tilesUncovered.length) {
-            return tilesUncovered[index];
-        }
-        return false;
+    public Boolean[] getTilesUncovered() {
+        return tilesUncovered;
+    }
+
+    public Boolean[] getPopesFavorTiles() {
+        return popesFavorTiles;
     }
 
     public void setTilesUncovered(Boolean[] tilesUncovered) {

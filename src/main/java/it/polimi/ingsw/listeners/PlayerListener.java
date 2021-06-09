@@ -57,14 +57,14 @@ public class PlayerListener extends PropertyListener {
                 }
             }
         } else if (DEVELOPMENTS_CHANGE.equals(propertyName)) {
-            serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateCards((Collection<Card>) newValue));
+            serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateCards((Collection<DevelopmentCard>) newValue));
             virtualView.sendToEveryone(serverMessage);
             if(((Set<DevelopmentCard>) newValue).size() == 7) {
                 ServerMessage endGame = new EndGame();
                 virtualView.sendToEveryone(endGame);
             }
         } else if (ACTIVE_DEVELOPMENTS_CHANGE.equals(propertyName)) {
-            serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateCards((Collection<Card>) newValue));
+            serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateCards((Collection<DevelopmentCard>) newValue));
             virtualView.sendToEveryone(serverMessage);
         }
     }

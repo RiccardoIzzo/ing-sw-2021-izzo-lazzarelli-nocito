@@ -26,7 +26,7 @@ public abstract class PropertyListener implements PropertyChangeListener {
         return leaders;
     }
 
-    public ArrayList<Integer> translateCards(Collection<Card> cards) {
+    public ArrayList<Integer> translateCards(Collection<DevelopmentCard> cards) {
         ArrayList<Integer> cardIDs = new ArrayList<>();
         for (Card card : cards) {
             if (card != null){

@@ -33,6 +33,10 @@ public class Market {
         outputMarket = new ResourceMap();
     }
 
+    public ArrayList<MarbleColor> getMarketTray() {
+        return marketTray;
+    }
+
     /**
      * Method getSlideMarble returns the marble that can slide, the one outside the market tray.
      * @return the marble.

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.events.servermessages.GameStarted;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.view.ActionHandler;
@@ -24,7 +25,7 @@ import static it.polimi.ingsw.constants.PlayerConstants.*;
 public class ServerConnection implements Runnable{
     private ObjectInputStream input;
     private boolean status;
-    ActionHandler actionHandler;
+    private final ActionHandler actionHandler;
     private final ArrayBlockingQueue<ServerMessage> messages;
     private final View view;
     private ModelView modelView;
@@ -82,7 +83,10 @@ public class ServerConnection implements Runnable{
                 }
             }
             else {
-                messages.add(message);
+                if(message instanceof GameStarted) {
+                    actionHandler.handle(message);
+                }
+                else messages.add(message);
             }
         }
         catch (IOException | ClassNotFoundException | InterruptedException e) {
