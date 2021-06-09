@@ -58,7 +58,6 @@ public class SetupController {
 
 //        gui.send(new GetLobbies());
 
-        gui.mainStage.close();
     }
 
     public void connectButtonClicked() {
