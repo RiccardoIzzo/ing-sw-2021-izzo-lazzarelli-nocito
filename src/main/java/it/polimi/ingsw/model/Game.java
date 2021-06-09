@@ -166,7 +166,6 @@ public abstract class Game {
 
     public void addPropertyListener(VirtualView virtualView){
         GameListener gameListener = new GameListener(virtualView);
-        pcs.addPropertyChangeListener(GRID_CHANGE, gameListener);
-        pcs.addPropertyChangeListener(TOKEN_DRAWN, gameListener);
+        pcs.addPropertyChangeListener(gameListener);
     }
 }
