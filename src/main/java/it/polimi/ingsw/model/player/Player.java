@@ -247,7 +247,7 @@ public class Player {
     }
 
     public void addPropertyListener(VirtualView virtualView) {
-        PlayerListener playerListener = new PlayerListener(virtualView);
+        PlayerListener playerListener = new PlayerListener(virtualView, game);
         pcs.addPropertyChangeListener(SET_LEADERS, playerListener);
         pcs.addPropertyChangeListener(DISCARD_LEADER, playerListener);
         pcs.addPropertyChangeListener(LEADER_ACTIVATION, playerListener);

@@ -70,7 +70,7 @@ public class ActionHandler extends Thread{
             System.exit(0);
         }
         else if(message instanceof TokenDrawn){
-            view.printText("\nToken drawn.\n" + ((TokenDrawn) message).getToken().toString() + "\n");
+            view.printText("\nToken drawn:\n" + ((TokenDrawn) message).getToken().toString());
             view.startTurn();
             view.handleTurn();
         }

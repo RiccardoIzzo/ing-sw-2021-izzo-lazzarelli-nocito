@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.VirtualView;
 
 import java.util.*;
 
+import static it.polimi.ingsw.constants.GameConstants.TOKEN_DRAWN;
 import static it.polimi.ingsw.constants.PlayerConstants.GRID_CHANGE;
 
 /**
@@ -164,6 +165,8 @@ public abstract class Game {
     }
 
     public void addPropertyListener(VirtualView virtualView){
-        pcs.addPropertyChangeListener(new GameListener(virtualView));
+        GameListener gameListener = new GameListener(virtualView);
+        pcs.addPropertyChangeListener(GRID_CHANGE, gameListener);
+        pcs.addPropertyChangeListener(TOKEN_DRAWN, gameListener);
     }
 }

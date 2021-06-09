@@ -1,15 +1,17 @@
 package it.polimi.ingsw.listeners;
 
+import it.polimi.ingsw.events.servermessages.Defeat;
 import it.polimi.ingsw.events.servermessages.EndGame;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
-import it.polimi.ingsw.model.card.Card;
-import it.polimi.ingsw.model.card.Deck;
-import it.polimi.ingsw.model.card.DevelopmentCard;
-import it.polimi.ingsw.model.card.LeaderCard;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.JsonCardsCreator;
+import it.polimi.ingsw.model.SinglePlayerGame;
+import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +23,11 @@ import static it.polimi.ingsw.constants.PlayerConstants.*;
  * @author Gabriele Lazzarelli
  */
 public class PlayerListener extends PropertyListener {
-    public PlayerListener(VirtualView virtualView) {
+    private final Game game;
+
+    public PlayerListener(VirtualView virtualView, Game game) {
         super(virtualView);
+        this.game = game;
     }
 
     @Override
@@ -42,6 +47,15 @@ public class PlayerListener extends PropertyListener {
         } else if (GRID_CHANGE.equals(propertyName)) {
             serverMessage = new UpdateView(null, propertyName, oldValue, translateGrid((Deck[][]) newValue));
             virtualView.sendToEveryone(serverMessage);
+            if (game instanceof SinglePlayerGame){
+                ArrayList<Integer> developmentIDs = translateGrid((Deck[][]) newValue);
+                for(CardColor cardColor : CardColor.values()){
+                    if (developmentIDs.stream().map(JsonCardsCreator::generateDevelopmentCard).noneMatch(card -> card.getType() == cardColor)){
+                        ServerMessage message = new Defeat();
+                        virtualView.sendToEveryone(message);
+                    }
+                }
+            }
         } else if (DEVELOPMENTS_CHANGE.equals(propertyName)) {
             serverMessage = new UpdateView(playerSource, propertyName, oldValue, translateCards((Collection<Card>) newValue));
             virtualView.sendToEveryone(serverMessage);
