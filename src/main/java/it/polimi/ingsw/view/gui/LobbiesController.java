@@ -35,19 +35,12 @@ public class LobbiesController {
 
     public void start() throws IOException {
 //        gui.mainStage.close();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies.fxml"));
-        Parent root = loader.load();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.show();
-
-        LobbiesController controller = loader.getController();
 
             for(Map.Entry<String,Integer> lobby : lobbies.entrySet()) {
-                controller.lobbiesListView.getItems().add("["+lobby.getValue()+" players] - " + lobby.getKey());
+                this.lobbiesListView.getItems().add("["+lobby.getValue()+" players] - " + lobby.getKey());
             }
-        controller.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        this.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     }
     public void joinButtonClicked() {

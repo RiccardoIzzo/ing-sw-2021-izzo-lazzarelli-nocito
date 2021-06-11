@@ -35,12 +35,6 @@ public class SelectLeaderController {
 
 
     public void start() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneSelectLeaders.fxml"));
-        Parent root = loader.load();
-        loader.setController(this);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.show();
         showCards();
     }
     public void showCards() {

@@ -12,6 +12,8 @@ import javafx.application.Application;
 import it.polimi.ingsw.events.clientmessages.ClientMessage;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -41,11 +43,16 @@ public class GUI extends Application implements View {
     public void start(Stage stage) throws Exception {
         //actionHandler = new ActionHandler(this);
         mainStage = stage;
-        setupController = new SetupController();
-        setupController.setGUI(this);
-        setupController.start();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneConnect.fxml"));
+        Parent root = loader.load();
 
-//        handleLeaders();
+
+        setupController = loader.getController();
+        setupController.setGUI(this);
+
+        mainStage.setTitle("Master of Renaissance");
+        mainStage.setScene(new Scene(root));
+        mainStage.show();
     }
     public void setNickname(String name) {
         nickname = name;
@@ -55,10 +62,18 @@ public class GUI extends Application implements View {
         network.setConnection();
     }
     public void startLobbies(Map<String, Integer> lobbies) {
-        lobbiesController = new LobbiesController();
-        lobbiesController.setGUI(this);
-        lobbiesController.setLobbies(lobbies);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies.fxml"));
+
         try {
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            lobbiesController = loader.getController();
+            lobbiesController.setGUI(this);
+            lobbiesController.setLobbies(lobbies);
             lobbiesController.start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,10 +103,17 @@ public class GUI extends Application implements View {
 
     public void startLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
-        selectLeaderController = new SelectLeaderController();
-        selectLeaderController.setGUI(this);
-        selectLeaderController.setLeadersIds(ids);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneSelectLeaders.fxml"));
+        Parent root;
         try {
+            root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+            selectLeaderController = loader.getController();
+            selectLeaderController.setGUI(this);
+            selectLeaderController.setLeadersIds(ids);
             selectLeaderController.start();
         } catch (IOException e) {
             e.printStackTrace();
