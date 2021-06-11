@@ -37,6 +37,14 @@ public class SetupController {
         SetupController.gui = gui;
     }
 
+    public void start() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneConnect.fxml"));
+        Parent root = loader.load();
+
+        gui.mainStage.setTitle("Master of Renaissance");
+        gui.mainStage.setScene(new Scene(root));
+        gui.mainStage.show();
+    }
     public void setNicknameButtonClicked(ActionEvent actionEvent) {
         String nickname = nicknameTextField.getText();
         if ( nickname.length() < 1 ) {

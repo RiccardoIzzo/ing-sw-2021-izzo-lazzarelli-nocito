@@ -43,16 +43,11 @@ public class GUI extends Application implements View {
     public void start(Stage stage) throws Exception {
         //actionHandler = new ActionHandler(this);
         mainStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneConnect.fxml"));
-        Parent root = loader.load();
-
-
-        setupController = loader.getController();
+        setupController = new SetupController();
         setupController.setGUI(this);
+        setupController.start();
 
-        mainStage.setTitle("Master of Renaissance");
-        mainStage.setScene(new Scene(root));
-        mainStage.show();
+//        handleLeaders();
     }
     public void setNickname(String name) {
         nickname = name;
