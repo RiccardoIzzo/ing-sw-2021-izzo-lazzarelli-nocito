@@ -2,6 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.SetFinalTurn;
 import it.polimi.ingsw.events.servermessages.*;
+import it.polimi.ingsw.view.gui.GUI;
+import javafx.scene.control.Alert;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -40,9 +42,15 @@ public class ActionHandler extends Thread{
         }
         else if(message instanceof LobbyJoined){
             view.printText("Lobby joined! Waiting for other players...");
+            if (view instanceof GUI) {
+                ((GUI) view).handleLobbyJoined();
+            }
         }
         else if(message instanceof LobbyFull){
             view.printText("This lobby is full! Try again.");
+            if (view instanceof GUI) {
+                ((GUI) view).showAlert("This lobby is full! Try again.", Alert.AlertType.ERROR);
+            }
         }
         else if(message instanceof GameStarted){
             view.printText("The game is about to start.");

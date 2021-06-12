@@ -9,8 +9,17 @@
 <?import javafx.scene.control.ListView?>
 
 
-<Pane fx:controller="it.polimi.ingsw.view.gui.LobbiesController" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/">
-      <Button layoutX="148.0" layoutY="320.0" onAction="#joinButtonClicked" prefHeight="26.0" prefWidth="100.0" text="Join" />
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<Pane fx:controller="it.polimi.ingsw.view.gui.LobbiesController" fx:id="lobbiesPane" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/">
+      <Button layoutX="221.0" layoutY="320.0" onAction="#joinButtonClicked" prefHeight="26.0" prefWidth="100.0" text="Join" />
+    <Button layoutX="107.0" layoutY="320.0" onAction="#refreshButtonClicked" prefHeight="15.0" prefWidth="15.0" >
+        <graphic>
+            <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/view/images/icons/refresh.png" />
+            </ImageView>
+        </graphic>
+    </Button>
       <Label id="titleLabel" alignment="CENTER" layoutY="41.0" prefHeight="43.0" prefWidth="600.0" text="Lobbies">
          <font>
             <Font name="System Bold" size="27.0" />

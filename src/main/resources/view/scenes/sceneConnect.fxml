@@ -22,10 +22,10 @@
          </effect>
       </Label>
       <Group layoutX="55.5" layoutY="124.0">
-            <Label id="serverLabel" fx:id="serverLabel" alignment="CENTER" prefHeight="17.0" prefWidth="491.0" text="Server" />
-            <Label id="ipLabel" fx:id="ipLabel" alignment="CENTER" layoutX="2.0" layoutY="77.0" prefHeight="17.0" prefWidth="491.0" text="IP" />
-            <TextField id="serverTextField" fx:id="serverTextField" layoutX="167.0" layoutY="29.0" promptText="Insert server" />
-            <TextField id="ipTextField" fx:id="ipTextField" layoutX="167.0" layoutY="105.0" promptText="Insert ip" />
+            <Label id="serverLabel" fx:id="serverLabel" alignment="CENTER" layoutX="2.0" layoutY="77.0" prefHeight="17.0" prefWidth="491.0" text="Server port" />
+            <Label id="ipLabel" fx:id="ipLabel" alignment="CENTER"  prefHeight="17.0" prefWidth="491.0" text="IP address" />
+            <TextField id="serverTextField" fx:id="serverTextField" layoutX="167.0" layoutY="105.0" promptText="Insert server port" />
+            <TextField id="ipTextField" fx:id="ipTextField" layoutX="167.0" layoutY="29.0" promptText="Insert ip address" />
             <Group fx:id="nicknameGroup" layoutY="52.0" opacity="0.0">
                   <Label id="setNicknameLabel" fx:id="nicknameLabel" alignment="CENTER" prefHeight="17.0" prefWidth="491.0" text="Nickname" />
                   <TextField id="setNicknameTextField" fx:id="nicknameTextField" layoutX="167.0" layoutY="29.0" promptText="Insert nickname" />

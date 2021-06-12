@@ -4,7 +4,6 @@ import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetNickname;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.network.NetworkHandler;
-import it.polimi.ingsw.view.ActionHandler;
 import it.polimi.ingsw.view.ModelView;
 import it.polimi.ingsw.view.View;
 import javafx.application.Application;
@@ -16,10 +15,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.SelectionMode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,14 +28,14 @@ import java.util.Set;
  */
 public class GUI extends Application implements View {
     Stage mainStage;
-    private static NetworkHandler network;
+    private NetworkHandler network;
     SetupController setupController;
-    static LobbiesController lobbiesController;
-    static SelectLeaderController selectLeaderController;
-    private ActionHandler actionHandler;
+    LobbiesController lobbiesController;
+    SelectLeaderController selectLeaderController;
+    DashboardController dashboardController;
     static String nickname;
     private ModelView modelView;
-//    private NetworkHandler network;
+
 
 
 
@@ -62,13 +62,18 @@ public class GUI extends Application implements View {
 
         try {
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+//            Stage stage = new Stage();
+            mainStage.setScene(new Scene(root));
+            mainStage.show();
 
             lobbiesController = loader.getController();
             lobbiesController.setGUI(this);
             lobbiesController.setLobbies(lobbies);
+            for(Map.Entry<String,Integer> lobby : lobbies.entrySet()) {
+                lobbiesController.lobbiesListView.getItems().add("["+lobby.getValue()+" players] - " + lobby.getKey());
+            }
+            lobbiesController.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
             lobbiesController.start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,9 +98,32 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleLobbies(Map<String, Integer> lobbies) {
-        Platform.runLater(() -> startLobbies(lobbies));
+        if (lobbiesController == null ) {
+            Platform.runLater(() -> startLobbies(lobbies));
+        }
+        else {
+            Platform.runLater(() -> lobbiesController.refreshLobbies(lobbies));
+        }
     }
 
+    public void handleGameStart() {
+        Platform.runLater(this::startGame);
+    }
+
+    public void startGame() {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneDashboard.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+//            Stage stage = new Stage();
+            mainStage.setScene(new Scene(root));
+            mainStage.show();
+            dashboardController = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void startLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
 
@@ -103,16 +131,20 @@ public class GUI extends Application implements View {
         Parent root;
         try {
             root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+//            Stage stage = new Stage();
+            mainStage.setScene(new Scene(root));
+            mainStage.show();
             selectLeaderController = loader.getController();
             selectLeaderController.setGUI(this);
-            selectLeaderController.setLeadersIds(ids);
+            selectLeaderController.setLeadersIds(new ArrayList<>(ids));
             selectLeaderController.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void handleLobbyJoined() {
+        lobbiesController.addWaitingView("Lobby created! Waiting for other players ...");
     }
     @Override
     public void handleLeaders() {

@@ -66,14 +66,14 @@ public class SetupController {
             return;
         }
 
-        gui.connect(serverTextField.getText(), Integer.parseInt(ipTextField.getText()));
+        gui.connect(ipTextField.getText(), Integer.parseInt(serverTextField.getText()));
 
         serverLabel.setOpacity(0);
         serverTextField.setOpacity(0);
         ipLabel.setOpacity(0);
         ipTextField.setOpacity(0);
         connectButton.setOpacity(0);
-
+        connectButton.setManaged(false);
         nicknameGroup.setOpacity(1);
         setNicknameButton.setOpacity(1);
 
