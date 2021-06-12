@@ -49,7 +49,6 @@ public class GUI extends Application implements View {
         setupController.setGUI(this);
         setupController.start();
 
-//        handleLeaders();
     }
     public void setNickname(String name) {
         nickname = name;
@@ -123,6 +122,8 @@ public class GUI extends Application implements View {
             dashboardController.setGUI(this);
             mainStage.setScene(new Scene(root));
             mainStage.show();
+
+            mainStage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
