@@ -32,6 +32,8 @@ public class GUI extends Application implements View {
     SetupController setupController;
     LobbiesController lobbiesController;
     SelectLeaderController selectLeaderController;
+    MarketController marketController;
+    GridController gridController;
     DashboardController dashboardController;
     static String nickname;
     private ModelView modelView;
@@ -117,9 +119,10 @@ public class GUI extends Application implements View {
         try {
             root = loader.load();
 //            Stage stage = new Stage();
+            dashboardController = loader.getController();
+            dashboardController.setGUI(this);
             mainStage.setScene(new Scene(root));
             mainStage.show();
-            dashboardController = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
