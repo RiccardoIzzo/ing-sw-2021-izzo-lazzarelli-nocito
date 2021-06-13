@@ -670,7 +670,9 @@ public class CLI implements View{
 
     public static void showCards(Collection<Integer> cards) {
         for (Integer card: cards) {
-            System.out.println(Objects.requireNonNull(JsonCardsCreator.generateCard(card)));
+            if (card != null) {
+                System.out.println(Objects.requireNonNull(JsonCardsCreator.generateCard(card)));
+            }
         }
         System.out.println();
     }
