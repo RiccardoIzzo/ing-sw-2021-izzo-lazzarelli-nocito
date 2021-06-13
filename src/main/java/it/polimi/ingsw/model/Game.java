@@ -4,9 +4,11 @@ import java.beans.PropertyChangeSupport;
 import it.polimi.ingsw.listeners.GameListener;
 import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PlayerComparator;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.constants.GameConstants.TOKEN_DRAWN;
 import static it.polimi.ingsw.constants.PlayerConstants.GRID_CHANGE;
@@ -147,21 +149,13 @@ public abstract class Game {
     }
 
     public Map<String, Integer> getGameStats(){
-        Map<String, Integer> stats = new LinkedHashMap<>();
+        Map<String, Integer> ranking = new LinkedHashMap<>();
+        ArrayList<Player> players = getPlayers();
+        players.sort(new PlayerComparator());
         for(Player player : players){
-            stats.put(player.getNickname(), player.getVictoryPoints());
+            ranking.put(player.getNickname(), player.getVictoryPoints());
         }
-        stats.entrySet().stream().sorted((o1, o2) -> {
-            Player playerOne = getPlayerByName(o1.getKey());
-            Player playerTwo = getPlayerByName(o2.getKey());
-            if (playerOne.getVictoryPoints() == playerTwo.getVictoryPoints()) {
-                return playerTwo.getTotalResources().size().compareTo(playerOne.getTotalResources().size());
-            } else if (playerOne.getVictoryPoints() > playerTwo.getVictoryPoints()) {
-                return -1;
-            } else return 1;
-        }).forEachOrdered(x -> stats.put(x.getKey(), x.getValue()));
-
-        return stats;
+        return ranking;
     }
 
     public void addPropertyListener(VirtualView virtualView){
