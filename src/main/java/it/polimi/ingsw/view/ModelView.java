@@ -10,12 +10,15 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.constants.GameConstants.*;
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
+/**
+ * ModelView class contains all the visual and functional information the player needs during the game.
+ * @author Gabriele Lazzarelli
+ */
 public class ModelView {
     ArrayList<DashboardView> dashboards;
     private final String myNickname;
     private String currPlayer;
     private ArrayList<Integer> grid;
-    private Boolean[] tilesUncovered;
     private MarbleColor slideMarble;
     private ArrayList<MarbleColor> marketTray;
 
@@ -27,39 +30,72 @@ public class ModelView {
         this.myNickname = myNickname;
         this.currPlayer = "";
         this.grid = new ArrayList<>();
-        this.tilesUncovered = new Boolean[]{false, false, false};
         this.slideMarble = null;
         this.marketTray = new ArrayList<>();
     }
 
+    /**
+     * Method getMyNickname returns the player's name associated with this client.
+     * @return the nickname of this client.
+     */
     public String getMyNickname() {
         return myNickname;
     }
 
+    /**
+     * Method getCurrPlayer returns the player name who is playing.
+     * @return the name of the player which is currently playing.
+     */
     public String getCurrPlayer() {
         return currPlayer;
     }
 
+    /**
+     * Method getSlideMarble returns the market's slide marble.
+     * @return the market's slide marble.
+     */
     public MarbleColor getSlideMarble() {
         return slideMarble;
     }
 
+    /**
+     * Method getDashboards returns the list of DashboardView(s) present in the game.
+     * @return the list of DashboardView(s) present in the game.
+     */
     public ArrayList<DashboardView> getDashboards() {
         return dashboards;
     }
 
+    /**
+     * Method getGrid returns a list containing all the cards at the top of each Deck.
+     * @return a list containing all the cards at the top of each Deck.
+     */
     public ArrayList<Integer> getGrid() {
         return grid;
     }
 
+    /**
+     * Method getMarketTray returns the list of MarbleColor representing the market.
+     * @return the list of MarbleColor representing the market.
+     */
     public ArrayList<MarbleColor> getMarketTray() {
         return marketTray;
     }
 
+    /**
+     * Method getMyDashboard returns the DashboardView associated with this client.
+     * @return the DashboardView associated with this client.
+     */
     public DashboardView getMyDashboard() {
         return dashboards.stream().filter(dashboardView -> dashboardView.getNickname().equals(myNickname)).findAny().orElse(null);
     }
 
+    /**
+     * Method updateModelView updates a specific attribute in the ModelView.
+     * @param playerSource is the name of the player that triggered a change in the Model.
+     * @param propertyName is the name associated the specific attribute which changed.
+     * @param objectToUpdate is the the new value of the attribute which changed.
+     */
     public void updateModelView(String playerSource, String propertyName, Object objectToUpdate) {
         if (playerSource != null) {
             DashboardView dashboardView = dashboards.stream().filter(dashboard -> dashboard.getNickname().equals(playerSource)).findAny().orElse(null);
@@ -73,12 +109,14 @@ public class ModelView {
                 slideMarble = (MarbleColor) objectToUpdate;
             } else if (GRID_CHANGE.equals(propertyName)) {
                 grid = (ArrayList<Integer>) objectToUpdate;
-            } else if (TILES_UNCOVERED_CHANGE.equals(propertyName)) {
-                tilesUncovered = (Boolean[]) objectToUpdate;
             }
         }
     }
 
+    /**
+     * DashboardView class is a helper class for the ModelView, it encapsulates all the info needed about a specific player.
+     * @author Gabriele Lazzarelli
+     */
     public class DashboardView{
         private String nickname;
         private Map<Integer, Boolean> leaderCards;
@@ -91,6 +129,10 @@ public class ModelView {
         private Integer blackMarker;
         private Boolean[] popesFavorTiles;
 
+        /**
+         * Method DashboardView constructor creates an instance for the specified player name.
+         * @param nickname the name of the owner of this dashboard representation.
+         */
         public DashboardView(String nickname) {
             this.nickname = nickname;
             this.leaderCards = new HashMap<>();
@@ -104,18 +146,34 @@ public class ModelView {
             this.popesFavorTiles = new Boolean[] {false, false, false};
         }
 
+        /**
+         * Method getNickname returns the nickname of the owner of this dashboard representation.
+         * @return the name of the owner of this dashboard representation.
+         */
         public String getNickname() {
             return nickname;
         }
 
+        /**
+         * Method getLeaderCards returns the LeaderCard(s) associated with this instance of DashboardView.
+         * @return the ids of the LeaderCards in this DashboardView.
+         */
         public Map<Integer, Boolean> getLeaderCards() {
             return leaderCards;
         }
 
+        /**
+         * Method getDevelopmentCards returns the DevelopmentCard(s) associated with this instance of DashboardView.
+         * @return the ids of the DevelopmentCard(s) in this DashboardView.
+         */
         public ArrayList<Integer> getDevelopmentCards() {
             return developmentCards;
         }
 
+        /**
+         * Method getAvailableProduction return the cards of this DashboardView that have an active PowerProduction.
+         * @return the ids of the cards that have an active PowerProduction.
+         */
         public ArrayList<Integer> getAvailableProduction(){
             ArrayList<Integer> powerProductionCards = new ArrayList<>();
             for(Integer id : leaderCards.keySet()){
@@ -134,46 +192,82 @@ public class ModelView {
             return myResources;
         }
 
+        /**
+         * Method getActiveDevelopments returns the active DevelopmentCard(s) associated with this instance of DashboardView.
+         * @return the ids of the active DevelopmentCard(s) in this DashboardView.
+         */
         public ArrayList<Integer> getActiveDevelopments() {
             return activeDevelopments;
         }
 
+        /**
+         * Method getStrongbox returns the strongbox associated with this instance of DashboardView.
+         * @return the ResourceMap representing the strongbox in this DashboardView.
+         */
         public ResourceMap getStrongbox() {
             return strongbox;
         }
 
+        /**
+         * Method getWarehouse returns the warehouse associated with this instance of DashboardView.
+         * @return the list of resource representing the warehouse in this DashboardView.
+         */
         public ArrayList<Resource> getWarehouse() {
             return warehouse;
         }
 
+        /**
+         * Method getExtraShelfResources returns the extra shelf resources associated with this instance of DashboardView.
+         * @return the extra shelf resources in this DashboardView.
+         */
         public ArrayList<Resource> getExtraShelfResources() {
             return extraShelfResources;
         }
 
+        /**
+         * Method getFaithMarker returns the position of the faith marker associated with this instance of DashboardView.
+         * @return the position of the faith marker in this DashboardView.
+         */
         public Integer getFaithMarker() {
             return faithMarker;
         }
 
+        /**
+         * Method getBlackMarker returns the position of the black marker associated with this instance of DashboardView.
+         * @return the position of the black marker in this DashboardView.
+         */
         public Integer getBlackMarker() {
             return blackMarker;
         }
 
+        /**
+         * Method getPopesFavorTiles returns the status of the pope tiles associated with this instance of DashboardView.
+         * @return the position of the black marker in this DashboardView.
+         */
         public Boolean[] getPopesFavorTiles() {
             return popesFavorTiles;
         }
 
+        /**
+         * Method setNickname sets the nickname of the owner of this DashboardView.
+         */
         public void setNickname(String nickname) {
             this.nickname = nickname;
         }
 
+        /**
+         * Method swapResource swaps the content of two slots.
+         * @param firstResource the index of the first slot.
+         * @param secondResource the index of the second slot.
+         */
         public void swapResources(int firstResource, int secondResource) {
             Collections.swap(warehouse, firstResource, secondResource);
         }
 
         /**
-         * Method shelfResources return the amount of resources of a shelf
-         * @param shelf the selected shelf
-         * @return an integer, the number of resources of the selected shelf
+         * Method shelfResources return the amount of resources of a shelf.
+         * @param shelf the selected shelf.
+         * @return the number of resources of the selected shelf.
          */
         public int shelfResources(List<Resource> shelf){
             int amount = 0;
@@ -185,6 +279,10 @@ public class ModelView {
             return amount;
         }
 
+        /**
+         * Method checkWarehouse checks the warehouse's resource placement of the player before he's allowed to pass his turn.
+         * @return true if the resources' configuration respects the game rules, false otherwise.
+         */
         public boolean checkWarehouse() {
             List<Resource> shelfOne, shelfTwo, shelfThree, extraShelf1, extraShelf2, temporaryShelf;
             shelfOne = warehouse.subList(0,1);
@@ -239,6 +337,11 @@ public class ModelView {
             return true;
         }
 
+        /**
+         * Method UpdateDashboard updates the value of a specific attribute in this DashboardView.
+         * @param propertyName the name associated with the specific attribute.
+         * @param objectToUpdate the new value of the specific attribute.
+         */
         public void updateDashboard(String propertyName, Object objectToUpdate) {
             if (SET_LEADERS.equals(propertyName) || DISCARD_LEADER.equals(propertyName) || LEADER_ACTIVATION.equals(propertyName)) {
                 leaderCards = (Map<Integer, Boolean>) objectToUpdate;
