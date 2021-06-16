@@ -31,6 +31,10 @@ public class DiscountLeaderCard extends LeaderCard {
         return discount;
     }
 
+    /**
+     * Method toString returns the string representation of this DiscountLeaderCard.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return "ID: " + super.getCardID() +

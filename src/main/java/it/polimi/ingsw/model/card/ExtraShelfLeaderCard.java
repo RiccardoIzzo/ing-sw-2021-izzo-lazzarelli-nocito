@@ -31,6 +31,10 @@ public class ExtraShelfLeaderCard extends LeaderCard {
         return resource;
     }
 
+    /**
+     * Method toString returns the string representation of this ExtraShelfLeaderCard.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return "ID: " + super.getCardID() +

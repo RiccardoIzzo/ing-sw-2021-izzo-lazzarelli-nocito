@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
+
 /**
- * ResourceMap class represents a set of available resources with associated quantities
+ * ResourceMap class represents a set of available resources with associated quantities.
  *
  * @author Andrea Nocito
  */
-
 public class ResourceMap implements Serializable {
-    Map<Resource , Integer> resources;
+    private final Map<Resource , Integer> resources;
 
     /**
      * Constructor ResourceMap creates a new ResourceMap instance.
@@ -26,8 +26,8 @@ public class ResourceMap implements Serializable {
     }
 
     /**
-     * Method getResources returns an ArrayList of Integers with all the available quantities of each Resource.
-     * @return the an ArrayList of the associated Integers.
+     * Method getResources returns a Map with the available quantities for each Resource.
+     * @return the Map.
      */
     public Map <Resource, Integer> getResources() {
         return resources;
@@ -35,18 +35,18 @@ public class ResourceMap implements Serializable {
 
     /**
      * Method getResource returns the available quantity of the specified Resource.
-     * @param resource the specified Resource
-     * @return the quantity for the specified Resource in this ResourceMap
+     * @param resource the specified Resource.
+     * @return the quantity for the specified Resource in this ResourceMap.
      */
     public Integer getResource(Resource resource) {
         return resources.get(resource);
     }
 
     /**
-     * Method size return the amount of resources inside this ResourceMap
-     * @return the associated Integer.
+     * Method getAmount returns the total amount of resources inside this ResourceMap.
+     * @return the amount of resources.
      */
-    public Integer size() {
+    public Integer getAmount() {
         int total = 0;
         for (Resource resource: Resource.values()) {
             total += getResource(resource);
@@ -55,8 +55,8 @@ public class ResourceMap implements Serializable {
     }
 
     /**
-     * Method asList return an ArrayList with all the resource this ResourceMap contains
-     * @return an ArrayList containing all the resource of this ResourceMap
+     * Method asList return an ArrayList with all the resource this ResourceMap contains.
+     * @return an ArrayList containing all the resource of this ResourceMap.
      */
     public ArrayList<Resource> asList() {
         ArrayList<Resource> resourcesList = new ArrayList<>();
@@ -69,8 +69,10 @@ public class ResourceMap implements Serializable {
     }
 
     /**
-     * Method modifyResource receives the resource type and the Integer value to add to such resource.
-     * @return true if the operation was successful
+     * Method modifyResource updates the quantity of the selected resource.
+     * @param type resource type.
+     * @param value amount of selected resource to add.
+     * @return true if the operation was successful, false otherwise.
      */
     public boolean modifyResource(Resource type, Integer value) {
         if ( type == null ) {
@@ -95,8 +97,9 @@ public class ResourceMap implements Serializable {
     }
 
     /**
-     * Method removeResource receives a ResourceMap and removes from this ResourceMap the amount of resources of the ResourceMap received.
-     * @return true if the the operation is successful, false if there are not enough resource in this ResourceMap
+     * Method removeResource removes the resources contained in the resource map received.
+     * @param resourceMap the resource map that contains the resources to remove.
+     * @return true if the the operation was successful, false if there are not enough resource in this ResourceMap.
      */
     public boolean removeResources(ResourceMap resourceMap) {
         for (Resource resource: Resource.values()) {
@@ -111,7 +114,7 @@ public class ResourceMap implements Serializable {
     }
 
     /**
-     * Method flush resets resourceMap to its initial state, with value 0 for each Resource
+     * Method flush resets this resource map to its initial state.
      */
     public void flush() {
         for (Resource value : Resource.values()) {
@@ -119,6 +122,10 @@ public class ResourceMap implements Serializable {
         }
     }
 
+    /**
+     * Method toString returns the string representation of this ResourceMap.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return resources.toString();

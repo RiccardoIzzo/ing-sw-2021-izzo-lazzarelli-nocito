@@ -19,27 +19,51 @@ public class FaithTrack {
     private Boolean[] tilesUncovered;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-
+    /**
+     * Constructor FaithTrack creates a new FaithTrack instance.
+     */
     public FaithTrack() {
         posFaithMarker = 0;
         popesFavorTiles = new Boolean[3];
         Arrays.fill(popesFavorTiles, false);
 
     }
+
+    /**
+     * Method getPlayerPosition returns the player's position on the faith track.
+     * @return the player's position.
+     */
+    public int getPlayerPosition() {
+        return posFaithMarker;
+    }
+
+    /**
+     * Method getTilesUncovered returns an array of Boolean that indicates which tiles have been uncovered.
+     * @return the array of Boolean.
+     */
     public Boolean[] getTilesUncovered() {
         return tilesUncovered;
     }
 
+    /**
+     * Method getPopesFavorTiles returns an array of Boolean that indicates which Pope's favor tiles the player has obtained.
+     * @return the array of Boolean.
+     */
     public Boolean[] getPopesFavorTiles() {
         return popesFavorTiles;
     }
 
+    /**
+     * Method setTilesUncovered sets tilesUncovered, the array of Boolean.
+     * @param tilesUncovered array of Boolean.
+     */
     public void setTilesUncovered(Boolean[] tilesUncovered) {
         this.tilesUncovered = tilesUncovered;
     }
 
     /**
-     * Method moveForward moves the faith marker and calls popeTilePass
+     * Method moveForward increments the faith marker and calls popeTilePass if the player has reached a Pope space.
+     * @return false if the player hasn't reached a Pope space, otherwise returns the result of popeTilePass method.
      */
     public boolean moveForward() {
         posFaithMarker++;
@@ -49,7 +73,7 @@ public class FaithTrack {
     }
 
     /**
-     * Method isInVaticanSpace checks if the position is eligible for the pope tile points
+     * Method isInVaticanSpace checks if the position is eligible for the pope tile points.
      */
     public void isInVaticanSpace() {
         int lastTileUncovered = 0;
@@ -75,7 +99,8 @@ public class FaithTrack {
     }
 
     /**
-     * Method popeTilePass checks if the position is the same as a tile pass
+     * Method popeTilePass uncovers the tile related to the player position, if this tile has already been uncovered.
+     * @return true if the tile has been uncovered successfully, false otherwise.
      */
     public boolean popeTilePass() {
         int index = TILE_POS.indexOf(posFaithMarker);
@@ -88,8 +113,8 @@ public class FaithTrack {
     }
 
     /**
-     * Method getPointsForTiles
-     * @return the number of points earned by the unlocked pope tiles
+     * Method getPointsForTiles returns the number of victory points earned with the tiles.
+     * @return the number of victory points.
      */
     public int getPointsForTiles() {
         int counter = 0;
@@ -100,8 +125,8 @@ public class FaithTrack {
     }
 
     /**
-     * Method getPosVictoryPoints
-     * @return the number of points earned by the player's position on the faith track and the unlocked pope tiles
+     * Method getPosVictoryPoints returns the number of victory points based on the faith marker position.
+     * @return the number of victory points.
      */
     public int getPosVictoryPoints() {
         int victoryPoints = 0;
@@ -111,10 +136,6 @@ public class FaithTrack {
             i++;
         }
         return victoryPoints;
-    }
-
-    public int getPlayerPos() {
-        return posFaithMarker;
     }
 
     /**

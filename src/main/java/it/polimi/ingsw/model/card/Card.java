@@ -32,8 +32,8 @@ public class Card {
     }
 
     /**
-     * Method getRequirement gets the Requirements of this Card
-     * @return the Card's Requirement
+     * Method getRequirement gets the Requirements of this Card.
+     * @return the Card's Requirement.
      */
     public Requirement getRequirement() {
         return requirement;

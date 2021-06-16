@@ -12,7 +12,7 @@ import static it.polimi.ingsw.constants.GameConstants.MARKET_CHANGE;
 import static it.polimi.ingsw.constants.GameConstants.SLIDE_MARBLE;
 
 /**
- * Market class represents the market board where the player can buy resources.
+ * Market class represents the market board where the player can take resources.
  *
  * @author Riccardo Izzo
  */
@@ -33,6 +33,10 @@ public class Market {
         outputMarket = new ResourceMap();
     }
 
+    /**
+     * Method getMarketTray returns the market tray.
+     * @return the market tray, a list of MarbleColor.
+     */
     public ArrayList<MarbleColor> getMarketTray() {
         return marketTray;
     }
@@ -46,7 +50,7 @@ public class Market {
     }
 
     /**
-     * Method getMarble returns the marble of the the market tray at the specific index.
+     * Method getMarble returns the marble in the market tray at the specific index.
      * @param index marble position in the market tray.
      * @return the marble.
      */
@@ -63,7 +67,7 @@ public class Market {
     }
 
     /**
-     * Method setSpecialMarble updates the variable "specialMarble".
+     * Method setSpecialMarble sets the special marble after the activation of WhiteMarbleLeaderCard.
      * @param marble the new specialMarble.
      */
     public void setSpecialMarble(MarbleColor marble){

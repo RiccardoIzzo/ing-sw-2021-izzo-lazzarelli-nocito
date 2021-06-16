@@ -1,14 +1,10 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.Resource;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Before;
 
 import static it.polimi.ingsw.constants.PlayerConstants.END_TILE;
 import static org.junit.Assert.*;
-
-import java.util.*;
 
 /**
  * SinglePlayerFaithTrackTest tests SinglePlayerFaithTrack class.
@@ -35,20 +31,20 @@ public class SinglePlayerFaithTrackTest {
     public void testGetBlackFaithMarker() {
         assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), 0);
         for (int i=0; i<END_TILE; i++) {
-            singlePlayerFaithTrack.moveBlack();
+            singlePlayerFaithTrack.moveBlackFaithMarker();
         }
         assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), END_TILE);
 
     }
 
     /**
-     * Method testMoveBlack checks that moveBlack method actually increases the blackFaithMarker
+     * Method testMoveBlack checks that moveBlackFaithMarker method actually increases the blackFaithMarker
      */
     @Test
     public void testMoveBlack() {
         assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), 0);
-        singlePlayerFaithTrack.moveBlack();
-        singlePlayerFaithTrack.moveBlack();
+        singlePlayerFaithTrack.moveBlackFaithMarker();
+        singlePlayerFaithTrack.moveBlackFaithMarker();
         assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), 2);
     }
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.card;
 
-import it.polimi.ingsw.model.player.Player;
-
 /**
  * Class ProductionLeaderCard is a subclass of LeaderCard, when active which provides the player an extra ProductionPower.
  * @author Gabriele Lazzarelli
@@ -31,6 +29,10 @@ public class ProductionLeaderCard extends LeaderCard {
         return production;
     }
 
+    /**
+     * Method toString returns the string representation of this ProductionLeaderCard.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return "ID: " + super.getCardID() +

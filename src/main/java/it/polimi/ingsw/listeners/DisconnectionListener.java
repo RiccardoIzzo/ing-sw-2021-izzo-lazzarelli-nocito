@@ -41,7 +41,7 @@ public class DisconnectionListener extends PropertyListener{
             virtualView.sendToPlayer(playerSource, new UpdateView(name, ACTIVE_DEVELOPMENTS_CHANGE, null, translateCards(user.getActiveDevelopments())));
             virtualView.sendToPlayer(playerSource, new UpdateView(name, STRONGBOX_CHANGE, null, game.getPlayerByName(name).getDashboard().getStrongbox()));
             virtualView.sendToPlayer(playerSource, new UpdateView(name, SHELF_CHANGE, null, game.getPlayerByName(name).getDashboard().getWarehouse().getShelves()));
-            virtualView.sendToPlayer(playerSource, new UpdateView(name, FAITH_MARKER_POSITION, null, game.getPlayerByName(name).getDashboard().getFaithTrack().getPlayerPos()));
+            virtualView.sendToPlayer(playerSource, new UpdateView(name, FAITH_MARKER_POSITION, null, game.getPlayerByName(name).getDashboard().getFaithTrack().getPlayerPosition()));
             if(game instanceof SinglePlayerGame) {
                 virtualView.sendToPlayer(playerSource, new UpdateView(name, BLACK_MARKER_POSITION, null,  ((SinglePlayerFaithTrack) game.getPlayerByName(name).getDashboard().getFaithTrack()).getBlackFaithMarker()));
             }

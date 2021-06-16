@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.card;
 
 import it.polimi.ingsw.model.ResourceMap;
-import it.polimi.ingsw.model.player.Player;
 
 /**
  * Class ProductionPower wraps all of what's relevant to each production of resources in the game.
@@ -48,6 +47,10 @@ public class ProductionPower {
         return outputFaith;
     }
 
+    /**
+     * Method toString returns the string representation of this ProductionPower.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return  "\n\t Input Resource=" + inputResource.asList().toString() +

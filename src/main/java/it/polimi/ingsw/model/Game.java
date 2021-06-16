@@ -8,9 +8,6 @@ import it.polimi.ingsw.model.player.PlayerComparator;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static it.polimi.ingsw.constants.GameConstants.TOKEN_DRAWN;
 import static it.polimi.ingsw.constants.PlayerConstants.GRID_CHANGE;
 
 /**
@@ -48,17 +45,25 @@ public abstract class Game {
     }
 
     /**
-     * Method getGrid returns the grid of the development cards.
+     * Method getGrid returns the grid of development cards.
      * @return the grid.
      */
     public Deck[][] getGrid() {
         return grid;
     }
 
+    /**
+     * Method isFinalTurn returns true if a win condition has been triggered and the players are ready for the final turn, false otherwise.
+     * @return true if it's the last turn.
+     */
     public boolean isFinalTurn() {
         return isFinalTurn;
     }
 
+    /**
+     * Method setFinalTurn sets the condition for the last turn.
+     * @param finalTurn true if it's the last turn.
+     */
     public void setFinalTurn(boolean finalTurn) {
         isFinalTurn = finalTurn;
     }
@@ -72,7 +77,7 @@ public abstract class Game {
     }
 
     /**
-     * Method addPlayer creates a player and adds it to the list of players.
+     * Method addPlayer creates a new player and adds it to the list of players.
      * @param name name of the player to be added.
      */
     public void addPlayer(String name){
@@ -102,6 +107,11 @@ public abstract class Game {
         }
         return null;
     }
+
+    /**
+     * Method getMarket returns the market instance associated to this game.
+     * @return the market.
+     */
     public Market getMarket() {
         return market;
     }
@@ -144,11 +154,19 @@ public abstract class Game {
         }
     }
 
+    /**
+     * Method vaticanReport verifies the FaithMarker position in the faith track for every player.
+     * This occurs when a player faith marker reaches a Pope space.
+     */
     public void vaticanReport(){
         for(Player player : players) player.getDashboard().getFaithTrack().isInVaticanSpace();
     }
 
-    public Map<String, Integer> getGameStats(){
+    /**
+     * Method getRanking returns the final ranking at the end of the game.
+     * @return a Map that associates a player's nickname with his victory points.
+     */
+    public Map<String, Integer> getRanking(){
         Map<String, Integer> ranking = new LinkedHashMap<>();
         ArrayList<Player> players = getPlayers();
         players.sort(new PlayerComparator());

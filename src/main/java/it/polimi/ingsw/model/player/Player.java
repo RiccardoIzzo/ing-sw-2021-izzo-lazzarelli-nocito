@@ -44,35 +44,59 @@ public class Player {
         setPropertyChangeSupport();
     }
 
+    /**
+     * Method getNickname returns the player's nickname.
+     * @return the player's nickname.
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * Method setNickname sets the player's nickname.
+     * @param nickname the player's nickname.
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
     /**
+     * Method getLeaders returns the set of leader cards.
+     * @return the set of leader cards
+     */
+    public Set<LeaderCard> getLeaders(){
+        return leaders;
+    }
+
+    /**
      * Method setLeaders adds a list of LeaderCard to this Player, it is called at the start of the game.
-     * @param cards the cards
+     * @param cards a list of leader cards.
      */
     public void setLeaders(List<LeaderCard> cards){
         leaders.addAll(cards);
         pcs.firePropertyChange(SET_LEADERS, null, this.leaders);
     }
 
+    /**
+     * Method getDevelopments returns the set of development cards.
+     * @return the set of development cards.
+     */
     public Set<DevelopmentCard> getDevelopments(){
         return developments;
     }
 
-    public Set<LeaderCard> getLeaders(){
-        return leaders;
-    }
-
+    /**
+     * Method getNumberOfCard returns a CardMap that associates the card color with his occurrences.
+     * @return the CardMap.
+     */
     public CardMap getNumberOfCard() {
         return numberOfCard;
     }
 
+    /**
+     * Method getLevelOfCard returns a CardMap that associates the card level with his occurrences.
+     * @return the CardMap.
+     */
     public CardMap getLevelOfCard() {
         return levelOfCard;
     }
@@ -99,6 +123,10 @@ public class Player {
         return availableProduction;
     }
 
+    /**
+     * Method getDashboard returns the dashboard associated to this player.
+     * @return the dashboard.
+     */
     public Dashboard getDashboard() {
         return myDashboard;
     }
@@ -110,8 +138,8 @@ public class Player {
      *     <li>a free slot if the DevelopmentCard's level is I</li>
      *     <li>the slot of a DevelopmentCard of the same type but lower level</li>
      * </ul>
-     * @param row is the row line in the grid of developmentCard
-     * @param column is the column in the grid of developmentCard
+     * @param row is the row line in the grid of developmentCard.
+     * @param column is the column in the grid of developmentCard.
      */
     public void buyCard(int row, int column, int index){
         DevelopmentCard developmentCard = game.getGrid()[row][column].draw();
@@ -130,7 +158,7 @@ public class Player {
      *     <li>numberOfCard: updates the CardMap</li>
      *     <li>levelOfCard: updates the CardMap</li>
      * </ul>
-     * @param developmentCard the DevelopmentCard to add
+     * @param developmentCard the DevelopmentCard to add.
      */
     public void addDevelopmentCard(DevelopmentCard developmentCard){
         developments.add(developmentCard);
@@ -142,8 +170,8 @@ public class Player {
     }
 
     /**
-     * Method getTotalResources returns the sum of resources in both the warehouse and the strongbox
-     * @return the available resources of this Player
+     * Method getTotalResources returns the sum of resources in both the warehouse and the strongbox.
+     * @return the available resources of this Player.
      */
     public ResourceMap getTotalResources() {
         ResourceMap totalResources = new ResourceMap();
@@ -171,8 +199,8 @@ public class Player {
 
     /**
      * Method activateProduction gets the ProductionPower of the chosen Card and increment the resources
-     * in the strongbox and the faith in the FaithTrack by the output of the ProductionPower
-     * @param productionCard : the Card which productionPower is activated
+     * in the strongbox and the faith in the FaithTrack by the output of the ProductionPower.
+     * @param productionCard : the Card which productionPower is activated.
      */
     public void activateProduction(Card productionCard){
         if (productionCard instanceof DevelopmentCard) {
@@ -210,7 +238,7 @@ public class Player {
 
     /**
      * Method removeLeaderCard removes the selected leader cards.
-     * @param cardIDs the leaders to remove
+     * @param cardIDs the leaders to remove.
      */
     public void removeLeaders(ArrayList<Integer> cardIDs){
         for (int cardID : cardIDs) {
@@ -234,13 +262,11 @@ public class Player {
         for(LeaderCard card : leaders){
             if(card.isActive()) victoryPoints += card.getVictoryPoints();
         }
-        numResources += getTotalResources().size();
+        numResources += getTotalResources().getAmount();
         // VPs for every set of 5 resources of any type + VPs depending on the final position on the faith track + VPs based on the Pope's favor tiles
         victoryPoints += (numResources % 5) + myDashboard.getFaithTrack().getPosVictoryPoints() + myDashboard.getFaithTrack().getPointsForTiles();
         return victoryPoints;
     }
-
-
 
     public void setPropertyChangeSupport() {
         myDashboard.setPropertyChangeSupport(this.pcs);

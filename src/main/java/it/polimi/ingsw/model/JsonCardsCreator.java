@@ -5,7 +5,6 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.constants.GameConstants;
 import it.polimi.ingsw.model.card.*;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -22,7 +21,7 @@ import static it.polimi.ingsw.constants.GameConstants.LEADERCARDIDS;
  * @author Riccardo Izzo
  */
 public class JsonCardsCreator {
-    /*
+    /**
     Adapter for Requirement subclasses.
      */
     private static final RuntimeTypeAdapterFactory<Requirement> requirementAdapterFactory = RuntimeTypeAdapterFactory.of(Requirement.class)
@@ -36,6 +35,7 @@ public class JsonCardsCreator {
 
     /**
      * Method generateDevelopmentCards generates a list with the 48 development cards from a JSON file.
+     * @return a list of development cards.
      */
     public static ArrayList<DevelopmentCard> generateDevelopmentCards(){
         ArrayList<DevelopmentCard> cards = new ArrayList<>();
@@ -49,6 +49,8 @@ public class JsonCardsCreator {
 
     /**
      * Method generateDevelopmentCard generates a DevelopmentCard given its cardID.
+     * @param cardID the card id.
+     * @return the development card generated.
      */
     public static DevelopmentCard generateDevelopmentCard(int cardID) {
         return developmentCards.stream().filter(x -> x.getCardID() == cardID).findAny().orElse(null);
@@ -56,6 +58,7 @@ public class JsonCardsCreator {
 
     /**
      * Method generateLeaderCards generates a list with the 16 leader cards from a JSON file.
+     * @return a list of leader cards.
      */
     public static ArrayList<LeaderCard> generateLeaderCards(){
         ArrayList<LeaderCard> leaders = new ArrayList<>();
@@ -78,6 +81,8 @@ public class JsonCardsCreator {
 
     /**
      * Method generateLeaderCard generates a LeaderCard given its cardID.
+     * @param cardID the card id.
+     * @return the leader card generated.
      */
     public static LeaderCard generateLeaderCard(int cardID) {
         return leaderCards.stream().filter(x -> x.getCardID() == cardID).findAny().orElse(null);
@@ -91,6 +96,11 @@ public class JsonCardsCreator {
         return leaderCards;
     }
 
+    /**
+     * Method generateCard generates a Card given its cardID.
+     * @param cardID the card id.
+     * @return the card generated.
+     */
     public static Card generateCard(int cardID) {
         if (DEVELOPMENTCARDIDS.contains(cardID)) {
             return generateDevelopmentCard(cardID);

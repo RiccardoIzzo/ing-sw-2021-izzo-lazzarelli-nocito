@@ -27,29 +27,33 @@ public class DevelopmentCard extends Card {
     }
 
     /**
-     * Method getType gets the color of the card
-     * @return the CardColor value of the DevelopmentCard
+     * Method getType gets the color of the card.
+     * @return the CardColor value of the DevelopmentCard.
      */
     public CardColor getType() {
         return type;
     }
 
     /**
-     * Method getLevel gets the level of DevelopmentCard, can vary from one to three
-     * @return the level of the DevelopmentCard
+     * Method getLevel gets the level of DevelopmentCard, can vary from one to three.
+     * @return the level of the DevelopmentCard.
      */
     public int getLevel() {
         return level;
     }
 
     /**
-     * Method getProduction gets the productionPower of this DevelopmentCard
-     * @return the productionPower of this DevelopmentCard
+     * Method getProduction gets the productionPower of this DevelopmentCard.
+     * @return the productionPower of this DevelopmentCard.
      */
     public ProductionPower getProduction() {
         return production;
     }
 
+    /**
+     * Method toString returns the string representation of this DevelopmentCard.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return "ID: " + super.getCardID() +

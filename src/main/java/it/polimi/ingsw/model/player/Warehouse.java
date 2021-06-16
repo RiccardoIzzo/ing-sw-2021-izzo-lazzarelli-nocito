@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 /**
- * Warehouse Class represents the set of shelves available on the dashboard
+ * Warehouse class represents the set of shelves available on the dashboard.
  *
  * @author Gabriele Lazzarelli
  */
@@ -31,6 +31,9 @@ public class Warehouse {
     private final ArrayList<Resource> extraShelfResources;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
+    /**
+     * Constructor Warehouse creates a new Warehouse instance.
+     */
     public Warehouse() {
         this.shelves = new ArrayList<>();
         flushShelves();
@@ -117,7 +120,7 @@ public class Warehouse {
      */
     public boolean addResourcesToShelf(int shelfNumber, ResourceMap resourceMap) {
         int shelfIndex = getShelfIndex(shelfNumber);
-        if (resourceMap.size() > shelfNumber) return false;
+        if (resourceMap.getAmount() > shelfNumber) return false;
         for (Resource resource: resourceMap.asList()) {
             shelves.set(shelfIndex, resource);
             shelfIndex++;
@@ -160,7 +163,7 @@ public class Warehouse {
     }
 
     /**
-     * Method flushShelves removes all resources from this Warehouse
+     * Method flushShelves removes all resources from this Warehouse.
      */
     public void flushShelves() {
         int firstIndex = getShelfIndex(FIRST_SHELF);

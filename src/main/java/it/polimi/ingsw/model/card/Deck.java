@@ -3,7 +3,8 @@ package it.polimi.ingsw.model.card;
 import java.util.*;
 
 /**
- * Class Deck represents a stack of Card
+ * Class Deck represents a stack of Card.
+ *
  * @author Gabriele Lazzarelli
  */
 public class Deck {
@@ -20,16 +21,16 @@ public class Deck {
     }
 
     /**
-     * Method getCards returns this Deck of Card
-     * @return a Stack<Card>, this Deck of Card
+     * Method getCards returns this Deck of Card.
+     * @return a Stack<Card>, this Deck of Card.
      */
     public Stack<DevelopmentCard> getCards() {
         return cards;
     }
 
     /**
-     * Method getTopCard returns the Card at the top of this Deck of Card
-     * @return a Card, the Card at the top of this Deck, null if the Deck is empty
+     * Method getTopCard returns the Card at the top of this Deck of Card.
+     * @return a Card, the Card at the top of this Deck, null if the Deck is empty.
      */
     public DevelopmentCard getTopCard(){
         DevelopmentCard card;
@@ -44,8 +45,8 @@ public class Deck {
     }
 
     /**
-     * Method draw returns the Card at the top of this Deck and removes it from the Deck
-     * @return a Card, the Card at the top of this Deck, null if the Deck is empty
+     * Method draw returns the Card at the top of this Deck and removes it from the Deck.
+     * @return a Card, the Card at the top of this Deck, null if the Deck is empty.
      */
     public DevelopmentCard draw(){
         DevelopmentCard card;
@@ -58,5 +59,4 @@ public class Deck {
 
         return card;
     }
-
 }

@@ -9,7 +9,6 @@ import java.util.Map;
  * @author Gabriele Lazzarelli
  */
 public class CardMap {
-
     private final Map<CardColor,Integer> cards;
 
     /**
@@ -59,23 +58,17 @@ public class CardMap {
 
     /**
      * Method addCard sets a value to a specified CardColor of this CardMap.
-     * @param cardColor is the CardColor key to set
-     * @param value is the CardColor's value to set
+     * @param cardColor is the CardColor key to set.
+     * @param value is the CardColor's value to set.
      */
     public void put(CardColor cardColor, int value) {
         cards.put(cardColor, value);
     }
 
-    public ArrayList<CardColor> asList(){
-        ArrayList<CardColor> cardColorList = new ArrayList<>();
-        for (CardColor cardColor: CardColor.values()){
-            for (int i = 0; i < this.getCard(cardColor); i++) {
-                cardColorList.add(cardColor);
-            }
-        }
-        return cardColorList;
-    }
-
+    /**
+     * Method toString returns the string representation of this CardMap.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return cards.toString();

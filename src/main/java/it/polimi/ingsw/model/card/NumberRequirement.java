@@ -33,6 +33,10 @@ public class NumberRequirement implements Requirement {
         return true;
     }
 
+    /**
+     * Method toString returns the string representation of this NumberRequirement.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return "-Number requirement: " + number;

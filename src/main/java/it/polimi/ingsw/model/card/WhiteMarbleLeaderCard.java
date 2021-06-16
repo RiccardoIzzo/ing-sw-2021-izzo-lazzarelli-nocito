@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.card;
 
 import it.polimi.ingsw.model.MarbleColor;
-import it.polimi.ingsw.model.player.Player;
 
 import java.util.Set;
 
@@ -34,6 +33,10 @@ public class WhiteMarbleLeaderCard extends LeaderCard {
         return exchange;
     }
 
+    /**
+     * Method toString returns the string representation of this WhiteMarbleLeaderCard.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return "ID: " + super.getCardID() +

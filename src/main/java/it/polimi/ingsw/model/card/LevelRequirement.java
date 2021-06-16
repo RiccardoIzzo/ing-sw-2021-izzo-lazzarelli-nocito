@@ -33,6 +33,10 @@ public class LevelRequirement implements Requirement {
         return true;
     }
 
+    /**
+     * Method toString returns the string representation of this LevelRequirement.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return "-Level requirement: " + level;

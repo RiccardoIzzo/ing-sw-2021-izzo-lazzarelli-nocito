@@ -1,11 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.Resource;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import static it.polimi.ingsw.constants.PlayerConstants.END_TILE;
 import static org.junit.Assert.*;
 
 /**
@@ -30,7 +27,7 @@ public class FaithTrackTest{
     @Test
     public void testMoveForward() {
         faithTrack.moveForward();
-        assertEquals(faithTrack.getPlayerPos(), 1);
+        assertEquals(faithTrack.getPlayerPosition(), 1);
     }
 
 
@@ -116,9 +113,9 @@ public class FaithTrackTest{
      */
     @Test
     public void testGetPlayerPos() {
-        assertEquals(faithTrack.getPlayerPos(), 0);
+        assertEquals(faithTrack.getPlayerPosition(), 0);
         faithTrack.moveForward();
         faithTrack.moveForward();
-        assertEquals(faithTrack.getPlayerPos(), 2);
+        assertEquals(faithTrack.getPlayerPosition(), 2);
     }
 }

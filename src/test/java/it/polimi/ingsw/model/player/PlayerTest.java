@@ -60,15 +60,15 @@ public class PlayerTest {
         Optional<LeaderCard> card = player.getLeaders().stream().findAny();
         if(card.isPresent()){
             assertEquals(4, player.getLeaders().size());
-            assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPos());
+            assertEquals(0, player.getDashboard().getFaithTrack().getPlayerPosition());
             player.discardLeaderCard(card.get().getCardID());
             assertEquals(3, player.getLeaders().size());
-            assertEquals(1, player.getDashboard().getFaithTrack().getPlayerPos());
+            assertEquals(1, player.getDashboard().getFaithTrack().getPlayerPosition());
             card = player.getLeaders().stream().findAny();
             if(card.isPresent()){
                 player.discardLeaderCard(card.get().getCardID());
                 assertEquals(2, player.getLeaders().size());
-                assertEquals(2, player.getDashboard().getFaithTrack().getPlayerPos());
+                assertEquals(2, player.getDashboard().getFaithTrack().getPlayerPosition());
             }
         }
     }

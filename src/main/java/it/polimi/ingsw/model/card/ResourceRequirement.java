@@ -51,6 +51,10 @@ public class ResourceRequirement implements Requirement {
         return true;
     }
 
+    /**
+     * Method toString returns the string representation of this ResourceRequirement.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return "-Resource requirement: " + resources;

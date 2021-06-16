@@ -2,51 +2,70 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.listeners.DashboardListener;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.card.Card;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 
-import static it.polimi.ingsw.constants.PlayerConstants.SHELF_CHANGE;
 import static it.polimi.ingsw.constants.PlayerConstants.STRONGBOX_CHANGE;
 
 /**
- * Dashboard Class represents a player's dashboard
+ * Dashboard Class represents a player's dashboard.
  *
  * @author Andrea Nocito
  */
 public class Dashboard {
     private final FaithTrack faithTrack;
     private final Warehouse warehouse;
-    private final ArrayList<Card> cardSlots;
     private final ResourceMap strongbox;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
+    /**
+     * Dashboard constructor creates a new Dashboard instance.
+     * @param game instance of game.
+     */
     public Dashboard(Game game) {
         faithTrack = (game instanceof SinglePlayerGame) ? new SinglePlayerFaithTrack() : new FaithTrack();
         warehouse = new Warehouse();
-        cardSlots = new ArrayList<>();
         strongbox = new ResourceMap();
     }
 
     /**
-     * Method addResourcesToStrongbox adds the resources into the strongbox
+     * Method getStrongbox returns the strongbox.
+     * @return a ResourceMap.
      */
-    void addResourcesToStrongbox(ResourceMap resources) {
-        strongbox.addResources(resources);
-        pcs.firePropertyChange(STRONGBOX_CHANGE, null, this.strongbox);
-    }
-
     public ResourceMap getStrongbox() {
         return strongbox;
     }
 
     /**
-     * Method removeResourcesFromDashboard tries to remove the specified resources from the shelves (and eventually the strongbox)
+     * Method getWarehouse returns the warehouse.
+     * @return the warehouse.
+     */
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    /**
+     * Method getFaithTrack returns the faith track.
+     * @return the faith track.
+     */
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    /**
+     * Method addResourcesToStrongbox adds the resources into the strongbox
+     */
+    public void addResourcesToStrongbox(ResourceMap resources) {
+        strongbox.addResources(resources);
+        pcs.firePropertyChange(STRONGBOX_CHANGE, null, this.strongbox);
+    }
+
+    /**
+     * Method removeResourcesFromDashboard tries to remove the specified resources from the shelves and eventually from the strongbox.
      * @return true if the operation was successful, false otherwise.
      */
-    boolean removeResourcesFromDashboard(ResourceMap resourceMap) {
+    public boolean removeResourcesFromDashboard(ResourceMap resourceMap) {
         ResourceMap totalResources = new ResourceMap();
         totalResources.addResources(warehouse.getResourcesFromWarehouse());
         totalResources.addResources(strongbox);
@@ -66,6 +85,7 @@ public class Dashboard {
 
     /**
      * Method incrementFaith receives the number of steps to take and makes the path move forward.
+     * @return true if after increasing the faith marker position a vatican report has occurred, false otherwise.
      */
     public boolean incrementFaith(int steps) {
         boolean vaticanReport = false;
@@ -75,19 +95,11 @@ public class Dashboard {
         return vaticanReport;
     }
 
-    public Warehouse getWarehouse() {
-        return warehouse;
-    }
-
-    public FaithTrack getFaithTrack() {
-        return faithTrack;
-    }
-
     /**
-     * Method incrementBlackFaith makes the path move the black cross forward.
+     * Method incrementBlackFaith increments the position of the black faith marker.
      */
     public void incrementBlackFaith(){
-        ((SinglePlayerFaithTrack) faithTrack).moveBlack();
+        ((SinglePlayerFaithTrack) faithTrack).moveBlackFaithMarker();
     }
 
     /**

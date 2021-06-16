@@ -31,21 +31,12 @@ public class MultiplayerGame extends Game {
     }
 
     /**
-     * Method setCurrPlayer sets the current player.
-     * @param player the new current player to be set.
-     */
-    public void setCurrPlayer(Player player){
-        this.currPlayer = player;
-    }
-
-    /**
      * Method getFirstPlayer return the first player, the one with the inkwell.
      * @return the first player.
      */
     public Player getFirstPlayer(){
         return firstPlayer;
     }
-
 
     /**
      * Method setFirstPlayer sets the first player at the beginning of the game.

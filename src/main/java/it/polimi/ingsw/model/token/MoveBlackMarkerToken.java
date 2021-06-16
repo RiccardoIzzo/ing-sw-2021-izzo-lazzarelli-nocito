@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.token;
 import it.polimi.ingsw.constants.Colors;
 
 /**
- * MoveBlackMarkerToken class implements SoloActionToken interface and represents the token that move forward the black cross marker.
+ * MoveBlackMarkerToken class implements SoloActionToken interface and represents the token that move forward the black faith marker.
  *
  * @author Riccardo Izzo
  */
@@ -13,7 +13,7 @@ public class MoveBlackMarkerToken implements SoloActionToken {
 
     /**
      * Constructor MoveBlackMarkerToken creates a new MoveBlackMarkerToken instance.
-     * @param steps number of steps that the black cross marker must take.
+     * @param steps number of steps that the black faith marker must take.
      * @param reset true if the token also shuffles the stack of token.
      */
     public MoveBlackMarkerToken(int steps, boolean reset){
@@ -37,6 +37,10 @@ public class MoveBlackMarkerToken implements SoloActionToken {
         return resetStack;
     }
 
+    /**
+     * Method toString returns the string representation of this MoveBlackMarkerToken.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         String reset = "";
