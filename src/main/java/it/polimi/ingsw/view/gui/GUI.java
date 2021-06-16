@@ -38,8 +38,9 @@ public class GUI extends Application implements View {
     static String nickname;
     private ModelView modelView;
 
+    private boolean reconnected = false;
 
-
+    private int bonusResourceAmount = 0;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -120,17 +121,21 @@ public class GUI extends Application implements View {
 //            Stage stage = new Stage();
             dashboardController = loader.getController();
             dashboardController.setGUI(this);
+            dashboardController.setModelView(modelView);
+            dashboardController.setup();
             mainStage.setScene(new Scene(root));
             mainStage.show();
 
             mainStage.centerOnScreen();
+
+            dashboardController.handleBonusResource(bonusResourceAmount);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public void startLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneSelectLeaders.fxml"));
         Parent root;
         try {
@@ -158,7 +163,7 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleBonusResource(int amount) {
-
+        bonusResourceAmount = amount;
     }
 
     @Override
@@ -219,6 +224,16 @@ public class GUI extends Application implements View {
     public void setModelView(ModelView modelView) {
         this.modelView = modelView;
         network.getServerConnection().setModelView(modelView);
+        if (reconnected) {
+            System.out.println("riconnesso e modelview impostata");
+            System.out.println(modelView.getMyDashboard().getLeaderCards().keySet().size());
+            if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() != 2) {
+                handleLeaders();
+            } else if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() == 2) {
+                handleGameStart();
+            }
+            reconnected = false;
+        }
     }
 
     @Override
@@ -228,7 +243,8 @@ public class GUI extends Application implements View {
 
     @Override
     public void printText(String text) {
-        System.out.println(text);
+//        System.out.println(text);
+        handleTextMessage(text);
     }
 
     @Override
