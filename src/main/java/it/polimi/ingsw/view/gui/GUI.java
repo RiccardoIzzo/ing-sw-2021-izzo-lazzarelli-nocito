@@ -4,6 +4,7 @@ import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetNickname;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.network.NetworkHandler;
+import it.polimi.ingsw.view.Action;
 import it.polimi.ingsw.view.ModelView;
 import it.polimi.ingsw.view.View;
 import javafx.application.Application;
@@ -38,8 +39,9 @@ public class GUI extends Application implements View {
     static String nickname;
     private ModelView modelView;
 
+    private boolean reconnected = false;
 
-
+    private int bonusResourceAmount = 0;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -120,17 +122,27 @@ public class GUI extends Application implements View {
 //            Stage stage = new Stage();
             dashboardController = loader.getController();
             dashboardController.setGUI(this);
+            dashboardController.setModelView(modelView);
+            dashboardController.setup();
             mainStage.setScene(new Scene(root));
             mainStage.show();
 
             mainStage.centerOnScreen();
+
+            dashboardController.handleBonusResource(bonusResourceAmount);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public ArrayList<Action> getValidActions() {
+        return null;
+    }
+
     public void startLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneSelectLeaders.fxml"));
         Parent root;
         try {
@@ -158,7 +170,7 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleBonusResource(int amount) {
-
+        bonusResourceAmount = amount;
     }
 
     @Override
@@ -219,6 +231,16 @@ public class GUI extends Application implements View {
     public void setModelView(ModelView modelView) {
         this.modelView = modelView;
         network.getServerConnection().setModelView(modelView);
+        if (reconnected) {
+            System.out.println("riconnesso e modelview impostata");
+            System.out.println(modelView.getMyDashboard().getLeaderCards().keySet().size());
+            if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() != 2) {
+                handleLeaders();
+            } else if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() == 2) {
+                handleGameStart();
+            }
+            reconnected = false;
+        }
     }
 
     @Override
@@ -228,17 +250,13 @@ public class GUI extends Application implements View {
 
     @Override
     public void printText(String text) {
-        System.out.println(text);
+//        System.out.println(text);
+        handleTextMessage(text);
     }
 
     @Override
     public void send(ClientMessage message) {
         network.sendToServer(message);
-    }
-
-    @Override
-    public void handleSoloActionToken() {
-
     }
 
     @Override
@@ -253,11 +271,21 @@ public class GUI extends Application implements View {
 
 
     /* Alerts */
-
-    public void showAlert(String header, Alert.AlertType type) {
+    public void displayAlert(String header, Alert.AlertType type) {
         Alert a = new Alert(type);
         a.setHeaderText(header);
         a.show();
     }
+    public void showAlert(String header, Alert.AlertType type) {
+        Platform.runLater(() -> displayAlert(header, type));
+    }
 
+    public void handleTextMessage(String text) {
+        System.out.println(text);
+        if(text.indexOf(nickname) == 0 && text.contains("back online")) {
+            reconnected = true;
+            System.out.println("riconnesso");
+        }
+
+    }
 }

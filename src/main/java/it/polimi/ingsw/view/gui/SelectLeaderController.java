@@ -66,7 +66,9 @@ public class SelectLeaderController {
             gui.showAlert("Select two leaders cards", Alert.AlertType.ERROR);
         }
         else {
-            gui.send(new SelectLeaderCards(selectedLeaders.get(0), selectedLeaders.get(1)));
+            leaderIds.remove(selectedLeaders.get(0));
+            leaderIds.remove(selectedLeaders.get(1));
+            gui.send(new SelectLeaderCards(leaderIds.get(0), leaderIds.get(1)));
             gui.handleGameStart();
         }
     }

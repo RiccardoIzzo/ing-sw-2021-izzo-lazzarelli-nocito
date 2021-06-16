@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 
 
-<Pane fx:controller="it.polimi.ingsw.view.gui.MarketController"  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="305.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/">
+<Pane fx:controller="it.polimi.ingsw.view.gui.MarketController" fx:id="marketPane"  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="305.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/">
       <ImageView fitHeight="400.0" fitWidth="305.0">
             <Image url="@/view/images/marketBoard.png" />
       </ImageView>

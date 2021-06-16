@@ -57,10 +57,15 @@ public class ActionHandler extends Thread{
             view.setModelView(new ModelView(((GameStarted) message).getPlayers(), view.getNickname()));
         }
         else if(message instanceof GetBonusResources){
+            view.printText("getBonusResource");
             view.handleBonusResource(((GetBonusResources) message).getAmount());
         }
         else if(message instanceof TextMessage){
             view.printText(((TextMessage) message).getText());
+
+            if (view instanceof GUI) {
+                ((GUI) view).handleTextMessage(((TextMessage) message).getText());
+            }
         }
         else if(message instanceof StartTurn){
             view.startTurn();

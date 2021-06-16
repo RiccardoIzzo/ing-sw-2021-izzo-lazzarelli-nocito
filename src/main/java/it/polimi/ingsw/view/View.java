@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.events.clientmessages.ClientMessage;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -21,6 +22,7 @@ public interface View {
     void handleLeaders();
     void handleBonusResource(int amount);
     void startTurn();
+    ArrayList<Action> getValidActions();
     void basicActionPlayed();
     void handleTurn();
     void handleTakeResource();
@@ -33,6 +35,5 @@ public interface View {
     void handleTemporaryShelf();
     void printText(String text);
     void send(ClientMessage message);
-    void handleSoloActionToken();
     void showStats(Map<String, Integer> map);
 }
