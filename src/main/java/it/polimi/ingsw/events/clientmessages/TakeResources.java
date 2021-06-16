@@ -22,6 +22,12 @@ public class TakeResources implements ClientMessage{
         this.type = type;
     }
 
+    /**
+     * Constructor TakeResources creates a new TakeResources instance.
+     * @param index row/column index.
+     * @param type user choice: 1 = row, 2 = column.
+     * @param leaderID id of a leader card with white marble exchange effect.
+     */
     public TakeResources(int index, int type, int leaderID) {
         this.index = index;
         this.type = type;
@@ -44,6 +50,10 @@ public class TakeResources implements ClientMessage{
         return type;
     }
 
+    /**
+     * Method getWhiteMarbleExchange returns the color of the marble to exchange if the player has activated a leader card with this effect.
+     * @return the color of the marble.
+     */
     public MarbleColor getWhiteMarbleExchange() {
         return whiteMarbleExchange;
     }
