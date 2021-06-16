@@ -3,7 +3,9 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.*;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.model.SinglePlayerGame;
 
 import java.util.*;
 
@@ -285,8 +287,16 @@ public class Server {
         String nickname = connection.getNickname();
         connectionMap.remove(nickname, connection);
         sendEveryone(new TextMessage(nickname + " is offline!"), getLobbyIDByPlayerName(nickname));
-        if(((MultiplayerGame) getGameHandler(nickname).getGame()).getCurrPlayer().getNickname().equals(nickname)){
-            getGameHandler(nickname).process(nickname, new EndTurn());
+        Game game = getGameHandler(nickname).getGame();
+        if(game instanceof MultiplayerGame){
+            if(((MultiplayerGame) game).getCurrPlayer().getNickname().equals(nickname)){
+                getGameHandler(nickname).process(nickname, new EndTurn());
+            }
+        }
+
+        if(getActivePlayersByLobby(getLobbyIDByPlayerName(game.getPlayers().get(0).getNickname())).size() == 0){
+            String lobby = getLobbyIDByPlayerName(game.getPlayers().get(0).getNickname());
+            System.out.println("Lobby ID: " + lobby + " -> the game associated to that lobby was canceled because there are no players left.");
         }
         connection.close();
     }

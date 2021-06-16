@@ -23,12 +23,4 @@ public class GameStats implements ServerMessage{
     public Map<String, Integer> getPlayerPoints() {
         return playerPoints;
     }
-
-    /**
-     * Method getWinner returns the winner of the game.
-     * @return nickname of the game winner.
-     */
-    public String getWinner() {
-        return winner;
-    }
 }
