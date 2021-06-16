@@ -97,8 +97,8 @@ public class ClientConnection implements Runnable{
         try {
             ClientMessage message = (ClientMessage) input.readObject();
             if (!(message instanceof Heartbeat)) {
-                System.out.println(message.getClass().getSimpleName() + " from " + socket.getRemoteSocketAddress().toString());
                 if(message instanceof SetNickname) setNickname(((SetNickname) message).getNickname());
+                System.out.println(message.getClass().getSimpleName() + " from " + nickname + ", " + socket.getRemoteSocketAddress().toString());
                 server.handleMessage(this, message);
             }
         } catch (IOException | ClassNotFoundException e) {
