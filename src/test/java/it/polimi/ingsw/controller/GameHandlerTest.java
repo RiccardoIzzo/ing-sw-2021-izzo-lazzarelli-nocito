@@ -109,7 +109,7 @@ public class GameHandlerTest {
 
         // message: TakeResources
         player.getDashboard().getWarehouse().flushShelves();
-        Integer numberOfResourcesTaken = player.getDashboard().getWarehouse().getResourcesFromWarehouse().size();
+        Integer numberOfResourcesTaken = player.getDashboard().getWarehouse().getResourcesFromWarehouse().getAmount();
 //                getResourcesSize().getMapSize();
         assertEquals(0, (int) numberOfResourcesTaken);
         gameHandler.process(nickname, new TakeResources(1, 1));

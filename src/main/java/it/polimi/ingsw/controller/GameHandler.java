@@ -17,7 +17,7 @@ import static it.polimi.ingsw.constants.GameConstants.*;
 
 
 /**
- * GameHandler class represents a game and manages the incoming messages from the client.
+ * GameHandler class represents the controller of the game and manages the incoming messages from the client.
  *
  * @author Andrea Nocito, Riccardo Izzo, Gabriele Lazzarelli
  */
@@ -39,18 +39,27 @@ public class GameHandler {
     }
 
     /**
+     * Method getGame returns the Game instance.
+     * @return the Game instance.
+     */
+    public Game getGame() {
+        return game;
+    }
+
+    /**
+     * Method getVirtualView returns the VirtualView instance.
+     * @return the VirtualView instance.
+     */
+    public VirtualView getVirtualView() {
+        return virtualView;
+    }
+
+    /**
      * Method setGameMode initializes the game as an instance of MultiplayerGame or SinglePlayerGame.
      * @param numberOfPlayers the number of players.
      */
     public void setGameMode(int numberOfPlayers) {
         game = numberOfPlayers > 1 ? new MultiplayerGame() : new SinglePlayerGame();
-    }
-    public Game getGame() {
-        return game;
-    }
-
-    public VirtualView getVirtualView() {
-        return virtualView;
     }
 
     /**
@@ -158,7 +167,7 @@ public class GameHandler {
                     String currPlayer = ((MultiplayerGame) game).getCurrPlayer().getNickname();
 
                     if(game.isFinalTurn() && currPlayer.equals(((MultiplayerGame) game).getFirstPlayer().getNickname())){
-                        Map<String, Integer> gameStats = game.getGameStats();
+                        Map<String, Integer> gameStats = game.getRanking();
                         virtualView.sendToEveryone(new GameStats(gameStats, gameStats.keySet().iterator().next()));
                     }
 
@@ -176,7 +185,7 @@ public class GameHandler {
 
         else if(message instanceof SetWarehouse) {
             player.getDashboard().getWarehouse().setShelves(((SetWarehouse) message).getWarehouse());
-            int faith = player.getDashboard().getWarehouse().removeResourcesFromShelf(5).size();
+            int faith = player.getDashboard().getWarehouse().removeResourcesFromShelf(5).getAmount();
             for (Player playerToAdd: game.getPlayers()) {
                 if (playerToAdd != player) {
                     if(playerToAdd.getDashboard().incrementFaith(faith)) game.vaticanReport();
@@ -190,6 +199,10 @@ public class GameHandler {
         }
     }
 
+    /**
+     * Method reloadModelView reloads the ModelView for a player after a disconnection.
+     * @param nickname player's nickname.
+     */
     public void reloadModelView(String nickname){
         pcs.firePropertyChange(nickname, null, null);
     }
