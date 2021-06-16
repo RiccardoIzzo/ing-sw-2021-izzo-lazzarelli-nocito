@@ -269,11 +269,21 @@ public class GUI extends Application implements View {
 
 
     /* Alerts */
-
-    public void showAlert(String header, Alert.AlertType type) {
+    public void displayAlert(String header, Alert.AlertType type) {
         Alert a = new Alert(type);
         a.setHeaderText(header);
         a.show();
     }
+    public void showAlert(String header, Alert.AlertType type) {
+        Platform.runLater(() -> displayAlert(header, type));
+    }
 
+    public void handleTextMessage(String text) {
+        System.out.println(text);
+        if(text.indexOf(nickname) == 0 && text.contains("back online")) {
+            reconnected = true;
+            System.out.println("riconnesso");
+        }
+
+    }
 }
