@@ -4,6 +4,7 @@ import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetNickname;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.network.NetworkHandler;
+import it.polimi.ingsw.view.Action;
 import it.polimi.ingsw.view.ModelView;
 import it.polimi.ingsw.view.View;
 import javafx.application.Application;
@@ -134,6 +135,12 @@ public class GUI extends Application implements View {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public ArrayList<Action> getValidActions() {
+        return null;
+    }
+
     public void startLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneSelectLeaders.fxml"));
@@ -250,11 +257,6 @@ public class GUI extends Application implements View {
     @Override
     public void send(ClientMessage message) {
         network.sendToServer(message);
-    }
-
-    @Override
-    public void handleSoloActionToken() {
-
     }
 
     @Override

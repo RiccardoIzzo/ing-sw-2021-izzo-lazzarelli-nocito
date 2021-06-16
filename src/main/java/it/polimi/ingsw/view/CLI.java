@@ -208,6 +208,7 @@ public class CLI implements View{
      * Method getValidAction returns a list of valid user action.
      * @return the list of actions.
      */
+    @Override
     public ArrayList<Action> getValidActions(){
         ArrayList<Action> actions = new ArrayList<>();
         for(Action action : Action.values()){
@@ -229,6 +230,7 @@ public class CLI implements View{
     /**
      * Method startTurn at the beginning of the player turn re-enable all actions.
      */
+    @Override
     public void startTurn(){
         for(Action action : Action.values()){
             action.enabled = true;
@@ -630,11 +632,6 @@ public class CLI implements View{
     @Override
     public void send(ClientMessage message) {
         network.sendToServer(message);
-    }
-
-    @Override
-    public void handleSoloActionToken() {
-
     }
 
     public void showDashboard(ModelView.DashboardView dashboardView){
