@@ -1,5 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.events.clientmessages.EndTurn;
+import it.polimi.ingsw.events.clientmessages.SendBonusResources;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.view.ModelView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +16,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DashboardController {
     @FXML ChoiceBox<String> choiceBox;
     @FXML Pane dashboardPane;
+
+    private ModelView modelView;
+    MarketController marketController;
+    GridController gridController;
 
     private static GUI gui;
 
@@ -24,14 +32,18 @@ public class DashboardController {
     }
 
     public void showMarket() {
-        showPopup("/view/scenes/sceneMarket.fxml");
+        marketController = showPopup("/view/scenes/sceneMarket.fxml").getController();
+        marketController.setGUI(gui);
+        marketController.setMarketTray(modelView.getMarketTray());
+        marketController.start();
+        marketController.checkActiveWhiteMarbleLeaders(modelView.getMyDashboard().getLeaderCards());
     }
 
     public void showGrid() {
         showPopup("/view/scenes/sceneGrid.fxml");
     }
 
-    private void showPopup(String scenePath) {
+    private FXMLLoader showPopup(String scenePath) {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(scenePath));
         Parent root;
@@ -41,11 +53,20 @@ public class DashboardController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(gui.mainStage);
             stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return loader;
+    }
 
+    public void setModelView(ModelView modelView) {
+        this.modelView = modelView; 
+    }
+
+    public void endTurn(ActionEvent actionEvent) {
+        gui.send(new EndTurn());
     }
 }
