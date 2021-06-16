@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.constants.GameConstants.END_TURN;
 import static it.polimi.ingsw.constants.GameConstants.TOKEN_DRAWN;
@@ -27,7 +26,6 @@ public class ServerConnection implements Runnable{
     private boolean status;
     private final ActionHandler actionHandler;
     private final ArrayBlockingQueue<ServerMessage> messages;
-    private final View view;
     private ModelView modelView;
 
     /**
@@ -36,7 +34,6 @@ public class ServerConnection implements Runnable{
      * @param view view interface.
      */
     public ServerConnection(Socket socket, View view){
-        this.view = view;
         this.messages = new ArrayBlockingQueue<>(10000);
         this.actionHandler = new ActionHandler(view, messages);
         actionHandler.start();

@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 public class ServerHandler implements Runnable{
     private final Server server;
     private ServerSocket serverSocket;
-    private final int port;
     private final ExecutorService executors;
 
     /**
@@ -25,7 +24,6 @@ public class ServerHandler implements Runnable{
      */
     public ServerHandler(Server server, int port){
         this.server = server;
-        this.port = port;
         executors = Executors.newCachedThreadPool();
         try{
             serverSocket = new ServerSocket(port);
@@ -33,14 +31,6 @@ public class ServerHandler implements Runnable{
             System.err.println("Cannot initialize the server socket!");
             System.exit(0);
         }
-    }
-
-    /**
-     * Method getPort returns the server port.
-     * @return the server port;
-     */
-    public int getPort(){
-        return port;
     }
 
     /**
