@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class DashboardController {
@@ -117,15 +118,15 @@ public class DashboardController {
             selectButton.setPrefHeight(30);
             selectButton.setOnAction(event -> {
                 int total = 0;
-                ResourceMap bonusResources1 = new ResourceMap();
+                ResourceMap bonusResources = new ResourceMap();
                 for(int i=0; i<4; i++) {
                     if (resourceTextField[i].getText().length() > 0) {
                         total += Integer.parseInt(resourceTextField[i].getText());
                         switch (i){
-                            case 0 -> bonusResources1.modifyResource(Resource.COIN, 1);
-                            case 1 -> bonusResources1.modifyResource(Resource.SERVANT, 1);
-                            case 2 -> bonusResources1.modifyResource(Resource.SHIELD, 1);
-                            case 3 -> bonusResources1.modifyResource(Resource.STONE, 1);
+                            case 0 -> bonusResources.modifyResource(Resource.COIN, 1);
+                            case 1 -> bonusResources.modifyResource(Resource.SERVANT, 1);
+                            case 2 -> bonusResources.modifyResource(Resource.SHIELD, 1);
+                            case 3 -> bonusResources.modifyResource(Resource.STONE, 1);
                         }
                     }
                 }
@@ -210,7 +211,7 @@ public class DashboardController {
         for (Map.Entry<Resource,Integer> value  : strongbox.getResources().entrySet() ) {
 
             String amount = "x" + value.getValue();
-            Image resourceImage = new Image(getImage(value.getKey()));
+            Image resourceImage = new Image(getImage(Optional.ofNullable(value.getKey())));
             ImageView strongboxResourceView = new ImageView(resourceImage);
             strongboxResourceView.setLayoutX(xStart+(len+padding*3/2)*(resCont%2));
             int half = resCont/2;
@@ -247,12 +248,12 @@ public class DashboardController {
         dashboardPane.getChildren().remove(thirdShelfRes3View);
 
 
-        Image firstShelfRes1 = new Image(getImage(warehouse.get(0)));
-        Image secondShelfRes1 = new Image(getImage(warehouse.get(1)));
-        Image secondShelfRes2 = new Image(getImage(warehouse.get(2)));
-        Image thirdShelfRes1 = new Image(getImage(warehouse.get(3)));
-        Image thirdShelfRes2 = new Image(getImage(warehouse.get(4)));
-        Image thirdShelfRes3 = new Image(getImage(warehouse.get(5)));
+        Image firstShelfRes1 = new Image(getImage(Optional.ofNullable(warehouse.get(0))));
+        Image secondShelfRes1 = new Image(getImage(Optional.ofNullable(warehouse.get(1))));
+        Image secondShelfRes2 = new Image(getImage(Optional.ofNullable(warehouse.get(2))));
+        Image thirdShelfRes1 = new Image(getImage(Optional.ofNullable(warehouse.get(3))));
+        Image thirdShelfRes2 = new Image(getImage(Optional.ofNullable(warehouse.get(4))));
+        Image thirdShelfRes3 = new Image(getImage(Optional.ofNullable(warehouse.get(5))));
 
         double len = 30;
         int xStart = 200, yStart = 330, yOffset = 60;
@@ -298,13 +299,16 @@ public class DashboardController {
         thirdShelfRes3View.setFitHeight(len);
         dashboardPane.getChildren().add(thirdShelfRes3View);
     }
-    String getImage(Resource resource) {
-        String res = switch (resource) {
-            case COIN -> "coin2";
-            case SERVANT -> "servant2";
-            case SHIELD -> "shield2";
-            case STONE -> "stone2";
-        };
+    String getImage(Optional<Resource> resource) {
+        String res = "notFound";
+        if (resource.isPresent()) {
+            res = switch (resource.get()) {
+                case COIN -> "coin2";
+                case SERVANT -> "servant2";
+                case SHIELD -> "shield2";
+                case STONE -> "stone2";
+            };
+        }
         return "/view/images/resources/"+res + ".png";
     }
     private void showFaithTrack(Integer faithMarker, Integer blackMarker, Boolean[] popesFavorTiles) {
