@@ -354,7 +354,9 @@ public class DashboardController {
     }
 
     public void showGrid() {
-        showPopup("/view/scenes/sceneGrid.fxml");
+        gridController = showPopup("/view/scenes/sceneGrid.fxml").getController();
+        gridController.setGUI(gui);
+        gridController.setup(modelView);
     }
 
     private FXMLLoader showPopup(String scenePath) {
