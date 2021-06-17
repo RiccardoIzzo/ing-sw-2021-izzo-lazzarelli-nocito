@@ -211,7 +211,7 @@ public class DashboardController {
         for (Map.Entry<Resource,Integer> value  : strongbox.getResources().entrySet() ) {
 
             String amount = "x" + value.getValue();
-            Image resourceImage = new Image(getImage(Optional.ofNullable(value.getKey())));
+            Image resourceImage = new Image(getImage(value.getKey()));
             ImageView strongboxResourceView = new ImageView(resourceImage);
             strongboxResourceView.setLayoutX(xStart+(len+padding*3/2)*(resCont%2));
             int half = resCont/2;
@@ -248,15 +248,16 @@ public class DashboardController {
         dashboardPane.getChildren().remove(thirdShelfRes3View);
 
 
-        Image firstShelfRes1 = new Image(getImage(Optional.ofNullable(warehouse.get(0))));
-        Image secondShelfRes1 = new Image(getImage(Optional.ofNullable(warehouse.get(1))));
-        Image secondShelfRes2 = new Image(getImage(Optional.ofNullable(warehouse.get(2))));
-        Image thirdShelfRes1 = new Image(getImage(Optional.ofNullable(warehouse.get(3))));
-        Image thirdShelfRes2 = new Image(getImage(Optional.ofNullable(warehouse.get(4))));
-        Image thirdShelfRes3 = new Image(getImage(Optional.ofNullable(warehouse.get(5))));
+        Image firstShelfRes1 = new Image(getImage(warehouse.get(0)));
+        Image secondShelfRes1 = new Image(getImage(warehouse.get(1)));
+        Image secondShelfRes2 = new Image(getImage(warehouse.get(2)));
+        Image thirdShelfRes1 = new Image(getImage(warehouse.get(3)));
+        Image thirdShelfRes2 = new Image(getImage(warehouse.get(4)));
+        Image thirdShelfRes3 = new Image(getImage(warehouse.get(5)));
+
 
         double len = 30;
-        int xStart = 200, yStart = 330, yOffset = 60;
+        int xStart = 200, yStart = 335, yOffset = 55;
         firstShelfRes1View = new ImageView(firstShelfRes1);
         firstShelfRes1View.setLayoutX(xStart-len/2);
         firstShelfRes1View.setLayoutY(yStart);
@@ -299,17 +300,19 @@ public class DashboardController {
         thirdShelfRes3View.setFitHeight(len);
         dashboardPane.getChildren().add(thirdShelfRes3View);
     }
-    String getImage(Optional<Resource> resource) {
-        String res = "notFound";
-        if (resource.isPresent()) {
-            res = switch (resource.get()) {
+    String getImage(Resource resource) {
+        if (resource == null) {
+            return "/view/images/resources/notFound.png";
+        }
+        else {
+            String res = switch (resource) {
                 case COIN -> "coin2";
                 case SERVANT -> "servant2";
                 case SHIELD -> "shield2";
                 case STONE -> "stone2";
             };
+            return "/view/images/resources/" + res + ".png";
         }
-        return "/view/images/resources/"+res + ".png";
     }
     private void showFaithTrack(Integer faithMarker, Integer blackMarker, Boolean[] popesFavorTiles) {
 
