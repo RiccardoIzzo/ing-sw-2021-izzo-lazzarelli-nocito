@@ -17,14 +17,26 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.constants.GameConstants.*;
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
+/**
+ * Class DisconnectionListener handles the retrieval of a player data who just reconnected to the game.
+ * @author Gabriele Lazzarelli
+ */
 public class DisconnectionListener extends PropertyListener{
     private final Game game;
 
+    /**
+     * Constructor DisconnectionListener takes a VirtualView as a parameter.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public DisconnectionListener(VirtualView virtualView, Game game) {
         super(virtualView);
         this.game = game;
     }
 
+    /**
+     * Method propertyChange takes an event as parameter and send various message of update using the event property name as .
+     * @param evt the PropertyChangeEvent to handle.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String playerSource = evt.getPropertyName();

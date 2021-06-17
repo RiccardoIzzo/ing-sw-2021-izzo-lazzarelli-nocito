@@ -10,12 +10,23 @@ import java.beans.PropertyChangeEvent;
 
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
-
+/**
+ * Class FaithTrackListener handles the updates regarding the attributes' changes in the FaithTrack.
+ * @author Gabriele Lazzarelli
+ */
 public class FaithTrackListener extends PropertyListener {
+    /**
+     * Constructor FaithTrackListener takes a VirtualView as a parameter.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public FaithTrackListener(VirtualView virtualView) {
         super(virtualView);
     }
 
+    /**
+     * Method propertyChange takes an event as parameter and send a message of update using the event values.
+     * @param evt the PropertyChangeEvent to handle.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;

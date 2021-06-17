@@ -10,14 +10,22 @@ import static it.polimi.ingsw.constants.GameConstants.MARKET_CHANGE;
 import static it.polimi.ingsw.constants.GameConstants.SLIDE_MARBLE;
 
 /**
- * Class MarketListener notifies the player(s) when the market changes its configuration.
+ * Class MarketListener handles the updates regarding the attributes' changes in the Market.
  * @author Gabriele Lazzarelli
  */
 public class MarketListener extends PropertyListener {
+    /**
+     * Constructor MarketListener takes a VirtualView as a parameter.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public MarketListener(VirtualView virtualView) {
         super(virtualView);
     }
 
+    /**
+     * Method propertyChange takes an event as parameter and send a message of update using the event values.
+     * @param evt the PropertyChangeEvent to handle.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;

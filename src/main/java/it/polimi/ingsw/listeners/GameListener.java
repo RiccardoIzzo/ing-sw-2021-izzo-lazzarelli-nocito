@@ -13,11 +13,23 @@ import static it.polimi.ingsw.constants.GameConstants.END_TURN;
 import static it.polimi.ingsw.constants.GameConstants.TOKEN_DRAWN;
 import static it.polimi.ingsw.constants.PlayerConstants.GRID_CHANGE;
 
+/**
+ * Class GameListener handles the updates regarding the attributes' changes in Game.
+ * @author Gabriele Lazzarelli
+ */
 public class GameListener extends PropertyListener{
+    /**
+     * Constructor GameListener takes a VirtualView as a parameter.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public GameListener(VirtualView virtualView) {
         super(virtualView);
     }
 
+    /**
+     * Method propertyChange takes an event as parameter and send a message of update using the event values.
+     * @param evt the PropertyChangeEvent to handle.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;

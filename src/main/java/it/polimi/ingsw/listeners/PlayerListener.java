@@ -19,17 +19,25 @@ import java.util.Set;
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 /**
- * Class LeaderCardListener notifies the VirtualView when a LeaderCard is activated.
+ * Class PlayerListener handles the updates regarding the attributes' changes in Player.
  * @author Gabriele Lazzarelli
  */
 public class PlayerListener extends PropertyListener {
     private final Game game;
 
+    /**
+     * Constructor PlayerListener takes a VirtualView as a parameter.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public PlayerListener(VirtualView virtualView, Game game) {
         super(virtualView);
         this.game = game;
     }
 
+    /**
+     * Method propertyChange takes an event as parameter and send a message of update using the event values.
+     * @param evt the PropertyChangeEvent to handle.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ServerMessage serverMessage;
