@@ -29,7 +29,7 @@ import java.util.Map;
 public class DashboardController {
     @FXML ChoiceBox<String> choiceBox;
     @FXML Pane dashboardPane;
-
+    @FXML Button endTurnButton;
     private ModelView modelView;
     MarketController marketController;
     GridController gridController;
@@ -57,12 +57,12 @@ public class DashboardController {
 
     public void setup() {
         amountLabel = new Label[4];
+        endTurnButton.setDisable(true);
 //        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("BLUE.png")));
         showDashboard();
     }
     public void handleBonusResource(int amount) {
         System.out.println("handleBonusResource " + amount);
-        ResourceMap bonusResources = new ResourceMap();
         if(amount > 0) {
             dashboardPane.setDisable(true);
             Pane bonusPane = new Pane();
