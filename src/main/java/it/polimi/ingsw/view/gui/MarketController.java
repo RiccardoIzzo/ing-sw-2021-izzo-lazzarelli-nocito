@@ -1,32 +1,22 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.events.clientmessages.TakeResources;
 import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.MarbleColor;
 import it.polimi.ingsw.model.card.WhiteMarbleLeaderCard;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.view.CLI.showCards;
 
 public class MarketController {
     // Market Scene
@@ -129,17 +119,23 @@ public class MarketController {
         if (whiteMarbleChoiceBox.isShowing()) {
             whiteMarbleChoiceBox.getSelectionModel().getSelectedIndex();
         }
-        switch(arrowButton.getId()) {
-            case "firstColumnButton":
-                break;
-            case "secondColumnButton":
-                break;
-            case "thirdColumnButton":
-                break;
-            case "fourthColumnButton":
-                break;
-        }
+        int index = switch (arrowButton.getId()) {
+            case "firstColumnButton" -> 1;
+            case "secondColumnButton" -> 2;
+            case "thirdColumnButton" -> 3;
+            case "fourthColumnButton" -> 4;
+            default -> 0;
+        };
 
+        if (leaderID != 0) {
+            gui.send(new TakeResources(index, 2, leaderID));
+        }
+        else {
+            gui.send(new TakeResources(index, 2));
+
+        }
+        Stage stage = (Stage) arrowButton.getScene().getWindow();
+        stage.close();
     }
 
     public void rowButtonClicked(ActionEvent actionEvent) {
@@ -148,9 +144,23 @@ public class MarketController {
         if (whiteMarbleChoiceBox.isShowing()) {
             whiteMarbleChoiceBox.getSelectionModel().getSelectedIndex();
         }
-
+        int index = switch (arrowButton.getId()) {
+            case "firstRowButton" -> 1;
+            case "secondRowButton" -> 2;
+            case "thirdRowButton" -> 3;
+            default -> 0;
+        };
+        if (index > 0) {
+            if (leaderID != 0) {
+                gui.send(new TakeResources(index, 1, leaderID));
+            }
+            else {
+                gui.send(new TakeResources(index, 1));
+            }
+        }
+        Stage stage = (Stage) arrowButton.getScene().getWindow();
+        stage.close();
     }
-
     public void setMarketTray(ArrayList<MarbleColor> marketTray) {
         this.marketTray = marketTray;
     }
