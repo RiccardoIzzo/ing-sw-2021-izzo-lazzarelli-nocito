@@ -24,11 +24,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Optional;
 
 
 public class DashboardController {
-    @FXML ChoiceBox<String> choiceBox;
+    @FXML Button marketButton;
+    @FXML Button gridButton;
+    @FXML ChoiceBox<String> playersChoiceBox;
     @FXML Pane dashboardPane;
     @FXML Button endTurnButton;
     private ModelView modelView;
@@ -58,9 +59,26 @@ public class DashboardController {
 
     public void setup() {
         amountLabel = new Label[4];
+        for(ModelView.DashboardView dashboard : modelView.getDashboards()) {
+            playersChoiceBox.getItems().add(dashboard.getNickname());
+        }
+        playersChoiceBox.setValue(gui.getNickname());
+
         endTurnButton.setDisable(true);
-//        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("BLUE.png")));
         showDashboard();
+    }
+
+    public void choiceBoxChange(ActionEvent actionEvent) {
+        String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
+        System.out.print(playerSelected + "| vs |" + gui.getNickname());
+        if(playerSelected != null && playerSelected.equals(gui.getNickname())) {
+            marketButton.setDisable(false);
+            gridButton.setDisable(false);
+        }
+        else {
+            marketButton.setDisable(true);
+            gridButton.setDisable(true);
+        }
     }
     public void handleBonusResource(int amount) {
         System.out.println("handleBonusResource " + amount);
@@ -123,10 +141,10 @@ public class DashboardController {
                     if (resourceTextField[i].getText().length() > 0) {
                         total += Integer.parseInt(resourceTextField[i].getText());
                         switch (i){
-                            case 0 -> bonusResources.modifyResource(Resource.COIN, 1);
-                            case 1 -> bonusResources.modifyResource(Resource.SERVANT, 1);
-                            case 2 -> bonusResources.modifyResource(Resource.SHIELD, 1);
-                            case 3 -> bonusResources.modifyResource(Resource.STONE, 1);
+                            case 0 -> bonusResources.modifyResource(Resource.COIN, Integer.parseInt(resourceTextField[i].getText()));
+                            case 1 -> bonusResources.modifyResource(Resource.SERVANT, Integer.parseInt(resourceTextField[i].getText()));
+                            case 2 -> bonusResources.modifyResource(Resource.SHIELD, Integer.parseInt(resourceTextField[i].getText()));
+                            case 3 -> bonusResources.modifyResource(Resource.STONE, Integer.parseInt(resourceTextField[i].getText()));
                         }
                     }
                 }
