@@ -5,6 +5,7 @@ import it.polimi.ingsw.events.clientmessages.SendBonusResources;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.view.ModelView;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,10 +71,10 @@ public class DashboardController {
 
     public void choiceBoxChange(ActionEvent actionEvent) {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
-        System.out.print(playerSelected + "| vs |" + gui.getNickname());
         if(playerSelected != null && playerSelected.equals(gui.getNickname())) {
             marketButton.setDisable(false);
             gridButton.setDisable(false);
+            showDashboard();
         }
         else {
             marketButton.setDisable(true);
@@ -81,7 +82,6 @@ public class DashboardController {
         }
     }
     public void handleBonusResource(int amount) {
-        System.out.println("handleBonusResource " + amount);
         if(amount > 0) {
             dashboardPane.setDisable(true);
             Pane bonusPane = new Pane();
@@ -149,7 +149,7 @@ public class DashboardController {
                     }
                 }
                 if(total == amount) {
-                    gui.send(new SendBonusResources(bonusResources1));
+                    gui.send(new SendBonusResources(bonusResources));
                     bonusStage.close();
                     dashboardPane.setDisable(false);
                     showDashboard();
@@ -165,19 +165,19 @@ public class DashboardController {
     public void showDashboard() {
         ModelView.DashboardView dashboardView = modelView.getMyDashboard();
         showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
-        showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
         showStrongbox(dashboardView.getStrongbox());
         showLeaders(dashboardView.getLeaderCards());
         showActiveDevelopments(dashboardView.getActiveDevelopments());
+        showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
     }
     public void showActiveDevelopments(ArrayList<Integer> activeDevelopments) {
         int slot = 0;
         if (developmentImageSlot1 != null)
-            dashboardPane.getChildren().remove(developmentImageSlot1);
+            Platform.runLater(() -> dashboardPane.getChildren().remove(developmentImageSlot1));
         if (developmentImageSlot2 != null)
-            dashboardPane.getChildren().remove(developmentImageSlot2);
+            Platform.runLater(() -> dashboardPane.getChildren().remove(developmentImageSlot2));
         if (developmentImageSlot3 != null)
-            dashboardPane.getChildren().remove(developmentImageSlot3);
+            Platform.runLater(() -> dashboardPane.getChildren().remove(developmentImageSlot3));
         Image[] devImages = new Image[3];
         for (Integer id: activeDevelopments) {
 //            System.out.printf("\nSLOT #%d\n", slot + 1);
@@ -195,21 +195,21 @@ public class DashboardController {
         developmentImageSlot1.setLayoutY(yStart);
         developmentImageSlot1.setFitWidth(len);
         developmentImageSlot1.setFitHeight(len*3/2);
-        dashboardPane.getChildren().add(developmentImageSlot1);
+        Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot1));
 
         developmentImageSlot2 = new ImageView(devImages[1]);
         developmentImageSlot2.setLayoutX(xStart+len+margin);
         developmentImageSlot2.setLayoutY(yStart);
         developmentImageSlot2.setFitWidth(len);
         developmentImageSlot2.setFitHeight(len*3/2);
-        dashboardPane.getChildren().add(developmentImageSlot2);
+        Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot2));
 
         developmentImageSlot3 = new ImageView(devImages[2]);
         developmentImageSlot3.setLayoutX(xStart+(len+margin)*2);
         developmentImageSlot3.setLayoutY(yStart);
         developmentImageSlot3.setFitWidth(len);
         developmentImageSlot3.setFitHeight(len*3/2);
-        dashboardPane.getChildren().add(developmentImageSlot3);
+        Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot3));
     }
     public static void showLeaders(Map<Integer,Boolean> leaders){
 //        for (Integer id: leaders.keySet()){
@@ -237,7 +237,8 @@ public class DashboardController {
             strongboxResourceView.setFitWidth(len);
             strongboxResourceView.setFitHeight(len);
             if(amountLabel != null && amountLabel[resCont] != null) {
-                dashboardPane.getChildren().remove(amountLabel[resCont]);
+                int finalResCont = resCont;
+                Platform.runLater(() -> dashboardPane.getChildren().remove(amountLabel[finalResCont]));
             }
             if(amountLabel == null) {
                 amountLabel = new Label[4];
@@ -249,8 +250,9 @@ public class DashboardController {
             amountLabel[resCont].setMinWidth(strongboxResourceView.getFitWidth());
             amountLabel[resCont].setMinHeight(20);
 
-            dashboardPane.getChildren().add(amountLabel[resCont]);
-            dashboardPane.getChildren().add(strongboxResourceView);
+            int finalResCont1 = resCont;
+            Platform.runLater(() -> dashboardPane.getChildren().add(amountLabel[finalResCont1]));
+            Platform.runLater(() -> dashboardPane.getChildren().add(strongboxResourceView));
             resCont++;
         }
 
@@ -258,12 +260,12 @@ public class DashboardController {
 
     private void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources) {
 
-        dashboardPane.getChildren().remove(firstShelfRes1View);
-        dashboardPane.getChildren().remove(secondShelfRes1View);
-        dashboardPane.getChildren().remove(secondShelfRes2View);
-        dashboardPane.getChildren().remove(thirdShelfRes1View);
-        dashboardPane.getChildren().remove(thirdShelfRes2View);
-        dashboardPane.getChildren().remove(thirdShelfRes3View);
+        Platform.runLater(() -> dashboardPane.getChildren().remove(firstShelfRes1View));
+        Platform.runLater(() -> dashboardPane.getChildren().remove(secondShelfRes1View));
+        Platform.runLater(() -> dashboardPane.getChildren().remove(secondShelfRes2View));
+        Platform.runLater(() -> dashboardPane.getChildren().remove(thirdShelfRes1View));
+        Platform.runLater(() -> dashboardPane.getChildren().remove(thirdShelfRes2View));
+        Platform.runLater(() -> dashboardPane.getChildren().remove(thirdShelfRes3View));
 
 
         Image firstShelfRes1 = new Image(getImage(warehouse.get(0)));
@@ -281,42 +283,94 @@ public class DashboardController {
         firstShelfRes1View.setLayoutY(yStart);
         firstShelfRes1View.setFitWidth(len);
         firstShelfRes1View.setFitHeight(len);
-        dashboardPane.getChildren().add(firstShelfRes1View);
+        Platform.runLater(() -> dashboardPane.getChildren().add(firstShelfRes1View));
 
         secondShelfRes1View = new ImageView(secondShelfRes1);
         secondShelfRes1View.setLayoutX(xStart-len/4-len);
         secondShelfRes1View.setLayoutY(yStart+yOffset);
         secondShelfRes1View.setFitWidth(len);
         secondShelfRes1View.setFitHeight(len);
-        dashboardPane.getChildren().add(secondShelfRes1View);
+        Platform.runLater(() -> dashboardPane.getChildren().add(secondShelfRes1View));
 
         secondShelfRes2View = new ImageView(secondShelfRes2);
         secondShelfRes2View.setLayoutX(xStart+len/4);
         secondShelfRes2View.setLayoutY(yStart+yOffset);
         secondShelfRes2View.setFitWidth(len);
         secondShelfRes2View.setFitHeight(len);
-        dashboardPane.getChildren().add(secondShelfRes2View);
+        Platform.runLater(() -> dashboardPane.getChildren().add(secondShelfRes2View));
 
         thirdShelfRes1View = new ImageView(thirdShelfRes1);
         thirdShelfRes1View.setLayoutX(xStart-len - len/2 -len/4);
         thirdShelfRes1View.setLayoutY(yStart+yOffset*2);
         thirdShelfRes1View.setFitWidth(len);
         thirdShelfRes1View.setFitHeight(len);
-        dashboardPane.getChildren().add(thirdShelfRes1View);
+        Platform.runLater(() -> dashboardPane.getChildren().add(thirdShelfRes1View));
 
         thirdShelfRes2View = new ImageView(thirdShelfRes2);
         thirdShelfRes2View.setLayoutX(xStart-len/2);
         thirdShelfRes2View.setLayoutY(yStart+yOffset*2);
         thirdShelfRes2View.setFitWidth(len);
         thirdShelfRes2View.setFitHeight(len);
-        dashboardPane.getChildren().add(thirdShelfRes2View);
+        Platform.runLater(() -> dashboardPane.getChildren().add(thirdShelfRes2View));
 
         thirdShelfRes3View = new ImageView(thirdShelfRes3);
         thirdShelfRes3View.setLayoutX(xStart+len/2+len/4);
         thirdShelfRes3View.setLayoutY(yStart+yOffset*2);
         thirdShelfRes3View.setFitWidth(len);
         thirdShelfRes3View.setFitHeight(len);
-        dashboardPane.getChildren().add(thirdShelfRes3View);
+        Platform.runLater(() -> dashboardPane.getChildren().add(thirdShelfRes3View));
+
+//        ArrayList<Resource> temporaryShelf = new ArrayList<>();
+        ResourceMap temporaryShelf = new ResourceMap();
+        for(int i = 10; i<=14; i++) {
+            Resource temp = warehouse.get(i-1);
+            if ( temp != null) {
+                temporaryShelf.modifyResource(temp, 1);
+            }
+        }
+        if ( temporaryShelf.getAmount() > 0 ) {
+            // 200 , 530
+            Image image = new Image("/view/images/resources/temporaryShelf.png");
+            ImageView temporaryShelfImage = new ImageView(image);
+            temporaryShelfImage.setLayoutX(300);
+            temporaryShelfImage.setLayoutY(500);
+            temporaryShelfImage.setFitWidth(500);
+            temporaryShelfImage.setFitHeight(142);
+            Label coinLabel = new Label("x " + temporaryShelf.getResource(Resource.COIN));
+            coinLabel.setLayoutX(360);
+            coinLabel.setLayoutY(600);
+            coinLabel.setPrefWidth(30);
+            coinLabel.setPrefHeight(30);
+            coinLabel.setTextFill(Color.web("white"));
+            Label stoneLabel = new Label("x " + temporaryShelf.getResource(Resource.STONE));
+            stoneLabel.setLayoutX(485);
+            stoneLabel.setLayoutY(600);
+            stoneLabel.setPrefWidth(30);
+            stoneLabel.setPrefHeight(30);
+            stoneLabel.setTextFill(Color.web("white"));
+            Label servantLabel = new Label("x " + temporaryShelf.getResource(Resource.SERVANT));
+            servantLabel.setLayoutX(610);
+            servantLabel.setLayoutY(600);
+            servantLabel.setPrefWidth(30);
+            servantLabel.setPrefHeight(30);
+            servantLabel.setTextFill(Color.web("white"));
+            Label shieldLabel = new Label("x " + temporaryShelf.getResource(Resource.SHIELD));
+            shieldLabel.setLayoutX(735);
+            shieldLabel.setLayoutY(600);
+            shieldLabel.setPrefWidth(30);
+            shieldLabel.setPrefHeight(30);
+            shieldLabel.setTextFill(Color.web("white"));
+
+
+
+            Platform.runLater(() -> dashboardPane.getChildren().add(temporaryShelfImage));
+            Platform.runLater(() -> dashboardPane.getChildren().add(coinLabel));
+            Platform.runLater(() -> dashboardPane.getChildren().add(stoneLabel));
+            Platform.runLater(() -> dashboardPane.getChildren().add(servantLabel));
+            Platform.runLater(() -> dashboardPane.getChildren().add(shieldLabel));
+
+
+        }
     }
     String getImage(Resource resource) {
         if (resource == null) {
@@ -333,10 +387,13 @@ public class DashboardController {
         }
     }
     private void showFaithTrack(Integer faithMarker, Integer blackMarker, Boolean[] popesFavorTiles) {
-
+        if (faithTrackImage != null) {
+            Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#faithTrackImage")));
+        }
         Image faithImage = new Image("/view/images/faithTrack/cross.png");
 
-        ImageView faithTrackImage = new ImageView(faithImage);
+        faithTrackImage = new ImageView(faithImage);
+        faithTrackImage.setId("#faithTrackImage");
         int xOffset = 80;
         int yOffset = 190;
 
@@ -344,29 +401,42 @@ public class DashboardController {
         int[] yStart = {0, 0, 0, -40, -80, -80 ,-80 ,-80, -80 ,-80, -40, 0, 0, 0, 0, 0, 0, -40, -80, -80, -80 ,-80 , -80 , -80 ,-80, -80};
         int len = 40;
 
-        dashboardPane.getChildren().remove(faithTrackImage);
         faithTrackImage = new ImageView(faithImage);
-
         faithTrackImage.setLayoutX(xOffset+xStart[faithMarker]);
         faithTrackImage.setLayoutY(yOffset+yStart[faithMarker]);
         faithTrackImage.setFitWidth(len);
         faithTrackImage.setFitHeight(len);
-        dashboardPane.getChildren().add(faithTrackImage);
 
         if ( modelView.getDashboards().size() == 1 ) {
             Image blackFaithImage = new Image("/view/images/faithTrack/blackCross.png");
 
             if (blackFaithTrackImage != null) {
-                dashboardPane.getChildren().remove(blackFaithTrackImage);
+                Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#blackFaithTrackImage")));
             }
             blackFaithTrackImage = new ImageView(blackFaithImage);
+            blackFaithTrackImage.setId("blackFaithTrackImage");
 
             blackFaithTrackImage.setLayoutX(xOffset+xStart[faithMarker]);
             blackFaithTrackImage.setLayoutY(yOffset+yStart[faithMarker]);
             blackFaithTrackImage.setFitWidth(len);
             blackFaithTrackImage.setFitHeight(len);
-            dashboardPane.getChildren().add(blackFaithTrackImage);
+
+            if(faithMarker.equals(blackMarker)) {
+                double halfLen = (double)(len)/2;
+                faithTrackImage.setFitWidth(halfLen);
+                faithTrackImage.setFitHeight(halfLen);
+                blackFaithTrackImage.setLayoutX(blackFaithTrackImage.getLayoutX()+halfLen);
+                blackFaithTrackImage.setLayoutY(blackFaithTrackImage.getLayoutY()+halfLen);
+                blackFaithTrackImage.setFitWidth(halfLen);
+                blackFaithTrackImage.setFitHeight(halfLen);
+            }
+
+
+            Platform.runLater(() ->  dashboardPane.getChildren().add(blackFaithTrackImage));
         }
+
+        ImageView finalFaithTrackImage = faithTrackImage;
+        Platform.runLater(() -> dashboardPane.getChildren().add(finalFaithTrackImage));
 
     }
 
@@ -409,5 +479,9 @@ public class DashboardController {
 
     public void endTurn(ActionEvent actionEvent) {
         gui.send(new EndTurn());
+    }
+
+    public void handleTemporaryShelf() {
+        showDashboard();
     }
 }

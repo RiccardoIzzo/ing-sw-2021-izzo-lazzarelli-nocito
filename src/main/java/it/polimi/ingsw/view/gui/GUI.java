@@ -125,6 +125,7 @@ public class GUI extends Application implements View {
             dashboardController.setModelView(modelView);
             dashboardController.setup();
             mainStage.setScene(new Scene(root));
+            mainStage.setResizable(false);
             mainStage.show();
 
             mainStage.centerOnScreen();
@@ -195,6 +196,7 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleTemporaryShelf() {
+        dashboardController.handleTemporaryShelf();
 
     }
 
