@@ -38,7 +38,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="thirdRowButton" layoutX="272.0" layoutY="144.0" mnemonicParsing="false" onAction="#rowButtonClicked" rotate="270.0" style="-fx-background-color: transparent;">
+      <Button fx:id="firstRowButton" layoutX="272.0" layoutY="144.0" mnemonicParsing="false" onAction="#rowButtonClicked" rotate="270.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="57.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                   <Image url="@/view/images/marketArrow.png" />
@@ -52,7 +52,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="firstRowButton" layoutX="272.0" layoutY="74.0" mnemonicParsing="false" onAction="#rowButtonClicked" rotate="270.0" style="-fx-background-color: transparent;">
+      <Button fx:id="thirdRowButton" layoutX="272.0" layoutY="74.0" mnemonicParsing="false" onAction="#rowButtonClicked" rotate="270.0" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="57.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                   <Image url="@/view/images/marketArrow.png" />
