@@ -63,6 +63,8 @@ public class DashboardController {
     ImageView faithTrackImage;
     ImageView blackFaithTrackImage;
 
+    ImageView[] popeFavorTilesImages = new ImageView[3];
+
     ImageView developmentImageSlot1;
     ImageView developmentImageSlot2;
     ImageView developmentImageSlot3;
@@ -723,6 +725,24 @@ public class DashboardController {
         }
         Image faithImage = new Image("/view/images/faithTrack/cross.png");
 
+         for(int i = 0; i<popesFavorTiles.length; i++) {
+             int finalI = i+1;
+             Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#popeFavorTilesImages" + finalI)));
+             popeFavorTilesImages[i] = new ImageView(new Image("/view/images/faithTrack/pope_favor"+(i+1) + (popesFavorTiles[i] ? "_front": "_back" )+".png"));
+             popeFavorTilesImages[i].setLayoutX(290+222.5*i);
+             popeFavorTilesImages[i].setLayoutY(160);
+             popeFavorTilesImages[i].setFitWidth(60);
+             popeFavorTilesImages[i].setFitHeight(60);
+             popeFavorTilesImages[i].setId("popeFavorTilesImages" + (i+1));
+         }
+        popeFavorTilesImages[1].setLayoutX(491);
+        popeFavorTilesImages[1].setLayoutY(120);
+        popeFavorTilesImages[1].setFitWidth(60);
+        popeFavorTilesImages[1].setFitHeight(60);
+        Platform.runLater(() -> dashboardPane.getChildren().add(popeFavorTilesImages[0]));
+        Platform.runLater(() -> dashboardPane.getChildren().add(popeFavorTilesImages[1]));
+        Platform.runLater(() -> dashboardPane.getChildren().add(popeFavorTilesImages[2]));
+
         faithTrackImage = new ImageView(faithImage);
         faithTrackImage.setId("faithTrackImage");
         int xOffset = 80;
@@ -746,8 +766,8 @@ public class DashboardController {
             blackFaithTrackImage = new ImageView(blackFaithImage);
             blackFaithTrackImage.setId("blackFaithTrackImage");
 
-            blackFaithTrackImage.setLayoutX(xOffset+xStart[faithMarker]);
-            blackFaithTrackImage.setLayoutY(yOffset+yStart[faithMarker]);
+            blackFaithTrackImage.setLayoutX(xOffset+xStart[blackMarker]);
+            blackFaithTrackImage.setLayoutY(yOffset+yStart[blackMarker]);
             blackFaithTrackImage.setFitWidth(len);
             blackFaithTrackImage.setFitHeight(len);
 
