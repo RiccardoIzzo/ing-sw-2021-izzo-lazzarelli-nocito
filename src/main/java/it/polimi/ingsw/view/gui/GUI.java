@@ -42,6 +42,7 @@ public class GUI extends Application implements View {
     private boolean reconnected = false;
 
     private int bonusResourceAmount = 0;
+    boolean showTempShelf = false;
 
     @Override
     public void start(Stage stage) throws Exception {

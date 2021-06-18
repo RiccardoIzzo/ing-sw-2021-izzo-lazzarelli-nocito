@@ -134,6 +134,7 @@ public class MarketController {
             gui.send(new TakeResources(index, 2));
 
         }
+        gui.showTempShelf = true;
         Stage stage = (Stage) arrowButton.getScene().getWindow();
         stage.close();
     }
@@ -158,6 +159,7 @@ public class MarketController {
                 gui.send(new TakeResources(index, 1));
             }
         }
+        gui.showTempShelf = true;
         Stage stage = (Stage) arrowButton.getScene().getWindow();
         stage.close();
     }

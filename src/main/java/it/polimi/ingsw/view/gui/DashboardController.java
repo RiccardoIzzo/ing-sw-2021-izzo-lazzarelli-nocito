@@ -6,17 +6,17 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.view.ModelView;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -24,7 +24,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class DashboardController {
@@ -38,13 +42,18 @@ public class DashboardController {
     GridController gridController;
 
     private static GUI gui;
-    private ImageView firstShelfRes1View;
-    private ImageView secondShelfRes1View;
-    private ImageView secondShelfRes2View;
-    private ImageView thirdShelfRes1View;
-    private ImageView thirdShelfRes2View;
-    private ImageView thirdShelfRes3View;
+    ImageView firstShelfRes1View;
+    ImageView secondShelfRes1View;
+    ImageView secondShelfRes2View;
+    ImageView thirdShelfRes1View;
+    ImageView thirdShelfRes2View;
+    ImageView thirdShelfRes3View;
 
+    ImageView temporaryShelfImage;
+    ImageView tempShelfImageView1;
+    ImageView tempShelfImageView2;
+    ImageView tempShelfImageView3;
+    ImageView tempShelfImageView4;
     ImageView faithTrackImage;
     ImageView blackFaithTrackImage;
 
@@ -54,6 +63,7 @@ public class DashboardController {
 
     Label[] amountLabel = new Label [4];
 
+    Integer swapIndex = -1;
     public void setGUI(GUI gui) {
         DashboardController.gui = gui;
     }
@@ -260,12 +270,14 @@ public class DashboardController {
 
     private void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources) {
 
-        Platform.runLater(() -> dashboardPane.getChildren().remove(firstShelfRes1View));
-        Platform.runLater(() -> dashboardPane.getChildren().remove(secondShelfRes1View));
-        Platform.runLater(() -> dashboardPane.getChildren().remove(secondShelfRes2View));
-        Platform.runLater(() -> dashboardPane.getChildren().remove(thirdShelfRes1View));
-        Platform.runLater(() -> dashboardPane.getChildren().remove(thirdShelfRes2View));
-        Platform.runLater(() -> dashboardPane.getChildren().remove(thirdShelfRes3View));
+        Platform.runLater(() -> {
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#firstShelfRes1View"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#secondShelfRes1View"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#secondShelfRes2View"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#thirdShelfRes1View"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#thirdShelfRes2View"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#thirdShelfRes3View"));
+        });
 
 
         Image firstShelfRes1 = new Image(getImage(warehouse.get(0)));
@@ -283,6 +295,9 @@ public class DashboardController {
         firstShelfRes1View.setLayoutY(yStart);
         firstShelfRes1View.setFitWidth(len);
         firstShelfRes1View.setFitHeight(len);
+        firstShelfRes1View.setPickOnBounds(true);
+        firstShelfRes1View.setOnMouseClicked((MouseEvent e) -> handleShelfClick(0));
+        firstShelfRes1View.setId("firstShelfRes1View");
         Platform.runLater(() -> dashboardPane.getChildren().add(firstShelfRes1View));
 
         secondShelfRes1View = new ImageView(secondShelfRes1);
@@ -290,6 +305,9 @@ public class DashboardController {
         secondShelfRes1View.setLayoutY(yStart+yOffset);
         secondShelfRes1View.setFitWidth(len);
         secondShelfRes1View.setFitHeight(len);
+        secondShelfRes1View.setPickOnBounds(true);
+        secondShelfRes1View.setOnMouseClicked((MouseEvent e) -> handleShelfClick(1));
+        secondShelfRes1View.setId("secondShelfRes1View");
         Platform.runLater(() -> dashboardPane.getChildren().add(secondShelfRes1View));
 
         secondShelfRes2View = new ImageView(secondShelfRes2);
@@ -297,6 +315,9 @@ public class DashboardController {
         secondShelfRes2View.setLayoutY(yStart+yOffset);
         secondShelfRes2View.setFitWidth(len);
         secondShelfRes2View.setFitHeight(len);
+        secondShelfRes2View.setPickOnBounds(true);
+        secondShelfRes2View.setOnMouseClicked((MouseEvent e) -> handleShelfClick(2));
+        secondShelfRes2View.setId("secondShelfRes2View");
         Platform.runLater(() -> dashboardPane.getChildren().add(secondShelfRes2View));
 
         thirdShelfRes1View = new ImageView(thirdShelfRes1);
@@ -304,6 +325,9 @@ public class DashboardController {
         thirdShelfRes1View.setLayoutY(yStart+yOffset*2);
         thirdShelfRes1View.setFitWidth(len);
         thirdShelfRes1View.setFitHeight(len);
+        thirdShelfRes1View.setPickOnBounds(true);
+        thirdShelfRes1View.setOnMouseClicked((MouseEvent e) -> handleShelfClick(3));
+        thirdShelfRes1View.setId("thirdShelfRes1View");
         Platform.runLater(() -> dashboardPane.getChildren().add(thirdShelfRes1View));
 
         thirdShelfRes2View = new ImageView(thirdShelfRes2);
@@ -311,6 +335,9 @@ public class DashboardController {
         thirdShelfRes2View.setLayoutY(yStart+yOffset*2);
         thirdShelfRes2View.setFitWidth(len);
         thirdShelfRes2View.setFitHeight(len);
+        thirdShelfRes2View.setPickOnBounds(true);
+        thirdShelfRes2View.setOnMouseClicked((MouseEvent e) -> handleShelfClick(4));
+        thirdShelfRes2View.setId("thirdShelfRes2View");
         Platform.runLater(() -> dashboardPane.getChildren().add(thirdShelfRes2View));
 
         thirdShelfRes3View = new ImageView(thirdShelfRes3);
@@ -318,6 +345,9 @@ public class DashboardController {
         thirdShelfRes3View.setLayoutY(yStart+yOffset*2);
         thirdShelfRes3View.setFitWidth(len);
         thirdShelfRes3View.setFitHeight(len);
+        thirdShelfRes3View.setPickOnBounds(true);
+        thirdShelfRes3View.setOnMouseClicked((MouseEvent e) -> handleShelfClick(5));
+        thirdShelfRes3View.setId("thirdShelfRes3View");
         Platform.runLater(() -> dashboardPane.getChildren().add(thirdShelfRes3View));
 
 //        ArrayList<Resource> temporaryShelf = new ArrayList<>();
@@ -328,50 +358,123 @@ public class DashboardController {
                 temporaryShelf.modifyResource(temp, 1);
             }
         }
-        if ( temporaryShelf.getAmount() > 0 ) {
+
+        Platform.runLater(() -> {
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView1"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView2"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView3"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView4"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfImage"));
+        });
+
+        if ( gui.showTempShelf ) {
+            marketButton.setDisable(true);
+            gridButton.setDisable(true);
             // 200 , 530
-            Image image = new Image("/view/images/resources/temporaryShelf.png");
-            ImageView temporaryShelfImage = new ImageView(image);
+            Image image = new Image("/view/images/resources/temporaryShelfEmpty.png");
+            temporaryShelfImage = new ImageView(image);
             temporaryShelfImage.setLayoutX(300);
             temporaryShelfImage.setLayoutY(500);
             temporaryShelfImage.setFitWidth(500);
             temporaryShelfImage.setFitHeight(142);
-            Label coinLabel = new Label("x " + temporaryShelf.getResource(Resource.COIN));
-            coinLabel.setLayoutX(360);
-            coinLabel.setLayoutY(600);
-            coinLabel.setPrefWidth(30);
-            coinLabel.setPrefHeight(30);
-            coinLabel.setTextFill(Color.web("white"));
-            Label stoneLabel = new Label("x " + temporaryShelf.getResource(Resource.STONE));
-            stoneLabel.setLayoutX(485);
-            stoneLabel.setLayoutY(600);
-            stoneLabel.setPrefWidth(30);
-            stoneLabel.setPrefHeight(30);
-            stoneLabel.setTextFill(Color.web("white"));
-            Label servantLabel = new Label("x " + temporaryShelf.getResource(Resource.SERVANT));
-            servantLabel.setLayoutX(610);
-            servantLabel.setLayoutY(600);
-            servantLabel.setPrefWidth(30);
-            servantLabel.setPrefHeight(30);
-            servantLabel.setTextFill(Color.web("white"));
-            Label shieldLabel = new Label("x " + temporaryShelf.getResource(Resource.SHIELD));
-            shieldLabel.setLayoutX(735);
-            shieldLabel.setLayoutY(600);
-            shieldLabel.setPrefWidth(30);
-            shieldLabel.setPrefHeight(30);
-            shieldLabel.setTextFill(Color.web("white"));
-
-
+            temporaryShelfImage.setId("temporaryShelfImage");
 
             Platform.runLater(() -> dashboardPane.getChildren().add(temporaryShelfImage));
-            Platform.runLater(() -> dashboardPane.getChildren().add(coinLabel));
-            Platform.runLater(() -> dashboardPane.getChildren().add(stoneLabel));
-            Platform.runLater(() -> dashboardPane.getChildren().add(servantLabel));
-            Platform.runLater(() -> dashboardPane.getChildren().add(shieldLabel));
+
+
+            Image tempShelfImage1 = new Image(getImage(warehouse.get(10)));
+            tempShelfImageView1 = new ImageView(tempShelfImage1);
+            tempShelfImageView1.setLayoutX(337.5);
+            tempShelfImageView1.setLayoutY(530);
+            tempShelfImageView1.setFitWidth(85);
+            tempShelfImageView1.setFitHeight(85);
+            tempShelfImageView1.setPickOnBounds(true);
+            tempShelfImageView1.setOnMouseClicked((MouseEvent e) -> {
+                System.out.println("tempShelfImageView1");
+                handleShelfClick(10);
+            });
+            tempShelfImageView1.setId("tempShelfImageView1");
+            Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageView1));
+
+            Image tempShelfImage2 = new Image(getImage(warehouse.get(11)));
+            tempShelfImageView2 = new ImageView(tempShelfImage2);
+            tempShelfImageView2.setLayoutX(457.5);
+            tempShelfImageView2.setLayoutY(530);
+            tempShelfImageView2.setFitWidth(85);
+            tempShelfImageView2.setFitHeight(85);
+            tempShelfImageView2.setPickOnBounds(true);
+            tempShelfImageView2.setOnMouseClicked((MouseEvent e) -> {
+                System.out.println("tempShelfImageView2");
+                handleShelfClick(11);
+            });
+            tempShelfImageView2.setId("tempShelfImageView2");
+            Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageView2));
+
+            Image tempShelfImage3 = new Image(getImage(warehouse.get(12)));
+            tempShelfImageView3 = new ImageView(tempShelfImage3);
+            tempShelfImageView3.setLayoutX(577.5);
+            tempShelfImageView3.setLayoutY(530);
+            tempShelfImageView3.setFitWidth(85);
+            tempShelfImageView3.setFitHeight(85);
+            tempShelfImageView3.setPickOnBounds(true);
+            tempShelfImageView3.setOnMouseClicked((MouseEvent e) -> {
+                System.out.println("tempShelfImageView3");
+                handleShelfClick(12);
+            });
+            tempShelfImageView3.setId("tempShelfImageView3");
+            Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageView3));
+
+
+            Image tempShelfImage4 = new Image(getImage(warehouse.get(13)));
+            tempShelfImageView4 = new ImageView(tempShelfImage4);
+            tempShelfImageView4.setLayoutX(697.5);
+            tempShelfImageView4.setLayoutY(530);
+            tempShelfImageView4.setFitWidth(85);
+            tempShelfImageView4.setFitHeight(85);
+            tempShelfImageView4.setPickOnBounds(true);
+            tempShelfImageView4.setOnMouseClicked((MouseEvent e) -> {
+                System.out.println("tempShelfImageView4");
+                handleShelfClick(13);
+            });
+            tempShelfImageView4.setId("tempShelfImageView4");
+            Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageView4));
+
 
 
         }
+        else {
+            marketButton.setDisable(false);
+            gridButton.setDisable(false);
+        }
     }
+
+    private void handleShelfClick(int index) {
+        if(gui.showTempShelf) {
+            if (swapIndex < 0) {
+                swapIndex = index;
+            } else {
+                List<Integer> validSlots = IntStream.rangeClosed(0, 13)
+                        .boxed().collect(Collectors.toList());
+
+                if (modelView.getMyDashboard().getExtraShelfResources().size() == 0) {
+                    validSlots.removeAll(Arrays.asList(6, 7, 8, 9));
+                } else if (modelView.getMyDashboard().getExtraShelfResources().size() == 1) {
+                    validSlots.removeAll(Arrays.asList(8, 9));
+                }
+
+                if (validSlots.contains(swapIndex) && validSlots.contains(index)) {
+                    modelView.getMyDashboard().swapResources(swapIndex, index);
+                    swapIndex = -1;
+                    ModelView.DashboardView dashboardView = modelView.getMyDashboard();
+                    showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
+                } else {
+                    gui.showAlert("Slot numbers are not valid.\nAvailable slots:\n" + validSlots, Alert.AlertType.ERROR);
+                }
+                endTurnButton.setDisable(!modelView.getMyDashboard().checkWarehouse());
+            }
+        }
+    }
+
     String getImage(Resource resource) {
         if (resource == null) {
             return "/view/images/resources/notFound.png";
