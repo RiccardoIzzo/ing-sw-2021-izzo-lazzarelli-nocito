@@ -437,29 +437,71 @@ public class CLI implements View{
         ArrayList<Integer> productions = new ArrayList<>();
         ResourceMap requiredResources = new ResourceMap();
         System.out.println("My resources: " + totalResources);
-        showCards(modelView.getMyDashboard().getAvailableProduction());
-        System.out.println("Select the productions you want to activate: ");
-        while(true){
-            System.out.println("Add production by typing the id: ");
-            int id = getInt();
-            if(modelView.getMyDashboard().getAvailableProduction().contains(id)) productions.add(id);
-            else System.out.println("Id not valid.");
-            System.out.println("Add more? y/n");
-            if(getInput("y|n").equals("n") && productions.size() > 0) {
-                for(Integer production : productions){
-                    Card card = JsonCardsCreator.generateCard(production);
-                    if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
-                    else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
+
+        //Handles the basic production
+        ResourceMap inputBasicProduction = new ResourceMap();
+        ResourceMap outputBasicProduction = new ResourceMap();
+        System.out.println("Do you want to activate the basic production? y/n");
+        if(getInput("y|n").equals("y")){
+            String resource;
+            for(int n = 0; n < 2; n++){
+                System.out.println("Select the " + ((n == 0) ? "first" : "second") + " input resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT");
+                resource = getInput("stone|coin|shield|servant");
+                switch (resource){
+                    case "stone" -> inputBasicProduction.modifyResource(Resource.STONE, 1);
+                    case "coin" -> inputBasicProduction.modifyResource(Resource.COIN, 1);
+                    case "shield" -> inputBasicProduction.modifyResource(Resource.SHIELD, 1);
+                    case "servant" -> inputBasicProduction.modifyResource(Resource.SERVANT, 1);
                 }
-                if(totalResources.removeResources(requiredResources)) {
-                    send(new ActivateProduction(productions));
-                    basicActionPlayed();
-                    System.out.println("Production activated!");
+            }
+            System.out.println("Select the output resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT");
+            resource = getInput("stone|coin|shield|servant");
+            switch (resource){
+                case "stone" -> outputBasicProduction.modifyResource(Resource.STONE, 1);
+                case "coin" -> outputBasicProduction.modifyResource(Resource.COIN, 1);
+                case "shield" -> outputBasicProduction.modifyResource(Resource.SHIELD, 1);
+                case "servant" -> outputBasicProduction.modifyResource(Resource.SERVANT, 1);
+            }
+            requiredResources.addResources(inputBasicProduction);
+        }
+
+        //Handles the Card production
+        if (modelView.getMyDashboard().getAvailableProduction().size() > 0){
+            showCards(modelView.getMyDashboard().getAvailableProduction());
+            System.out.println("Select the productions you want to activate: ");
+            while(true){
+                System.out.println("Add production by typing the id: ");
+                int id = getInt();
+                if(modelView.getMyDashboard().getAvailableProduction().contains(id)) productions.add(id);
+                else System.out.println("Id not valid.");
+                System.out.println("Add more? y/n");
+                if(getInput("y|n").equals("n")) {
+                    for(Integer production : productions){
+                        Card card = JsonCardsCreator.generateCard(production);
+                        if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
+                        else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
+                    }
+                    break;
                 }
-                else System.out.println("Not enough resources.");
-                break;
             }
         }
+
+        if(totalResources.removeResources(requiredResources)) {
+            if (productions.size() > 0) {
+                send(new ActivateProduction(productions));
+                basicActionPlayed();
+            }
+            if (inputBasicProduction.getAmount() != 0) {
+                send(new BasicProduction(inputBasicProduction, outputBasicProduction));
+                basicActionPlayed();
+            }
+            if (!Action.ACTIVATE_PRODUCTION.enabled) {
+                System.out.println("Production activated!");
+            } else {
+                System.out.println("No production activated");
+            }
+        }
+        else System.out.println("Not enough resources.");
         handleTurn();
     }
 
