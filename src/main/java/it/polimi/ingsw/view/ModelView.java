@@ -336,9 +336,9 @@ public class ModelView {
                 }
             }
 
-            Resource resourceShelfOne = shelfOne.stream().findAny().orElse(null);
-            Resource resourceShelfTwo = shelfTwo.stream().findAny().orElse(null);
-            Resource resourceShelfThree = shelfThree.stream().findAny().orElse(null);
+            Resource resourceShelfOne = shelfOne.stream().filter(Objects::nonNull).findAny().orElse(null);
+            Resource resourceShelfTwo = shelfTwo.stream().filter(Objects::nonNull).findAny().orElse(null);
+            Resource resourceShelfThree = shelfThree.stream().filter(Objects::nonNull).findAny().orElse(null);
 
             if (resourceShelfOne == resourceShelfTwo && resourceShelfOne != null){
                 return false;
