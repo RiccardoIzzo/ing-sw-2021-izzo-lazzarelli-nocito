@@ -1,9 +1,15 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.events.clientmessages.ActivateProduction;
 import it.polimi.ingsw.events.clientmessages.EndTurn;
 import it.polimi.ingsw.events.clientmessages.SendBonusResources;
+import it.polimi.ingsw.events.clientmessages.SetWarehouse;
+import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.model.card.Card;
+import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.card.ProductionLeaderCard;
 import it.polimi.ingsw.view.ModelView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -32,6 +38,7 @@ import java.util.stream.IntStream;
 
 
 public class DashboardController {
+    @FXML Button activateProductionsButton;
     @FXML Button marketButton;
     @FXML Button gridButton;
     @FXML ChoiceBox<String> playersChoiceBox;
@@ -60,7 +67,13 @@ public class DashboardController {
     ImageView developmentImageSlot1;
     ImageView developmentImageSlot2;
     ImageView developmentImageSlot3;
+    Button[] developmentButton = new Button [3];
 
+    Resource[] basicProductionResources = new Resource[3];
+    ArrayList<Integer> enabledProductions = new ArrayList<>();
+    @FXML ComboBox<ImageView> basicProductionRes1;
+    @FXML ComboBox<ImageView> basicProductionRes2;
+    @FXML ComboBox<ImageView> basicProductionRes3;
     Label[] amountLabel = new Label [4];
 
     Integer swapIndex = -1;
@@ -74,9 +87,109 @@ public class DashboardController {
             playersChoiceBox.getItems().add(dashboard.getNickname());
         }
         playersChoiceBox.setValue(gui.getNickname());
+        basicProductionResources = new Resource[3];
+        activateProductionsButton.setDisable(true);
+        enabledProductions = new ArrayList<>();
+        String[] resources = {"coin2", "servant2" , "shield2" , "stone2"};
+        ObservableList<String> options = FXCollections.observableArrayList();
 
+        basicProductionRes1.setStyle("-fx-opacity: 1;");
+        basicProductionRes2.setStyle("-fx-opacity: 1;");
+        basicProductionRes3.setStyle("-fx-opacity: 1;");
+        for (String resource : resources) {
+            Image resourceImage = new Image("/view/images/resources/" + resource + ".png");
+            ImageView resourceImageView1 = new ImageView(resourceImage);
+            resourceImageView1.setFitWidth(22);
+            resourceImageView1.setFitHeight(22);
+            ImageView resourceImageView2 = new ImageView(resourceImage);
+            resourceImageView2.setFitWidth(22);
+            resourceImageView2.setFitHeight(22);
+            ImageView resourceImageView3 = new ImageView(resourceImage);
+            resourceImageView3.setFitWidth(22);
+            resourceImageView3.setFitHeight(22);
+
+            basicProductionRes1.getItems().add(resourceImageView1);
+            basicProductionRes2.getItems().add(resourceImageView2);
+            basicProductionRes3.getItems().add(resourceImageView3);
+        }
+
+        basicProductionRes1.setCellFactory(listView -> new ListCell<>() {
+
+            private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(ImageView item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    String imageURL = item.getImage().getUrl();
+                    Image image = new Image(imageURL, true); // true means load in background
+                    imageView.setImage(image);
+                    imageView.setFitWidth(22);
+                    imageView.setFitHeight(22);
+                    setGraphic(imageView);
+                }
+            }
+        });
+
+        basicProductionRes2.setCellFactory(listView -> new ListCell<>() {
+
+            private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(ImageView item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    String imageURL = item.getImage().getUrl();
+                    Image image = new Image(imageURL, true); // true means load in background
+                    imageView.setImage(image);
+                    imageView.setFitWidth(22);
+                    imageView.setFitHeight(22);
+                    setGraphic(imageView);
+                }
+            }
+        });
+
+        basicProductionRes3.setCellFactory(listView -> new ListCell<>() {
+
+            private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(ImageView item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    String imageURL = item.getImage().getUrl();
+                    Image image = new Image(imageURL, true); // true means load in background
+                    imageView.setImage(image);
+                    imageView.setFitWidth(22);
+                    imageView.setFitHeight(22);
+                    setGraphic(imageView);
+                }
+            }
+        });
         endTurnButton.setDisable(true);
         showDashboard();
+    }
+
+
+    public class StatusListCell extends ListCell<String> {
+        protected void updateItem(String item, boolean empty){
+            super.updateItem(item, empty);
+            setGraphic(null);
+            setText(null);
+            if(item!=null){
+                ImageView imageView = new ImageView(new Image(item));
+                imageView.setFitWidth(22);
+                imageView.setFitHeight(22);
+                setGraphic(imageView);
+            }
+        }
+
     }
 
     public void choiceBoxChange(ActionEvent actionEvent) {
@@ -180,31 +293,120 @@ public class DashboardController {
         showActiveDevelopments(dashboardView.getActiveDevelopments());
         showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
     }
+    public void activateProduction(int index) {
+        if(enabledProductions.contains(index-1)) {
+            enabledProductions.remove(Integer.valueOf(index - 1));
+            developmentButton[index-1].setText("Enable");
+            if(index ==4) {
+                basicProductionRes1.setDisable(false);
+                basicProductionRes2.setDisable(false);
+                basicProductionRes3.setDisable(false);
+            }
+        }
+        else {
+            if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
+                enabledProductions.add(index-1);
+                developmentButton[index-1].setText("Disable");
+                if(index ==4) {
+                    basicProductionRes1.setDisable(true);
+                    basicProductionRes2.setDisable(true);
+                    basicProductionRes3.setDisable(true);
+                }
+            }
+
+        }
+        activateProductionsButton.setDisable(enabledProductions.size() == 0);
+    }
+    public void activateAllProductions(ActionEvent actionEvent) {
+        ResourceMap totalResources = modelView.getMyDashboard().getTotalResources();
+        ArrayList<Integer> productions = new ArrayList<>();
+        ResourceMap requiredResources = new ResourceMap();
+        for(Integer index : enabledProductions) {
+            switch(index) {
+                case 0:
+                case 1:
+                case 2:
+                    int production = modelView.getMyDashboard().getActiveDevelopments().get(index);
+                    Card card = JsonCardsCreator.generateCard(production);
+                    if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
+                    else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
+                    break;
+                case 3:
+                    requiredResources.modifyResource(basicProductionResources[0], 1);
+                    requiredResources.modifyResource(basicProductionResources[1], 1);
+                    break;
+                default:
+                    break;
+            }
+        }
+        if(totalResources.removeResources(requiredResources)) {
+            gui.send(new ActivateProduction(productions));
+            basicActionPlayed();
+            System.out.println("Production activated!");
+        }
+        else {
+            gui.showAlert("There are not enough resources to activate all enabled production", Alert.AlertType.ERROR);
+        }
+
+    }
+    public void basicActionPlayed() {
+    }
     public void showActiveDevelopments(ArrayList<Integer> activeDevelopments) {
         int slot = 0;
-        if (developmentImageSlot1 != null)
-            Platform.runLater(() -> dashboardPane.getChildren().remove(developmentImageSlot1));
-        if (developmentImageSlot2 != null)
-            Platform.runLater(() -> dashboardPane.getChildren().remove(developmentImageSlot2));
-        if (developmentImageSlot3 != null)
-            Platform.runLater(() -> dashboardPane.getChildren().remove(developmentImageSlot3));
+        Platform.runLater(() -> {
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentButton1"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentButton2"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentButton3"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentButton4"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentImageSlot1"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentImageSlot2"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentImageSlot3"));
+        });
+        developmentButton = new Button[4];
         Image[] devImages = new Image[3];
-        for (Integer id: activeDevelopments) {
-//            System.out.printf("\nSLOT #%d\n", slot + 1);
-            if (id != null) {
-                devImages[slot] = new Image("/view/images/developments/developmentCard"+id+".png");
-            } else {
-                devImages[slot] = new Image("/view/images/developments/developmentCardEmpty.png");
-            }
-            slot++;
-        }
         int xStart = 410, yStart = 320;
         double len = 140; double margin = 20;
+
+        developmentButton[3] = new Button("Enable");
+        developmentButton[3].setLayoutX(300);
+        developmentButton[3].setLayoutY(570);
+        developmentButton[3].setPrefWidth(len*2/3);
+        developmentButton[3].setPrefHeight(len/6);
+        developmentButton[3].setOnAction(event -> activateProduction(4));
+        developmentButton[3].setId("developmentButton" + (4));
+        Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[3]));
+
+
+        for (Integer id: activeDevelopments) {
+            developmentButton[slot] = new Button("Enable");
+            developmentButton[slot].setLayoutX(410+len/6+(len+margin)*slot);
+            developmentButton[slot].setLayoutY(340+len*3/2);
+            developmentButton[slot].setPrefWidth(len*2/3);
+            developmentButton[slot].setPrefHeight(len/6);
+            int finalSlot = slot;
+            developmentButton[slot].setOnAction(event -> activateProduction(finalSlot));
+            developmentButton[slot].setId("developmentButton" + (slot+1));
+            Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[finalSlot]));
+
+            if (id != null) {
+                devImages[slot] = new Image("/view/images/developments/developmentCard"+id+".png");
+                developmentButton[slot].setDisable(false);
+
+            } else {
+                devImages[slot] = new Image("/view/images/developments/developmentCardEmpty.png");
+                developmentButton[slot].setDisable(true);
+            }
+
+
+
+            slot++;
+        }
         developmentImageSlot1 = new ImageView(devImages[0]);
         developmentImageSlot1.setLayoutX(xStart);
         developmentImageSlot1.setLayoutY(yStart);
         developmentImageSlot1.setFitWidth(len);
         developmentImageSlot1.setFitHeight(len*3/2);
+        developmentImageSlot1.setId("developmentImageSlot1");
         Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot1));
 
         developmentImageSlot2 = new ImageView(devImages[1]);
@@ -212,6 +414,7 @@ public class DashboardController {
         developmentImageSlot2.setLayoutY(yStart);
         developmentImageSlot2.setFitWidth(len);
         developmentImageSlot2.setFitHeight(len*3/2);
+        developmentImageSlot2.setId("developmentImageSlot2");
         Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot2));
 
         developmentImageSlot3 = new ImageView(devImages[2]);
@@ -219,6 +422,7 @@ public class DashboardController {
         developmentImageSlot3.setLayoutY(yStart);
         developmentImageSlot3.setFitWidth(len);
         developmentImageSlot3.setFitHeight(len*3/2);
+        developmentImageSlot3.setId("developmentImageSlot3");
         Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot3));
     }
     public static void showLeaders(Map<Integer,Boolean> leaders){
@@ -577,12 +781,60 @@ public class DashboardController {
     public void setModelView(ModelView modelView) {
         this.modelView = modelView; 
     }
-
+    public void startTurn() {
+        basicProductionResources = new Resource[3];
+        marketButton.setDisable(true);
+        gridButton.setDisable(true);
+        showDashboard();
+    }
     public void endTurn(ActionEvent actionEvent) {
+        if (gui.showTempShelf) {
+            gui.showTempShelf = false;
+
+            Platform.runLater(() -> {
+                dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView1"));
+                dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView2"));
+                dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView3"));
+                dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView4"));
+                dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfImage"));
+            });
+
+        }
+        gui.send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
         gui.send(new EndTurn());
+        marketButton.setDisable(false);
+        gridButton.setDisable(false);
     }
 
     public void handleTemporaryShelf() {
         showDashboard();
+    }
+
+    public void basicProductionResChange(ActionEvent actionEvent) {
+        @SuppressWarnings("unchecked")
+        ComboBox<ImageView> comboBox = (ComboBox<ImageView>) actionEvent.getSource();
+            String[] resources = {"coin2", "servant2", "shield2", "stone2"};
+            int selectedIndex = 0;
+            switch (comboBox.getId()) {
+                case "basicProductionRes1" -> {
+                    System.out.println("Risorsa 1: " + comboBox.getSelectionModel().getSelectedIndex());
+                    selectedIndex = 0;
+                }
+                case "basicProductionRes2" -> {
+                    System.out.println("Risorsa 2: " + comboBox.getSelectionModel().getSelectedIndex());
+                    selectedIndex = 1;
+                }
+                case "basicProductionRes3" -> {
+                    System.out.println("Risorsa 3: " + comboBox.getSelectionModel().getSelectedIndex());
+                    selectedIndex = 2;
+                }
+            }
+            switch (comboBox.getSelectionModel().getSelectedIndex()) {
+                case 0 -> basicProductionResources[selectedIndex] = Resource.COIN;
+                case 1 -> basicProductionResources[selectedIndex] = Resource.SERVANT;
+                case 2 -> basicProductionResources[selectedIndex] = Resource.SHIELD;
+                case 3 -> basicProductionResources[selectedIndex] = Resource.STONE;
+            }
+
     }
 }
