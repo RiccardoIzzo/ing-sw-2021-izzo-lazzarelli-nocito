@@ -496,7 +496,7 @@ public class DashboardController {
         Image faithImage = new Image("/view/images/faithTrack/cross.png");
 
         faithTrackImage = new ImageView(faithImage);
-        faithTrackImage.setId("#faithTrackImage");
+        faithTrackImage.setId("faithTrackImage");
         int xOffset = 80;
         int yOffset = 190;
 
@@ -504,7 +504,6 @@ public class DashboardController {
         int[] yStart = {0, 0, 0, -40, -80, -80 ,-80 ,-80, -80 ,-80, -40, 0, 0, 0, 0, 0, 0, -40, -80, -80, -80 ,-80 , -80 , -80 ,-80, -80};
         int len = 40;
 
-        faithTrackImage = new ImageView(faithImage);
         faithTrackImage.setLayoutX(xOffset+xStart[faithMarker]);
         faithTrackImage.setLayoutY(yOffset+yStart[faithMarker]);
         faithTrackImage.setFitWidth(len);
@@ -538,8 +537,7 @@ public class DashboardController {
             Platform.runLater(() ->  dashboardPane.getChildren().add(blackFaithTrackImage));
         }
 
-        ImageView finalFaithTrackImage = faithTrackImage;
-        Platform.runLater(() -> dashboardPane.getChildren().add(finalFaithTrackImage));
+        Platform.runLater(() -> dashboardPane.getChildren().add(faithTrackImage));
 
     }
 
