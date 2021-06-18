@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.events.clientmessages.CheckRequirement;
 import it.polimi.ingsw.events.clientmessages.DiscardLeaderCard;
+import it.polimi.ingsw.view.ModelView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +33,12 @@ public class LeadersController {
     Map<Integer, Boolean> leaderIds;
     private GUI gui;
 
+    public void setModelView(ModelView modelView) {
+        this.modelView = modelView;
+    }
+
+    private ModelView modelView;
+
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
@@ -59,24 +66,63 @@ public class LeadersController {
             firstLeaderCardDiscardButton.setDisable(true);
 
             firstActiveLabel = new Label("ACTIVE");
-            firstActiveLabel.setLayoutX(firstLeaderCard.getLayoutX());
+            firstActiveLabel.setLayoutX(firstLeaderCard.getLayoutX()+5);
             firstActiveLabel.setLayoutY(firstLeaderCardActivateButton.getLayoutY()+firstLeaderCardActivateButton.getHeight()+10);
             firstActiveLabel.setTextFill(Color.web("green"));
             firstActiveLabel.setPrefWidth(90);
             firstActiveLabel.setPrefHeight(30);
 
+            if (modelView.getMyDashboard().getAvailableProduction().contains((Integer)leaderIds.keySet().toArray()[0])) {
+                Button developmentButton = new Button("Enable");
+                developmentButton.setLayoutX(firstLeaderCardDiscardButton.getLayoutX());
+                developmentButton.setLayoutY(firstLeaderCardDiscardButton.getLayoutY()+firstLeaderCardDiscardButton.getHeight()+10);
+                developmentButton.setPrefWidth(firstLeaderCardDiscardButton.getWidth());
+                developmentButton.setPrefHeight(firstLeaderCardDiscardButton.getHeight());
+                developmentButton.setOnAction(event -> {
+                    developmentButton.setText("EnableDisable".replace(developmentButton.getText(), ""));
+                    gui.dashboardController.activateProduction(5);
+                });
+                developmentButton.setId("developmentButton5");
+                Platform.runLater(() -> {
+                    leaderPane.getChildren().remove(leaderPane.lookup("#developmentButton5"));
+                    leaderPane.getChildren().add(developmentButton);
+
+                });
+            }
+
             Platform.runLater(() -> leaderPane.getChildren().add(firstActiveLabel));
+
+
+
         }
         if(ids.size() == 2 && (boolean) leaderIds.values().toArray()[1] ) {
             secondLeaderCardActivateButton.setDisable(true);
             secondLeaderCardDiscardButton.setDisable(true);
 
             secondActiveLabel = new Label("ACTIVE");
-            secondActiveLabel.setLayoutX(secondLeaderCard.getLayoutX());
+            secondActiveLabel.setLayoutX(secondLeaderCard.getLayoutX()+5);
             secondActiveLabel.setLayoutY(secondLeaderCardActivateButton.getLayoutY()+secondLeaderCardActivateButton.getHeight()+10);
             secondActiveLabel.setTextFill(Color.web("green"));
             secondActiveLabel.setPrefWidth(90);
             secondActiveLabel.setPrefHeight(30);
+
+            if (modelView.getMyDashboard().getAvailableProduction().contains((Integer)leaderIds.keySet().toArray()[1])) {
+                Button developmentButton = new Button("Enable");
+                developmentButton.setLayoutX(secondLeaderCardDiscardButton.getLayoutX());
+                developmentButton.setLayoutY(secondLeaderCardDiscardButton.getLayoutY()+secondLeaderCardDiscardButton.getHeight()+10);
+                developmentButton.setPrefWidth(secondLeaderCardDiscardButton.getWidth());
+                developmentButton.setPrefHeight(secondLeaderCardDiscardButton.getHeight());
+                developmentButton.setOnAction(event -> {
+                    developmentButton.setText("EnableDisable".replace(developmentButton.getText(), ""));
+                    gui.dashboardController.activateProduction(6);
+                });
+                developmentButton.setId("developmentButton6");
+                Platform.runLater(() -> {
+                    leaderPane.getChildren().remove(leaderPane.lookup("#developmentButton6"));
+                    leaderPane.getChildren().add(developmentButton);
+
+                });
+            }
 
             Platform.runLater(() -> leaderPane.getChildren().add(secondActiveLabel));
         }
