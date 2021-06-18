@@ -297,6 +297,11 @@ public class DashboardController {
         if(enabledProductions.contains(index-1)) {
             enabledProductions.remove(Integer.valueOf(index - 1));
             developmentButton[index-1].setText("Enable");
+            switch (index) {
+                case 1 -> developmentImageSlot1.setStyle("-fx-opacity: 1");
+                case 2 -> developmentImageSlot2.setStyle("-fx-opacity: 1");
+                case 3 -> developmentImageSlot3.setStyle("-fx-opacity: 1");
+            }
             if(index ==4) {
                 basicProductionRes1.setDisable(false);
                 basicProductionRes2.setDisable(false);
@@ -313,6 +318,11 @@ public class DashboardController {
                     basicProductionRes3.setDisable(true);
                 }
             }
+            switch (index) {
+                case 1 -> developmentImageSlot1.setStyle("-fx-opacity: 0.9");
+                case 2 -> developmentImageSlot2.setStyle("-fx-opacity: 0.9");
+                case 3 -> developmentImageSlot3.setStyle("-fx-opacity: 0.9");
+            }
 
         }
         activateProductionsButton.setDisable(enabledProductions.size() == 0);
@@ -327,6 +337,7 @@ public class DashboardController {
                 case 1:
                 case 2:
                     int production = modelView.getMyDashboard().getActiveDevelopments().get(index);
+                    productions.add(production);
                     Card card = JsonCardsCreator.generateCard(production);
                     if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
                     else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
@@ -342,7 +353,7 @@ public class DashboardController {
         if(totalResources.removeResources(requiredResources)) {
             gui.send(new ActivateProduction(productions));
             basicActionPlayed();
-            System.out.println("Production activated!");
+            showDashboard();
         }
         else {
             gui.showAlert("There are not enough resources to activate all enabled production", Alert.AlertType.ERROR);
@@ -384,7 +395,7 @@ public class DashboardController {
             developmentButton[slot].setPrefWidth(len*2/3);
             developmentButton[slot].setPrefHeight(len/6);
             int finalSlot = slot;
-            developmentButton[slot].setOnAction(event -> activateProduction(finalSlot));
+            developmentButton[slot].setOnAction(event -> activateProduction(finalSlot+1));
             developmentButton[slot].setId("developmentButton" + (slot+1));
             Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[finalSlot]));
 
@@ -450,9 +461,14 @@ public class DashboardController {
             strongboxResourceView.setLayoutY(yStart+(len+padding)*half);
             strongboxResourceView.setFitWidth(len);
             strongboxResourceView.setFitHeight(len);
+            strongboxResourceView.setId("strongBoxImage"+resCont);
             if(amountLabel != null && amountLabel[resCont] != null) {
                 int finalResCont = resCont;
-                Platform.runLater(() -> dashboardPane.getChildren().remove(amountLabel[finalResCont]));
+                Platform.runLater(() -> {
+                    dashboardPane.getChildren().remove(dashboardPane.lookup("#strongBoxImage"+finalResCont));
+                    dashboardPane.getChildren().remove(dashboardPane.lookup("#strongboxLabel"+finalResCont));
+
+                });
             }
             if(amountLabel == null) {
                 amountLabel = new Label[4];
@@ -463,10 +479,12 @@ public class DashboardController {
             amountLabel[resCont].setLayoutY(strongboxResourceView.getLayoutY()+len);
             amountLabel[resCont].setMinWidth(strongboxResourceView.getFitWidth());
             amountLabel[resCont].setMinHeight(20);
-
+            amountLabel[resCont].setId("strongboxLabel"+resCont);
             int finalResCont1 = resCont;
-            Platform.runLater(() -> dashboardPane.getChildren().add(amountLabel[finalResCont1]));
-            Platform.runLater(() -> dashboardPane.getChildren().add(strongboxResourceView));
+            Platform.runLater(() -> {
+                dashboardPane.getChildren().add(amountLabel[finalResCont1]);
+                dashboardPane.getChildren().add(strongboxResourceView);
+            });
             resCont++;
         }
 
@@ -593,10 +611,7 @@ public class DashboardController {
             tempShelfImageView1.setFitWidth(85);
             tempShelfImageView1.setFitHeight(85);
             tempShelfImageView1.setPickOnBounds(true);
-            tempShelfImageView1.setOnMouseClicked((MouseEvent e) -> {
-                System.out.println("tempShelfImageView1");
-                handleShelfClick(10);
-            });
+            tempShelfImageView1.setOnMouseClicked((MouseEvent e) -> handleShelfClick(10));
             tempShelfImageView1.setId("tempShelfImageView1");
             Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageView1));
 
@@ -607,10 +622,7 @@ public class DashboardController {
             tempShelfImageView2.setFitWidth(85);
             tempShelfImageView2.setFitHeight(85);
             tempShelfImageView2.setPickOnBounds(true);
-            tempShelfImageView2.setOnMouseClicked((MouseEvent e) -> {
-                System.out.println("tempShelfImageView2");
-                handleShelfClick(11);
-            });
+            tempShelfImageView2.setOnMouseClicked((MouseEvent e) -> handleShelfClick(11));
             tempShelfImageView2.setId("tempShelfImageView2");
             Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageView2));
 
@@ -621,10 +633,7 @@ public class DashboardController {
             tempShelfImageView3.setFitWidth(85);
             tempShelfImageView3.setFitHeight(85);
             tempShelfImageView3.setPickOnBounds(true);
-            tempShelfImageView3.setOnMouseClicked((MouseEvent e) -> {
-                System.out.println("tempShelfImageView3");
-                handleShelfClick(12);
-            });
+            tempShelfImageView3.setOnMouseClicked((MouseEvent e) -> handleShelfClick(12));
             tempShelfImageView3.setId("tempShelfImageView3");
             Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageView3));
 
@@ -636,10 +645,7 @@ public class DashboardController {
             tempShelfImageView4.setFitWidth(85);
             tempShelfImageView4.setFitHeight(85);
             tempShelfImageView4.setPickOnBounds(true);
-            tempShelfImageView4.setOnMouseClicked((MouseEvent e) -> {
-                System.out.println("tempShelfImageView4");
-                handleShelfClick(13);
-            });
+            tempShelfImageView4.setOnMouseClicked((MouseEvent e) -> handleShelfClick(13));
             tempShelfImageView4.setId("tempShelfImageView4");
             Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageView4));
 
@@ -804,6 +810,10 @@ public class DashboardController {
         gui.send(new EndTurn());
         marketButton.setDisable(false);
         gridButton.setDisable(false);
+        enabledProductions.clear();
+        developmentImageSlot1.setStyle("-fx-opacity: 1");
+        developmentImageSlot2.setStyle("-fx-opacity: 1");
+        developmentImageSlot3.setStyle("-fx-opacity: 1");
     }
 
     public void handleTemporaryShelf() {
