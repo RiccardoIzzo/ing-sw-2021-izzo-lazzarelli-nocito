@@ -58,20 +58,20 @@ public class LeadersController {
             firstLeaderCardActivateButton.setDisable(true);
             firstLeaderCardDiscardButton.setDisable(true);
 
-            firstActiveLabel = new Label("active");
+            firstActiveLabel = new Label("ACTIVE");
             firstActiveLabel.setLayoutX(firstLeaderCard.getLayoutX());
             firstActiveLabel.setLayoutY(firstLeaderCardActivateButton.getLayoutY()+firstLeaderCardActivateButton.getHeight()+10);
             firstActiveLabel.setTextFill(Color.web("green"));
             firstActiveLabel.setPrefWidth(90);
             firstActiveLabel.setPrefHeight(30);
 
-            Platform.runLater(() -> leaderPane.getChildren().add(secondActiveLabel));
+            Platform.runLater(() -> leaderPane.getChildren().add(firstActiveLabel));
         }
         if(ids.size() == 2 && (boolean) leaderIds.values().toArray()[1] ) {
             secondLeaderCardActivateButton.setDisable(true);
             secondLeaderCardDiscardButton.setDisable(true);
 
-            secondActiveLabel = new Label("active");
+            secondActiveLabel = new Label("ACTIVE");
             secondActiveLabel.setLayoutX(secondLeaderCard.getLayoutX());
             secondActiveLabel.setLayoutY(secondLeaderCardActivateButton.getLayoutY()+secondLeaderCardActivateButton.getHeight()+10);
             secondActiveLabel.setTextFill(Color.web("green"));
@@ -92,6 +92,7 @@ public class LeadersController {
         else {
             gui.send(new CheckRequirement((Integer) leaderIds.keySet().toArray()[1]));
         }
+
         Stage stage = (Stage) leaderPane.getScene().getWindow();
         stage.close();
     }
@@ -103,6 +104,7 @@ public class LeadersController {
         else {
             gui.send(new DiscardLeaderCard((Integer) leaderIds.keySet().toArray()[1]));
         }
+        gui.updateDashboard();
         Stage stage = (Stage) leaderPane.getScene().getWindow();
         stage.close();
     }

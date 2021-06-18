@@ -193,6 +193,7 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleDiscardLeader() {
+        dashboardController.showDashboard();
     }
 
     @Override
@@ -203,9 +204,11 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleCheckRequirement(boolean result, int id) {
-
+        dashboardController.handleLeaderCardActivation(result, id);
     }
-
+    public void updateDashboard() {
+        dashboardController.showDashboard();
+    }
     @Override
     public void startTurn() {
         if(dashboardController != null) {

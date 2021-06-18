@@ -1,9 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.events.clientmessages.ActivateProduction;
-import it.polimi.ingsw.events.clientmessages.EndTurn;
-import it.polimi.ingsw.events.clientmessages.SendBonusResources;
-import it.polimi.ingsw.events.clientmessages.SetWarehouse;
+import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
@@ -184,6 +181,16 @@ public class DashboardController {
         leadersController.setup(modelView.getMyDashboard().getLeaderCards());
         leadersController.setGUI(gui);
         leadersController.start();
+    }
+
+    public void handleLeaderCardActivation(boolean result, int id) {
+        if(!result) {
+            gui.showAlert("It was not possible to activate leader card " + id, Alert.AlertType.ERROR);
+        }
+        else {
+            gui.send(new ActivateLeaderCard(id));
+            gui.showAlert("Leader card activated", Alert.AlertType.CONFIRMATION);
+        }
     }
 
 
