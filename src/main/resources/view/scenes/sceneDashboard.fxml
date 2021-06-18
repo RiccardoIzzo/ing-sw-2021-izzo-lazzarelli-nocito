@@ -7,12 +7,22 @@
 <?import javafx.scene.layout.Pane?>
 
 
-<Pane prefHeight="700.0" prefWidth="1000.0" fx:controller="it.polimi.ingsw.view.gui.DashboardController"  fx:id="dashboardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+<?import javafx.scene.control.ComboBox?>
+<Pane prefHeight="700.0" prefWidth="1000.0" fx:controller="it.polimi.ingsw.view.gui.DashboardController" fx:id="dashboardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
       <ChoiceBox fx:id ="playersChoiceBox" onAction="#choiceBoxChange" layoutX="88.0" layoutY="33.0" prefWidth="175.0" />
+
       <Button fx:id="endTurnButton" layoutX="455.0" layoutY="33.0" prefWidth="90.0" onAction="#endTurn" mnemonicParsing="false" text="End Turn" />
+      <Button fx:id="showLeaders" layoutX="275.0" layoutY="33.0" prefWidth="90.0" onAction="#showLeaders" mnemonicParsing="false" text="Leader cards" />
+      <Button fx:id="activateProductionsButton" layoutX="602.0" layoutY="33.0" prefWidth="90.0" onAction="#activateAllProductions" mnemonicParsing="false" text="Act. Prod" />
       <Button fx:id ="marketButton" layoutX="712.0" layoutY="33.0" prefWidth="90.0" onAction="#showMarket" mnemonicParsing="false" text="Market" />
       <Button fx:id ="gridButton" layoutX="822.0" layoutY="33.0" prefWidth="90.0" onAction="#showGrid" mnemonicParsing="false" text="Grid" />
+
       <ImageView fitWidth="824.0" layoutX="88.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@/view/images/dashboard.jpg" />
       </ImageView>
+
+      <ComboBox fx:id ="basicProductionRes1" onAction="#basicProductionResChange" layoutX="300.0" layoutY="489.0" maxWidth="22.0" maxHeight="25.0" />
+      <ComboBox fx:id ="basicProductionRes2" onAction="#basicProductionResChange" layoutX="300.0" layoutY="525.0" maxWidth="22.0" maxHeight="25.0" />
+      <ComboBox fx:id ="basicProductionRes3" onAction="#basicProductionResChange" layoutX="353.0" layoutY="507.0" maxWidth="22.0" maxHeight="25.0" />
+
 </Pane>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane fx:controller="it.polimi.ingsw.view.gui.LeadersController" fx:id="leaderPane"  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="400.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/">
+    <ImageView fx:id="firstLeaderCard"  layoutX="15.0" layoutY="30.0" fitHeight="258.0" fitWidth="170.0">
+      </ImageView>
+    <ImageView fx:id="secondLeaderCard"  layoutX="215.0" layoutY="30.0" fitHeight="258.0"  fitWidth="170.0">
+    </ImageView>
+
+    <Button fx:id="firstLeaderCardActivateButton"  layoutX="15.0" layoutY="300.0" prefHeight="30.0" prefWidth="77.5" onAction="#activateButtonClick" mnemonicParsing="false" text="Activate" />
+    <Button fx:id="firstLeaderCardDiscardButton"   layoutX="92.5" layoutY="300.0" prefHeight="30.0" prefWidth="90.0" onAction="#discardButtonClick" mnemonicParsing="false" text="Discard" />
+
+    <Button fx:id="secondLeaderCardActivateButton"  layoutX="215.0" layoutY="300.0" prefHeight="30.0" prefWidth="77.5" onAction="#activateButtonClick" mnemonicParsing="false" text="Activate" />
+    <Button fx:id="secondLeaderCardDiscardButton"   layoutX="292.5" layoutY="300.0" prefHeight="30.0" prefWidth="90.0" onAction="#discardButtonClick" mnemonicParsing="false" text="Discard" />
+
+
+
+
+</Pane>

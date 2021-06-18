@@ -42,6 +42,7 @@ public class GUI extends Application implements View {
     private boolean reconnected = false;
 
     private int bonusResourceAmount = 0;
+    boolean showTempShelf = false;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -192,6 +193,7 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleDiscardLeader() {
+        dashboardController.showDashboard();
     }
 
     @Override
@@ -202,12 +204,16 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleCheckRequirement(boolean result, int id) {
-
+        dashboardController.handleLeaderCardActivation(result, id);
     }
-
+    public void updateDashboard() {
+        dashboardController.showDashboard();
+    }
     @Override
     public void startTurn() {
-
+        if(dashboardController != null) {
+            dashboardController.startTurn();
+        }
     }
 
     @Override

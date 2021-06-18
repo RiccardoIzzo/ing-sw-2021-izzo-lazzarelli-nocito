@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.events.clientmessages.BuyCard;
+import it.polimi.ingsw.events.clientmessages.EndTurn;
 import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.model.card.DevelopmentCard;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +119,11 @@ public class GridController {
             }
             if (conditionsMet) {
                 int index = modelView.getGrid().indexOf(selectedId);
+                System.out.println("Buying card");
                 gui.send(new BuyCard(index / 4, index % 4, slotIndex));
+                gui.send(new EndTurn());
+                Stage stage = (Stage) buyCardButton.getScene().getWindow();
+                stage.close();
             }
         }
     }
