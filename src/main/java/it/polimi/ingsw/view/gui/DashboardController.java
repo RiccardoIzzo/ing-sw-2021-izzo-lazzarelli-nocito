@@ -180,8 +180,9 @@ public class DashboardController {
     public void showLeaders(ActionEvent actionEvent) {
 
         leadersController = showPopup("/view/scenes/sceneLeaders.fxml").getController();
-        leadersController.setup(modelView.getMyDashboard().getLeaderCards());
         leadersController.setGUI(gui);
+        leadersController.setModelView(modelView);
+        leadersController.setup(modelView.getMyDashboard().getLeaderCards());
         leadersController.start();
     }
 
@@ -326,23 +327,25 @@ public class DashboardController {
     public void activateProduction(int index) {
         if(enabledProductions.contains(index-1)) {
             enabledProductions.remove(Integer.valueOf(index - 1));
-            developmentButton[index-1].setText("Enable");
+            if(index < 4)
+                developmentButton[index-1].setText("Enable");
+            else if(index ==4) {
+                basicProductionRes1.setDisable(false);
+                basicProductionRes2.setDisable(false);
+                basicProductionRes3.setDisable(false);
+            }
             switch (index) {
                 case 1 -> developmentImageSlot1.setStyle("-fx-opacity: 1");
                 case 2 -> developmentImageSlot2.setStyle("-fx-opacity: 1");
                 case 3 -> developmentImageSlot3.setStyle("-fx-opacity: 1");
             }
-            if(index ==4) {
-                basicProductionRes1.setDisable(false);
-                basicProductionRes2.setDisable(false);
-                basicProductionRes3.setDisable(false);
-            }
         }
         else {
             if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
                 enabledProductions.add(index-1);
-                developmentButton[index-1].setText("Disable");
-                if(index ==4) {
+                if(index < 4)
+                    developmentButton[index-1].setText("Disable");
+                else if(index ==4) {
                     basicProductionRes1.setDisable(true);
                     basicProductionRes2.setDisable(true);
                     basicProductionRes3.setDisable(true);
@@ -416,7 +419,6 @@ public class DashboardController {
         developmentButton[3].setOnAction(event -> activateProduction(4));
         developmentButton[3].setId("developmentButton" + (4));
         Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[3]));
-
 
         for (Integer id: activeDevelopments) {
             developmentButton[slot] = new Button("Enable");
@@ -780,7 +782,6 @@ public class DashboardController {
                 blackFaithTrackImage.setFitWidth(halfLen);
                 blackFaithTrackImage.setFitHeight(halfLen);
             }
-
 
             Platform.runLater(() ->  dashboardPane.getChildren().add(blackFaithTrackImage));
         }
