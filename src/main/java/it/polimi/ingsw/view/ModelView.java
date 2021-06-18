@@ -323,6 +323,7 @@ public class ModelView {
                     }
                 }
             }
+
             for (List<Resource> shelf : shelves) {
                 if (shelf.stream().filter(Objects::nonNull).distinct().count() > 1) {
                     return false;
@@ -334,6 +335,19 @@ public class ModelView {
                     return false;
                 }
             }
+
+            Resource resourceShelfOne = shelfOne.stream().findAny().orElse(null);
+            Resource resourceShelfTwo = shelfTwo.stream().findAny().orElse(null);
+            Resource resourceShelfThree = shelfThree.stream().findAny().orElse(null);
+
+            if (resourceShelfOne == resourceShelfTwo && resourceShelfOne != null){
+                return false;
+            } else if (resourceShelfOne == resourceShelfThree && resourceShelfOne != null){
+                return false;
+            } else if (resourceShelfThree == resourceShelfTwo && resourceShelfThree != null){
+                return false;
+            }
+
             return true;
         }
 
