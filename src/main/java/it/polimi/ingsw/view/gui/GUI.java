@@ -208,7 +208,9 @@ public class GUI extends Application implements View {
 
     @Override
     public void startTurn() {
-
+        if(dashboardController != null) {
+            dashboardController.startTurn();
+        }
     }
 
     @Override
