@@ -38,6 +38,7 @@ import java.util.stream.IntStream;
 
 
 public class DashboardController {
+    @FXML Button showLeaders;
     @FXML Button activateProductionsButton;
     @FXML Button marketButton;
     @FXML Button gridButton;
@@ -47,6 +48,7 @@ public class DashboardController {
     private ModelView modelView;
     MarketController marketController;
     GridController gridController;
+    LeadersController leadersController;
 
     private static GUI gui;
     ImageView firstShelfRes1View;
@@ -176,6 +178,26 @@ public class DashboardController {
         showDashboard();
     }
 
+    public void showLeaders(ActionEvent actionEvent) {
+
+        leadersController = showPopup("/view/scenes/sceneLeaders.fxml").getController();
+        leadersController.setup(modelView.getMyDashboard().getLeaderCards());
+        leadersController.setGUI(gui);
+        leadersController.start();
+    }
+
+
+//    showLeaders(dashboardView.getLeaderCards());
+//    public static void showLeaders(Map<Integer,Boolean> leaders){
+////        for (Integer id: leaders.keySet()){
+////            if (leaders.get(id)) {
+////                System.out.println(Colors.ANSI_GREEN_BOLD + "\nACTIVE" + Colors.ANSI_RESET);
+////            } else {
+////                System.out.println(Colors.ANSI_RED + "\nNOT ACTIVE" + Colors.ANSI_RESET);
+////            }
+////            showCards(Set.of(id));
+////        }
+//    }
 
     public class StatusListCell extends ListCell<String> {
         protected void updateItem(String item, boolean empty){
@@ -289,7 +311,6 @@ public class DashboardController {
         ModelView.DashboardView dashboardView = modelView.getMyDashboard();
         showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
         showStrongbox(dashboardView.getStrongbox());
-        showLeaders(dashboardView.getLeaderCards());
         showActiveDevelopments(dashboardView.getActiveDevelopments());
         showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
     }
@@ -435,16 +456,6 @@ public class DashboardController {
         developmentImageSlot3.setFitHeight(len*3/2);
         developmentImageSlot3.setId("developmentImageSlot3");
         Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot3));
-    }
-    public static void showLeaders(Map<Integer,Boolean> leaders){
-//        for (Integer id: leaders.keySet()){
-//            if (leaders.get(id)) {
-//                System.out.println(Colors.ANSI_GREEN_BOLD + "\nACTIVE" + Colors.ANSI_RESET);
-//            } else {
-//                System.out.println(Colors.ANSI_RED + "\nNOT ACTIVE" + Colors.ANSI_RESET);
-//            }
-//            showCards(Set.of(id));
-//        }
     }
 
     private void showStrongbox(ResourceMap strongbox) {
