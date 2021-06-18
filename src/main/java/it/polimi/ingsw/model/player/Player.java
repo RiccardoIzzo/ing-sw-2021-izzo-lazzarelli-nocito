@@ -200,7 +200,7 @@ public class Player {
     /**
      * Method activateProduction gets the ProductionPower of the chosen Card and increment the resources
      * in the strongbox and the faith in the FaithTrack by the output of the ProductionPower.
-     * @param productionCard : the Card which productionPower is activated.
+     * @param productionCard the Card which productionPower is activated.
      */
     public void activateProduction(Card productionCard){
         if (productionCard instanceof DevelopmentCard) {
@@ -213,6 +213,17 @@ public class Player {
             if(myDashboard.incrementFaith(((ProductionLeaderCard) productionCard).getProduction().getOutputFaith())) game.vaticanReport();
         }
     }
+
+    /**
+     * Method activateProduction gets two parameters the input and output resources of the production.
+     * @param inputResources the production's input resources.
+     * @param outputResource the production's output resources     .
+     */
+    public void activateProduction(ResourceMap inputResources, ResourceMap outputResource){
+        myDashboard.removeResourcesFromDashboard(inputResources);
+        myDashboard.addResourcesToStrongbox(outputResource);
+    }
+
 
     /**
      * Method activateLeaderCard activates a leader card.
