@@ -55,6 +55,11 @@ public class DashboardController {
     ImageView thirdShelfRes2View;
     ImageView thirdShelfRes3View;
 
+    ImageView firstExtraShelfResView1;
+    ImageView firstExtraShelfResView2;
+    ImageView secondExtraShelfResView1;
+    ImageView secondExtraShelfResView2;
+
     ImageView temporaryShelfImage;
     ImageView tempShelfImageView1;
     ImageView tempShelfImageView2;
@@ -521,6 +526,11 @@ public class DashboardController {
             dashboardPane.getChildren().remove(dashboardPane.lookup("#thirdShelfRes1View"));
             dashboardPane.getChildren().remove(dashboardPane.lookup("#thirdShelfRes2View"));
             dashboardPane.getChildren().remove(dashboardPane.lookup("#thirdShelfRes3View"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#thirdShelfRes3View"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#firstExtraShelfResView1"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#firstExtraShelfResView2"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#secondExtraShelfResView1"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#secondExtraShelfResView2"));
         });
 
 
@@ -531,9 +541,62 @@ public class DashboardController {
         Image thirdShelfRes2 = new Image(getImage(warehouse.get(4)));
         Image thirdShelfRes3 = new Image(getImage(warehouse.get(5)));
 
-
         double len = 30;
         int xStart = 200, yStart = 335, yOffset = 55;
+
+        if(extraShelfResources.size() > 0 ) {
+            Image firstExtraShelfRes;
+            firstExtraShelfRes = new Image(getImage(warehouse.get(6) == null ? extraShelfResources.get(0) : warehouse.get(6)));
+            firstExtraShelfResView1 = new ImageView(firstExtraShelfRes);
+            firstExtraShelfResView1.setStyle("-fx-opacity: " + (warehouse.get(6) == null ? "0.5" : "1"));
+            firstExtraShelfResView1.setLayoutX(350-len-10);
+            firstExtraShelfResView1.setLayoutY(yStart);
+            firstExtraShelfResView1.setFitWidth(len);
+            firstExtraShelfResView1.setFitHeight(len);
+            firstExtraShelfResView1.setPickOnBounds(true);
+            firstExtraShelfResView1.setOnMouseClicked((MouseEvent e) -> handleShelfClick(6));
+            firstExtraShelfResView1.setId("firstExtraShelfResView1");
+            Platform.runLater(() -> dashboardPane.getChildren().add(firstExtraShelfResView1));
+
+            Image secondExtraShelfRes = new Image(getImage(warehouse.get(7) == null ? extraShelfResources.get(0) : warehouse.get(7)));
+            firstExtraShelfResView2 = new ImageView(secondExtraShelfRes);
+            firstExtraShelfResView2.setStyle("-fx-opacity: " + (warehouse.get(7) == null ? "0.5" : "1"));
+            firstExtraShelfResView2.setLayoutX(360);
+            firstExtraShelfResView2.setLayoutY(yStart);
+            firstExtraShelfResView2.setFitWidth(len);
+            firstExtraShelfResView2.setFitHeight(len);
+            firstExtraShelfResView2.setPickOnBounds(true);
+            firstExtraShelfResView2.setOnMouseClicked((MouseEvent e) -> handleShelfClick(7));
+            firstExtraShelfResView2.setId("firstExtraShelfResView2");
+            Platform.runLater(() -> dashboardPane.getChildren().add(firstExtraShelfResView2));
+        }
+
+        if(extraShelfResources.size() > 1 ) {
+            Image firstExtraShelfRes;
+            firstExtraShelfRes = new Image(getImage(warehouse.get(8) == null ? extraShelfResources.get(1) : warehouse.get(8)));
+            secondExtraShelfResView1 = new ImageView(firstExtraShelfRes);
+            secondExtraShelfResView1.setStyle("-fx-opacity: " + (warehouse.get(8) == null ? "0.5" : "1"));
+            secondExtraShelfResView1.setLayoutX(350-len-10);
+            secondExtraShelfResView1.setLayoutY(yStart+len+20);
+            secondExtraShelfResView1.setFitWidth(len);
+            secondExtraShelfResView1.setFitHeight(len);
+            secondExtraShelfResView1.setPickOnBounds(true);
+            secondExtraShelfResView1.setOnMouseClicked((MouseEvent e) -> handleShelfClick(8));
+            secondExtraShelfResView1.setId("secondExtraShelfResView1");
+            Platform.runLater(() -> dashboardPane.getChildren().add(secondExtraShelfResView1));
+
+            Image secondExtraShelfRes = new Image(getImage(warehouse.get(9) == null ? extraShelfResources.get(1) : warehouse.get(9)));
+            secondExtraShelfResView2 = new ImageView(secondExtraShelfRes);
+            secondExtraShelfResView2.setStyle("-fx-opacity: " + (warehouse.get(9) == null ? "0.5" : "1"));
+            secondExtraShelfResView2.setLayoutX(360);
+            secondExtraShelfResView2.setLayoutY(yStart+len+20);
+            secondExtraShelfResView2.setFitWidth(len);
+            secondExtraShelfResView2.setFitHeight(len);
+            secondExtraShelfResView2.setPickOnBounds(true);
+            secondExtraShelfResView2.setOnMouseClicked((MouseEvent e) -> handleShelfClick(9));
+            secondExtraShelfResView2.setId("secondExtraShelfResView2");
+            Platform.runLater(() -> dashboardPane.getChildren().add(secondExtraShelfResView2));
+        }
         firstShelfRes1View = new ImageView(firstShelfRes1);
         firstShelfRes1View.setLayoutX(xStart-len/2);
         firstShelfRes1View.setLayoutY(yStart);
