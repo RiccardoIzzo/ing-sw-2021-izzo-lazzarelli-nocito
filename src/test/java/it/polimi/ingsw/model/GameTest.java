@@ -6,6 +6,12 @@ import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import static org.junit.Assert.*;
 
 
@@ -15,7 +21,7 @@ import static org.junit.Assert.*;
  * @author Riccardo Izzo
  */
 public class GameTest {
-    Game game;
+    private Game game;
 
     /**
      * Method initialization create an instance of Game and adds three players.
@@ -107,5 +113,49 @@ public class GameTest {
         assertEquals(game.getPlayers().get(1), game.getPlayerByName("Andrea"));
         assertEquals(game.getPlayers().get(2), game.getPlayerByName("Gabriele"));
         assertNull(game.getPlayerByName("Francesco"));
+    }
+
+    /**
+     * Method finalTurnTest tests the correct behaviour of setFinalTurn and isFinalTurn methods.
+     */
+    @Test
+    public void finalTurnTest(){
+        assertFalse(game.isFinalTurn());
+        game.setFinalTurn(true);
+        assertTrue(game.isFinalTurn());
+    }
+
+    /**
+     * Method vaticanReportTest tests the correctness of vaticanReport method.
+     * In this case there are two players in the vatican space, the first one is in the Pope space.
+     */
+    @Test
+    public void vaticanReportTest(){
+        Player player1 = game.getPlayerByName("Riccardo");
+        Player player2 = game.getPlayerByName("Gabriele");
+        player1.getDashboard().incrementFaith(8);
+        player2.getDashboard().incrementFaith(6);
+        game.vaticanReport();
+        assertTrue(player1.getDashboard().getFaithTrack().getPopesFavorTiles()[0]);
+        assertTrue(player2.getDashboard().getFaithTrack().getPopesFavorTiles()[0]);
+    }
+
+    /**
+     * Method getRankingTest tests the correct order of the players in the final ranking.
+     */
+    @Test
+    public void getRankingTest(){
+        Player player1 = game.getPlayerByName("Riccardo");
+        Player player2 = game.getPlayerByName("Gabriele");
+        Player player3 = game.getPlayerByName("Andrea");
+        player1.getDashboard().incrementFaith(15);
+        player2.getDashboard().incrementFaith(7);
+        player3.getDashboard().incrementFaith(22);
+        Map<String, Integer> ranking = game.getRanking();
+        Set<String> correctRanking = new HashSet<>();
+        correctRanking.add(player1.getNickname());
+        correctRanking.add(player2.getNickname());
+        correctRanking.add(player3.getNickname());
+        assertEquals(ranking.keySet(), correctRanking);
     }
 }
