@@ -183,6 +183,10 @@ public class Warehouse {
         this.pcs = pcs;
     }
 
+    /**
+     * Method addPropertyListener register a WarehouseListener to the PropertyChangeSupport of this class.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public void addPropertyListener(VirtualView virtualView){
         WarehouseListener warehouseListener = new WarehouseListener(virtualView);
         pcs.addPropertyChangeListener(SHELF_CHANGE, warehouseListener);

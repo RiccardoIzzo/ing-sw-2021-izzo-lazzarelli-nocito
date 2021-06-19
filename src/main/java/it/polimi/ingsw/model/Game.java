@@ -176,6 +176,10 @@ public abstract class Game {
         return ranking;
     }
 
+    /**
+     * Method addPropertyListener register a GameListener to the PropertyChangeSupport of this class.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public void addPropertyListener(VirtualView virtualView){
         GameListener gameListener = new GameListener(virtualView);
         pcs.addPropertyChangeListener(gameListener);

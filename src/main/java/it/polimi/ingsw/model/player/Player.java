@@ -280,10 +280,17 @@ public class Player {
         return victoryPoints;
     }
 
+    /**
+     * Method setPropertyListener calls the setPropertyChangeSupport method of myDashboard.
+     */
     public void setPropertyChangeSupport() {
         myDashboard.setPropertyChangeSupport(this.pcs);
     }
 
+    /**
+     * Method addPropertyListener register a PlayerListener to the PropertyChangeSupport of this class.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public void addPropertyListener(VirtualView virtualView) {
         PlayerListener playerListener = new PlayerListener(virtualView, game);
         pcs.addPropertyChangeListener(SET_LEADERS, playerListener);

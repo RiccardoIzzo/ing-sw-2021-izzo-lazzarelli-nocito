@@ -147,6 +147,10 @@ public class FaithTrack {
         this.pcs = pcs;
     }
 
+    /**
+     * Method addPropertyListener register a FaithTrackListener to the PropertyChangeSupport of this class.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public void addPropertyListener(VirtualView virtualView){
         FaithTrackListener faithTrackListener = new FaithTrackListener(virtualView);
         pcs.addPropertyChangeListener(FAITH_MARKER_POSITION, faithTrackListener);

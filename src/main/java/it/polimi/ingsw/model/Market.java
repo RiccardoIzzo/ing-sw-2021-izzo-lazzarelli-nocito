@@ -186,6 +186,10 @@ public class Market {
         }
     }
 
+    /**
+     * Method addPropertyListener register a MarketListener to the PropertyChangeSupport of this class.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public void addPropertyListener(VirtualView virtualView) {
         pcs.addPropertyChangeListener(new MarketListener(virtualView));
     }

@@ -36,6 +36,10 @@ public class SinglePlayerFaithTrack extends FaithTrack {
         pcs.firePropertyChange(BLACK_MARKER_POSITION, null, blackFaithMarker);
     }
 
+    /**
+     * Method addPropertyListener calls the addPropertyListener of the FaithTrack superclass.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     @Override
     public void addPropertyListener(VirtualView virtualView) {
         super.addPropertyListener(virtualView);

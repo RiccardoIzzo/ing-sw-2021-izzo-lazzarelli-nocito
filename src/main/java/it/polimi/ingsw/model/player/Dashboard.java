@@ -113,6 +113,10 @@ public class Dashboard {
         faithTrack.setPropertyChangeSupport(pcs);
     }
 
+    /**
+     * Method addPropertyListener register a DashboardListener to the PropertyChangeSupport of this class.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public void addPropertyListener(VirtualView virtualView){
         DashboardListener dashboardListener = new DashboardListener(virtualView);
         pcs.addPropertyChangeListener(STRONGBOX_CHANGE, dashboardListener);

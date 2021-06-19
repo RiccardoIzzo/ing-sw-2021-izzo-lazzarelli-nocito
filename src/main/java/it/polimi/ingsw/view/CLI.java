@@ -681,6 +681,11 @@ public class CLI implements View{
         network.sendToServer(message);
     }
 
+    /**
+     * Method showDashboard prints the visual representation of a player's dashboard: faith track, warehouse, strongbox,
+     * leader cards and the visible development cards.
+     * @param dashboardView the class containing the data to visualize.
+     */
     public void showDashboard(ModelView.DashboardView dashboardView){
         System.out.println("\n*** FAITHTRACK ***");
         showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
@@ -695,6 +700,11 @@ public class CLI implements View{
         handleTurn();
     }
 
+    /**
+     * Method showMarket prints the visual representation of the market.
+     * @param marketTray the list of marble colors representing the market.
+     * @param slideMarble the slide marble color.
+     */
     public static void showMarket(ArrayList<MarbleColor> marketTray, MarbleColor slideMarble) {
         System.out.printf("Slide marble = %s\n\n", slideMarble.toString());
         for (int i = 2; i >= 0; i--) {
@@ -712,6 +722,10 @@ public class CLI implements View{
         );
     }
 
+    /**
+     * Method showCards prints the visual representation of a collection of card ids.
+     * @param cards the ids whose cards are to show.
+     */
     public static void showCards(Collection<Integer> cards) {
         for (Integer card: cards) {
             if (card != null) {
@@ -721,6 +735,10 @@ public class CLI implements View{
         System.out.println();
     }
 
+    /**
+     * Method showStrongbox prints the visual representation of the strongbox.
+     * @param strongbox the ResourceMap representing the strongbox.
+     */
     public static void showStrongbox(ResourceMap strongbox){
         System.out.printf("""
                             ╔══
@@ -735,6 +753,11 @@ public class CLI implements View{
                         Resource.COIN + " x " + strongbox.getResource(Resource.COIN).toString());
     }
 
+    /**
+     * Method showWarehouse prints the visual representation of the warehouse.
+     * @param warehouse the list of resources representing the warehouse.
+     * @param extraShelfResources the resource(s) allowed by the ExtraShelfLeaderCard(s).
+     */
     public static void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources){
         String firstExtraShelf = "", firstIndexPair = "", secondExtraShelf = "", secondIndexPair = "";
         if (extraShelfResources.size() > 0){
@@ -759,6 +782,13 @@ public class CLI implements View{
                 secondIndexPair, secondExtraShelf, warehouseGet(warehouse,3), warehouseGet(warehouse,4), warehouseGet(warehouse,5),
                 warehouseGet(warehouse,10), warehouseGet(warehouse,11), warehouseGet(warehouse,12), warehouseGet(warehouse,13));
     }
+
+    /**
+     * Method warehouseGet gets the element of the index position in the warehouse.
+     * @param warehouse the list of resources representing the warehouse.
+     * @param index the position of the element to get.
+     * @return a empty String if the index position is empty, else the toString method of the element in the index position.
+     */
     private static String warehouseGet(ArrayList<Resource> warehouse, int index) {
         if (warehouse.get(index) == null) {
             return " ";
@@ -767,6 +797,12 @@ public class CLI implements View{
         }
     }
 
+    /**
+     * Method showFaithTrack prints the visual representation of the faith track.
+     * @param f the faith marker position.
+     * @param b the black marker position.
+     * @param p the pope tiles values.
+     */
     public static void showFaithTrack(int f, int b, Boolean[] p) {
         System.out.printf(
                 """
@@ -783,6 +819,14 @@ public class CLI implements View{
                         f(2,f,b),f(11,f,b),f(12,f,b),f(13,f,b),f(14,f,b),f(15,f,b),f(16,f,b));
     }
 
+    /**
+     * Method f formats the color of a tile in the faithTrack, the faith marker tile is red formatted, the black marker tile
+     * has a black background.
+     * @param tile the tile number.
+     * @param faithMarker the faith marker position.
+     * @param blackMarker the black marker position.
+     * @return the colored tile.
+     */
     private static String f(int tile, int faithMarker, int blackMarker){
         Colors backgroundColor = (tile == blackMarker) ? Colors.ANSI_BLACK_BACKGROUND: Colors.ANSI_RESET;
         Colors numberColor = (tile == faithMarker) ? Colors.ANSI_RED : Colors.ANSI_WHITE;
@@ -795,6 +839,12 @@ public class CLI implements View{
         return tileColor;
     }
 
+    /**
+     * Method p formats a pope tile in the faith track.
+     * @param popeTileActive the value representing the state of the pope tile to format.
+     * @param points the victory points associated with the pope tile to format.
+     * @return the formatted pope tile.
+     */
     private static String p(Boolean popeTileActive, int points) {
         Colors numberColor;
         if(popeTileActive != null) {
@@ -806,6 +856,10 @@ public class CLI implements View{
         }
     }
 
+    /**
+     * Method showLeaders prints the visual representation of the leader cards.
+     * @param leaders a map representing the leader cards.
+     */
     public static void showLeaders(Map<Integer,Boolean> leaders){
         for (Integer id: leaders.keySet()){
             if (leaders.get(id)) {
@@ -817,6 +871,10 @@ public class CLI implements View{
         }
     }
 
+    /**
+     * Method showActiveDevelopments prints the visual representation of the three slots of development card in the dashboard.
+     * @param activeDevelopments the ids whose cards are at the top of a slot.
+     */
     public static void showActiveDevelopments(ArrayList<Integer> activeDevelopments) {
         int slot = 0;
         for (Integer id: activeDevelopments) {
@@ -831,6 +889,10 @@ public class CLI implements View{
         }
     }
 
+    /**
+     * Method showStats prints the statics at the end of the game showing the winner player.
+     * @param gameStats a map containing the statistics.
+     */
     public void showStats(Map<String, Integer> gameStats){
         boolean firstPlayer = true;
 
