@@ -10,19 +10,20 @@ import static org.junit.Assert.*;
  *
  * @author Andrea Nocito
  */
-
 public class FaithTrackTest{
-    FaithTrack faithTrack;
+    private FaithTrack faithTrack;
+
     /**
-     * Method
+     * Method initialization initializes a new FaithTrack and sets the array tilesUncovered
      */
     @Before
     public void initialization() {
         faithTrack = new FaithTrack();
+        faithTrack.setTilesUncovered(new Boolean[]{false, false, false});
     }
 
     /**
-     * Method testMoveForward moves posFaithMarker forward and checks its new position to be correct
+     * Method testMoveForward moves posFaithMarker forward and checks the correctness of its new position.
      */
     @Test
     public void testMoveForward() {
@@ -33,66 +34,45 @@ public class FaithTrackTest{
 
 
     /*
-     * Method testIsInVaticanSpace checks that the method isInVaticanSpace assigns the correct points to the player if it is in the correct area.
+     * Method testIsInVaticanSpace checks that the method isInVaticanSpace assigns the correct points to the player when in vatican space.
      */
-    /*
     @Test
     public void testIsInVaticanSpace() {
         assertEquals(faithTrack.getPointsForTiles(), 0);
-        for(int i=0; i<5; i++) {
+        for(int i = 0; i < 9; i++) {
             faithTrack.moveForward();
         }
-        faithTrack.isInVaticanSpace(0);
+        faithTrack.isInVaticanSpace();
         assertEquals(faithTrack.getPointsForTiles(), 2);
-        for(int i= faithTrack.getPlayerPos()-1; i<14; i++) {
+
+        for(int i = 0; i < 8; i++) {
             faithTrack.moveForward();
         }
-        faithTrack.isInVaticanSpace(1);
+        faithTrack.isInVaticanSpace();
         assertEquals(faithTrack.getPointsForTiles(), 5);
-        for(int i= faithTrack.getPlayerPos()-1; i<23; i++) {
+
+        for(int i = 0; i < 7; i++) {
             faithTrack.moveForward();
         }
-        faithTrack.isInVaticanSpace(2);
+        faithTrack.isInVaticanSpace();
         assertEquals(faithTrack.getPointsForTiles(), 9);
     }
 
-     */
-
     /**
-     * Method testPopeTilePass checks that PopeTilePass sets the correct points and tilesUncovered value when the player gets to a pope tile.
+     * Method testPopeTilePass checks that the method PopeTilePass uncover the tile when the player reaches a Pope space.
      */
-    /*
     @Test
     public void testPopeTilePass() {
-        assertFalse(faithTrack.getTilesUncovered(0));
-        for(int i=0; i<9; i++) {
+        assertFalse(faithTrack.getTilesUncovered()[0]);
+        for(int i = 0; i < 9; i++) {
             faithTrack.moveForward();
         }
-        assertEquals(faithTrack.getPointsForTiles(), 2);
-        assertTrue(faithTrack.getTilesUncovered(0));
+        assertTrue(faithTrack.getTilesUncovered()[0]);
     }
 
-     */
-
     /**
-     * Method testGetPointsForTiles checks that the method returns the correct sum of points that the player unlocks through pope tiles.
+     * Method checks that the method getPosVictoryPoints returns the correct numbers of points based on the player position.
      */
-    /*
-    @Test
-    public void testGetPointsForTiles() {
-        assertEquals(faithTrack.getPointsForTiles(), 0);
-        for (int i=0; i<END_TILE; i++) {
-            faithTrack.moveForward();
-        }
-        assertEquals(faithTrack.getPointsForTiles(), 9);
-    }
-
-     */
-
-    /**
-     * Method checks that the method returns the correct numbers of points that the player unlocks thourgh moving on the faith track and pope tiles.
-     */
-    /*
     @Test
     public void testGetPosVictoryPoints() {
         assertEquals(faithTrack.getPosVictoryPoints(), 0);
@@ -100,22 +80,9 @@ public class FaithTrackTest{
         faithTrack.moveForward();
         faithTrack.moveForward();
         assertEquals(faithTrack.getPosVictoryPoints(), 1);
-        for (int i=faithTrack.getPlayerPos()-1; i<END_TILE; i++) {
+        for (int i = 0; i < 6; i++) {
             faithTrack.moveForward();
         }
-        assertEquals(faithTrack.getPosVictoryPoints(), 79);
-    }
-
-     */
-
-    /**
-     * Method testGetPlayerPos checks that the method returns the correct position of the player inside the faith track, starting from 0 and then moving forward two times.
-     */
-    @Test
-    public void testGetPlayerPos() {
-        assertEquals(faithTrack.getPlayerPosition(), 0);
-        faithTrack.moveForward();
-        faithTrack.moveForward();
-        assertEquals(faithTrack.getPlayerPosition(), 2);
+        assertEquals(faithTrack.getPosVictoryPoints(), 7);
     }
 }

@@ -82,7 +82,7 @@ public class MarketTest {
     }
 
     /**
-     *
+     * Method insertMarbleRowTest tests the insertion of a marble in a row.
      */
     @Test
     public void insertMarbleRowTest(){
@@ -112,7 +112,7 @@ public class MarketTest {
     }
 
     /**
-     *
+     * Method insertMarbleRowTest tests the insertion of a marble in a column.
      */
     @Test
     public void insertMarbleColumnTest(){
