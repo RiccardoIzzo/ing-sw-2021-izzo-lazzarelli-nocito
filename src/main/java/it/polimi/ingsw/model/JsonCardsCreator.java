@@ -88,14 +88,6 @@ public class JsonCardsCreator {
         return leaderCards.stream().filter(x -> x.getCardID() == cardID).findAny().orElse(null);
     }
 
-    public static ArrayList<DevelopmentCard> getDevelopmentCards() {
-        return developmentCards;
-    }
-
-    public static ArrayList<LeaderCard> getLeaderCards() {
-        return leaderCards;
-    }
-
     /**
      * Method generateCard generates a Card given its cardID.
      * @param cardID the card id.

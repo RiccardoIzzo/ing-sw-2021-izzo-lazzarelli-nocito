@@ -204,7 +204,7 @@ public class PlayerTest {
      */
     @Test
     public void activateProductionTestA(){
-        DevelopmentCard card = JsonCardsCreator.generateDevelopmentCard(102);
+        DevelopmentCard card = (DevelopmentCard) JsonCardsCreator.generateCard(102);
         player.getDashboard().getStrongbox().modifyResource(Resource.COIN, 1);
         player.activateProduction(card);
         assertEquals((int) player.getDashboard().getStrongbox().getResource(Resource.SERVANT), 1);
@@ -215,7 +215,7 @@ public class PlayerTest {
      */
     @Test
     public void activateProductionTestB(){
-        LeaderCard card = JsonCardsCreator.generateLeaderCard(209);
+        LeaderCard card = (LeaderCard) JsonCardsCreator.generateCard(209);
         player.getDashboard().getStrongbox().modifyResource(Resource.SHIELD, 1);
         player.activateProduction(card);
         assertEquals(player.getDashboard().getFaithTrack().getPlayerPosition(), 1);
