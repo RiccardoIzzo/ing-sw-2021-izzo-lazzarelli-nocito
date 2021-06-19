@@ -87,6 +87,9 @@ public class ActionHandler extends Thread{
         }
         else if(message instanceof TokenDrawn){
             view.printText("\nToken drawn:\n" + ((TokenDrawn) message).getToken().toString());
+            if (view instanceof GUI) {
+                ((GUI) view).handleToken(((TokenDrawn) message).getToken());
+            }
             view.startTurn();
             view.handleTurn();
         }

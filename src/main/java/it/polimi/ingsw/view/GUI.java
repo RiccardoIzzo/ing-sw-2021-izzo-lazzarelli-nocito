@@ -2,7 +2,12 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetNickname;
+import it.polimi.ingsw.events.servermessages.TokenDrawn;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
+import it.polimi.ingsw.model.card.CardColor;
+import it.polimi.ingsw.model.token.MoveBlackMarkerToken;
+import it.polimi.ingsw.model.token.RemoveCardsToken;
+import it.polimi.ingsw.model.token.SoloActionToken;
 import it.polimi.ingsw.network.NetworkHandler;
 import javafx.application.Application;
 
@@ -318,6 +323,28 @@ public class GUI extends Application implements View {
     public void handleTurn() {
         if(dashboardController != null) {
             dashboardController.handleWaitingText();
+        }
+    }
+
+    public void handleToken(SoloActionToken token) {
+        int index = 0;
+        if(token instanceof RemoveCardsToken) {
+            index = switch (((RemoveCardsToken) token).getColor()) {
+                case BLUE -> 1;
+                case GREEN -> 2;
+                case PURPLE -> 3;
+                case YELLOW -> 4;
+            };
+        }
+        else if(token instanceof MoveBlackMarkerToken) {
+            index = switch (((MoveBlackMarkerToken) token).getSteps()) {
+                case +2 -> 5;
+                case +1 -> 7;
+                default -> 0;
+            };
+        }
+        if (index > 0 && dashboardController != null) {
+            dashboardController.showToken(index);
         }
     }
 }

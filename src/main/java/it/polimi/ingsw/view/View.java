@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.ClientMessage;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
+import it.polimi.ingsw.events.servermessages.TokenDrawn;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -36,4 +37,5 @@ public interface View {
     void printText(String text);
     void send(ClientMessage message);
     void showStats(Map<String, Integer> map);
+
 }

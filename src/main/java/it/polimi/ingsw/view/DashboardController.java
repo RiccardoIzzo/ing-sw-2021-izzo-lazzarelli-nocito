@@ -174,7 +174,8 @@ public class DashboardController {
                 }
             }
         });
-        endTurnButton.setDisable(true);
+        endTurnButton.setDisable(false);
+        showToken(0);
     }
 
     public void showLeaders() {
@@ -318,21 +319,22 @@ public class DashboardController {
         }
     }
     public void handleWaitingText() {
-        Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#waitingText")));
-        Label waitingText;
-        if(modelView.getCurrPlayer().equals(gui.getNickname())) {
-            waitingText = new Label("It's your turn!");
+        if(modelView.getDashboards().size() > 1) {
+            Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#waitingText")));
+            Label waitingText;
+            if (modelView.getCurrPlayer().equals(gui.getNickname())) {
+                waitingText = new Label("It's your turn!");
+            } else {
+                waitingText = new Label("Playing: " + modelView.getCurrPlayer() + ". Wait for your turn...");
+            }
+            waitingText.setId("waitingText" + (4));
+            waitingText.setLayoutX(88);
+            waitingText.setLayoutY(5);
+            waitingText.setPrefWidth(300);
+            waitingText.setPrefHeight(23);
+            waitingText.setId("waitingText");
+            Platform.runLater(() -> dashboardPane.getChildren().add(waitingText));
         }
-        else {
-            waitingText = new Label("Playing: " + modelView.getCurrPlayer() + ". Wait for your turn...");
-        }
-        waitingText.setId("waitingText" + (4));
-        waitingText.setLayoutX(88);
-        waitingText.setLayoutY(5);
-        waitingText.setPrefWidth(300);
-        waitingText.setPrefHeight(23);
-        waitingText.setId("waitingText");
-        Platform.runLater(() -> dashboardPane.getChildren().add(waitingText));
     }
     public void showDashboard() {
         ModelView.DashboardView dashboardView = modelView.getMyDashboard();
@@ -866,13 +868,10 @@ public class DashboardController {
         }
     }
     private void showFaithTrack(Integer faithMarker, Integer blackMarker, Boolean[] popesFavorTiles) {
-        Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#faithTrackImage")));
 
         Image faithImage = new Image("/view/images/faithTrack/cross.png");
 
          for(int i = 0; i<popesFavorTiles.length; i++) {
-             String id = "#popeFavorTilesImages" + (i+1);
-             Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup(id)));
              popeFavorTilesImages[i] = new ImageView(new Image("/view/images/faithTrack/pope_favor"+(i+1) + (popesFavorTiles[i] ? "_front": "_back" )+".png"));
              popeFavorTilesImages[i].setLayoutX(290+222.5*i);
              popeFavorTilesImages[i].setLayoutY(160);
@@ -884,12 +883,22 @@ public class DashboardController {
         popeFavorTilesImages[1].setLayoutY(120);
         popeFavorTilesImages[1].setFitWidth(60);
         popeFavorTilesImages[1].setFitHeight(60);
-        Platform.runLater(() -> dashboardPane.getChildren().add(popeFavorTilesImages[0]));
-        Platform.runLater(() -> dashboardPane.getChildren().add(popeFavorTilesImages[1]));
-        Platform.runLater(() -> dashboardPane.getChildren().add(popeFavorTilesImages[2]));
+
+
+        Platform.runLater(() -> {
+            Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#" + popeFavorTilesImages[0].getId())));
+            dashboardPane.getChildren().add(popeFavorTilesImages[0]);
+        });
+        Platform.runLater(() -> {
+            Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#" + popeFavorTilesImages[1].getId())));
+            dashboardPane.getChildren().add(popeFavorTilesImages[1]);
+        });
+        Platform.runLater(() -> {
+            Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#" + popeFavorTilesImages[2].getId())));
+            dashboardPane.getChildren().add(popeFavorTilesImages[2]);
+        });
 
         faithTrackImage = new ImageView(faithImage);
-        faithTrackImage.setId("faithTrackImage");
         int xOffset = 80;
         int yOffset = 190;
 
@@ -909,7 +918,6 @@ public class DashboardController {
                 Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#blackFaithTrackImage")));
             }
             blackFaithTrackImage = new ImageView(blackFaithImage);
-            blackFaithTrackImage.setId("blackFaithTrackImage");
 
             blackFaithTrackImage.setLayoutX(xOffset+xStart[blackMarker]);
             blackFaithTrackImage.setLayoutY(yOffset+yStart[blackMarker]);
@@ -926,9 +934,12 @@ public class DashboardController {
                 blackFaithTrackImage.setFitHeight(halfLen);
             }
 
+            blackFaithTrackImage.setId("blackFaithTrackImage");
             Platform.runLater(() -> dashboardPane.getChildren().add(blackFaithTrackImage));
         }
 
+        Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#faithTrackImage")));
+        faithTrackImage.setId("faithTrackImage");
         Platform.runLater(() -> dashboardPane.getChildren().add(faithTrackImage));
 
     }
@@ -988,7 +999,6 @@ public class DashboardController {
             });
 
         }
-        gui.send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
         gui.send(new EndTurn());
         endTurnButton.setDisable(true);
         resetProductions();
@@ -1039,6 +1049,20 @@ public class DashboardController {
         gameOverController = showPopup("/view/scenes/sceneGameOver.fxml").getController();
         gameOverController.setMap(map);
         gameOverController.start();
+        });
+    }
+
+    public void showToken(int index) {
+        System.out.println("index: " + index);
+        Image tokenImage = new Image("/view/images/tokens/cerchio"+index+".png");
+        ImageView tokenImageView = new ImageView(tokenImage);
+        tokenImageView.setLayoutX(98);
+        tokenImageView.setLayoutY(90);
+        tokenImageView.setFitWidth(50);
+        tokenImageView.setFitHeight(50);
+        Platform.runLater(() -> {
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#endGameLabel"));
+            dashboardPane.getChildren().add(tokenImageView);
         });
     }
 }
