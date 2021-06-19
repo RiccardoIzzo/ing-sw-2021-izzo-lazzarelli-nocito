@@ -54,9 +54,14 @@ public class CLI implements View{
         System.out.println("Insert server ip address:");
         String ip = new Scanner(System.in).next();
         System.out.println("Insert server port:");
-        int port = new Scanner(System.in).nextInt();
-        CLI cli = new CLI(ip, port);
-        cli.setNickname();
+        try {
+            int port = new Scanner(System.in).nextInt();
+            CLI cli = new CLI(ip, port);
+            cli.setNickname();
+        } catch (InputMismatchException e){
+            System.err.println("Integer requested for the server port, restart the application.");
+            System.exit(0);
+        }
     }
 
     /**

@@ -309,12 +309,17 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("Welcome to Master of Renaissance server...");
         System.out.println("Insert server port: ");
-        int port = new Scanner(System.in).nextInt();
-        while(port < 1023){
-            System.out.println("Error, the port number must be greater than 1023! Insert again: ");
-            port = new Scanner(System.in).nextInt();
+        try {
+            int port = new Scanner(System.in).nextInt();
+            while(port < 1023){
+                System.out.println("Error, the port number must be greater than 1023! Insert again: ");
+                port = new Scanner(System.in).nextInt();
+            }
+            Server server = new Server(port);
+            (new Thread(server.serverHandler)).start();
+        } catch (InputMismatchException e){
+            System.err.println("Integer requested for the server port, restart the application.");
+            System.exit(0);
         }
-        Server server = new Server(port);
-        (new Thread(server.serverHandler)).start();
     }
 }
