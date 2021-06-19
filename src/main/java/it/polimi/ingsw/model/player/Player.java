@@ -140,6 +140,7 @@ public class Player {
      * </ul>
      * @param row is the row line in the grid of developmentCard.
      * @param column is the column in the grid of developmentCard.
+     * @param index slot index in the dashboard.
      */
     public void buyCard(int row, int column, int index){
         DevelopmentCard developmentCard = game.getGrid()[row][column].draw();

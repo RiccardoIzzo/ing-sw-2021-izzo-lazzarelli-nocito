@@ -12,168 +12,181 @@ import it.polimi.ingsw.network.VirtualView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-
+/**
+ * GameHandlerTest tests GameHandler class.
+ *
+ * @author Andrea Nocito
+ */
 public class GameHandlerTest {
     private GameHandler gameHandler;
-    private Game game;
-    private Server serverTest;
+    private Server server;
     private final String lobbyID = "test";
 
-    private VirtualView virtualView;
+    /**
+     * Method setUp initializes Server and GameHandler before each test.
+     */
     @Before
     public void setUp() {
-        serverTest = new Server(0);
-        virtualView = new VirtualView(serverTest, lobbyID);
+        server = new Server(0);
+        gameHandler = new GameHandler(server, lobbyID);
+        gameHandler.addPropertyListener(new VirtualView(server, lobbyID), gameHandler.getGame());
+    }
 
-        gameHandler = new GameHandler(serverTest, lobbyID);
+    /**
+     * Method tearDown sets Server and GameHandler null after each test.
+     */
+    @After
+    public void tearDown() {
+        server = null;
+        gameHandler = null;
+    }
+
+    /**
+     * Method testSetGameMode tests two different cases:
+     * - setGameMode with 1 player -> checks that Game is an instance of SinglePlayerGame
+     * - setGameMode with 2 player -> checks that Game is an instance of MultiplayerGame
+     */
+    @Test
+    public void testSetGameMode() {
+        GameHandler gameHandler = new GameHandler(server, lobbyID);
+        gameHandler.setGameMode(1);
+        assertTrue(gameHandler.getGame() instanceof SinglePlayerGame);
+
+        gameHandler.setGameMode(2);
+        assertTrue(gameHandler.getGame() instanceof MultiplayerGame);
+    }
+
+    /**
+     * Method testProcess tests every message (ClientMessage) received by the Server and processed by the GameHandler.
+     */
+    @Test
+    public void testProcess() {
         gameHandler.setGameMode(3);
-
-        game = gameHandler.getGame();
-
-//        game.addPropertyListener(virtualView);
-
+        Game game = gameHandler.getGame();
         game.addPlayer("Andrea");
         game.addPlayer("Gabriele");
         game.addPlayer("Riccardo");
         game.generateGrid();
         game.generateLeaders();
         game.getMarket().generateTray();
-    }
-
-    @After
-    public void tearDown() {
-        gameHandler = null;
-        serverTest = null;
-        game = null;
-    }
-
-    /**
-     * Method testSetGameMode sets the number of players to 1 and checks that game is set as an instance of SinglePlayerGame,
-     * then sets the numbers of players to 2 and checks  that game is set as an instance of MultiplayerGame
-     */
-    @Test
-    public void testSetGameMode() {
-        Game game = gameHandler.getGame();
-        assertFalse(game instanceof SinglePlayerGame);
-        assertTrue(game instanceof MultiplayerGame);
-
-        gameHandler.setGameMode(1);
-        game = gameHandler.getGame();
-        assertTrue(game instanceof SinglePlayerGame);
-
-
-    }
-
-
-    /**
-     * Method testProcess tests the correct interpretation of the client messages
-     * SelectLeaderCard checks that the game starts with 4 cards, and that only 2 are left after the user selection.
-     * TakeResources checks that the market is functioning and that the resources taken are put into the temporary shelf inside the warehouse
-     * BuyCard checks that there are no cards in player, and that there is the specified one after the buyCard message is sent.
-     *
-     * EndTurn checks that the first players is the actual current player, then sends a message of EndTurn and checks that the curr player is the next player
-     *
-     * */
-    @Test
-    public void testProcess() {
 
         String nickname = "Andrea";
         Player player = game.getPlayerByName(nickname);
-//        player.addPropertyListener(virtualView);
 
-        // message: SelectLeaderCard
-        assertEquals(4, player.getLeaders().size());
-
+        // SelectLeaderCard message
         int firstID = 0, secondID = 0;
         Optional<LeaderCard> firstLeaderCard = player.getLeaders().stream().findAny();
-        if (firstLeaderCard.isPresent()) {
-            firstID = firstLeaderCard.get().getCardID();
-            Optional<LeaderCard> secondLeaderCard = player.getLeaders().stream().filter(x -> x.getCardID() != firstLeaderCard.get().getCardID()).findAny();
-            if (secondLeaderCard.isPresent())
-                secondID = secondLeaderCard.get().getCardID();
-        }
+        if (firstLeaderCard.isPresent()) firstID = firstLeaderCard.get().getCardID();
 
+        Optional<LeaderCard> secondLeaderCard = player.getLeaders().stream().filter(x -> x.getCardID() != firstLeaderCard.get().getCardID()).findAny();
+        if (secondLeaderCard.isPresent()) secondID = secondLeaderCard.get().getCardID();
+
+        assertEquals(4, player.getLeaders().size());
         gameHandler.process(nickname, new SelectLeaderCards(firstID, secondID));
+        assertEquals(2, player.getLeaders().size());
 
         for(LeaderCard leaderCard : player.getLeaders()) {
             assertNotEquals(leaderCard.getCardID(), firstID);
             assertNotEquals(leaderCard.getCardID(), secondID);
         }
-        assertEquals(2, player.getLeaders().size());
 
-        // message: TakeResources
+        // TakeResources message
+        Market market = game.getMarket();
         player.getDashboard().getWarehouse().flushShelves();
         Integer numberOfResourcesTaken = player.getDashboard().getWarehouse().getResourcesFromWarehouse().getAmount();
-//                getResourcesSize().getMapSize();
         assertEquals(0, (int) numberOfResourcesTaken);
+
+        market.resourceConverter(market.getMarketTray().get(0));
+        market.resourceConverter(market.getMarketTray().get(1));
+        market.resourceConverter(market.getMarketTray().get(2));
+        market.resourceConverter(market.getMarketTray().get(3));
+        ResourceMap marketResources = new ResourceMap();
+        marketResources.addResources(market.resourceOutput());
+        market.reset();
         gameHandler.process(nickname, new TakeResources(1, 1));
-        ResourceMap marketResources = game.getMarket().resourceOutput();
         ResourceMap temporaryShelf = player.getDashboard().getWarehouse().getResourcesFromShelf(PlayerConstants.TEMPORARY_SHELF);
-        //assertEquals(marketResources.getResources(), temporaryShelf.getResources());
+        assertEquals(marketResources.getResources(), temporaryShelf.getResources());
+
+        // SendBonusResources message
+        player.getDashboard().getWarehouse().flushShelves();
+        assertEquals(0, (int) player.getDashboard().getWarehouse().getResourcesFromWarehouse().getAmount());
+        ResourceMap bonusResources = new ResourceMap();
+        bonusResources.modifyResource(Resource.COIN, 1);
+        gameHandler.process(nickname, new SendBonusResources(bonusResources));
+        assertEquals(1, (int) player.getDashboard().getWarehouse().getResourcesFromWarehouse().getAmount());
+        assertTrue(player.getDashboard().getWarehouse().getResourcesFromWarehouse().asList().contains(Resource.COIN));
 
 
-        // BuyCard
+        // BuyCard message
         assertEquals(0, player.getDevelopments().size());
         DevelopmentCard card = game.getGrid()[1][1].getTopCard();
-        player.buyCard(1, 1, 1);
+        gameHandler.process(nickname, new BuyCard(1, 1, 1));
         assertEquals(1, player.getDevelopments().size());
         assertTrue(player.getDevelopments().contains(card));
 
-        // ActivateLeaderCard
-        LeaderCard leaderCard = (player.getLeaders().iterator().next());
-        assertFalse(leaderCard.isActive());
-        gameHandler.process(nickname, new ActivateLeaderCard(leaderCard.getCardID()));
-        assertTrue(leaderCard.isActive());
+        // ActivateLeaderCard message
+        LeaderCard leaderCardOne = player.getLeaders().iterator().next();
+        assertFalse(leaderCardOne.isActive());
+        gameHandler.process(nickname, new ActivateLeaderCard(leaderCardOne.getCardID()));
+        assertTrue(leaderCardOne.isActive());
 
-        // ActivateProduction
+        // DiscardLeaderCard message
+        int size = player.getLeaders().size();
+        LeaderCard leaderCardTwo = null;
+        for(LeaderCard leader : player.getLeaders()){
+            if(!card.equals(leaderCardOne)) leaderCardTwo = leader;
+        }
+
+        if(leaderCardTwo != null){
+            assertFalse(leaderCardTwo.isActive());
+            gameHandler.process(nickname, new DiscardLeaderCard(leaderCardTwo.getCardID()));
+            assertFalse(player.getLeaders().contains(leaderCardTwo));
+            assertEquals(size - 1, player.getLeaders().size());
+        }
+
+        // ActivateProduction message
         player.getDashboard().getWarehouse().flushShelves();
-        ResourceMap resourcesAtStart = player.getDashboard().getWarehouse().getResourcesFromWarehouse();
-        resourcesAtStart.addResources(player.getDashboard().getStrongbox());
-
+        ResourceMap resourcesAtStart = player.getDashboard().getStrongbox();
         DevelopmentCard developmentCard = player.getDevelopments().iterator().next();
         ResourceMap resourcesRequired = developmentCard.getProduction().getInputResource();
+        ResourceMap resourcesToGet = developmentCard.getProduction().getOutputResource();
         player.getDashboard().getStrongbox().addResources(resourcesRequired);
 
-        ResourceMap resourcesToGet = developmentCard.getProduction().getOutputResource();
         gameHandler.process(nickname, new ActivateProduction(Collections.singletonList(developmentCard.getCardID())));
 
-        resourcesAtStart.addResources(resourcesToGet);
-        assertEquals(player.getTotalResources().getResources(), resourcesAtStart.getResources());
+        assertEquals(player.getDashboard().getStrongbox().getResources(), resourcesAtStart.addResources(resourcesToGet).getResources());
+
+        // BasicProduction message
+        ResourceMap input = new ResourceMap();
+        ResourceMap output = new ResourceMap();
+        input.modifyResource(Resource.COIN, 1);
+        input.modifyResource(Resource.SHIELD, 1);
+        output.modifyResource(Resource.SERVANT, 1);
+        player.getDashboard().getStrongbox().flush();
+        player.getDashboard().getStrongbox().addResources(input);
+
+        assertFalse(player.getDashboard().getStrongbox().asList().contains(Resource.SERVANT));
+        gameHandler.process(nickname, new BasicProduction(input, output));
+        assertTrue(player.getDashboard().getStrongbox().asList().contains(Resource.SERVANT));
+
+        // SetWarehouse message
         /*
-        // EndTurn - MultiPlayer
-        if (game instanceof MultiplayerGame) {
-            ((MultiplayerGame) game).setFirstPlayer();
-            player = ((MultiplayerGame) game).getCurrPlayer();
-            Player firstPlayer = ((MultiplayerGame) game).getFirstPlayer();
-            assertEquals(player, firstPlayer);
-
-            gameHandler.process(nickname, new EndTurn());
-
-            assertNotEquals(firstPlayer,  ((MultiplayerGame) game).getCurrPlayer());
-        }
+        ArrayList<Resource> resources = new ArrayList<>();
+        resources.add(Resource.STONE);
+        resources.add(Resource.SERVANT);
+        player.getDashboard().getWarehouse().flushShelves();
+        assertEquals(0, (int) player.getDashboard().getWarehouse().getResourcesFromWarehouse().getAmount());
+        gameHandler.process(nickname, new SetWarehouse(resources));
+        assertEquals(resources.size(), (int) player.getDashboard().getWarehouse().getResourcesFromWarehouse().getAmount());
          */
 
-        // EndTurn - SinglePlayer
-        gameHandler.setGameMode(1);
-        game = gameHandler.getGame();
-        game.addPlayer("Andrea");
-        game.generateGrid();
-        game.generateLeaders();
-        game.getMarket().generateTray();
-
-        game.addPlayer(nickname);
-        int numTokens = ((SinglePlayerGame) game).getTokenStack().numTokens();
-        gameHandler.process(nickname, new EndTurn());
-        //assertEquals(numTokens-1, ((SinglePlayerGame) game).getTokenStack().numTokens() );
-
-
-
+        // SetFinalTurn message
+        gameHandler.process(nickname, new SetFinalTurn());
+        assertTrue(game.isFinalTurn());
     }
-
 }
