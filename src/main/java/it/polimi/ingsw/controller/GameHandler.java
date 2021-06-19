@@ -154,6 +154,10 @@ public class GameHandler {
             }
         }
 
+        else if(message instanceof BasicProduction) {
+            player.activateProduction(((BasicProduction) message).getInputProduction(), ((BasicProduction) message).getOutputProduction());
+        }
+
         else if(message instanceof CheckRequirement){
             Card card = JsonCardsCreator.generateCard(((CheckRequirement) message).getId());
             boolean result = card.getRequirement().checkRequirement(player);
