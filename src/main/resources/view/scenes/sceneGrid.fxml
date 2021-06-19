@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:controller="it.polimi.ingsw.view.gui.GridController" fx:id = "gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+<Pane fx:controller="it.polimi.ingsw.view.GridController" fx:id = "gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
       <Button fx:id="card1Button" layoutX="16.0" layoutY="65.0" mnemonicParsing="false" onAction="#cardButtonClicked" prefHeight="100.0" prefWidth="67.5" style="-fx-background-color: transparent;" translateX="230.0" translateY="-30.0">
          <graphic>
             <ImageView fx:id="card1ImageView" fitHeight="100.0" fitWidth="67.5">

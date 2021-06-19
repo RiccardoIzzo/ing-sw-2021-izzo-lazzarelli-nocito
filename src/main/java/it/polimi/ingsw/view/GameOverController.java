@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view;
 
 import javafx.scene.control.ListView;
 

@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane fx:controller="it.polimi.ingsw.view.gui.GameOverController"  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+<Pane fx:controller="it.polimi.ingsw.view.GameOverController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
       <Label id="titleLabel" alignment="CENTER" layoutY="53.0" prefHeight="43.0" prefWidth="600.0" text="Game over!">
          <font>
             <Font name="System Bold" size="27.0" />

@@ -2,7 +2,6 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.SetFinalTurn;
 import it.polimi.ingsw.events.servermessages.*;
-import it.polimi.ingsw.view.gui.GUI;
 import javafx.scene.control.Alert;
 
 import java.util.concurrent.ArrayBlockingQueue;

@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.view.CLI;
-import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.GUI;
 
 import java.util.Scanner;
 

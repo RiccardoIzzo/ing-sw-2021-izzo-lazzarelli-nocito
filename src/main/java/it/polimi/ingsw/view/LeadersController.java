@@ -1,8 +1,7 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.CheckRequirement;
 import it.polimi.ingsw.events.clientmessages.DiscardLeaderCard;
-import it.polimi.ingsw.view.ModelView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +13,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class LeadersController {
@@ -125,6 +123,22 @@ public class LeadersController {
             }
 
             Platform.runLater(() -> leaderPane.getChildren().add(secondActiveLabel));
+        }
+        if (gui.getValidActions().contains(Action.ACTIVATE_LEADER)) {
+            firstLeaderCardActivateButton.setDisable(false);
+            secondLeaderCardActivateButton.setDisable(false);
+        }
+        else{
+            firstLeaderCardActivateButton.setDisable(true);
+            secondLeaderCardActivateButton.setDisable(true);
+        }
+        if (gui.getValidActions().contains(Action.DISCARD_LEADER)) {
+            firstLeaderCardDiscardButton.setDisable(false);
+            secondLeaderCardDiscardButton.setDisable(false);
+        }
+        else{
+            firstLeaderCardDiscardButton.setDisable(true);
+            secondLeaderCardDiscardButton.setDisable(true);
         }
     }
     public void start() {

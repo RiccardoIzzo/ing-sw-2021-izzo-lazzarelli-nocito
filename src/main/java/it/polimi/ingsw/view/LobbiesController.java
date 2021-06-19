@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.CreateLobby;
 import it.polimi.ingsw.events.clientmessages.GetLobbies;

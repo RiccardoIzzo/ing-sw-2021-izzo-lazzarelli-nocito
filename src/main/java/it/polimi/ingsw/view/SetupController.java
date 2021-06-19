@@ -1,8 +1,6 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetNickname;
-import it.polimi.ingsw.network.NetworkHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SetupController {
     // Connect Scene

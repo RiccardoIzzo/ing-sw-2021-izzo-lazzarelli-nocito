@@ -1,12 +1,9 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetNickname;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.network.NetworkHandler;
-import it.polimi.ingsw.view.Action;
-import it.polimi.ingsw.view.ModelView;
-import it.polimi.ingsw.view.View;
 import javafx.application.Application;
 
 import it.polimi.ingsw.events.clientmessages.ClientMessage;
@@ -33,8 +30,6 @@ public class GUI extends Application implements View {
     SetupController setupController;
     LobbiesController lobbiesController;
     SelectLeaderController selectLeaderController;
-    MarketController marketController;
-    GridController gridController;
     DashboardController dashboardController;
     static String nickname;
     private ModelView modelView;
@@ -138,10 +133,6 @@ public class GUI extends Application implements View {
         }
     }
 
-    @Override
-    public ArrayList<Action> getValidActions() {
-        return null;
-    }
 
     public void startLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
@@ -149,7 +140,6 @@ public class GUI extends Application implements View {
         Parent root;
         try {
             root = loader.load();
-//            Stage stage = new Stage();
             mainStage.setScene(new Scene(root));
             mainStage.show();
             selectLeaderController = loader.getController();
@@ -185,6 +175,7 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleActivateProduction() {
+
     }
 
     @Override
@@ -209,22 +200,7 @@ public class GUI extends Application implements View {
     public void updateDashboard() {
         dashboardController.showDashboard();
     }
-    @Override
-    public void startTurn() {
-        if(dashboardController != null) {
-            dashboardController.startTurn();
-        }
-    }
 
-    @Override
-    public void basicActionPlayed() {
-
-    }
-
-    @Override
-    public void handleTurn() {
-
-    }
 
     @Override
     public void handleEndTurn() {
@@ -240,8 +216,6 @@ public class GUI extends Application implements View {
         this.modelView = modelView;
         network.getServerConnection().setModelView(modelView);
         if (reconnected) {
-            System.out.println("riconnesso e modelview impostata");
-            System.out.println(modelView.getMyDashboard().getLeaderCards().keySet().size());
             if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() != 2) {
                 handleLeaders();
             } else if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() == 2) {
@@ -258,7 +232,6 @@ public class GUI extends Application implements View {
 
     @Override
     public void printText(String text) {
-//        System.out.println(text);
         handleTextMessage(text);
     }
 
@@ -269,9 +242,11 @@ public class GUI extends Application implements View {
 
     @Override
     public void showStats(Map<String, Integer> map) {
-
     }
 
+    public void handleEndGame() {
+
+    }
     @Override
     public String getNickname() {
         return nickname;
@@ -300,4 +275,42 @@ public class GUI extends Application implements View {
     public void enableLobbies() {
         lobbiesController.enable();
     }
+
+    /**
+     * Method getValidAction returns a list of valid user action.
+     * @return the list of actions.
+     */
+    @Override
+    public ArrayList<Action> getValidActions(){
+        ArrayList<Action> actions = new ArrayList<>();
+        for(Action action : Action.values()){
+            if(action.enabled) actions.add(action);
+        }
+        return actions;
+    }
+    /**
+     * Method startTurn at the beginning of the player turn re-enable all actions.
+     */
+    @Override
+    public void startTurn(){
+        for(Action action : Action.values()){
+            action.enabled = true;
+        }
+        if(dashboardController != null) {
+            dashboardController.startTurn();
+        }
+    }
+
+    @Override
+    public void basicActionPlayed(){
+        Action.TAKE_RESOURCE.enabled = false;
+        Action.BUY_CARD.enabled = false;
+        Action.ACTIVATE_PRODUCTION.enabled = false;
+    }
+
+    @Override
+    public void handleTurn() {
+
+    }
+
 }

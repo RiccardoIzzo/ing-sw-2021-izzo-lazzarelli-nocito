@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane fx:controller="it.polimi.ingsw.view.gui.SelectLeaderController" id="selectLeaderCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+<Pane fx:controller="it.polimi.ingsw.view.SelectLeaderController" id="selectLeaderCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
       <Button fx:id="card1Button" id="card1" onAction="#cardButtonClicked" layoutX="42.0" layoutY="100.0" mnemonicParsing="false" prefHeight="233.0" prefWidth="136.0">
          <graphic>
             <ImageView fx:id="card1ImageView" fitHeight="224.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />

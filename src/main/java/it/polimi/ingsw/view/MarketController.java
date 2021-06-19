@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.TakeResources;
 import it.polimi.ingsw.model.JsonCardsCreator;
@@ -114,7 +114,6 @@ public class MarketController {
     }
     public void columnButtonClicked(ActionEvent actionEvent) {
         Button arrowButton = (Button) actionEvent.getSource();
-        System.out.println(arrowButton.getId());
 
         if (whiteMarbleChoiceBox.isShowing()) {
             whiteMarbleChoiceBox.getSelectionModel().getSelectedIndex();
@@ -135,13 +134,13 @@ public class MarketController {
 
         }
         gui.showTempShelf = true;
+        gui.basicActionPlayed();
         Stage stage = (Stage) arrowButton.getScene().getWindow();
         stage.close();
     }
 
     public void rowButtonClicked(ActionEvent actionEvent) {
         Button arrowButton = (Button) actionEvent.getSource();
-        System.out.println(arrowButton.getId());
         if (whiteMarbleChoiceBox.isShowing()) {
             whiteMarbleChoiceBox.getSelectionModel().getSelectedIndex();
         }
@@ -160,6 +159,7 @@ public class MarketController {
             }
         }
         gui.showTempShelf = true;
+        gui.basicActionPlayed();
         Stage stage = (Stage) arrowButton.getScene().getWindow();
         stage.close();
     }

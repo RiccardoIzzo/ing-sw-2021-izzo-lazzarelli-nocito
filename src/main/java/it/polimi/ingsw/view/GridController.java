@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.BuyCard;
 import it.polimi.ingsw.events.clientmessages.EndTurn;
@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.DiscountLeaderCard;
 import it.polimi.ingsw.model.card.ResourceRequirement;
-import it.polimi.ingsw.view.ModelView;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -119,9 +118,9 @@ public class GridController {
             }
             if (conditionsMet) {
                 int index = modelView.getGrid().indexOf(selectedId);
-                System.out.println("Buying card");
                 gui.send(new BuyCard(index / 4, index % 4, slotIndex));
-                gui.send(new EndTurn());
+                gui.basicActionPlayed();
+                gui.updateDashboard();
                 Stage stage = (Stage) buyCardButton.getScene().getWindow();
                 stage.close();
             }
