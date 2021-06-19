@@ -40,6 +40,9 @@ public class LobbiesController {
         lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     }
+    public void enable() {
+        lobbiesPane.setDisable(false);
+    }
     public void start() throws IOException {
 //        gui.mainStage.close();
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies.fxml"));

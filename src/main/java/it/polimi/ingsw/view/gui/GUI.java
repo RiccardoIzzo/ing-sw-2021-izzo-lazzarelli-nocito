@@ -296,4 +296,8 @@ public class GUI extends Application implements View {
         }
 
     }
+
+    public void enableLobbies() {
+        lobbiesController.enable();
+    }
 }
