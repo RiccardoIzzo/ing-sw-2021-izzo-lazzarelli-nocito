@@ -76,6 +76,10 @@ public class ActionHandler extends Thread{
         else if(message instanceof EndGame){
             view.printText("The game is about to finish.\nWaiting for the remaining players to play theirs last turn...");
             view.send(new SetFinalTurn());
+
+            if (view instanceof GUI) {
+                ((GUI) view).handleEndGame();
+            }
         }
         else if(message instanceof GameStats){
             view.showStats(((GameStats) message).getPlayerPoints());

@@ -48,13 +48,16 @@ public class GUI extends Application implements View {
         setupController.start();
 
     }
+
     public void setNickname(String name) {
         nickname = name;
     }
+
     public void connect(String ip, int port) {
         network = new NetworkHandler(ip, port, this);
         network.setConnection();
     }
+
     public void startLobbies(Map<String, Integer> lobbies) {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies.fxml"));
@@ -68,8 +71,8 @@ public class GUI extends Application implements View {
             lobbiesController = loader.getController();
             lobbiesController.setGUI(this);
             lobbiesController.setLobbies(lobbies);
-            for(Map.Entry<String,Integer> lobby : lobbies.entrySet()) {
-                lobbiesController.lobbiesListView.getItems().add("["+lobby.getValue()+" players] - " + lobby.getKey());
+            for (Map.Entry<String, Integer> lobby : lobbies.entrySet()) {
+                lobbiesController.lobbiesListView.getItems().add("[" + lobby.getValue() + " players] - " + lobby.getKey());
             }
             lobbiesController.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -85,22 +88,20 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleNickname(ServerMessage message) {
-        if(message instanceof ValidNickname) {
+        if (message instanceof ValidNickname) {
             Platform.runLater(() -> mainStage.close());
             send(new GetLobbies());
-        }
-        else {
-            Platform.runLater(() ->  showAlert("This nickname is not valid! Try again.", Alert.AlertType.ERROR ));
+        } else {
+            Platform.runLater(() -> showAlert("This nickname is not valid! Try again.", Alert.AlertType.ERROR));
         }
 
     }
 
     @Override
     public void handleLobbies(Map<String, Integer> lobbies) {
-        if (lobbiesController == null ) {
+        if (lobbiesController == null) {
             Platform.runLater(() -> startLobbies(lobbies));
-        }
-        else {
+        } else {
             Platform.runLater(() -> lobbiesController.refreshLobbies(lobbies));
         }
     }
@@ -154,9 +155,10 @@ public class GUI extends Application implements View {
     public void handleLobbyJoined() {
         lobbiesController.addWaitingView("Lobby created! Waiting for other players ...");
     }
+
     @Override
     public void handleLeaders() {
-            Platform.runLater(this::startLeaders);
+        Platform.runLater(this::startLeaders);
 
     }
 
@@ -197,6 +199,7 @@ public class GUI extends Application implements View {
     public void handleCheckRequirement(boolean result, int id) {
         dashboardController.handleLeaderCardActivation(result, id);
     }
+
     public void updateDashboard() {
         dashboardController.showDashboard();
     }
@@ -242,11 +245,13 @@ public class GUI extends Application implements View {
 
     @Override
     public void showStats(Map<String, Integer> map) {
+        dashboardController.showStats(map);
     }
 
     public void handleEndGame() {
-
+        dashboardController.showEndGameText();
     }
+
     @Override
     public String getNickname() {
         return nickname;
@@ -259,13 +264,14 @@ public class GUI extends Application implements View {
         a.setHeaderText(header);
         a.show();
     }
+
     public void showAlert(String header, Alert.AlertType type) {
         Platform.runLater(() -> displayAlert(header, type));
     }
 
     public void handleTextMessage(String text) {
         System.out.println(text);
-        if(text.indexOf(nickname) == 0 && text.contains("back online")) {
+        if (text.indexOf(nickname) == 0 && text.contains("back online")) {
             reconnected = true;
             System.out.println("riconnesso");
         }
@@ -280,8 +286,9 @@ public class GUI extends Application implements View {
      * Method getValidAction returns a list of valid user action.
      * @return the list of actions.
      */
-    @Override
-    public ArrayList<Action> getValidActions(){
+
+//    @Override
+    public ArrayList<Action> getValidActions() {
         ArrayList<Action> actions = new ArrayList<>();
         for(Action action : Action.values()){
             if(action.enabled) actions.add(action);
@@ -300,7 +307,6 @@ public class GUI extends Application implements View {
             dashboardController.startTurn();
         }
     }
-
     @Override
     public void basicActionPlayed(){
         Action.TAKE_RESOURCE.enabled = false;
@@ -310,7 +316,8 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleTurn() {
-
+        if(dashboardController != null) {
+            dashboardController.handleWaitingText();
+        }
     }
-
 }

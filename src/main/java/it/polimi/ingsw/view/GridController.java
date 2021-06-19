@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.BuyCard;
-import it.polimi.ingsw.events.clientmessages.EndTurn;
 import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.ResourceMap;
 import it.polimi.ingsw.model.card.DevelopmentCard;

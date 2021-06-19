@@ -43,7 +43,7 @@ public class DashboardController {
     MarketController marketController;
     GridController gridController;
     LeadersController leadersController;
-
+    GameOverController gameOverController;
     private static GUI gui;
     ImageView firstShelfRes1View;
     ImageView secondShelfRes1View;
@@ -307,7 +307,7 @@ public class DashboardController {
                     gui.send(new SendBonusResources(bonusResources));
                     bonusStage.close();
                     dashboardPane.setDisable(false);
-                    showDashboard();
+                    gui.handleTurn();
                 }
             });
             bonusPane.getChildren().add(selectButton);
@@ -317,6 +317,23 @@ public class DashboardController {
             bonusStage.show();
         }
     }
+    public void handleWaitingText() {
+        Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#waitingText")));
+        Label waitingText;
+        if(modelView.getCurrPlayer().equals(gui.getNickname())) {
+            waitingText = new Label("It's your turn!");
+        }
+        else {
+            waitingText = new Label("Playing: " + modelView.getCurrPlayer() + ". Wait for your turn...");
+        }
+        waitingText.setId("waitingText" + (4));
+        waitingText.setLayoutX(88);
+        waitingText.setLayoutY(5);
+        waitingText.setPrefWidth(300);
+        waitingText.setPrefHeight(23);
+        waitingText.setId("waitingText");
+        Platform.runLater(() -> dashboardPane.getChildren().add(waitingText));
+    }
     public void showDashboard() {
         ModelView.DashboardView dashboardView = modelView.getMyDashboard();
         showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
@@ -324,19 +341,16 @@ public class DashboardController {
         showActiveDevelopments(dashboardView.getActiveDevelopments());
         showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
 
-        dashboardPane.getChildren().remove(dashboardPane.lookup("#waitingText"));
         ArrayList<Action> actions = gui.getValidActions();
-        if(actions.size() == 0) {
-            Label waitingText = new Label("Playing: " + modelView.getCurrPlayer() + ". Wait for your turn...");
-            waitingText.setId("waitingText" + (4));
-            waitingText.setLayoutX(88);
-            waitingText.setLayoutY(5);
-            waitingText.setPrefWidth(90);
-            waitingText.setPrefHeight(23);
-            Platform.runLater(() -> dashboardPane.getChildren().add(waitingText));
+
+
+        if (actions.size() == 0) {
+            marketButton.setDisable(true);
+            showLeaders.setDisable(true);
+            gridButton.setDisable(true);
+            endTurnButton.setDisable(true);
         }
         else {
-
             marketButton.setDisable(!actions.contains(Action.TAKE_RESOURCE));
 
             gridButton.setDisable(!actions.contains(Action.BUY_CARD));
@@ -448,9 +462,12 @@ public class DashboardController {
             }
         }
         enabledProductions.clear();
-        developmentImageSlot1.setStyle("-fx-opacity: 1");
-        developmentImageSlot2.setStyle("-fx-opacity: 1");
-        developmentImageSlot3.setStyle("-fx-opacity: 1");
+        if (developmentImageSlot1 != null)
+           developmentImageSlot1.setStyle("-fx-opacity: 1");
+        if (developmentImageSlot2 != null)
+            developmentImageSlot2.setStyle("-fx-opacity: 1");
+        if (developmentImageSlot3 != null)
+            developmentImageSlot3.setStyle("-fx-opacity: 1");
         basicProductionRes1.setDisable(false);
         basicProductionRes2.setDisable(false);
         basicProductionRes3.setDisable(false);
@@ -973,9 +990,10 @@ public class DashboardController {
         }
         gui.send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
         gui.send(new EndTurn());
-        marketButton.setDisable(false);
-        gridButton.setDisable(false);
+        endTurnButton.setDisable(true);
         resetProductions();
+        showDashboard();
+        handleWaitingText();
     }
 
     public void handleTemporaryShelf() {
@@ -998,5 +1016,29 @@ public class DashboardController {
                 case 3 -> basicProductionResources[selectedIndex] = Resource.STONE;
             }
 
+    }
+
+    public void showEndGameText() {
+        Label endGameLabel = new Label("The game is about to finish.Waiting for the remaining players to play theirs last turn...");
+        endGameLabel.setLayoutX(88);
+        endGameLabel.setLayoutY(dashboardPane.getHeight()-30);
+        endGameLabel.setTextFill(Color.web("white"));
+        endGameLabel.setPrefHeight(30);
+        endGameLabel.setPrefWidth(dashboardPane.getWidth()-176);
+        endGameLabel.setId("endGameLabel");
+        Platform.runLater(() -> {
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#endGameLabel"));
+            dashboardPane.getChildren().add(endGameLabel);
+        });
+    }
+
+    public void showStats(Map<String, Integer> map) {
+        dashboardPane.setDisable(true);
+
+        Platform.runLater(() -> {
+        gameOverController = showPopup("/view/scenes/sceneGameOver.fxml").getController();
+        gameOverController.setMap(map);
+        gameOverController.start();
+        });
     }
 }
