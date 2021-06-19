@@ -1,6 +1,6 @@
 ## Masters Of Renaissance
 
-**Software Engineering Final Project A.A. 2020-2021**
+**Software Engineering Final Project A.Y. 2020-2021**
 
 **Professor:** Prof. Pierluigi San Pietro
 
@@ -29,8 +29,8 @@
 
 | Package | Coverage (Methods) |
 |:-----------------------|:------------------------------------:|
-| Model | x/x (x%)
-| Controller | x/x (x%)
+| Model | 177/97 (89%)
+| Controller | 5/8 (62%)
 
 ## Execution
 
