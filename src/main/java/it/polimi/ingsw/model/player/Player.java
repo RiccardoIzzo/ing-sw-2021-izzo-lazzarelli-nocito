@@ -276,7 +276,7 @@ public class Player {
         }
         numResources += getTotalResources().getAmount();
         // VPs for every set of 5 resources of any type + VPs depending on the final position on the faith track + VPs based on the Pope's favor tiles
-        victoryPoints += (numResources % 5) + myDashboard.getFaithTrack().getPosVictoryPoints() + myDashboard.getFaithTrack().getPointsForTiles();
+        victoryPoints += (numResources / 5) + myDashboard.getFaithTrack().getPosVictoryPoints() + myDashboard.getFaithTrack().getPointsForTiles();
         return victoryPoints;
     }
 
