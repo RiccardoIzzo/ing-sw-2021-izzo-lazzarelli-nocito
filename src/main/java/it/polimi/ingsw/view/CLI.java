@@ -197,13 +197,7 @@ public class CLI implements View{
         ResourceMap bonusResources = new ResourceMap();
         for(int n = 0; n < amount; n++){
             System.out.println("Select a bonus resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT");
-            String resource = getInput("stone|coin|shield|servant");
-            switch (resource){
-                case "stone" -> bonusResources.modifyResource(Resource.STONE, 1);
-                case "coin" -> bonusResources.modifyResource(Resource.COIN, 1);
-                case "shield" -> bonusResources.modifyResource(Resource.SHIELD, 1);
-                case "servant" -> bonusResources.modifyResource(Resource.SERVANT, 1);
-            }
+            getResource(bonusResources);
         }
         send(new SendBonusResources(bonusResources));
         handleTurn();
@@ -451,22 +445,10 @@ public class CLI implements View{
             String resource;
             for(int n = 0; n < 2; n++){
                 System.out.println("Select the " + ((n == 0) ? "first" : "second") + " input resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT");
-                resource = getInput("stone|coin|shield|servant");
-                switch (resource){
-                    case "stone" -> inputBasicProduction.modifyResource(Resource.STONE, 1);
-                    case "coin" -> inputBasicProduction.modifyResource(Resource.COIN, 1);
-                    case "shield" -> inputBasicProduction.modifyResource(Resource.SHIELD, 1);
-                    case "servant" -> inputBasicProduction.modifyResource(Resource.SERVANT, 1);
-                }
+                getResource(inputBasicProduction);
             }
             System.out.println("Select the output resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT");
-            resource = getInput("stone|coin|shield|servant");
-            switch (resource){
-                case "stone" -> outputBasicProduction.modifyResource(Resource.STONE, 1);
-                case "coin" -> outputBasicProduction.modifyResource(Resource.COIN, 1);
-                case "shield" -> outputBasicProduction.modifyResource(Resource.SHIELD, 1);
-                case "servant" -> outputBasicProduction.modifyResource(Resource.SERVANT, 1);
-            }
+            getResource(outputBasicProduction);
             requiredResources.addResources(inputBasicProduction);
         }
 
@@ -508,6 +490,17 @@ public class CLI implements View{
         }
         else System.out.println("Not enough resources.");
         handleTurn();
+    }
+
+    private void getResource(ResourceMap resourceMap) {
+        String resource;
+        resource = getInput("stone|coin|shield|servant");
+        switch (resource){
+            case "stone" -> resourceMap.modifyResource(Resource.STONE, 1);
+            case "coin" -> resourceMap.modifyResource(Resource.COIN, 1);
+            case "shield" -> resourceMap.modifyResource(Resource.SHIELD, 1);
+            case "servant" -> resourceMap.modifyResource(Resource.SERVANT, 1);
+        }
     }
 
     /**
