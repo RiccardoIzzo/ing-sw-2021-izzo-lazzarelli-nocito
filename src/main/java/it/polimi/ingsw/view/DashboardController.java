@@ -72,7 +72,7 @@ public class DashboardController {
     ImageView developmentImageSlot1;
     ImageView developmentImageSlot2;
     ImageView developmentImageSlot3;
-    Button[] developmentButton = new Button [3];
+    Button[] developmentButton = new Button [4];
 
     Resource[] basicProductionResources = new Resource[3];
     ArrayList<Integer> enabledProductions = new ArrayList<>();
@@ -208,32 +208,6 @@ public class DashboardController {
     }
 
 
-//    showLeaders(dashboardView.getLeaderCards());
-//    public static void showLeaders(Map<Integer,Boolean> leaders){
-////        for (Integer id: leaders.keySet()){
-////            if (leaders.get(id)) {
-////                System.out.println(Colors.ANSI_GREEN_BOLD + "\nACTIVE" + Colors.ANSI_RESET);
-////            } else {
-////                System.out.println(Colors.ANSI_RED + "\nNOT ACTIVE" + Colors.ANSI_RESET);
-////            }
-////            showCards(Set.of(id));
-////        }
-//    }
-
-//    public class StatusListCell extends ListCell<String> {
-//        protected void updateItem(String item, boolean empty){
-//            super.updateItem(item, empty);
-//            setGraphic(null);
-//            setText(null);
-//            if(item!=null){
-//                ImageView imageView = new ImageView(new Image(item));
-//                imageView.setFitWidth(22);
-//                imageView.setFitHeight(22);
-//                setGraphic(imageView);
-//            }
-//        }
-//
-//    }
 
     public void choiceBoxChange() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
@@ -351,19 +325,16 @@ public class DashboardController {
     public void showDashboard(String nickname) {
         if(nickname.equals(gui.getNickname())) {
             ModelView.DashboardView dashboardView = modelView.getMyDashboard();
-            showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
-            showStrongbox(dashboardView.getStrongbox());
-            showActiveDevelopments(dashboardView.getActiveDevelopments());
-            showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
-
-            if(gui.getNickname().equals(modelView.getCurrPlayer())) {
+            if(gui.getNickname().equals(modelView.getCurrPlayer()) || modelView.getCurrPlayer().length() < 1) {
                 ArrayList<Action> actions = gui.getValidActions();
-
                 if (actions.size() == 0) {
                     showLeaders.setDisable(true);
                     marketButton.setDisable(true);
                     gridButton.setDisable(true);
                     endTurnButton.setDisable(true);
+                    for(Button button : developmentButton) {
+                        button.setDisable(true);
+                    }
                 } else {
                     marketButton.setDisable(!actions.contains(Action.TAKE_RESOURCE));
 
@@ -378,6 +349,10 @@ public class DashboardController {
                     showLeaders.setDisable(!actions.contains(Action.ACTIVATE_LEADER) && !actions.contains(Action.DISCARD_LEADER));
                 }
             }
+            showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
+            showStrongbox(dashboardView.getStrongbox());
+            showActiveDevelopments(dashboardView.getActiveDevelopments());
+            showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
         }
         else {
             ModelView.DashboardView playerDashboardView = modelView.getDashboards().stream().filter(dashboardView -> dashboardView.getNickname().equals(nickname)).findAny().orElse(null);
@@ -392,12 +367,11 @@ public class DashboardController {
         }
     }
     public void activateProduction(int index) {
-        System.out.println("activeProduction - " + index);
         if(enabledProductions.contains(index-1)) {
             enabledProductions.remove(Integer.valueOf(index - 1));
-            if(index < 4)
+            if(index <= 4)
                 developmentButton[index-1].setText("Enable");
-            else if(index ==4) {
+            if(index == 4) {
                 basicProductionRes1.setDisable(false);
                 basicProductionRes2.setDisable(false);
                 basicProductionRes3.setDisable(false);
@@ -411,9 +385,9 @@ public class DashboardController {
         else {
             if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
                 enabledProductions.add(index-1);
-                if(index < 4)
+                if(index <= 4)
                     developmentButton[index-1].setText("Disable");
-                else if(index ==4) {
+                if(index == 4) {
                     basicProductionRes1.setDisable(true);
                     basicProductionRes2.setDisable(true);
                     basicProductionRes3.setDisable(true);
@@ -462,14 +436,9 @@ public class DashboardController {
                 inputBasicProduction.modifyResource(basicProductionResources[1], 1);
                 ResourceMap outputBasicProduction = new ResourceMap();
                 outputBasicProduction.modifyResource(basicProductionResources[2], 1);
-                System.out.println("Basic production activated");
-                System.out.println(inputBasicProduction.getResources());
-                System.out.println(outputBasicProduction.getResources());
-                System.out.println("sent");
                 gui.send(new BasicProduction(inputBasicProduction, outputBasicProduction));
             }
             gui.basicActionPlayed();
-            resetProductions();
             showDashboard(gui.getNickname());
         }
         else {
@@ -529,7 +498,8 @@ public class DashboardController {
         developmentButton[3].setPrefWidth(len*2/3);
         developmentButton[3].setPrefHeight(len/6);
         developmentButton[3].setOnAction(event -> activateProduction(4));
-        developmentButton[3].setId("developmentButton" + (4));
+        developmentButton[3].setId("developmentButton4");
+        developmentButton[3].setDisable(!modelView.getCurrPlayer().equals(gui.getNickname()));
         Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[3]));
 
         for (int slot=0; slot<3; slot++) {
@@ -545,8 +515,6 @@ public class DashboardController {
 
             if (activeDevelopments.get(slot) != null) {
                 devImages[slot] = new Image("/view/images/developments/developmentCard"+activeDevelopments.get(slot)+".png");
-                developmentButton[slot].setDisable(false);
-
             } else {
                 devImages[slot] = new Image("/view/images/developments/developmentCardEmpty.png");
                 developmentButton[slot].setDisable(true);
@@ -857,10 +825,6 @@ public class DashboardController {
 
 
         }
-        else {
-            marketButton.setDisable(false);
-            gridButton.setDisable(false);
-        }
     }
 
     private void handleShelfClick(int index) {
@@ -1020,8 +984,6 @@ public class DashboardController {
     }
     public void startTurn() {
         basicProductionResources = new Resource[3];
-        marketButton.setDisable(true);
-        gridButton.setDisable(true);
         endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
         showDashboard(gui.getNickname());
     }
@@ -1041,7 +1003,11 @@ public class DashboardController {
         }
         gui.send(new EndTurn());
         endTurnButton.setDisable(true);
-        resetProductions();
+        marketButton.setDisable(true);
+        gridButton.setDisable(true);
+        for(Button button : developmentButton) {
+            button.setDisable(true);
+        }
         showDashboard(gui.getNickname());
         handleWaitingText();
     }
@@ -1093,7 +1059,6 @@ public class DashboardController {
     }
 
     public void showToken(int index) {
-        System.out.println("index: " + index);
         Image tokenImage = new Image("/view/images/tokens/cerchio"+index+".png");
         ImageView tokenImageView = new ImageView(tokenImage);
         tokenImageView.setLayoutX(98);
