@@ -180,12 +180,19 @@ public class DashboardController {
     }
 
     public void showLeaders() {
+        String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
+        ModelView.DashboardView playerDashboardView = modelView.getDashboards().stream().filter(dashboardView -> dashboardView.getNickname().equals(playerSelected)).findAny().orElse(null);
+        if (playerDashboardView != null) {
 
-        leadersController = showPopup("/view/scenes/sceneLeaders.fxml").getController();
-        leadersController.setGUI(gui);
-        leadersController.setModelView(modelView);
-        leadersController.setup(modelView.getMyDashboard().getLeaderCards());
-        leadersController.start();
+            leadersController = showPopup("/view/scenes/sceneLeaders.fxml").getController();
+            leadersController.setGUI(gui);
+            leadersController.setModelView(modelView);
+            leadersController.setup(playerDashboardView.getLeaderCards());
+            leadersController.start();
+            if(!playerSelected.equals(gui.getNickname())) {
+                leadersController.disableButtons();
+            }
+        }
     }
 
     public void handleLeaderCardActivation(boolean result, int id) {
@@ -228,14 +235,16 @@ public class DashboardController {
 
     public void choiceBoxChange() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
-        if(playerSelected != null && playerSelected.equals(gui.getNickname())) {
-            marketButton.setDisable(false);
-            gridButton.setDisable(false);
-            showDashboard();
-        }
-        else {
-            marketButton.setDisable(true);
-            gridButton.setDisable(true);
+        if(playerSelected != null) {
+            if (playerSelected.equals(gui.getNickname())) {
+                marketButton.setDisable(false);
+                gridButton.setDisable(false);
+            }
+            else {
+                marketButton.setDisable(true);
+                gridButton.setDisable(true);
+            }
+            showDashboard(playerSelected);
         }
     }
     public void handleBonusResource(int amount) {
@@ -337,38 +346,47 @@ public class DashboardController {
             Platform.runLater(() -> dashboardPane.getChildren().add(waitingText));
         }
     }
-    public void showDashboard() {
-        ModelView.DashboardView dashboardView = modelView.getMyDashboard();
-        showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
-        showStrongbox(dashboardView.getStrongbox());
-        showActiveDevelopments(dashboardView.getActiveDevelopments());
-        showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
+    public void showDashboard(String nickname) {
+        if(nickname.equals(gui.getNickname())) {
+            ModelView.DashboardView dashboardView = modelView.getMyDashboard();
+            showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
+            showStrongbox(dashboardView.getStrongbox());
+            showActiveDevelopments(dashboardView.getActiveDevelopments());
+            showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
 
-        ArrayList<Action> actions = gui.getValidActions();
+            if(gui.getNickname().equals(modelView.getCurrPlayer())) {
+                ArrayList<Action> actions = gui.getValidActions();
 
+                if (actions.size() == 0) {
+                    showLeaders.setDisable(true);
+                    marketButton.setDisable(true);
+                    gridButton.setDisable(true);
+                    endTurnButton.setDisable(true);
+                } else {
+                    marketButton.setDisable(!actions.contains(Action.TAKE_RESOURCE));
 
-        if (actions.size() == 0) {
-            marketButton.setDisable(true);
-            showLeaders.setDisable(true);
-            gridButton.setDisable(true);
-            endTurnButton.setDisable(true);
+                    gridButton.setDisable(!actions.contains(Action.BUY_CARD));
+
+                    if (actions.contains(Action.ACTIVATE_PRODUCTION)) {
+                        resetProductions();
+                    } else {
+                        disableProductions();
+                    }
+
+                    showLeaders.setDisable(!actions.contains(Action.ACTIVATE_LEADER) && !actions.contains(Action.DISCARD_LEADER));
+                }
+            }
         }
         else {
-            marketButton.setDisable(!actions.contains(Action.TAKE_RESOURCE));
-
-            gridButton.setDisable(!actions.contains(Action.BUY_CARD));
-
-            if (actions.contains(Action.ACTIVATE_PRODUCTION)) {
-                resetProductions();
-            } else {
-                disableProductions();
+            ModelView.DashboardView playerDashboardView = modelView.getDashboards().stream().filter(dashboardView -> dashboardView.getNickname().equals(nickname)).findAny().orElse(null);
+            if (playerDashboardView != null) {
+                showFaithTrack(playerDashboardView.getFaithMarker(), playerDashboardView.getBlackMarker(), playerDashboardView.getPopesFavorTiles());
+                showStrongbox(playerDashboardView.getStrongbox());
+                showActiveDevelopments(playerDashboardView.getActiveDevelopments());
+                showWarehouse(playerDashboardView.getWarehouse(), playerDashboardView.getExtraShelfResources());
+                marketButton.setDisable(true);
+                gridButton.setDisable(true);
             }
-
-            showLeaders.setDisable(!actions.contains(Action.ACTIVATE_LEADER) && !actions.contains(Action.DISCARD_LEADER));
-
-            endTurnButton.setDisable(!actions.contains(Action.END_TURN));
-
-
         }
     }
     public void activateProduction(int index) {
@@ -450,7 +468,7 @@ public class DashboardController {
             }
             gui.basicActionPlayed();
             resetProductions();
-            showDashboard();
+            showDashboard(gui.getNickname());
         }
         else {
             gui.showAlert("There are not enough resources to activate all enabled production", Alert.AlertType.ERROR);
@@ -1004,12 +1022,12 @@ public class DashboardController {
         gui.send(new EndTurn());
         endTurnButton.setDisable(true);
         resetProductions();
-        showDashboard();
+        showDashboard(gui.getNickname());
         handleWaitingText();
     }
 
     public void handleTemporaryShelf() {
-        showDashboard();
+        showDashboard(gui.getNickname());
     }
 
     public void basicProductionResChange(ActionEvent actionEvent) {

@@ -43,20 +43,41 @@ public class LeadersController {
 
     public void setup(Map<Integer, Boolean> ids) {
         leaderIds = ids;
-        System.out.println("leadersIds");
-        System.out.println(leaderIds);
+
+
+        if (gui.getValidActions().contains(Action.ACTIVATE_LEADER)) {
+            firstLeaderCardActivateButton.setDisable(false);
+            secondLeaderCardActivateButton.setDisable(false);
+        }
+        else{
+            firstLeaderCardActivateButton.setDisable(true);
+            secondLeaderCardActivateButton.setDisable(true);
+        }
+        if (gui.getValidActions().contains(Action.DISCARD_LEADER)) {
+            firstLeaderCardDiscardButton.setDisable(false);
+            secondLeaderCardDiscardButton.setDisable(false);
+        }
+        else{
+            firstLeaderCardDiscardButton.setDisable(true);
+            secondLeaderCardDiscardButton.setDisable(true);
+        }
+
         if(ids.size() >= 1) {
             firstLeaderCard.setImage(new Image("/view/images/leaderCards/leaderCard" + leaderIds.keySet().toArray()[0] + ".png"));
 
         }
         else {
             firstLeaderCard.setImage(new Image("/view/images/cardBack.png"));
+            firstLeaderCardActivateButton.setDisable(true);
+            firstLeaderCardDiscardButton.setDisable(true);
         }
         if(ids.size() == 2) {
             secondLeaderCard.setImage(new Image("/view/images/leaderCards/leaderCard" + leaderIds.keySet().toArray()[1] + ".png"));
         }
         else {
             secondLeaderCard.setImage(new Image("/view/images/cardBack.png"));
+            secondLeaderCardDiscardButton.setDisable(true);
+            secondLeaderCardActivateButton.setDisable(true);
         }
 
         if(ids.size() >= 1 && (boolean) leaderIds.values().toArray()[0] ) {
@@ -124,22 +145,6 @@ public class LeadersController {
 
             Platform.runLater(() -> leaderPane.getChildren().add(secondActiveLabel));
         }
-        if (gui.getValidActions().contains(Action.ACTIVATE_LEADER)) {
-            firstLeaderCardActivateButton.setDisable(false);
-            secondLeaderCardActivateButton.setDisable(false);
-        }
-        else{
-            firstLeaderCardActivateButton.setDisable(true);
-            secondLeaderCardActivateButton.setDisable(true);
-        }
-        if (gui.getValidActions().contains(Action.DISCARD_LEADER)) {
-            firstLeaderCardDiscardButton.setDisable(false);
-            secondLeaderCardDiscardButton.setDisable(false);
-        }
-        else{
-            firstLeaderCardDiscardButton.setDisable(true);
-            secondLeaderCardDiscardButton.setDisable(true);
-        }
     }
     public void start() {
 
@@ -167,5 +172,13 @@ public class LeadersController {
         gui.updateDashboard();
         Stage stage = (Stage) leaderPane.getScene().getWindow();
         stage.close();
+    }
+
+    public void disableButtons() {
+        firstLeaderCardActivateButton.setDisable(true);
+        secondLeaderCardActivateButton.setDisable(true);
+        firstLeaderCardDiscardButton.setDisable(true);
+        secondLeaderCardDiscardButton.setDisable(true);
+
     }
 }
