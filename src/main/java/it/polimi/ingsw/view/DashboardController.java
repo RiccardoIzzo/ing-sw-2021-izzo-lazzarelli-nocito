@@ -62,6 +62,8 @@ public class DashboardController {
     ImageView tempShelfImageView2;
     ImageView tempShelfImageView3;
     ImageView tempShelfImageView4;
+    Button tempShelfButton;
+
     ImageView faithTrackImage;
     ImageView blackFaithTrackImage;
 
@@ -774,6 +776,7 @@ public class DashboardController {
             dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView3"));
             dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView4"));
             dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfImage"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfButton"));
         });
 
         if ( gui.showTempShelf ) {
@@ -790,6 +793,21 @@ public class DashboardController {
 
                 Platform.runLater(() -> dashboardPane.getChildren().add(temporaryShelfImage));
 
+                tempShelfButton = new Button("Done");
+                tempShelfButton.setLayoutX(810);
+                tempShelfButton.setLayoutY(612);
+                tempShelfButton.setPrefWidth(60);
+                tempShelfButton.setPrefHeight(30);
+                tempShelfButton.setDisable(endTurnButton.isDisabled());
+                tempShelfButton.setId("temporaryShelfButton");
+                tempShelfButton.setOnMouseClicked((MouseEvent e) -> {
+                    gui.showTempShelf = false;
+                    gui.send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
+                    gui.basicActionPlayed();
+                    showDashboard(gui.getNickname());
+                });
+
+                Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfButton));
 
                 Image tempShelfImage1 = new Image(getImage(warehouse.get(10)));
                 tempShelfImageView1 = new ImageView(tempShelfImage1);
@@ -868,6 +886,7 @@ public class DashboardController {
                     gui.showAlert("Slot numbers are not valid.\nAvailable slots:\n" + validSlots, Alert.AlertType.ERROR);
                 }
                 endTurnButton.setDisable(!modelView.getMyDashboard().checkWarehouse());
+                tempShelfButton.setDisable(endTurnButton.isDisabled());
             }
         }
     }
@@ -1009,6 +1028,7 @@ public class DashboardController {
     public void endTurn() {
         if (gui.showTempShelf) {
             gui.showTempShelf = false;
+            gui.send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
 
             Platform.runLater(() -> {
                 dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView1"));
