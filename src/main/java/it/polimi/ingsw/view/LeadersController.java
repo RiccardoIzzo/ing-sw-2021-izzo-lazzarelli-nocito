@@ -29,6 +29,7 @@ public class LeadersController {
     Label secondActiveLabel;
 
     Map<Integer, Boolean> leaderIds;
+    String playerNickname;
     private GUI gui;
 
     public void setModelView(ModelView modelView) {
@@ -41,9 +42,9 @@ public class LeadersController {
         this.gui = gui;
     }
 
-    public void setup(Map<Integer, Boolean> ids) {
+    public void setup(Map<Integer, Boolean> ids, String nickname) {
         leaderIds = ids;
-
+        playerNickname = nickname;
 
         if (gui.getValidActions().contains(Action.ACTIVATE_LEADER)) {
             firstLeaderCardActivateButton.setDisable(false);
@@ -62,7 +63,7 @@ public class LeadersController {
             secondLeaderCardDiscardButton.setDisable(true);
         }
 
-        if(ids.size() >= 1) {
+        if(ids.size() >= 1 && (playerNickname.equals(gui.getNickname()) || (boolean) leaderIds.values().toArray()[0])) {
             firstLeaderCard.setImage(new Image("/view/images/leaderCards/leaderCard" + leaderIds.keySet().toArray()[0] + ".png"));
 
         }
@@ -71,7 +72,7 @@ public class LeadersController {
             firstLeaderCardActivateButton.setDisable(true);
             firstLeaderCardDiscardButton.setDisable(true);
         }
-        if(ids.size() == 2) {
+        if(ids.size() == 2 && (playerNickname.equals(gui.getNickname()) || (boolean) leaderIds.values().toArray()[1])) {
             secondLeaderCard.setImage(new Image("/view/images/leaderCards/leaderCard" + leaderIds.keySet().toArray()[1] + ".png"));
         }
         else {
@@ -91,7 +92,7 @@ public class LeadersController {
             firstActiveLabel.setPrefWidth(90);
             firstActiveLabel.setPrefHeight(30);
 
-            if (modelView.getMyDashboard().getAvailableProduction().contains((Integer)leaderIds.keySet().toArray()[0])) {
+            if (modelView.getCurrPlayer().equals(gui.getNickname()) && modelView.getMyDashboard().getAvailableProduction().contains((Integer)leaderIds.keySet().toArray()[0])) {
                 Button developmentButton = new Button("Enable");
                 developmentButton.setLayoutX(firstLeaderCardDiscardButton.getLayoutX());
                 developmentButton.setLayoutY(firstLeaderCardDiscardButton.getLayoutY()+firstLeaderCardDiscardButton.getHeight()+10);
@@ -125,7 +126,7 @@ public class LeadersController {
             secondActiveLabel.setPrefWidth(90);
             secondActiveLabel.setPrefHeight(30);
 
-            if (modelView.getMyDashboard().getAvailableProduction().contains((Integer)leaderIds.keySet().toArray()[1])) {
+            if (modelView.getCurrPlayer().equals(gui.getNickname()) && modelView.getMyDashboard().getAvailableProduction().contains((Integer)leaderIds.keySet().toArray()[1])) {
                 Button developmentButton = new Button("Enable");
                 developmentButton.setLayoutX(secondLeaderCardDiscardButton.getLayoutX());
                 developmentButton.setLayoutY(secondLeaderCardDiscardButton.getLayoutY()+secondLeaderCardDiscardButton.getHeight()+10);
@@ -147,7 +148,9 @@ public class LeadersController {
         }
     }
     public void start() {
-
+        if(!modelView.getCurrPlayer().equals(gui.getNickname())) {
+            disableButtons();
+        }
     }
 
     public void activateButtonClick(ActionEvent actionEvent) {

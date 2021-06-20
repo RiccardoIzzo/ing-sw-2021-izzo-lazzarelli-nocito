@@ -189,7 +189,7 @@ public class DashboardController {
             leadersController = showPopup("/view/scenes/sceneLeaders.fxml").getController();
             leadersController.setGUI(gui);
             leadersController.setModelView(modelView);
-            leadersController.setup(playerDashboardView.getLeaderCards());
+            leadersController.setup(playerDashboardView.getLeaderCards(), playerSelected);
             leadersController.start();
             if(!playerSelected.equals(gui.getNickname())) {
                 leadersController.disableButtons();
