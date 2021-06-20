@@ -16,6 +16,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static it.polimi.ingsw.constants.GameConstants.DEVELOPMENTCARDIDS;
+import static it.polimi.ingsw.constants.GameConstants.LEADERCARDIDS;
+
 /**
  * CLI class manages the game with a Command Line Interface.
  *
@@ -442,7 +445,6 @@ public class CLI implements View{
         ResourceMap outputBasicProduction = new ResourceMap();
         System.out.println("Do you want to activate the basic production? y/n");
         if(getInput("y|n").equals("y")){
-            String resource;
             for(int n = 0; n < 2; n++){
                 System.out.println("Select the " + ((n == 0) ? "first" : "second") + " input resource: \n- STONE\n- COIN\n- SHIELD\n- SERVANT");
                 getResource(inputBasicProduction);
@@ -452,7 +454,7 @@ public class CLI implements View{
             requiredResources.addResources(inputBasicProduction);
         }
 
-        //Handles the Card production
+        //Handles the DevelopmentCard production
         if (modelView.getMyDashboard().getAvailableProduction().size() > 0){
             showCards(modelView.getMyDashboard().getAvailableProduction());
             System.out.println("Select the productions you want to activate: ");
@@ -475,7 +477,13 @@ public class CLI implements View{
 
         if(totalResources.removeResources(requiredResources)) {
             if (productions.size() > 0) {
-                send(new ActivateProduction(productions));
+                send(new ActivateProduction(productions.stream().filter(DEVELOPMENTCARDIDS::contains).collect(Collectors.toList())));
+                for (int leaderID : productions.stream().filter(LEADERCARDIDS::contains).collect(Collectors.toList())) {
+                    System.out.println("Select an output resource for the leader card " + leaderID + ":");
+                    ResourceMap outputLeaderCard = new ResourceMap();
+                    getResource(outputLeaderCard);
+                    send(new BasicProduction(new ResourceMap(),outputLeaderCard));
+                }
                 basicActionPlayed();
             }
             if (inputBasicProduction.getAmount() != 0) {
