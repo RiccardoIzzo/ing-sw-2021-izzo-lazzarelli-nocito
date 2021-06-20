@@ -148,7 +148,7 @@ public class LeadersController {
         }
     }
     public void start() {
-        if(!modelView.getCurrPlayer().equals(gui.getNickname())) {
+        if(!modelView.getCurrPlayer().equals(gui.getNickname()) && modelView.getDashboards().size() > 1) {
             disableButtons();
         }
     }

@@ -11,7 +11,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<Pane fx:controller="it.polimi.ingsw.view.LobbiesController" fx:id="lobbiesPane" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/">
+<Pane fx:controller="it.polimi.ingsw.view.LobbiesController" fx:id="lobbiesPane" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
       <Button layoutX="221.0" layoutY="320.0" onAction="#joinButtonClicked" prefHeight="26.0" prefWidth="100.0" text="Join" />
     <Button layoutX="107.0" layoutY="320.0" onAction="#refreshButtonClicked" prefHeight="15.0" prefWidth="15.0" >
         <graphic>
