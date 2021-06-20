@@ -323,6 +323,13 @@ public class GUI extends Application implements View {
     public void handleTurn() {
         if(dashboardController != null) {
             dashboardController.handleWaitingText();
+            if (!modelView.getCurrPlayer().equals(nickname)) {
+                dashboardController.endTurnButton.setDisable(true);
+                dashboardController.showLeaders.setDisable(true);
+                dashboardController.marketButton.setDisable(true);
+                dashboardController.gridButton.setDisable(true);
+            }
+
         }
     }
 

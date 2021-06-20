@@ -984,7 +984,8 @@ public class DashboardController {
         basicProductionResources = new Resource[3];
         marketButton.setDisable(true);
         gridButton.setDisable(true);
-        showDashboard();
+        endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
+        showDashboard(gui.getNickname());
     }
     public void endTurn() {
         if (gui.showTempShelf) {
