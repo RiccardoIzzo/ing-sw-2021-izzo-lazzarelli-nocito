@@ -318,7 +318,11 @@ public class ModelView {
                             Resource resource = shelf.stream().filter(Objects::nonNull).findAny().orElse(null);
                             if (temporaryShelf.contains(resource)) return false;
                         } else if(shelfResources(shelf) == 0) {
-                            return false;
+                            for (Resource resource: temporaryShelf) {
+                                if (!warehouse.subList(0,6).contains(resource)){
+                                    return false;
+                                }
+                            }
                         }
                     }
                 }
