@@ -456,6 +456,7 @@ public class CLI implements View{
 
         //Handles the DevelopmentCard production
         if (modelView.getMyDashboard().getAvailableProduction().size() > 0){
+            System.out.println("\n*** AVAILABLE PRODUCTION CARDS ***\n");
             showCards(modelView.getMyDashboard().getAvailableProduction());
             System.out.println("Select the productions you want to activate: ");
             while(true){
@@ -477,7 +478,7 @@ public class CLI implements View{
 
         if(totalResources.removeResources(requiredResources)) {
             if (productions.size() > 0) {
-                send(new ActivateProduction(productions.stream().filter(DEVELOPMENTCARDIDS::contains).collect(Collectors.toList())));
+                send(new ActivateProduction(productions));
                 for (int leaderID : productions.stream().filter(LEADERCARDIDS::contains).collect(Collectors.toList())) {
                     System.out.println("Select an output resource for the leader card " + leaderID + ":");
                     ResourceMap outputLeaderCard = new ResourceMap();
