@@ -175,7 +175,8 @@ public class DashboardController {
             }
         });
         endTurnButton.setDisable(false);
-        showToken(0);
+        if(modelView.getDashboards().size() == 1)
+            showToken(0);
     }
 
     public void showLeaders() {
