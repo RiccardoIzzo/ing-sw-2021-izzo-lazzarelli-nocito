@@ -75,6 +75,7 @@ public class DashboardController {
     ImageView developmentImageSlot1;
     ImageView developmentImageSlot2;
     ImageView developmentImageSlot3;
+    ImageView[] developmentImage = new ImageView[3];
     Button[] developmentButton = new Button [4];
 
     Resource[] basicProductionResources = new Resource[3];
@@ -104,6 +105,7 @@ public class DashboardController {
             showToken(0);
 
         setupBasicProduction();
+        handleWaitingText();
     }
     public void setupBasicProduction() {
 
@@ -166,6 +168,10 @@ public class DashboardController {
         ExtraShelfView[1] = firstExtraShelfResView2;
         ExtraShelfView[2] = secondExtraShelfResView1;
         ExtraShelfView[3] = secondExtraShelfResView2;
+
+        developmentImage[0] = developmentImageSlot1;
+        developmentImage[1] = developmentImageSlot2;
+        developmentImage[2] = developmentImageSlot3;
     }
     public void showLeaders() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
@@ -195,11 +201,7 @@ public class DashboardController {
     public void choiceBoxChange() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
         if(playerSelected != null) {
-            if (playerSelected.equals(gui.getNickname())) {
-                marketButton.setDisable(false);
-                gridButton.setDisable(false);
-            }
-            else {
+            if (!playerSelected.equals(gui.getNickname())) {
                 marketButton.setDisable(true);
                 gridButton.setDisable(true);
             }
@@ -316,7 +318,9 @@ public class DashboardController {
                     gridButton.setDisable(true);
                     endTurnButton.setDisable(true);
                     for(Button button : developmentButton) {
-                        button.setDisable(true);
+                        if(button != null) {
+                            button.setDisable(true);
+                        }
                     }
                 } else {
                     marketButton.setDisable(!actions.contains(Action.TAKE_RESOURCE));
@@ -360,18 +364,10 @@ public class DashboardController {
                 basicProductionResImages.get(1).setDisable(false);
                 basicProductionResImages.get(2).setDisable(false);
             }
-            switch (index) {
-                case 1 -> developmentImageSlot1.setStyle("-fx-opacity: 1");
-                case 2 -> developmentImageSlot2.setStyle("-fx-opacity: 1");
-                case 3 -> developmentImageSlot3.setStyle("-fx-opacity: 1");
-            }
+            else
+                developmentImage[index-1].setStyle("-fx-opacity: 1");
         }
         else {
-            System.out.println("basicProductionResources");
-            System.out.println(index);
-            System.out.println(basicProductionResources[0]);
-            System.out.println(basicProductionResources[1]);
-            System.out.println(basicProductionResources[2]);
             if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
                 enabledProductions.add(index-1);
                 if(index <= 4)
@@ -412,8 +408,6 @@ public class DashboardController {
                     break;
                 default:
                     break;
-                case 4:
-                case 5:
             }
         }
         if(totalResources.removeResources(requiredResources)) {
@@ -447,17 +441,17 @@ public class DashboardController {
     public void resetProductions() {
         for (Button button : developmentButton) {
             if(button != null) {
-                button.setText("Enable");
-                button.setDisable(false);
+                Platform.runLater(() -> {
+                    button.setText("Enable");
+                    button.setDisable(false);
+                });
             }
         }
         enabledProductions.clear();
-        if (developmentImageSlot1 != null)
-           developmentImageSlot1.setStyle("-fx-opacity: 1");
-        if (developmentImageSlot2 != null)
-            developmentImageSlot2.setStyle("-fx-opacity: 1");
-        if (developmentImageSlot3 != null)
-            developmentImageSlot3.setStyle("-fx-opacity: 1");
+        for(ImageView devImage : developmentImage) {
+            if (devImage != null)
+                devImage.setStyle("-fx-opacity: 1");
+        }
         for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
             basicProduction.setDisable(false);
         }
@@ -476,77 +470,68 @@ public class DashboardController {
         activateProductionsButton.setDisable(true);
     }
     public void showActiveDevelopments(ArrayList<Integer> activeDevelopments) {
-        Platform.runLater(() -> {
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentButton1"));
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentButton2"));
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentButton3"));
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentButton4"));
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentImageSlot1"));
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentImageSlot2"));
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#developmentImageSlot3"));
-        });
-        developmentButton = new Button[4];
+        if(developmentButton == null) {
+            developmentButton = new Button[4];
+        }
         Image[] devImages = new Image[3];
         int xStart = 410, yStart = 320;
         double len = 140; double margin = 20;
-
-        developmentButton[3] = new Button("Enable");
-        developmentButton[3].setLayoutX(300);
-        developmentButton[3].setLayoutY(570);
-        developmentButton[3].setPrefWidth(len*2/3);
-        developmentButton[3].setPrefHeight(len/6);
-        developmentButton[3].setOnAction(event -> activateProduction(4));
-        developmentButton[3].setId("developmentButton4");
+        if(developmentButton[3] == null) {
+            developmentButton[3] = new Button("Enable");
+            Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[3]));
+            developmentButton[3].setLayoutX(300);
+            developmentButton[3].setLayoutY(570);
+            developmentButton[3].setPrefWidth(len*2/3);
+            developmentButton[3].setPrefHeight(len/6);
+            developmentButton[3].setOnAction(event -> activateProduction(4));
+            developmentButton[3].setId("developmentButton4");
+        }
         developmentButton[3].setDisable(!modelView.getCurrPlayer().equals(gui.getNickname()) && !(modelView.getCurrPlayer().length() < 1));
-        Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[3]));
 
         for (int slot=0; slot<3; slot++) {
-            developmentButton[slot] = new Button("Enable");
-            developmentButton[slot].setLayoutX(410+len/6+(len+margin)*slot);
-            developmentButton[slot].setLayoutY(340+len*3/2);
-            developmentButton[slot].setPrefWidth(len*2/3);
-            developmentButton[slot].setPrefHeight(len/6);
             int finalSlot = slot;
-            developmentButton[slot].setOnAction(event -> activateProduction(finalSlot+1));
-            developmentButton[slot].setId("developmentButton" + (slot+1));
-            Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[finalSlot]));
+            if (activeDevelopments.get(slot) != null) {
+                if(developmentButton[slot] == null ) {
+                    developmentButton[slot] = new Button("Enable");
+                    Platform.runLater(() -> dashboardPane.getChildren().add(developmentButton[finalSlot]));
+                }
+                developmentButton[slot].setLayoutX(410 + len / 6 + (len + margin) * slot);
+                developmentButton[slot].setLayoutY(340 + len * 3 / 2);
+                developmentButton[slot].setPrefWidth(len * 2 / 3);
+                developmentButton[slot].setPrefHeight(len / 6);
+                developmentButton[slot].setOnAction(event -> activateProduction(finalSlot + 1));
+                developmentButton[slot].setId("developmentButton" + (slot + 1));
+            }
 
             if (activeDevelopments.get(slot) != null) {
                 devImages[slot] = new Image("/view/images/developments/developmentCard"+activeDevelopments.get(slot)+".png");
             } else {
                 devImages[slot] = new Image("/view/images/developments/developmentCardEmpty.png");
-                developmentButton[slot].setDisable(true);
+//                developmentButton[slot].setDisable(true);
             }
 
 
         }
-        developmentImageSlot1 = new ImageView(devImages[0]);
-        developmentImageSlot1.setLayoutX(xStart);
-        developmentImageSlot1.setLayoutY(yStart);
-        developmentImageSlot1.setFitWidth(len);
-        developmentImageSlot1.setFitHeight(len*3/2);
-        developmentImageSlot1.setId("developmentImageSlot1");
-        Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot1));
 
-        developmentImageSlot2 = new ImageView(devImages[1]);
-        developmentImageSlot2.setLayoutX(xStart+len+margin);
-        developmentImageSlot2.setLayoutY(yStart);
-        developmentImageSlot2.setFitWidth(len);
-        developmentImageSlot2.setFitHeight(len*3/2);
-        developmentImageSlot2.setId("developmentImageSlot2");
-        Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot2));
-
-        developmentImageSlot3 = new ImageView(devImages[2]);
-        developmentImageSlot3.setLayoutX(xStart+(len+margin)*2);
-        developmentImageSlot3.setLayoutY(yStart);
-        developmentImageSlot3.setFitWidth(len);
-        developmentImageSlot3.setFitHeight(len*3/2);
-        developmentImageSlot3.setId("developmentImageSlot3");
-        Platform.runLater(() -> dashboardPane.getChildren().add(developmentImageSlot3));
+        for(int i=0; i<developmentImage.length; i++) {
+            if(developmentImage[i] == null) {
+                developmentImage[i] = new ImageView();
+                int finalI = i;
+                Platform.runLater(() -> dashboardPane.getChildren().add(developmentImage[finalI]));
+            }
+            developmentImage[i].setImage(devImages[i]);
+            developmentImage[i].setLayoutX(xStart+(len+margin)*i);
+            developmentImage[i].setLayoutY(yStart);
+            developmentImage[i].setFitWidth(len);
+            developmentImage[i].setFitHeight(len*3/2);
+            developmentImage[i].setId("developmentImageSlot" + (i+1));
+        }
 
         if(!gui.getValidActions().contains(Action.ACTIVATE_PRODUCTION)) {
            for(Button button : developmentButton)
-               button.setDisable(true);
+               if(button != null) {
+                   button.setDisable(true);
+               }
         }
     }
 
@@ -595,49 +580,46 @@ public class DashboardController {
 
     private void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources) {
 
-        Platform.runLater(() -> {
-            for(int i=0; i<ShelfView.length; i++) {
-                dashboardPane.getChildren().remove(dashboardPane.lookup("#shelf" + (i)));
-            }
-            for(int i=0; i<ExtraShelfView.length; i++) {
-                dashboardPane.getChildren().remove(dashboardPane.lookup("#extraShelf" + i));
-            }
-
-        });
-
-
         double len = 30;
         int xStart = 200, yStart = 335, yOffset = 55;
 
         for(int i = 0; i < extraShelfResources.size()*2; i++) {
             int xBool = (i+1)%2;
             int yBool = (i/2);
-            ExtraShelfView[i] = new ImageView(new Image(getImage(warehouse.get(6+i) == null ? extraShelfResources.get(0) : warehouse.get(6+i))));
-            ExtraShelfView[i] .setStyle("-fx-opacity: " + (warehouse.get(6+i) == null ? "0.5" : "1"));
-            ExtraShelfView[i] .setLayoutX(360-(len+20)*xBool);
-            ExtraShelfView[i] .setLayoutY(yStart+(len+20)*yBool);
-            ExtraShelfView[i] .setFitWidth(len);
-            ExtraShelfView[i] .setFitHeight(len);
-            ExtraShelfView[i] .setPickOnBounds(true);
-            int finalI = i;
-            ExtraShelfView[i] .setOnMouseClicked((MouseEvent e) -> handleShelfClick(6+ finalI));
-            ExtraShelfView[i] .setId("extraShelf" + i);
-            Platform.runLater(() -> dashboardPane.getChildren().add(ExtraShelfView[finalI]));
+            Image extraShelfImage = new Image(getImage(warehouse.get(6+i) == null ? extraShelfResources.get(0) : warehouse.get(6+i)));
+            if(ExtraShelfView[i] == null) {
+                ExtraShelfView[i] = new ImageView();
+                ExtraShelfView[i].setLayoutX(360 - (len + 20) * xBool);
+                ExtraShelfView[i].setLayoutY(yStart + (len + 20) * yBool);
+                ExtraShelfView[i].setFitWidth(len);
+                ExtraShelfView[i].setFitHeight(len);
+                ExtraShelfView[i].setPickOnBounds(true);
+                int finalI = i;
+                ExtraShelfView[i].setOnMouseClicked((MouseEvent e) -> handleShelfClick(6 + finalI));
+                ExtraShelfView[i].setId("extraShelf" + i);
+                Platform.runLater(() -> dashboardPane.getChildren().add(ExtraShelfView[finalI]));
+            }
+            ExtraShelfView[i].setStyle("-fx-opacity: " + (warehouse.get(6 + i) == null ? "0.5" : "1"));
+            ExtraShelfView[i].setImage(extraShelfImage);
         }
 
         double[] shelfLayoutX = {xStart-len/2, xStart-len/4-len, xStart+len/4, xStart-len - len/2 -len/4, xStart-len/2, xStart+len/2+len/4 };
         for(int i = 0; i < ShelfView.length; i++) {
             int row =(i+1)/2-i/5;
-            ShelfView[i] = new ImageView( new Image(getImage(warehouse.get(i))));
-            ShelfView[i].setLayoutX(shelfLayoutX[i]);
-            ShelfView[i].setLayoutY(yStart+yOffset*row);
-            ShelfView[i].setFitWidth(len);
-            ShelfView[i].setFitHeight(len);
-            ShelfView[i].setPickOnBounds(true);
+            Image shelfImage =  new Image(getImage(warehouse.get(i)));
             int finalI = i;
-            ShelfView[i].setOnMouseClicked((MouseEvent e) -> handleShelfClick(finalI));
-            ShelfView[i].setId("shelf" + (i));
-            Platform.runLater(() -> dashboardPane.getChildren().add(ShelfView[finalI]));
+            if(ShelfView[i] == null) {
+                ShelfView[i] = new ImageView();
+                ShelfView[i].setLayoutX(shelfLayoutX[i]);
+                ShelfView[i].setLayoutY(yStart + yOffset * row);
+                ShelfView[i].setFitWidth(len);
+                ShelfView[i].setFitHeight(len);
+                ShelfView[i].setPickOnBounds(true);
+                ShelfView[i].setOnMouseClicked((MouseEvent e) -> handleShelfClick(finalI));
+                ShelfView[i].setId("shelf" + (i));
+                Platform.runLater(() -> dashboardPane.getChildren().add(ShelfView[finalI]));
+            }
+            ShelfView[i].setImage(shelfImage);
         }
         ResourceMap temporaryShelf = new ResourceMap();
         for(int i = 10; i<=14; i++) {
@@ -749,38 +731,29 @@ public class DashboardController {
         Image faithImage = new Image("/view/images/faithTrack/cross.png");
 
          for(int i = 0; i<popesFavorTiles.length; i++) {
-             popeFavorTilesImages[i] = new ImageView(new Image("/view/images/faithTrack/pope_favor"+(i+1) + (popesFavorTiles[i] ? "_front": "_back" )+".png"));
-             popeFavorTilesImages[i].setLayoutX(290+222.5*i);
-             popeFavorTilesImages[i].setLayoutY(160);
-             popeFavorTilesImages[i].setFitWidth(60);
-             popeFavorTilesImages[i].setFitHeight(60);
-             popeFavorTilesImages[i].setId("popeFavorTilesImages" + (i+1));
+             Image tileImage = new Image("/view/images/faithTrack/pope_favor"+(i+1) + (popesFavorTiles[i] ? "_front": "_back" )+".png");
+             if(popeFavorTilesImages[i] == null) {
+                 popeFavorTilesImages[i] = new ImageView();
+                 popeFavorTilesImages[i].setLayoutX(290 + 222.5 * i);
+                 popeFavorTilesImages[i].setLayoutY(160);
+                 popeFavorTilesImages[i].setFitWidth(60);
+                 popeFavorTilesImages[i].setFitHeight(60);
+                 popeFavorTilesImages[i].setId("popeFavorTilesImages" + (i + 1));
+                 dashboardPane.getChildren().add(popeFavorTilesImages[i]);
+             }
+             popeFavorTilesImages[i].setImage(tileImage);
          }
         popeFavorTilesImages[1].setLayoutX(491);
         popeFavorTilesImages[1].setLayoutY(120);
         popeFavorTilesImages[1].setFitWidth(60);
         popeFavorTilesImages[1].setFitHeight(60);
 
-
-        Platform.runLater(() -> {
-            Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#" + popeFavorTilesImages[0].getId())));
-            dashboardPane.getChildren().add(popeFavorTilesImages[0]);
-        });
-        Platform.runLater(() -> {
-            Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#" + popeFavorTilesImages[1].getId())));
-            dashboardPane.getChildren().add(popeFavorTilesImages[1]);
-        });
-        Platform.runLater(() -> {
-            Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#" + popeFavorTilesImages[2].getId())));
-            dashboardPane.getChildren().add(popeFavorTilesImages[2]);
-        });
-
         faithTrackImage = new ImageView(faithImage);
         int xOffset = 80;
         int yOffset = 190;
 
-        int[] xStart = {40,80,120,120,120,160,200,240,280,320,320,320,360, 400,440,480, 520, 520, 520, 560, 600, 640, 680, 720, 760, 800, 840};
-        int[] yStart = {0, 0, 0, -40, -80, -80 ,-80 ,-80, -80 ,-80, -40, 0, 0, 0, 0, 0, 0, -40, -80, -80, -80 ,-80 , -80 , -80 ,-80, -80};
+        int[] xStart = {40,80,120,120,120,160,200,240,280,320,320,320,360, 400,440,480, 520, 520, 520, 560, 600, 640, 680, 720, 760};
+        int[] yStart = {0, 0, 0, -40, -80, -80 ,-80 ,-80, -80 ,-80, -40, 0, 0, 0, 0, 0, 0, -40, -80, -80, -80 ,-80 , -80 , -80 ,-80};
         int len = 40;
 
         faithTrackImage.setLayoutX(xOffset+xStart[faithMarker]);
@@ -859,7 +832,7 @@ public class DashboardController {
     }
     public void startTurn() {
         for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
-            basicProduction.valueProperty().set(null);
+            Platform.runLater(() -> basicProduction.valueProperty().set(null));
         }
         endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
         showDashboard(gui.getNickname());
@@ -883,7 +856,9 @@ public class DashboardController {
         marketButton.setDisable(true);
         gridButton.setDisable(true);
         for(Button button : developmentButton) {
-            button.setDisable(true);
+            if(button != null) {
+                button.setDisable(true);
+            }
         }
         showDashboard(gui.getNickname());
         handleWaitingText();
