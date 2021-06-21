@@ -92,7 +92,7 @@ public class GUI extends Application implements View {
     @Override
     public void handleNickname(ServerMessage message) {
         if (message instanceof ValidNickname) {
-            Platform.runLater(() -> mainStage.close());
+            //Platform.runLater(() -> mainStage.close());
             send(new GetLobbies());
         } else {
             Platform.runLater(() -> showAlert("This nickname is not valid! Try again.", Alert.AlertType.ERROR));
