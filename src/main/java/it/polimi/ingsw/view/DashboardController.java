@@ -83,6 +83,7 @@ public class DashboardController {
     @FXML ComboBox<ImageView> basicProductionRes2;
     @FXML ComboBox<ImageView> basicProductionRes3;
     ArrayList<ComboBox<ImageView>> basicProductionResImages = new ArrayList<>();
+    Map<Integer, Resource> leaderExtraProductionRes;
 
     Label[] amountLabel = new Label [4];
 
@@ -381,11 +382,8 @@ public class DashboardController {
                     basicProductionResImages.get(2).setDisable(true);
                 }
             }
-            switch (index) {
-                case 1 -> developmentImageSlot1.setStyle("-fx-opacity: 0.9");
-                case 2 -> developmentImageSlot2.setStyle("-fx-opacity: 0.9");
-                case 3 -> developmentImageSlot3.setStyle("-fx-opacity: 0.9");
-            }
+            if(index < 4)
+                developmentImage[index-1].setStyle("-fx-opacity: 1");
 
         }
         activateProductionsButton.setDisable(enabledProductions.size() == 0);
@@ -399,6 +397,8 @@ public class DashboardController {
                 case 0:
                 case 1:
                 case 2:
+                case 4:
+                case 5:
                     int production = modelView.getMyDashboard().getActiveDevelopments().get(index);
                     productions.add(production);
                     Card card = JsonCardsCreator.generateCard(production);
@@ -425,6 +425,16 @@ public class DashboardController {
                 ResourceMap outputBasicProduction = new ResourceMap();
                 outputBasicProduction.modifyResource(basicProductionResources[2], 1);
                 gui.send(new BasicProduction(inputBasicProduction, outputBasicProduction));
+            }
+            if(enabledProductions.contains(4)) {
+                ResourceMap output = new ResourceMap();
+                output.modifyResource(leaderExtraProductionRes.get(4), 1);
+                gui.send(new BasicProduction(new ResourceMap(), output));
+            }
+            if(enabledProductions.contains(5)) {
+                ResourceMap output = new ResourceMap();
+                output.modifyResource(leaderExtraProductionRes.get(5), 1);
+                gui.send(new BasicProduction(new ResourceMap(), output));
             }
             gui.basicActionPlayed();
             showDashboard(gui.getNickname());

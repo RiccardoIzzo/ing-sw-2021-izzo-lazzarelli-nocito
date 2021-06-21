@@ -2,17 +2,21 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.CheckRequirement;
 import it.polimi.ingsw.events.clientmessages.DiscardLeaderCard;
+import it.polimi.ingsw.model.Resource;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class LeadersController {
@@ -25,8 +29,11 @@ public class LeadersController {
     @FXML ImageView firstLeaderCard;
     @FXML ImageView secondLeaderCard;
 
-    Label firstActiveLabel;
-    Label secondActiveLabel;
+    Button[] activateButton = new Button[2];
+    Button[] discardButton = new Button[2];
+    ImageView[] leaderCardImageView = new ImageView[2];
+
+    Label[] activeLabels;
 
     Map<Integer, Boolean> leaderIds;
     String playerNickname;
@@ -45,106 +52,119 @@ public class LeadersController {
     public void setup(Map<Integer, Boolean> ids, String nickname) {
         leaderIds = ids;
         playerNickname = nickname;
+        activateButton[0] = firstLeaderCardActivateButton;
+        activateButton[1] = secondLeaderCardActivateButton;
+        discardButton[0] = firstLeaderCardDiscardButton;
+        discardButton[1] = secondLeaderCardDiscardButton;
+        leaderCardImageView[0] = firstLeaderCard;
+        leaderCardImageView[1] = secondLeaderCard;
 
-        if (gui.getValidActions().contains(Action.ACTIVATE_LEADER)) {
-            firstLeaderCardActivateButton.setDisable(false);
-            secondLeaderCardActivateButton.setDisable(false);
-        }
-        else{
-            firstLeaderCardActivateButton.setDisable(true);
-            secondLeaderCardActivateButton.setDisable(true);
-        }
-        if (gui.getValidActions().contains(Action.DISCARD_LEADER)) {
-            firstLeaderCardDiscardButton.setDisable(false);
-            secondLeaderCardDiscardButton.setDisable(false);
-        }
-        else{
-            firstLeaderCardDiscardButton.setDisable(true);
-            secondLeaderCardDiscardButton.setDisable(true);
-        }
+        ArrayList<Action> validActions = gui.getValidActions();
+        for(int i =0; i<leaderCardImageView.length; i++) {
+            activateButton[i].setDisable(!(validActions.contains(Action.ACTIVATE_LEADER)));
+            discardButton[i].setDisable(!(validActions.contains(Action.DISCARD_LEADER)));
+            if(ids.size() >= 1+i && (playerNickname.equals(gui.getNickname()) || (boolean) leaderIds.values().toArray()[i])) {
+                leaderCardImageView[i].setImage(new Image("/view/images/leaderCards/leaderCard" + leaderIds.keySet().toArray()[i] + ".png"));
 
-        if(ids.size() >= 1 && (playerNickname.equals(gui.getNickname()) || (boolean) leaderIds.values().toArray()[0])) {
-            firstLeaderCard.setImage(new Image("/view/images/leaderCards/leaderCard" + leaderIds.keySet().toArray()[0] + ".png"));
-
-        }
-        else {
-            firstLeaderCard.setImage(new Image("/view/images/cardBack.png"));
-            firstLeaderCardActivateButton.setDisable(true);
-            firstLeaderCardDiscardButton.setDisable(true);
-        }
-        if(ids.size() == 2 && (playerNickname.equals(gui.getNickname()) || (boolean) leaderIds.values().toArray()[1])) {
-            secondLeaderCard.setImage(new Image("/view/images/leaderCards/leaderCard" + leaderIds.keySet().toArray()[1] + ".png"));
-        }
-        else {
-            secondLeaderCard.setImage(new Image("/view/images/cardBack.png"));
-            secondLeaderCardDiscardButton.setDisable(true);
-            secondLeaderCardActivateButton.setDisable(true);
-        }
-
-        if(ids.size() >= 1 && (boolean) leaderIds.values().toArray()[0] ) {
-            firstLeaderCardActivateButton.setDisable(true);
-            firstLeaderCardDiscardButton.setDisable(true);
-
-            firstActiveLabel = new Label("ACTIVE");
-            firstActiveLabel.setLayoutX(firstLeaderCard.getLayoutX()+5);
-            firstActiveLabel.setLayoutY(firstLeaderCardActivateButton.getLayoutY()+firstLeaderCardActivateButton.getHeight()+10);
-            firstActiveLabel.setTextFill(Color.web("green"));
-            firstActiveLabel.setPrefWidth(90);
-            firstActiveLabel.setPrefHeight(30);
-
-            if (modelView.getCurrPlayer().equals(gui.getNickname()) && modelView.getMyDashboard().getAvailableProduction().contains((Integer)leaderIds.keySet().toArray()[0])) {
-                Button developmentButton = new Button("Enable");
-                developmentButton.setLayoutX(firstLeaderCardDiscardButton.getLayoutX());
-                developmentButton.setLayoutY(firstLeaderCardDiscardButton.getLayoutY()+firstLeaderCardDiscardButton.getHeight()+10);
-                developmentButton.setPrefWidth(firstLeaderCardDiscardButton.getWidth());
-                developmentButton.setPrefHeight(firstLeaderCardDiscardButton.getHeight());
-                developmentButton.setOnAction(event -> {
-                    developmentButton.setText("EnableDisable".replace(developmentButton.getText(), ""));
-                    gui.dashboardController.activateProduction(5);
-                });
-                developmentButton.setId("developmentButton5");
-                Platform.runLater(() -> {
-                    leaderPane.getChildren().remove(leaderPane.lookup("#developmentButton5"));
-                    leaderPane.getChildren().add(developmentButton);
-
-                });
             }
-
-            Platform.runLater(() -> leaderPane.getChildren().add(firstActiveLabel));
-
-
-
-        }
-        if(ids.size() == 2 && (boolean) leaderIds.values().toArray()[1] ) {
-            secondLeaderCardActivateButton.setDisable(true);
-            secondLeaderCardDiscardButton.setDisable(true);
-
-            secondActiveLabel = new Label("ACTIVE");
-            secondActiveLabel.setLayoutX(secondLeaderCard.getLayoutX()+5);
-            secondActiveLabel.setLayoutY(secondLeaderCardActivateButton.getLayoutY()+secondLeaderCardActivateButton.getHeight()+10);
-            secondActiveLabel.setTextFill(Color.web("green"));
-            secondActiveLabel.setPrefWidth(90);
-            secondActiveLabel.setPrefHeight(30);
-
-            if (modelView.getCurrPlayer().equals(gui.getNickname()) && modelView.getMyDashboard().getAvailableProduction().contains((Integer)leaderIds.keySet().toArray()[1])) {
-                Button developmentButton = new Button("Enable");
-                developmentButton.setLayoutX(secondLeaderCardDiscardButton.getLayoutX());
-                developmentButton.setLayoutY(secondLeaderCardDiscardButton.getLayoutY()+secondLeaderCardDiscardButton.getHeight()+10);
-                developmentButton.setPrefWidth(secondLeaderCardDiscardButton.getWidth());
-                developmentButton.setPrefHeight(secondLeaderCardDiscardButton.getHeight());
-                developmentButton.setOnAction(event -> {
-                    developmentButton.setText("EnableDisable".replace(developmentButton.getText(), ""));
-                    gui.dashboardController.activateProduction(6);
-                });
-                developmentButton.setId("developmentButton6");
-                Platform.runLater(() -> {
-                    leaderPane.getChildren().remove(leaderPane.lookup("#developmentButton6"));
-                    leaderPane.getChildren().add(developmentButton);
-
-                });
+            else {
+                leaderCardImageView[i].setImage(new Image("/view/images/cardBack.png"));
+                activateButton[i].setDisable(true);
+                discardButton[i].setDisable(true);
             }
+        }
 
-            Platform.runLater(() -> leaderPane.getChildren().add(secondActiveLabel));
+
+        activeLabels = new Label[2];
+
+        for(int i=0; i<leaderCardImageView.length; i++) {
+
+
+
+
+            if(ids.size() >= 1 && (boolean) leaderIds.values().toArray()[i] ) {
+                activateButton[i].setDisable(true);
+                discardButton[i].setDisable(true);
+                activeLabels[i] = new Label("ACTIVE");
+                activeLabels[i].setLayoutX(leaderCardImageView[i].getLayoutX() + 5);
+                activeLabels[i].setLayoutY(firstLeaderCardActivateButton.getLayoutY() + firstLeaderCardActivateButton.getHeight() + 10);
+                activeLabels[i].setTextFill(Color.web("green"));
+                activeLabels[i].setPrefWidth(90);
+                activeLabels[i].setPrefHeight(30);
+
+
+                int finalI = i;
+                if ((modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length()<1) && modelView.getMyDashboard().getAvailableProduction().contains((Integer) leaderIds.keySet().toArray()[i])) {
+
+                    ComboBox<ImageView> basicProductionRes;
+                    basicProductionRes = new ComboBox<>();
+                    basicProductionRes.setLayoutX(leaderCardImageView[i].getLayoutX()+leaderCardImageView[i].getFitWidth()/2-8);
+                    basicProductionRes.setLayoutY(leaderCardImageView[i].getLayoutY()+leaderCardImageView[i].getFitHeight()-55);
+                    int len = 27;
+                    basicProductionRes.setMaxWidth(len);
+                    basicProductionRes.setMaxHeight(len);
+                    Platform.runLater(() -> leaderPane.getChildren().add(basicProductionRes));
+                    String[] resources = {"coinLeader", "servantLeader" , "shieldLeader" , "stoneLeader"};
+                    Resource[] res = {Resource.COIN, Resource.SERVANT, Resource.SHIELD, Resource.STONE};
+                    basicProductionRes.setStyle("-fx-opacity: 1; -fx-background-color: transparent; ");
+                    for (String resource : resources) {
+                        Image resourceImage = new Image("/view/images/resources/" + resource + ".png");
+                        ImageView resourceImageView = new ImageView(resourceImage);
+                        resourceImageView.setFitWidth(len);
+                        resourceImageView.setFitHeight(len);
+                        basicProductionRes.getItems().add(resourceImageView);
+                    }
+                    basicProductionRes.setCellFactory(listView -> new ListCell<>() {
+
+                        private final ImageView imageView = new ImageView();
+
+                        @Override
+                        public void updateItem(ImageView item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                            } else {
+                                String imageURL = item.getImage().getUrl();
+                                Image image = new Image(imageURL, true); // true means load in background
+                                imageView.setImage(image);
+                                imageView.setFitWidth(len);
+                                imageView.setFitHeight(len);
+                                setGraphic(imageView);
+                            }
+                        }
+                    });
+
+
+                    Button extraDevButton = new Button("Enable");
+                    extraDevButton.setLayoutX(discardButton[i].getLayoutX());
+                    extraDevButton.setLayoutY(discardButton[i].getLayoutY() + discardButton[i].getHeight() + 10);
+                    extraDevButton.setPrefWidth(discardButton[i].getWidth());
+                    extraDevButton.setPrefHeight(discardButton[i].getHeight());
+                    extraDevButton.setOnAction(event -> {
+                        int index = basicProductionRes.getSelectionModel().getSelectedIndex();
+                        if(index > 0) {
+                            if(basicProductionRes.isDisabled()) {
+                                basicProductionRes.setDisable(false);
+                                extraDevButton.setText("Enable");
+                                gui.dashboardController.activateProduction(5 + finalI);
+                                gui.dashboardController.leaderExtraProductionRes.remove(5+finalI, res[index]);
+                            }
+                            else {
+                                    basicProductionRes.setDisable(true);
+                                extraDevButton.setText("Disable");
+                                    gui.dashboardController.activateProduction(5 + finalI);
+                                    gui.dashboardController.leaderExtraProductionRes.put(5+finalI, res[index]);
+                            }
+                        }
+
+
+                    });
+                    Platform.runLater(() -> leaderPane.getChildren().add(extraDevButton));
+
+                }
+
+                Platform.runLater(() -> leaderPane.getChildren().add(activeLabels[finalI]));
+            }
         }
     }
     public void start() {
