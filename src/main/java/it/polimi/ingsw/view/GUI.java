@@ -2,9 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetNickname;
-import it.polimi.ingsw.events.servermessages.TokenDrawn;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
-import it.polimi.ingsw.model.card.CardColor;
 import it.polimi.ingsw.model.token.MoveBlackMarkerToken;
 import it.polimi.ingsw.model.token.RemoveCardsToken;
 import it.polimi.ingsw.model.token.SoloActionToken;
@@ -254,7 +252,11 @@ public class GUI extends Application implements View {
     }
 
     public void handleEndGame() {
-        dashboardController.showEndGameText();
+        if(modelView.getDashboards().size() > 1)
+            dashboardController.showEndGameText();
+        else {
+            dashboardController.singlePlayerEnd(100);
+        }
     }
 
     @Override
@@ -352,5 +354,10 @@ public class GUI extends Application implements View {
         if (index > 0 && dashboardController != null) {
             dashboardController.showToken(index);
         }
+    }
+
+    public void handleDefeat() {
+        dashboardController.singlePlayerEnd(0);
+
     }
 }

@@ -905,7 +905,7 @@ public class DashboardController {
         Label endGameLabel = new Label("The game is about to finish.Waiting for the remaining players to play theirs last turn...");
         endGameLabel.setLayoutX(88);
         endGameLabel.setLayoutY(dashboardPane.getHeight()-30);
-        endGameLabel.setTextFill(Color.web("white"));
+        endGameLabel.setTextFill(Color.web("red"));
         endGameLabel.setPrefHeight(30);
         endGameLabel.setPrefWidth(dashboardPane.getWidth()-176);
         endGameLabel.setId("endGameLabel");
@@ -922,6 +922,16 @@ public class DashboardController {
         gameOverController = showPopup("/view/scenes/sceneGameOver.fxml").getController();
         gameOverController.setMap(map);
         gameOverController.start();
+        });
+    }
+    public void singlePlayerEnd(int points) {
+        dashboardPane.setDisable(true);
+        Platform.runLater(() -> {
+            gameOverController = showPopup("/view/scenes/sceneGameOver.fxml").getController();
+            if(points > 0) {
+                gameOverController.setPoints(points);
+            }
+            gameOverController.start();
         });
     }
 
