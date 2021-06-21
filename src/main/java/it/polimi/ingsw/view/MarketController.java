@@ -12,9 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -41,11 +39,11 @@ public class MarketController {
         System.out.println(leaderCards);
         whiteMarbleChoiceBox = new ChoiceBox<>();
 
-        whiteMarbleChoiceBox.setLayoutX(marketPane.getWidth()/2-50);
+        whiteMarbleChoiceBox.setLayoutX(marketPane.getWidth()/2-75);
         whiteMarbleChoiceBox.setLayoutY(0);
-        whiteMarbleChoiceBox.setMinWidth(100);
+        whiteMarbleChoiceBox.setPrefWidth(150);
         whiteMarbleChoiceBox.setMinHeight(30);
-
+        whiteMarbleChoiceBox.setOnAction(event -> leaderID = activeWhiteMarbleLeaders.get(whiteMarbleChoiceBox.getSelectionModel().getSelectedIndex()));
 
         activeWhiteMarbleLeaders = (ArrayList<Integer>) leaderCards
                 .entrySet()
@@ -58,14 +56,14 @@ public class MarketController {
         if (activeWhiteMarbleLeaders.size() > 1){
 
             WhiteMarbleLeaderCard card1 = (WhiteMarbleLeaderCard) Objects.requireNonNull(JsonCardsCreator.generateCard(activeWhiteMarbleLeaders.get(0)));
-            whiteMarbleChoiceBox.getItems().add("White marble = " + card1.getExchange().toString());
+            whiteMarbleChoiceBox.getItems().add("White marble = " + ((MarbleColor) card1.getExchange().toArray()[0]).name());
             whiteMarbleChoiceBox.setValue("White marble = " + card1.getExchange().toString());
 
 
             if (activeWhiteMarbleLeaders.size() == 2) {
                 WhiteMarbleLeaderCard card2 = (WhiteMarbleLeaderCard) Objects.requireNonNull(JsonCardsCreator.generateCard(activeWhiteMarbleLeaders.get(1)));
-                whiteMarbleChoiceBox.getItems().add("White marble = " + card2.getExchange().toString());
-                    }
+                whiteMarbleChoiceBox.getItems().add("White marble = " + ((MarbleColor) card2.getExchange().toArray()[0]).name());
+            }
 
             Platform.runLater(() -> marketPane.getChildren().add(whiteMarbleChoiceBox));
 
@@ -109,9 +107,7 @@ public class MarketController {
         Platform.runLater(() -> marketPane.getChildren().add(marblePane));
         marblePane.toFront();
     }
-    public void handleTakeResource() {
 
-    }
     public void columnButtonClicked(ActionEvent actionEvent) {
         Button arrowButton = (Button) actionEvent.getSource();
 
