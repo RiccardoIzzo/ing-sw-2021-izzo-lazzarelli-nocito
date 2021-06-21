@@ -11,10 +11,7 @@ import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static it.polimi.ingsw.constants.PlayerConstants.*;
 
@@ -58,7 +55,7 @@ public class PlayerListener extends PropertyListener {
             if (game instanceof SinglePlayerGame){
                 ArrayList<Integer> developmentIDs = translateGrid((Deck[][]) newValue);
                 for(CardColor cardColor : CardColor.values()){
-                    if (developmentIDs.stream().map(JsonCardsCreator::generateDevelopmentCard).noneMatch(card -> card.getType() == cardColor)){
+                    if (developmentIDs.stream().map(JsonCardsCreator::generateDevelopmentCard).filter(Objects::nonNull).noneMatch(card -> card.getType() == cardColor)){
                         ServerMessage message = new Defeat();
                         virtualView.sendToEveryone(message);
                     }
