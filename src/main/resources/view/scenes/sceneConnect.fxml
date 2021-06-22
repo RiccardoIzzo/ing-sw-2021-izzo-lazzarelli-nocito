@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Group?>
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -8,11 +8,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:controller="it.polimi.ingsw.view.SetupController" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
-      <Group layoutX="244.5" layoutY="325.0">
-            <Button id="setNicknameButton" fx:id="setNicknameButton" layoutX="11.0" mnemonicParsing="false" onAction="#setNicknameButtonClicked" opacity="0.0" text="Set nickname" />
-            <Button id="connectButton" fx:id="connectButton" layoutX="25.0" mnemonicParsing="false" onAction="#connectButtonClicked" text="Connect" />
-      </Group>
+<Pane fx:controller="it.polimi.ingsw.view.SetupController" fx:id="connectPane" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+
+    <Button id="connectButton" fx:id="connectButton" layoutX="250" prefWidth="100.0" prefHeight="30" layoutY="325.0" mnemonicParsing="false" onAction="#connectButtonClicked" text="Connect" />
+
       <Label id="titleLabel" alignment="CENTER" layoutX="55.5" layoutY="38.0" prefHeight="43.0" prefWidth="491.0" text="Masters of Renaissance">
          <font>
             <Font name="System Bold" size="35.0" />
@@ -21,14 +20,10 @@
             <SepiaTone />
          </effect>
       </Label>
-      <Group layoutX="55.5" layoutY="124.0">
-            <Label id="serverLabel" fx:id="serverLabel" alignment="CENTER" layoutX="2.0" layoutY="77.0" prefHeight="17.0" prefWidth="491.0" text="Server port" />
-            <Label id="ipLabel" fx:id="ipLabel" alignment="CENTER"  prefHeight="17.0" prefWidth="491.0" text="IP address" />
-            <TextField id="serverTextField" fx:id="serverTextField" layoutX="167.0" layoutY="105.0" promptText="Insert server port" />
-            <TextField id="ipTextField" fx:id="ipTextField" layoutX="167.0" layoutY="29.0" promptText="Insert ip address" />
-            <Group fx:id="nicknameGroup" layoutY="52.0" opacity="0.0">
-                  <Label id="setNicknameLabel" fx:id="nicknameLabel" alignment="CENTER" prefHeight="17.0" prefWidth="491.0" text="Nickname" />
-                  <TextField id="setNicknameTextField" fx:id="nicknameTextField" layoutX="167.0" layoutY="29.0" promptText="Insert nickname" />
-            </Group>
-      </Group>
+
+        <Label id="serverLabel" fx:id="serverLabel" alignment="CENTER" layoutX="200" layoutY="130.0" prefHeight="30.0" prefWidth="200.0" text="Server port" />
+    <TextField id="serverTextField" fx:id="serverTextField" alignment="CENTER" layoutX="200.0" layoutY="160.0" prefHeight="20.0" prefWidth="200.0" promptText="Insert server port" />
+    <Label id="ipLabel" fx:id="ipLabel" alignment="CENTER" layoutX="200" layoutY="220.0" prefHeight="30.0" prefWidth="200.0" text="IP address" />
+       <TextField id="ipTextField" fx:id="ipTextField" alignment="CENTER" layoutX="200" layoutY="250.0" prefHeight="20.0" prefWidth="200.0"  promptText="Insert ip address" />
+
 </Pane>
