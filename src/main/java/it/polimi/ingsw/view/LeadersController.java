@@ -6,10 +6,7 @@ import it.polimi.ingsw.model.Resource;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -17,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class LeadersController {
@@ -58,6 +56,8 @@ public class LeadersController {
         discardButton[1] = secondLeaderCardDiscardButton;
         leaderCardImageView[0] = firstLeaderCard;
         leaderCardImageView[1] = secondLeaderCard;
+
+        gui.dashboardController.leaderExtraProductionRes = new HashMap<>();
 
         ArrayList<Action> validActions = gui.getValidActions();
         for(int i =0; i<leaderCardImageView.length; i++) {
@@ -142,19 +142,23 @@ public class LeadersController {
                     extraDevButton.setPrefHeight(discardButton[i].getHeight());
                     extraDevButton.setOnAction(event -> {
                         int index = basicProductionRes.getSelectionModel().getSelectedIndex();
-                        if(index > 0) {
+                        if(index >= 0) {
                             if(basicProductionRes.isDisabled()) {
                                 basicProductionRes.setDisable(false);
+                                basicProductionRes.setStyle("-fx-opacity: 1;");
                                 extraDevButton.setText("Enable");
                                 gui.dashboardController.activateProduction(5 + finalI);
-                                gui.dashboardController.leaderExtraProductionRes.remove(5+finalI, res[index]);
+                                gui.dashboardController.leaderExtraProductionRes.remove(finalI, res[index]);
                             }
                             else {
                                     basicProductionRes.setDisable(true);
                                 extraDevButton.setText("Disable");
                                     gui.dashboardController.activateProduction(5 + finalI);
-                                    gui.dashboardController.leaderExtraProductionRes.put(5+finalI, res[index]);
+                                    gui.dashboardController.leaderExtraProductionRes.put(finalI, res[index]);
                             }
+                        }
+                        else {
+                            gui.showAlert("Select the output resource!", Alert.AlertType.ERROR);
                         }
 
 

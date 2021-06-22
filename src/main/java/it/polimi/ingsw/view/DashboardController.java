@@ -389,25 +389,17 @@ public class DashboardController {
         ArrayList<Integer> productions = new ArrayList<>();
         ResourceMap requiredResources = new ResourceMap();
         for(Integer index : enabledProductions) {
-            switch(index) {
-                case 0:
-                case 1:
-                case 2:
-                case 4:
-                case 5:
-                    int production = modelView.getMyDashboard().getActiveDevelopments().get(index);
-                    productions.add(production);
-                    Card card = JsonCardsCreator.generateCard(production);
-                    if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
-                    else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
-                    break;
-                case 3:
-                    requiredResources.modifyResource(basicProductionResources[0], 1);
-                    requiredResources.modifyResource(basicProductionResources[1], 1);
-
-                    break;
-                default:
-                    break;
+            if(index == 3) {
+                requiredResources.modifyResource(basicProductionResources[0], 1);
+                requiredResources.modifyResource(basicProductionResources[1], 1);
+            }
+            else {
+                int production = index < 3 ? modelView.getMyDashboard().getActiveDevelopments().get(index) : (int) modelView.getMyDashboard().getLeaderCards().keySet().toArray()[index-4];
+                productions.add(production);
+                Card card = JsonCardsCreator.generateCard(production);
+                if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
+                else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
+                break;
             }
         }
         if(totalResources.removeResources(requiredResources)) {
@@ -422,12 +414,12 @@ public class DashboardController {
             }
             if(enabledProductions.contains(4)) {
                 ResourceMap output = new ResourceMap();
-                output.modifyResource(leaderExtraProductionRes.get(4), 1);
+                output.modifyResource(leaderExtraProductionRes.get(0), 1);
                 gui.send(new BasicProduction(new ResourceMap(), output));
             }
             if(enabledProductions.contains(5)) {
                 ResourceMap output = new ResourceMap();
-                output.modifyResource(leaderExtraProductionRes.get(5), 1);
+                output.modifyResource(leaderExtraProductionRes.get(1), 1);
                 gui.send(new BasicProduction(new ResourceMap(), output));
             }
             gui.basicActionPlayed();
