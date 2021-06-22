@@ -1,6 +1,7 @@
 package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.events.servermessages.GameStarted;
+import it.polimi.ingsw.events.servermessages.Reconnection;
 import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.SinglePlayerGame;
@@ -40,6 +41,7 @@ public class DisconnectionListener extends PropertyListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String playerSource = evt.getPropertyName();
+        virtualView.sendToPlayer(playerSource, new Reconnection());
         virtualView.sendToPlayer(playerSource, new GameStarted((ArrayList<String>) game.getPlayers().stream().map(Player::getNickname).collect(Collectors.toList())));
         virtualView.sendToPlayer(playerSource, new UpdateView(null, GRID_CHANGE, null, translateGrid(game.getGrid())));
         virtualView.sendToPlayer(playerSource, new UpdateView(null, TILES_UNCOVERED_CHANGE, null, game.getPlayerByName(playerSource).getDashboard().getFaithTrack().getTilesUncovered()));

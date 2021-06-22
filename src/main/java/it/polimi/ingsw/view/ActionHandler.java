@@ -97,6 +97,9 @@ public class ActionHandler extends Thread{
             view.printText("You lost!");
             System.exit(0);
         }
+        else if(message instanceof Reconnection){
+
+        }
         else if(message instanceof UpdateView){
             UpdateView updateView = (UpdateView) message;
             String propertyName = updateView.getPropertyName();
