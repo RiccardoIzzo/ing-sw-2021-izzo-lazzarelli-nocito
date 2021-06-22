@@ -31,6 +31,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
+/**
+ * DashboardController class manages the dashboard scene.
+ * DashboardControllers also handles Market, Grid, GameOver and Leaders controllers.
+ *
+ * @author Andrea Nocito
+ */
+
 public class DashboardController {
     @FXML Button showLeaders;
     @FXML Button activateProductionsButton;
@@ -60,6 +67,7 @@ public class DashboardController {
     ImageView[] ExtraShelfView = new ImageView[4];
 
     Integer swapIndex = -1;
+    boolean showTempShelf = false;
     ImageView temporaryShelfImage;
     Button tempShelfButton;
     ImageView tempShelfImageView1;
@@ -630,7 +638,7 @@ public class DashboardController {
             dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfButton"));
         });
 
-        if ( gui.showTempShelf ) {
+        if ( showTempShelf ) {
             marketButton.setDisable(true);
             gridButton.setDisable(true);
                 Image image = new Image("/view/images/resources/temporaryShelfEmpty.png");
@@ -651,7 +659,7 @@ public class DashboardController {
                 tempShelfButton.setDisable(endTurnButton.isDisabled());
                 tempShelfButton.setId("temporaryShelfButton");
                 tempShelfButton.setOnMouseClicked((MouseEvent e) -> {
-                    gui.showTempShelf = false;
+                    showTempShelf = false;
                     gui.send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
                     gui.basicActionPlayed();
                     showDashboard(gui.getNickname());
@@ -697,7 +705,7 @@ public class DashboardController {
     }
 
     private void handleShelfClick(int index) {
-        if(gui.showTempShelf) {
+        if(showTempShelf) {
             if (swapIndex < 0) {
                 resizeShelf(index);
                 swapIndex = index;
@@ -852,8 +860,8 @@ public class DashboardController {
         showDashboard(gui.getNickname());
     }
     public void endTurn() {
-        if (gui.showTempShelf) {
-            gui.showTempShelf = false;
+        if (showTempShelf) {
+            showTempShelf = false;
             gui.send(new SetWarehouse(modelView.getMyDashboard().getWarehouse()));
 
             Platform.runLater(() -> {

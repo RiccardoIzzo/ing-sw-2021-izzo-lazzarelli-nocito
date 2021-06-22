@@ -26,25 +26,31 @@ import java.util.Set;
 
 /**
  * GUI class manages the game with a Graphical User Interface.
+ * @author Andrea Nocito
  */
 public class GUI extends Application implements View {
-    Stage mainStage;
-    private NetworkHandler network;
+
+    /**
+     * GUI also handles SelectLeader Connect, Lobbies and Dashboard controllers.
+     */
     SetupController setupController;
     LobbiesController lobbiesController;
     SelectLeaderController selectLeaderController;
     DashboardController dashboardController;
-    static String nickname;
+
+    Stage mainStage;
+    private NetworkHandler network;
     private ModelView modelView;
-
+    static String nickname;
     private boolean reconnected = false;
-
     private int bonusResourceAmount = 0;
-    boolean showTempShelf = false;
 
+    /**
+     * start method sets up the stage and sets up setupController
+     * @param stage mainStage of the game
+     */
     @Override
     public void start(Stage stage) throws Exception {
-        //actionHandler = new ActionHandler(this);
         mainStage = stage;
         setupController = new SetupController();
         setupController.setGUI(this);
@@ -52,15 +58,27 @@ public class GUI extends Application implements View {
 
     }
 
+    /**
+     * Method setNickname is called by setupController to set the player's nickname
+     * @param name player's nickname
+     */
     public void setNickname(String name) {
         nickname = name;
     }
 
+    /**
+     * Method connect is called by setupController to start the connection with the specified server.
+     * @param ip, port
+     */
     public void connect(String ip, int port) {
         network = new NetworkHandler(ip, port, this);
         network.setConnection();
     }
 
+    /**
+     * Method startLobbies is called by setupLobbies and sets up lobbiesController
+     * @param lobbies map that associates the lobby id to the maximum number of players for that lobby.
+     */
     public void startLobbies(Map<String, Integer> lobbies) {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies.fxml"));
@@ -85,10 +103,19 @@ public class GUI extends Application implements View {
         }
     }
 
+    /**
+     * GUI main method.
+     * @param args main args.
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+
+    /**
+     * Method handleNickname manages the two possible answers to a SetNickname message, ValidNickname and InvalidNickname.
+     * @param message ServerMessage to handle.
+     */
     @Override
     public void handleNickname(ServerMessage message) {
         if (message instanceof ValidNickname) {
@@ -100,6 +127,12 @@ public class GUI extends Application implements View {
 
     }
 
+    /**
+     * Method handleLobbies manages the lobby system.
+     * It checks if lobbiesController has already been initialized and either calls startLobbies
+     * or lobbiesController's method refreshLobbies to just refresh the list of available lobbies.
+     * @param lobbies map that associates the lobby id to the maximum number of players for that lobby.
+     */
     @Override
     public void handleLobbies(Map<String, Integer> lobbies) {
         if (lobbiesController == null) {
@@ -109,10 +142,9 @@ public class GUI extends Application implements View {
         }
     }
 
-    public void handleGameStart() {
-        Platform.runLater(this::startGame);
-    }
-
+    /**
+     * Method startGame is called by method setModelView and sets up dashboardController
+    */
     public void startGame() {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneDashboard.fxml"));
@@ -138,6 +170,9 @@ public class GUI extends Application implements View {
     }
 
 
+    /**
+     * Method startLeaders is called by method handleLeaders and sets up selectLeaderController
+     */
     public void startLeaders() {
         Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneSelectLeaders.fxml"));
@@ -155,16 +190,28 @@ public class GUI extends Application implements View {
         }
     }
 
+
+    /**
+     * Method handleLobbyJoined is called by ActionHandler and makes lobbiesController display a waiting message
+     * that confirms to the users that the lobby has been created.
+     */
     public void handleLobbyJoined() {
         lobbiesController.addWaitingView("Lobby created! Waiting for other players ...");
     }
 
+    /**
+     * Method handleLobbyJoined is called by ActionHandler and calls startLeaders to set up selectLeadersController.
+     */
     @Override
     public void handleLeaders() {
         Platform.runLater(this::startLeaders);
 
     }
 
+    /**
+     * Method handleLobbyJoined is called by ActionHandler and calls startLeaders to set up selectLeadersController.
+     * @param amount an integer containing the numbers of bonus resources available for the player.
+     */
     @Override
     public void handleBonusResource(int amount) {
         bonusResourceAmount = amount;
@@ -180,29 +227,40 @@ public class GUI extends Application implements View {
 
     @Override
     public void handleActivateProduction() {
-
     }
 
     @Override
     public void handleActivateLeader() {
     }
 
+
     @Override
     public void handleDiscardLeader() {
         dashboardController.showDashboard(nickname);
     }
 
+    /**
+     * Method handleDiscardLeader is called by ActionHandler and makes dashboardController refresh dashboard
+     * to show temporary shelf and let the player organize its resources
+     */
     @Override
     public void handleTemporaryShelf() {
         dashboardController.handleTemporaryShelf();
 
     }
 
+    /**
+     *  Method handleDiscardLeader is called by ActionHandler and manages CheckRequirement message.
+     * @param result outcome of the requirement check.
+     * @param id card id.
+     */
     @Override
     public void handleCheckRequirement(boolean result, int id) {
         dashboardController.handleLeaderCardActivation(result, id);
     }
-
+    /**
+     *  Method updateDashboard is called by scene controllers to show the results of played actions
+     */
     public void updateDashboard() {
         dashboardController.showDashboard(nickname);
     }
@@ -217,6 +275,11 @@ public class GUI extends Application implements View {
         send(new SetNickname(nickname));
     }
 
+
+    /**
+     * Method setModelView sets the modelView for gui, controllers and network.
+     * @param modelView the modelView.
+     */
     @Override
     public void setModelView(ModelView modelView) {
         this.modelView = modelView;
@@ -225,7 +288,7 @@ public class GUI extends Application implements View {
             if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() != 2) {
                 handleLeaders();
             } else if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() == 2) {
-                handleGameStart();
+                Platform.runLater(this::startGame);
             }
             reconnected = false;
         }
@@ -241,16 +304,28 @@ public class GUI extends Application implements View {
         handleTextMessage(text);
     }
 
+    /**
+     * Method send dispatch a message to the server.
+     * @param message the ClientMessage to send.
+     */
     @Override
     public void send(ClientMessage message) {
         network.sendToServer(message);
     }
 
+    /**
+     * Method showStats calls dashboardController method to set up gameOverController
+     * and show the statics at the end of the game.
+     * @param gameStats a map containing the statistics.
+     */
     @Override
-    public void showStats(Map<String, Integer> map) {
-        dashboardController.showStats(map);
+    public void showStats(Map<String, Integer> gameStats) {
+        dashboardController.showStats(gameStats);
     }
 
+    /**
+     *  Method handleEndGame is called by ActionHandler and sets up the final turn of the game.
+     */
     public void handleEndGame() {
         if(modelView.getDashboards().size() > 1)
             dashboardController.showEndGameText();
@@ -259,23 +334,38 @@ public class GUI extends Application implements View {
         }
     }
 
+    /**
+     * Method getNickname returns the player's nickname.
+     * @return player's nickname.
+     */
     @Override
     public String getNickname() {
         return nickname;
     }
 
 
-    /* Alerts */
+    /**
+     * Method displayAlert is called by showAlert to display the desired alert
+     */
     public void displayAlert(String header, Alert.AlertType type) {
         Alert a = new Alert(type);
         a.setHeaderText(header);
         a.show();
     }
 
+    /**
+     * Method showAlert is called by gui and controllers to show an alert to the player
+     * @param header the text of the alert
+     * @param type the type of the alert (error, info etc.)
+     */
     public void showAlert(String header, Alert.AlertType type) {
         Platform.runLater(() -> displayAlert(header, type));
     }
 
+    /**
+     * Method handleTextMessage prints the given text on the terminal.
+     * @param text text to print.
+     */
     public void handleTextMessage(String text) {
         System.out.println(text);
         if (text.indexOf(nickname) == 0 && text.contains("back online")) {
@@ -285,6 +375,11 @@ public class GUI extends Application implements View {
 
     }
 
+
+    /**
+     *  Method enableLobbies is called by ActionHandler and resets lobbiesController
+     *  after an unsuccessful try to join or create a lobby
+     */
     public void enableLobbies() {
         lobbiesController.enable();
     }
@@ -293,7 +388,6 @@ public class GUI extends Application implements View {
      * Method getValidAction returns a list of valid user action.
      * @return the list of actions.
      */
-
 //    @Override
     public ArrayList<Action> getValidActions() {
         ArrayList<Action> actions = new ArrayList<>();
@@ -314,6 +408,11 @@ public class GUI extends Application implements View {
             dashboardController.startTurn();
         }
     }
+
+
+    /**
+     * Method basicActionPlayed disables the three mutually exclusive basic actions.
+     */
     @Override
     public void basicActionPlayed(){
         Action.TAKE_RESOURCE.enabled = false;
@@ -321,6 +420,11 @@ public class GUI extends Application implements View {
         Action.ACTIVATE_PRODUCTION.enabled = false;
     }
 
+    /**
+     * Method handleTurn manages a player's turn and the available user actions.
+     * It calls method handleWaitingText of dashboardController to show the user the current turn player, and
+     * if it's an opponent's turn it disables all the actions available only during a player's own turn.
+     */
     @Override
     public void handleTurn() {
         if(dashboardController != null) {
@@ -334,6 +438,10 @@ public class GUI extends Application implements View {
         }
     }
 
+    /**
+     *  Method handleToken is called by ActionHandler and calls the method showToken of dashboardController
+     *  to show the player which token has been drawn.
+     */
     public void handleToken(SoloActionToken token) {
         int index = 0;
         if(token instanceof RemoveCardsToken) {
@@ -356,6 +464,10 @@ public class GUI extends Application implements View {
         }
     }
 
+    /**
+     *  Method handleDefeat is called by ActionHandler when the single player game has ended
+     *  with a defeat, and calls singlePlayerEnd method of dashboardController to set up gameOverController.
+     */
     public void handleDefeat() {
         dashboardController.singlePlayerEnd(0);
 
