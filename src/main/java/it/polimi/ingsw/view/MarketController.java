@@ -36,7 +36,6 @@ public class MarketController {
         this.gui = gui;
     }
     public void checkActiveWhiteMarbleLeaders(Map<Integer, Boolean> leaderCards) {
-        System.out.println(leaderCards);
         whiteMarbleChoiceBox = new ChoiceBox<>();
 
         whiteMarbleChoiceBox.setLayoutX(marketPane.getWidth()/2-75);

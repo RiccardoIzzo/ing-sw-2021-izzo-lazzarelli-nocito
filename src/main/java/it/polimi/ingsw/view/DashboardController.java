@@ -676,11 +676,33 @@ public class DashboardController {
         }
     }
 
+    private void resizeShelf(int index) {
+        ImageView selectedShelf;
+        int margin = 3;
+        if(index < 6)
+            selectedShelf = ShelfView[index];
+        else if(index >= 10 ) {
+            selectedShelf = tempShelfImageViews[index - 10];
+            margin *= 2;
+        }
+        else
+            selectedShelf = ExtraShelfView[index-6];
+
+        margin *= swapIndex == -1 ? 1 : -1;
+
+        selectedShelf.setLayoutX(selectedShelf.getLayoutX()+margin);
+        selectedShelf.setLayoutY(selectedShelf.getLayoutY()+margin);
+        selectedShelf.setFitWidth(selectedShelf.getFitWidth()-margin*2);
+        selectedShelf.setFitHeight(selectedShelf.getFitHeight()-margin*2);
+    }
+
     private void handleShelfClick(int index) {
         if(gui.showTempShelf) {
             if (swapIndex < 0) {
+                resizeShelf(index);
                 swapIndex = index;
             } else {
+                resizeShelf(swapIndex);
                 List<Integer> validSlots = IntStream.rangeClosed(0, 13)
                         .boxed().collect(Collectors.toList());
 
