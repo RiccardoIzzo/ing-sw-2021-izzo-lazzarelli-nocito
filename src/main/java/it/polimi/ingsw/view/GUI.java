@@ -46,7 +46,7 @@ public class GUI extends Application implements View {
     private int bonusResourceAmount = 0;
 
     /**
-     * start method sets up the stage and sets up setupController
+     * Method start sets up the stage and sets up setupController
      * @param stage mainStage of the game
      */
     @Override

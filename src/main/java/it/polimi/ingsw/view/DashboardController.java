@@ -33,12 +33,22 @@ import java.util.stream.IntStream;
 
 /**
  * DashboardController class manages the dashboard scene.
- * DashboardControllers also handles Market, Grid, GameOver and Leaders controllers.
  *
  * @author Andrea Nocito
  */
 
 public class DashboardController {
+    /**
+     * DashboardControllers handles Market, Grid, GameOver and Leaders controllers.
+     */
+    MarketController marketController;
+    GridController gridController;
+    LeadersController leadersController;
+    GameOverController gameOverController;
+
+    private static GUI gui;
+    private ModelView modelView;
+
     @FXML Button showLeaders;
     @FXML Button activateProductionsButton;
     @FXML Button marketButton;
@@ -46,12 +56,7 @@ public class DashboardController {
     @FXML ChoiceBox<String> playersChoiceBox;
     @FXML Pane dashboardPane;
     @FXML Button endTurnButton;
-    private ModelView modelView;
-    MarketController marketController;
-    GridController gridController;
-    LeadersController leadersController;
-    GameOverController gameOverController;
-    private static GUI gui;
+
     ImageView firstShelfRes1View;
     ImageView secondShelfRes1View;
     ImageView secondShelfRes2View;
@@ -100,6 +105,11 @@ public class DashboardController {
         DashboardController.gui = gui;
     }
 
+    /**
+     * Method setup manages dashboard elements before showing the scene.
+     * It adds users nicknames to playersChoiceBox, sets up basic production
+     * and calls setupArrays and handleWaitingText
+     */
     public void setup() {
         amountLabel = new Label[4];
         for(ModelView.DashboardView dashboard : modelView.getDashboards()) {
@@ -115,6 +125,11 @@ public class DashboardController {
         setupBasicProduction();
         handleWaitingText();
     }
+
+     /**
+     * Method setupBasicProduction manages the combobox for the selection of the basic production resources,
+     * activateProductionsButton and the array of enabled productions.
+     */
     public void setupBasicProduction() {
 
         basicProductionResources = new Resource[3];
@@ -155,6 +170,11 @@ public class DashboardController {
             });
         }
     }
+
+
+    /**
+     * Method setupArrays adds the scene elements to the dedicated arrays
+     */
     public void setupArrays() {
         tempShelfImageViews[0] = tempShelfImageView1;
         tempShelfImageViews[1] = tempShelfImageView2;
@@ -181,6 +201,10 @@ public class DashboardController {
         developmentImage[1] = developmentImageSlot2;
         developmentImage[2] = developmentImageSlot3;
     }
+
+    /**
+     * Method showLeaders sets up leadersController
+     */
     public void showLeaders() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
         ModelView.DashboardView playerDashboardView = modelView.getDashboards().stream().filter(dashboardView -> dashboardView.getNickname().equals(playerSelected)).findAny().orElse(null);
@@ -194,6 +218,9 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Method showLeaders sets up leadersController
+     */
     public void handleLeaderCardActivation(boolean result, int id) {
         if(!result) {
             gui.showAlert("It was not possible to activate leader card " + id, Alert.AlertType.ERROR);
@@ -206,6 +233,10 @@ public class DashboardController {
 
 
 
+    /**
+     * Method choiceBoxChange checks which nickname has been selected in playersChoiceBox
+     * and shows the selected player's dashboard
+     */
     public void choiceBoxChange() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
         if(playerSelected != null) {
@@ -216,6 +247,12 @@ public class DashboardController {
             showDashboard(playerSelected);
         }
     }
+
+     /**
+     * Method handleBonusResource gets called if the player is not the first one to start its turn.
+     * It lets the user pick the bonus resources.
+     * @param amount the number of resources that the player can select
+     */
     public void handleBonusResource(int amount) {
         if(amount > 0) {
             dashboardPane.setDisable(true);
@@ -297,6 +334,10 @@ public class DashboardController {
             bonusStage.show();
         }
     }
+
+    /**
+     * Method handleWaitingText shows the nickname of the user that playing its turn
+     */
     public void handleWaitingText() {
         if(modelView.getDashboards().size() > 1) {
             Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#waitingText")));
@@ -315,6 +356,140 @@ public class DashboardController {
             Platform.runLater(() -> dashboardPane.getChildren().add(waitingText));
         }
     }
+
+    /**
+     * Method activateProduction sets a disabled production to "enabled" and
+     * adds it to the list of productions to activate, or sets an "enabled"
+     * production to "disabled" and removes it from the list of productions
+     * @param index the index of the selected production
+     */
+    public void activateProduction(int index) {
+        if(enabledProductions.contains(index-1)) {
+            enabledProductions.remove(Integer.valueOf(index - 1));
+            if(index <= 4)
+                developmentButton[index-1].setText("Enable");
+            if(index == 4) {
+                basicProductionResImages.get(0).setDisable(false);
+                basicProductionResImages.get(1).setDisable(false);
+                basicProductionResImages.get(2).setDisable(false);
+            }
+            else
+                developmentImage[index-1].setStyle("-fx-opacity: 1");
+        }
+        else {
+            if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
+                enabledProductions.add(index-1);
+                if(index <= 4)
+                    developmentButton[index-1].setText("Disable");
+                if(index == 4) {
+                    basicProductionResImages.get(0).setDisable(true);
+                    basicProductionResImages.get(1).setDisable(true);
+                    basicProductionResImages.get(2).setDisable(true);
+                }
+            }
+            if(index < 4)
+                developmentImage[index-1].setStyle("-fx-opacity: 1");
+
+        }
+        activateProductionsButton.setDisable(enabledProductions.size() == 0);
+    }
+
+    /**
+     * Method activateAllProductions checks if the enabled productions meet their requirements,
+     * if they don't it shows an alert, otherwise it send a message to server to activate
+     * the productions
+     */
+    public void activateAllProductions() {
+        ResourceMap totalResources = modelView.getMyDashboard().getTotalResources();
+        ArrayList<Integer> productions = new ArrayList<>();
+        ResourceMap requiredResources = new ResourceMap();
+        for(Integer index : enabledProductions) {
+            if(index == 3) {
+                requiredResources.modifyResource(basicProductionResources[0], 1);
+                requiredResources.modifyResource(basicProductionResources[1], 1);
+            }
+            else {
+                int production = index < 3 ? modelView.getMyDashboard().getActiveDevelopments().get(index) : (int) modelView.getMyDashboard().getLeaderCards().keySet().toArray()[index-4];
+                productions.add(production);
+                Card card = JsonCardsCreator.generateCard(production);
+                if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
+                else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
+                break;
+            }
+        }
+        if(totalResources.removeResources(requiredResources)) {
+            gui.send(new ActivateProduction(productions));
+            if (enabledProductions.contains(3)) {
+                ResourceMap inputBasicProduction = new ResourceMap();
+                inputBasicProduction.modifyResource(basicProductionResources[0], 1);
+                inputBasicProduction.modifyResource(basicProductionResources[1], 1);
+                ResourceMap outputBasicProduction = new ResourceMap();
+                outputBasicProduction.modifyResource(basicProductionResources[2], 1);
+                gui.send(new BasicProduction(inputBasicProduction, outputBasicProduction));
+            }
+            if(enabledProductions.contains(4)) {
+                ResourceMap output = new ResourceMap();
+                output.modifyResource(leaderExtraProductionRes.get(0), 1);
+                gui.send(new BasicProduction(new ResourceMap(), output));
+            }
+            if(enabledProductions.contains(5)) {
+                ResourceMap output = new ResourceMap();
+                output.modifyResource(leaderExtraProductionRes.get(1), 1);
+                gui.send(new BasicProduction(new ResourceMap(), output));
+            }
+            gui.basicActionPlayed();
+            showDashboard(gui.getNickname());
+        }
+        else {
+            gui.showAlert("There are not enough resources to activate all enabled production", Alert.AlertType.ERROR);
+        }
+
+    }
+
+    /**
+     * Method resetProductions resets all the productions to "disabled"
+     */
+    public void resetProductions() {
+        for (Button button : developmentButton) {
+            if(button != null) {
+                Platform.runLater(() -> {
+                    button.setText("Enable");
+                    button.setDisable(false);
+                });
+            }
+        }
+        enabledProductions.clear();
+        for(ImageView devImage : developmentImage) {
+            if (devImage != null)
+                devImage.setStyle("-fx-opacity: 1");
+        }
+        for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
+            basicProduction.setDisable(false);
+        }
+        activateProductionsButton.setDisable(true);
+    }
+
+    /**
+     * Method resetProductions resets all the productions and sets the buttons to disabled,
+     * so that they cannot be activated
+     */
+    public void disableProductions() {
+        for (Button button : developmentButton) {
+            if(button != null) {
+                button.setDisable(true);
+            }
+        }
+        enabledProductions.clear();
+        basicProductionRes1.setDisable(true);
+        basicProductionRes2.setDisable(true);
+        basicProductionRes3.setDisable(true);
+        activateProductionsButton.setDisable(true);
+    }
+
+    /**
+     * Method showDashboard shows the current dashboard of the selected player
+     * @param nickname name of the selected player
+     */
     public void showDashboard(String nickname) {
         if(nickname.equals(gui.getNickname())) {
             ModelView.DashboardView dashboardView = modelView.getMyDashboard();
@@ -362,113 +537,9 @@ public class DashboardController {
             }
         }
     }
-    public void activateProduction(int index) {
-        if(enabledProductions.contains(index-1)) {
-            enabledProductions.remove(Integer.valueOf(index - 1));
-            if(index <= 4)
-                developmentButton[index-1].setText("Enable");
-            if(index == 4) {
-                basicProductionResImages.get(0).setDisable(false);
-                basicProductionResImages.get(1).setDisable(false);
-                basicProductionResImages.get(2).setDisable(false);
-            }
-            else
-                developmentImage[index-1].setStyle("-fx-opacity: 1");
-        }
-        else {
-            if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
-                enabledProductions.add(index-1);
-                if(index <= 4)
-                    developmentButton[index-1].setText("Disable");
-                if(index == 4) {
-                    basicProductionResImages.get(0).setDisable(true);
-                    basicProductionResImages.get(1).setDisable(true);
-                    basicProductionResImages.get(2).setDisable(true);
-                }
-            }
-            if(index < 4)
-                developmentImage[index-1].setStyle("-fx-opacity: 1");
-
-        }
-        activateProductionsButton.setDisable(enabledProductions.size() == 0);
-    }
-    public void activateAllProductions() {
-        ResourceMap totalResources = modelView.getMyDashboard().getTotalResources();
-        ArrayList<Integer> productions = new ArrayList<>();
-        ResourceMap requiredResources = new ResourceMap();
-        for(Integer index : enabledProductions) {
-            if(index == 3) {
-                requiredResources.modifyResource(basicProductionResources[0], 1);
-                requiredResources.modifyResource(basicProductionResources[1], 1);
-            }
-            else {
-                int production = index < 3 ? modelView.getMyDashboard().getActiveDevelopments().get(index) : (int) modelView.getMyDashboard().getLeaderCards().keySet().toArray()[index-4];
-                productions.add(production);
-                Card card = JsonCardsCreator.generateCard(production);
-                if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
-                else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
-                break;
-            }
-        }
-        if(totalResources.removeResources(requiredResources)) {
-            gui.send(new ActivateProduction(productions));
-            if (enabledProductions.contains(3)) {
-                ResourceMap inputBasicProduction = new ResourceMap();
-                inputBasicProduction.modifyResource(basicProductionResources[0], 1);
-                inputBasicProduction.modifyResource(basicProductionResources[1], 1);
-                ResourceMap outputBasicProduction = new ResourceMap();
-                outputBasicProduction.modifyResource(basicProductionResources[2], 1);
-                gui.send(new BasicProduction(inputBasicProduction, outputBasicProduction));
-            }
-            if(enabledProductions.contains(4)) {
-                ResourceMap output = new ResourceMap();
-                output.modifyResource(leaderExtraProductionRes.get(0), 1);
-                gui.send(new BasicProduction(new ResourceMap(), output));
-            }
-            if(enabledProductions.contains(5)) {
-                ResourceMap output = new ResourceMap();
-                output.modifyResource(leaderExtraProductionRes.get(1), 1);
-                gui.send(new BasicProduction(new ResourceMap(), output));
-            }
-            gui.basicActionPlayed();
-            showDashboard(gui.getNickname());
-        }
-        else {
-            gui.showAlert("There are not enough resources to activate all enabled production", Alert.AlertType.ERROR);
-        }
-
-    }
-    public void resetProductions() {
-        for (Button button : developmentButton) {
-            if(button != null) {
-                Platform.runLater(() -> {
-                    button.setText("Enable");
-                    button.setDisable(false);
-                });
-            }
-        }
-        enabledProductions.clear();
-        for(ImageView devImage : developmentImage) {
-            if (devImage != null)
-                devImage.setStyle("-fx-opacity: 1");
-        }
-        for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
-            basicProduction.setDisable(false);
-        }
-        activateProductionsButton.setDisable(true);
-    }
-    public void disableProductions() {
-        for (Button button : developmentButton) {
-            if(button != null) {
-                button.setDisable(true);
-            }
-        }
-        enabledProductions.clear();
-        basicProductionRes1.setDisable(true);
-        basicProductionRes2.setDisable(true);
-        basicProductionRes3.setDisable(true);
-        activateProductionsButton.setDisable(true);
-    }
+    /**
+     * Method showActiveDevelopments shows the active developments cards or an empty card if a slot doesn't have any
+     */
     public void showActiveDevelopments(ArrayList<Integer> activeDevelopments) {
         if(developmentButton == null) {
             developmentButton = new Button[4];
@@ -535,6 +606,11 @@ public class DashboardController {
         }
     }
 
+
+    /**
+     * Method showStrongbox shows the strongbox resources and their amount.
+     * @param strongbox ResourceMap containing the amount of resources in the strongbox
+     */
     private void showStrongbox(ResourceMap strongbox) {
         int xStart = 120, yStart = 515;
         double len = 40; double padding = 20;
@@ -578,6 +654,12 @@ public class DashboardController {
 
     }
 
+    /**
+     * Method showWarehouse shows the warehouse of the selected player and, if enabled,
+     * the temporary shelf with the resources obtained from the market
+     * @param warehouse warehouse of the selected players
+     * @param extraShelfResources arraylist of the resources stored in the extra shelf enabled by some leadercards
+     */
     private void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources) {
 
         double len = 30;
@@ -634,13 +716,12 @@ public class DashboardController {
                 if(item != null)
                     dashboardPane.getChildren().remove(dashboardPane.lookup("#" + item.getId()));
             }
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfImage"));
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfButton"));
         });
 
         if ( showTempShelf ) {
             marketButton.setDisable(true);
             gridButton.setDisable(true);
+            if(temporaryShelfImage == null) {
                 Image image = new Image("/view/images/resources/temporaryShelfEmpty.png");
                 temporaryShelfImage = new ImageView(image);
                 temporaryShelfImage.setLayoutX(300);
@@ -650,13 +731,13 @@ public class DashboardController {
                 temporaryShelfImage.setId("temporaryShelfImage");
 
                 Platform.runLater(() -> dashboardPane.getChildren().add(temporaryShelfImage));
-
+            }
+            if(tempShelfButton == null) {
                 tempShelfButton = new Button("Done");
                 tempShelfButton.setLayoutX(810);
                 tempShelfButton.setLayoutY(612);
                 tempShelfButton.setPrefWidth(60);
                 tempShelfButton.setPrefHeight(30);
-                tempShelfButton.setDisable(endTurnButton.isDisabled());
                 tempShelfButton.setId("temporaryShelfButton");
                 tempShelfButton.setOnMouseClicked((MouseEvent e) -> {
                     showTempShelf = false;
@@ -664,8 +745,9 @@ public class DashboardController {
                     gui.basicActionPlayed();
                     showDashboard(gui.getNickname());
                 });
-
                 Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfButton));
+            }
+            tempShelfButton.setDisable(endTurnButton.isDisabled());
 
                 for(int i =0; i<tempShelfImageViews.length; i++) {
                     Image tempShelfImage = new Image(getImage(warehouse.get(10+i)));
@@ -682,8 +764,18 @@ public class DashboardController {
                     Platform.runLater(() -> dashboardPane.getChildren().add(tempShelfImageViews[finalI]));
                 }
         }
+        else {
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfImage"));
+            dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfButton"));
+            tempShelfButton = null;
+            temporaryShelfImage = null;
+        }
     }
 
+    /**
+     * Method resizeShelf changes the size of the clicked resource's image in the shelves of the temporary shelf
+     * @param index index of the selected shelf
+     */
     private void resizeShelf(int index) {
         ImageView selectedShelf;
         int margin = 3;
@@ -704,6 +796,11 @@ public class DashboardController {
         selectedShelf.setFitHeight(selectedShelf.getFitHeight()-margin*2);
     }
 
+    /**
+     * Method handleShelfClick lets the user move the resources on the shelves, calling resizeShelf to show
+     * which resource has been selected or by handling the swap of the two selected resources
+     * @param index index of the selected shelf
+     */
     private void handleShelfClick(int index) {
         if(showTempShelf) {
             if (swapIndex < 0) {
@@ -734,6 +831,12 @@ public class DashboardController {
         }
     }
 
+
+    /**
+     * Method getImage
+     * @param resource the resource of which an image is needed
+     * @return the url of the image associated with the selected resource
+     */
     String getImage(Resource resource) {
         if (resource == null) {
             return "/view/images/resources/notFound.png";
@@ -748,6 +851,13 @@ public class DashboardController {
             return "/view/images/resources/" + res + ".png";
         }
     }
+
+    /**
+     * Method showFaithTrack shows the markers position and the tiles of the selected players
+     * @param faithMarker position of the faith marker
+     * @param blackMarker position of the black faith marker
+     * @param popesFavorTiles arrays of booleans to show which pope favor tiles have been activated
+     */
     private void showFaithTrack(Integer faithMarker, Integer blackMarker, Boolean[] popesFavorTiles) {
 
         Image faithImage = new Image("/view/images/faithTrack/cross.png");
@@ -816,6 +926,9 @@ public class DashboardController {
 
     }
 
+    /**
+     * Method showMarket sets up marketController and shows the current market.
+     */
     public void showMarket() {
         marketController = showPopup("/view/scenes/sceneMarket.fxml").getController();
         marketController.setGUI(gui);
@@ -824,12 +937,20 @@ public class DashboardController {
         marketController.checkActiveWhiteMarbleLeaders(modelView.getMyDashboard().getLeaderCards());
     }
 
+    /**
+     * Method showGrid sets up gridController and shows the available cards that can be bought
+     */
     public void showGrid() {
         gridController = showPopup("/view/scenes/sceneGrid.fxml").getController();
         gridController.setGUI(gui);
         gridController.setup(modelView);
     }
 
+    /**
+     * Method showPopup opens a scene as a popup
+     * @param scenePath the path of the scene to open
+     * @return the FXMLLoader of the scene
+     */
     private FXMLLoader showPopup(String scenePath) {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(scenePath));
@@ -852,6 +973,10 @@ public class DashboardController {
     public void setModelView(ModelView modelView) {
         this.modelView = modelView; 
     }
+
+    /**
+     * Method startTurn resets basicProduction and updates the players dashboard
+     */
     public void startTurn() {
         for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
             Platform.runLater(() -> basicProduction.valueProperty().set(null));
@@ -859,6 +984,11 @@ public class DashboardController {
         endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
         showDashboard(gui.getNickname());
     }
+
+    /**
+     * Method endTurn disables all the elements that cannot be intereated with when it's another player's turn
+     * and sends a message of endTurn
+     */
     public void endTurn() {
         if (showTempShelf) {
             showTempShelf = false;
@@ -886,10 +1016,17 @@ public class DashboardController {
         handleWaitingText();
     }
 
+    /**
+     * Method handleTemporaryShelf is called when resources are received from the market and
+     * calls showsDashboard method to update the scene and show the temporary shelf
+     */
     public void handleTemporaryShelf() {
         showDashboard(gui.getNickname());
     }
 
+    /**
+     * Method basicProductionResChange
+     */
     public void basicProductionResChange(ActionEvent actionEvent) {
         @SuppressWarnings("unchecked")
         ComboBox<ImageView> comboBox = (ComboBox<ImageView>) actionEvent.getSource();
@@ -908,6 +1045,9 @@ public class DashboardController {
 
     }
 
+    /**
+     * Method showEndGameText lets the user know that the game is about to finish
+     */
     public void showEndGameText() {
         Label endGameLabel = new Label("The game is about to finish.Waiting for the remaining players to play theirs last turn...");
         endGameLabel.setLayoutX(88);
@@ -922,6 +1062,10 @@ public class DashboardController {
         });
     }
 
+    /**
+     * Method showStats disables dashboardPane and sets up gameOverController to show the multiplayer game result
+     * @param map map that associates the players nicknames with the number of points they made
+     */
     public void showStats(Map<String, Integer> map) {
         dashboardPane.setDisable(true);
 
@@ -931,6 +1075,11 @@ public class DashboardController {
         gameOverController.start();
         });
     }
+
+    /**
+     * Method singlePlayerEnd disables dashboardPane and sets up gameOverController to show the single player game result
+     * @param points the number of points made by the user
+     */
     public void singlePlayerEnd(int points) {
         dashboardPane.setDisable(true);
         Platform.runLater(() -> {
@@ -941,7 +1090,10 @@ public class DashboardController {
             gameOverController.start();
         });
     }
-
+    /**
+     * Method showToken display the last drawn token in the single player game
+     * @param index the type of token to show
+     */
     public void showToken(int index) {
         Image tokenImage = new Image("/view/images/tokens/cerchio"+index+".png");
         ImageView tokenImageView = new ImageView(tokenImage);

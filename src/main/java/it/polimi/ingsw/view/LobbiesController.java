@@ -12,6 +12,11 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.Map;
 
+
+/**
+ * LobbiesController class manages the Lobbies scene.
+ * @author Andrea Nocito
+ */
 public class LobbiesController {
     public ListView<String> lobbiesListView;
 
@@ -31,6 +36,11 @@ public class LobbiesController {
         LobbiesController.gui = gui;
     }
 
+
+    /**
+     * Method setLobbies receives the updated map of the available lobbies
+     * @param newLobbies map that associates the lobby id to the maximum number of players for that lobby.
+     */
     public void refreshLobbies(Map<String, Integer> newLobbies){
         setLobbies(newLobbies);
         lobbiesListView.getItems().clear();
@@ -40,9 +50,15 @@ public class LobbiesController {
         lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     }
+
+    /**
+     * Method enable is called by gui to reset the lobbies scene after
+     * a connection or creation didn't go through
+     */
     public void enable() {
         lobbiesPane.setDisable(false);
     }
+
     public void start() throws IOException {
 //        gui.mainStage.close();
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies.fxml"));
@@ -58,6 +74,11 @@ public class LobbiesController {
 //        controller.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     }
+
+    /**
+     * Method joinButtonClicked checks if a lobby has been selected.
+     * If it hasn't, it shows an alert, otherwise it sends to server a request to join the selected lobby
+     */
     public void joinButtonClicked() {
         String selectedItem = lobbiesListView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -70,6 +91,11 @@ public class LobbiesController {
         }
     }
 
+    /**
+     * Method joinButtonClicked checks if the lobby name and the number of players have been written.
+     * If they haven't, or the name is not availabble, it shows an alert, otherwise it sends to server
+     * a request to create the selected lobby
+     */
     public void createButtonClicked() {
         String lobbyID = lobbyTextField.getText();
         if (lobbyID == null || lobbyID.length() < 1) {
@@ -98,6 +124,13 @@ public class LobbiesController {
         }
 
     }
+
+
+    /**
+     * Method addWaitingView is called after a successful request to join or create a lobby has been made.
+     * It asks the user to wait that the conditions to start the game are met.
+     * @param text the waiting message that will be shown to the user
+     */
     public void addWaitingView(String text) {
         Pane waitingPane = new Pane();
         Label textLabel = new Label(text);
@@ -124,7 +157,10 @@ public class LobbiesController {
         }
     }
 
-    public void refreshButtonClicked(ActionEvent actionEvent) {
-        gui.send(new GetLobbies());
+    /**
+     * Method refreshButtonClicked sends a request to get an updated list of the available lobbies
+    */
+     public void refreshButtonClicked(ActionEvent actionEvent) {
+            gui.send(new GetLobbies());
+        }
     }
-}

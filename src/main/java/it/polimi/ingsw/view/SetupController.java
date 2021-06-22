@@ -16,6 +16,10 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
+/**
+ * SetupController class manages the Connect scene.
+ * @author Andrea Nocito
+ */
 public class SetupController {
     public Button connectButton;
     @FXML Pane connectPane;
@@ -35,6 +39,9 @@ public class SetupController {
         SetupController.gui = gui;
     }
 
+    /**
+     * Method start sets up the stage
+     */
     public void start() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneConnect.fxml"));
         Parent root = loader.load();
@@ -42,8 +49,13 @@ public class SetupController {
         gui.mainStage.setTitle("Master of Renaissance");
         gui.mainStage.setScene(new Scene(root));
         gui.mainStage.show();
-
     }
+
+    /**
+     * Method setNicknameButtonClicked checks if a nickname has been written.
+     * If it hasn't, it shows an alert, otherwise it sends a SetNickname message to
+     * the server with the selected nickname.
+     * */
     public void setNicknameButtonClicked(ActionEvent actionEvent) {
         String nickname = nicknameTextField.getText();
         if ( nickname.length() < 1 ) {
@@ -52,13 +64,14 @@ public class SetupController {
         }
         gui.setNickname(nickname);
         gui.send(new SetNickname(nickname));
-
-//        gui.startLobbies(lobbies);
-
-//        gui.send(new GetLobbies());
-
     }
 
+
+    /**
+     * Method connectButtonClicked checks if server address and port have been written.
+     * If they haven't, it shows an alert, otherwise it prepares the network connection and
+     * changes the scene to ask for a nickname
+     * */
     public void connectButtonClicked() {
         if(serverTextField.getText().length() < 1 || ipTextField.getText().length() < 1) {
             gui.showAlert("Error or IP not valid!", Alert.AlertType.ERROR);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.SelectLeaderCards;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -11,6 +12,10 @@ import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * SelectLeaderController class manages the SelectLeaders scene.
+ * @author Andrea Nocito
+ */
 public class SelectLeaderController {
     @FXML private Button card1Button;
     @FXML private ImageView card1ImageView;
@@ -37,6 +42,11 @@ public class SelectLeaderController {
     public void start() throws IOException {
         showCards();
     }
+
+
+    /**
+     * Method showCards loads the images of the leader cards received
+     */
     public void showCards() {
         card1ImageView.setImage(new Image("/view/images/leaderCards/leaderCard"+ leaderIds.get(0) +".png"));
         card2ImageView.setImage(new Image("/view/images/leaderCards/leaderCard"+ leaderIds.get(1) +".png"));
@@ -49,12 +59,17 @@ public class SelectLeaderController {
         card3Button.setStyle("-fx-background-color: transparent ; -fx-border-width: 0px ;");
         card4Button.setStyle("-fx-background-color: transparent ; -fx-border-width: 0px ;");
     }
+
     public void setLeadersIds(ArrayList<Integer> ids) {
         leaderIds = ids;
         selectedLeaders = new ArrayList<>();
     }
 
-    public void selectButtonClicked(ActionEvent actionEvent) {
+    /**
+     * Method selectButtonClicked checks that two leadercards have been selected.
+     * It they haven't, it shows an alert, otherwise it sends a message with the cards to remove.
+     */
+    public void selectButtonClicked() {
         if(selectedLeaders.size() != 2) {
             gui.showAlert("Select two leaders cards", Alert.AlertType.ERROR);
         }
@@ -62,12 +77,17 @@ public class SelectLeaderController {
             leaderIds.remove(selectedLeaders.get(0));
             leaderIds.remove(selectedLeaders.get(1));
             gui.send(new SelectLeaderCards(leaderIds.get(0), leaderIds.get(1)));
-            gui.handleGameStart();
+            Platform.runLater(() -> gui.startGame());
         }
     }
 
+    /**
+     * Method cardButtonClicked manages the selection of the leadercards.
+     * When a card is selected it will show a colored background,
+     * when it's unselected it will show a transparent background
+     */
     public void cardButtonClicked(ActionEvent actionEvent) {
-
+        String selectedColor = "DarkSeaGreen";
         if (actionEvent.getSource().equals(card1Button) ) {
             if (selectedLeaders.contains(leaderIds.get(0)) ) {
                 card1Button.setStyle("-fx-background-color: transparent ; -fx-border-width: 0px ;");
@@ -75,7 +95,7 @@ public class SelectLeaderController {
             }
             else{
                 selectedLeaders.add(leaderIds.get(0));
-                card1Button.setStyle("-fx-background-color: white ; -fx-border-width: 2px ;");
+                card1Button.setStyle("-fx-background-color: "+selectedColor+" ; -fx-border-width: 2px ;");
             }
         }
         else if (actionEvent.getSource().equals(card2Button) ) {
@@ -85,7 +105,7 @@ public class SelectLeaderController {
             }
             else{
                 selectedLeaders.add(leaderIds.get(1));
-                card2Button.setStyle("-fx-background-color: white ; -fx-border-width: 2px ;");
+                card2Button.setStyle("-fx-background-color: "+selectedColor+" ; -fx-border-width: 2px ;");
             }
         }
         else if (actionEvent.getSource().equals(card3Button) ) {
@@ -96,7 +116,7 @@ public class SelectLeaderController {
             }
             else{
                 selectedLeaders.add(leaderIds.get(2));
-                card3Button.setStyle("-fx-background-color: white ; -fx-border-width: 2px ;");
+                card3Button.setStyle("-fx-background-color: "+selectedColor+" ; -fx-border-width: 2px ;");
             }
         }
         else if (actionEvent.getSource().equals(card4Button) ) {
@@ -107,7 +127,7 @@ public class SelectLeaderController {
             }
             else{
                 selectedLeaders.add(leaderIds.get(3));
-                card4Button.setStyle("-fx-background-color: white ; -fx-border-width: 2px ;");
+                card4Button.setStyle("-fx-background-color: "+selectedColor+" ; -fx-border-width: 2px ;");
             }
         }
     }
