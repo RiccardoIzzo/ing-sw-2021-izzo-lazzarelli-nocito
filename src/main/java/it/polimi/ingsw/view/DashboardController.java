@@ -971,7 +971,7 @@ public class DashboardController {
     }
 
     public void setModelView(ModelView modelView) {
-        this.modelView = modelView; 
+        this.modelView = modelView;
     }
 
     /**

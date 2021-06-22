@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetNickname;
+import it.polimi.ingsw.events.servermessages.InvalidNickname;
 import it.polimi.ingsw.events.servermessages.ValidNickname;
 import it.polimi.ingsw.model.token.MoveBlackMarkerToken;
 import it.polimi.ingsw.model.token.RemoveCardsToken;
@@ -42,7 +43,7 @@ public class GUI extends Application implements View {
     private NetworkHandler network;
     private ModelView modelView;
     static String nickname;
-    private boolean reconnected = false;
+    private int reconnected = -1;
     private int bonusResourceAmount = 0;
 
     /**
@@ -121,7 +122,7 @@ public class GUI extends Application implements View {
         if (message instanceof ValidNickname) {
             //Platform.runLater(() -> mainStage.close());
             send(new GetLobbies());
-        } else {
+        } else if (message instanceof InvalidNickname) {
             Platform.runLater(() -> showAlert("This nickname is not valid! Try again.", Alert.AlertType.ERROR));
         }
 
@@ -284,13 +285,8 @@ public class GUI extends Application implements View {
     public void setModelView(ModelView modelView) {
         this.modelView = modelView;
         network.getServerConnection().setModelView(modelView);
-        if (reconnected) {
-            if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() != 2) {
-                handleLeaders();
-            } else if (modelView.getMyDashboard() != null && modelView.getMyDashboard().getLeaderCards().keySet().size() == 2) {
-                Platform.runLater(this::startGame);
-            }
-            reconnected = false;
+        if (reconnected == 0) {
+            Platform.runLater(this::startGame);
         }
     }
 
@@ -301,7 +297,6 @@ public class GUI extends Application implements View {
 
     @Override
     public void printText(String text) {
-        handleTextMessage(text);
     }
 
     /**
@@ -362,17 +357,8 @@ public class GUI extends Application implements View {
         Platform.runLater(() -> displayAlert(header, type));
     }
 
-    /**
-     * Method handleTextMessage prints the given text on the terminal.
-     * @param text text to print.
-     */
-    public void handleTextMessage(String text) {
-        System.out.println(text);
-        if (text.indexOf(nickname) == 0 && text.contains("back online")) {
-            reconnected = true;
-            System.out.println("riconnesso");
-        }
-
+    public void setReconnected(int value) {
+        reconnected = value;
     }
 
 

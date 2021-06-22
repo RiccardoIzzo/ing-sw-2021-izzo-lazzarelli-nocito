@@ -61,10 +61,6 @@ public class ActionHandler extends Thread{
         }
         else if(message instanceof TextMessage){
             view.printText(((TextMessage) message).getText());
-
-            if (view instanceof GUI) {
-                ((GUI) view).handleTextMessage(((TextMessage) message).getText());
-            }
         }
         else if(message instanceof StartTurn){
             view.startTurn();
@@ -97,8 +93,9 @@ public class ActionHandler extends Thread{
             view.printText("You lost!");
             System.exit(0);
         }
-        else if(message instanceof Reconnection){
-
+        else if(message instanceof Reconnection) {
+            if(view instanceof GUI)
+                ((GUI) view).setReconnected(0);
         }
         else if(message instanceof UpdateView){
             UpdateView updateView = (UpdateView) message;
