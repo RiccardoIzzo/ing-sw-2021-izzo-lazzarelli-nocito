@@ -986,7 +986,7 @@ public class DashboardController {
     }
 
     /**
-     * Method endTurn disables all the elements that cannot be intereated with when it's another player's turn
+     * Method endTurn disables all the elements that cannot be interacted with when it's another player's turn
      * and sends a message of endTurn
      */
     public void endTurn() {
