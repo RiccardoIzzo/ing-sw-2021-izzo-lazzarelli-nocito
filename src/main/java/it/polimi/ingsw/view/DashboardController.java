@@ -102,6 +102,8 @@ public class DashboardController {
     ImageView[] strongboxResourceView = new ImageView[4];
     Label[] amountLabel = new Label [4];
 
+    ImageView tokenImageView;
+
     public void setGUI(GUI gui) {
         DashboardController.gui = gui;
     }
@@ -412,7 +414,6 @@ public class DashboardController {
                 Card card = JsonCardsCreator.generateCard(production);
                 if(card instanceof ProductionLeaderCard) requiredResources.addResources(((ProductionLeaderCard) card).getProduction().getInputResource());
                 else if(card instanceof DevelopmentCard) requiredResources.addResources(((DevelopmentCard) card).getProduction().getInputResource());
-                break;
             }
         }
         if(totalResources.removeResources(requiredResources)) {
@@ -883,7 +884,12 @@ public class DashboardController {
         popeFavorTilesImages[1].setFitWidth(60);
         popeFavorTilesImages[1].setFitHeight(60);
 
-        faithTrackImage = new ImageView(faithImage);
+        if(faithTrackImage == null ) {
+            faithTrackImage = new ImageView();
+            faithTrackImage.setId("faithTrackImage");
+            Platform.runLater(() -> dashboardPane.getChildren().add(faithTrackImage));
+        }
+        faithTrackImage.setImage(faithImage);
         int xOffset = 80;
         int yOffset = 190;
 
@@ -899,10 +905,14 @@ public class DashboardController {
         if ( modelView.getDashboards().size() == 1 ) {
             Image blackFaithImage = new Image("/view/images/faithTrack/blackCross.png");
 
-            if (blackFaithTrackImage != null) {
-                Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#blackFaithTrackImage")));
+
+            if(blackFaithTrackImage == null ) {
+                blackFaithTrackImage = new ImageView();
+                blackFaithTrackImage.setId("blackFaithTrackImage");
+                Platform.runLater(() -> dashboardPane.getChildren().add(blackFaithTrackImage));
             }
-            blackFaithTrackImage = new ImageView(blackFaithImage);
+            blackFaithTrackImage.setImage(blackFaithImage);
+
 
             blackFaithTrackImage.setLayoutX(xOffset+xStart[blackMarker]);
             blackFaithTrackImage.setLayoutY(yOffset+yStart[blackMarker]);
@@ -911,21 +921,19 @@ public class DashboardController {
 
             if(faithMarker.equals(blackMarker)) {
                 double halfLen = (double)(len)/2;
-                faithTrackImage.setFitWidth(halfLen);
-                faithTrackImage.setFitHeight(halfLen);
                 blackFaithTrackImage.setLayoutX(blackFaithTrackImage.getLayoutX()+halfLen);
                 blackFaithTrackImage.setLayoutY(blackFaithTrackImage.getLayoutY()+halfLen);
                 blackFaithTrackImage.setFitWidth(halfLen);
                 blackFaithTrackImage.setFitHeight(halfLen);
+                faithTrackImage.setFitWidth(halfLen);
+                faithTrackImage.setFitHeight(halfLen);
             }
-
-            blackFaithTrackImage.setId("blackFaithTrackImage");
-            Platform.runLater(() -> dashboardPane.getChildren().add(blackFaithTrackImage));
+            else {
+                faithTrackImage.setFitWidth(len);
+                faithTrackImage.setFitHeight(len);
+            }
         }
 
-        Platform.runLater(() -> dashboardPane.getChildren().remove(dashboardPane.lookup("#faithTrackImage")));
-        faithTrackImage.setId("faithTrackImage");
-        Platform.runLater(() -> dashboardPane.getChildren().add(faithTrackImage));
 
     }
 
@@ -986,6 +994,9 @@ public class DashboardController {
         }
         endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
         playersChoiceBox.setValue(gui.getNickname());
+        for(Action action : Action.values()){
+            action.enabled = true;
+        }
         showDashboard(gui.getNickname());
     }
 
@@ -1015,6 +1026,9 @@ public class DashboardController {
             if(button != null) {
                 button.setDisable(true);
             }
+        }
+        for(Action action : Action.values()){
+            action.enabled = false;
         }
         showDashboard(gui.getNickname());
         handleWaitingText();
@@ -1099,15 +1113,16 @@ public class DashboardController {
      * @param index the type of token to show
      */
     public void showToken(int index) {
+        if(tokenImageView == null) {
+            tokenImageView = new ImageView();
+            tokenImageView.setLayoutX(98);
+            tokenImageView.setLayoutY(90);
+            tokenImageView.setFitWidth(50);
+            tokenImageView.setFitHeight(50);
+            Platform.runLater(() -> dashboardPane.getChildren().add(tokenImageView));
+        }
         Image tokenImage = new Image("/view/images/tokens/cerchio"+index+".png");
-        ImageView tokenImageView = new ImageView(tokenImage);
-        tokenImageView.setLayoutX(98);
-        tokenImageView.setLayoutY(90);
-        tokenImageView.setFitWidth(50);
-        tokenImageView.setFitHeight(50);
-        Platform.runLater(() -> {
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#endGameLabel"));
-            dashboardPane.getChildren().add(tokenImageView);
-        });
+        tokenImageView.setImage(tokenImage);
+        showDashboard(gui.getNickname());
     }
 }
