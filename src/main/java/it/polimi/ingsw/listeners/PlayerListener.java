@@ -55,7 +55,7 @@ public class PlayerListener extends PropertyListener {
             if (game instanceof SinglePlayerGame){
                 ArrayList<Integer> developmentIDs = translateGrid((Deck[][]) newValue);
                 for(CardColor cardColor : CardColor.values()){
-                    if (developmentIDs.stream().map(JsonCardsCreator::generateDevelopmentCard).filter(Objects::nonNull).noneMatch(card -> card.getType() == cardColor)){
+                    if (developmentIDs.stream().filter(Objects::nonNull).map(JsonCardsCreator::generateDevelopmentCard).noneMatch(card -> card.getType() == cardColor)){
                         ServerMessage message = new Defeat();
                         virtualView.sendToEveryone(message);
                     }
