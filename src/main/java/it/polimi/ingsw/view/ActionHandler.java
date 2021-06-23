@@ -79,7 +79,9 @@ public class ActionHandler extends Thread{
         }
         else if(message instanceof GameStats){
             view.showStats(((GameStats) message).getPlayerPoints());
-            System.exit(0);
+            if(view instanceof CLI){
+                System.exit(0);
+            }
         }
         else if(message instanceof TokenDrawn){
             view.printText("\nToken drawn:\n" + ((TokenDrawn) message).getToken().toString());
