@@ -243,6 +243,7 @@ public class DashboardController {
     public void choiceBoxChange() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
         if(playerSelected != null) {
+            developmentButton = null;
             showDashboard(playerSelected);
         }
     }
@@ -490,6 +491,7 @@ public class DashboardController {
      * @param nickname name of the selected player
      */
     public void showDashboard(String nickname) {
+        playersChoiceBox.setValue(gui.getNickname());
         if(nickname.equals(gui.getNickname())) {
             ModelView.DashboardView dashboardView = modelView.getMyDashboard();
             if(gui.getNickname().equals(modelView.getCurrPlayer()) || modelView.getCurrPlayer().length() < 1) {
@@ -867,7 +869,7 @@ public class DashboardController {
         Image faithImage = new Image("/view/images/faithTrack/cross.png");
 
          for(int i = 0; i<popesFavorTiles.length; i++) {
-             Image tileImage = new Image("/view/images/faithTrack/pope_favor"+(i+1) + (popesFavorTiles[i] ? "_front": "_back" )+".png");
+             Image tileImage = new Image("/view/images/faithTrack/pope_favor"+(i+1) + ((popesFavorTiles[i] != null) && popesFavorTiles[i] ? "_front": "_back" )+".png");
              if(popeFavorTilesImages[i] == null) {
                  popeFavorTilesImages[i] = new ImageView();
                  popeFavorTilesImages[i].setLayoutX(290 + 222.5 * i);
@@ -993,7 +995,6 @@ public class DashboardController {
             Platform.runLater(() -> basicProduction.valueProperty().set(null));
         }
         endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
-        playersChoiceBox.setValue(gui.getNickname());
         for(Action action : Action.values()){
             action.enabled = true;
         }
