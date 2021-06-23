@@ -79,10 +79,7 @@ public class LeadersController {
 
         for(int i=0; i<leaderCardImageView.length; i++) {
 
-
-
-
-            if(ids.size() >= 1 && (boolean) leaderIds.values().toArray()[i] ) {
+            if(ids.size() >= 1 && leaderIds.values().size() >= i && (boolean) leaderIds.values().toArray()[i] ) {
                 activateButton[i].setDisable(true);
                 discardButton[i].setDisable(true);
                 activeLabels[i] = new Label("ACTIVE");
@@ -94,7 +91,8 @@ public class LeadersController {
 
 
                 int finalI = i;
-                if ((modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length()<1) && modelView.getMyDashboard().getAvailableProduction().contains((Integer) leaderIds.keySet().toArray()[i])) {
+                int id = (Integer) leaderIds.keySet().toArray()[i];
+                if ((modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length()<1) && id >=209 && id <=212 && modelView.getMyDashboard().getAvailableProduction().contains(id)) {
 
                     ComboBox<ImageView> basicProductionRes;
                     basicProductionRes = new ComboBox<>();
@@ -171,6 +169,7 @@ public class LeadersController {
             }
         }
     }
+
     public void start() {
         if(!modelView.getCurrPlayer().equals(gui.getNickname()) && modelView.getDashboards().size() > 1) {
             disableButtons();
