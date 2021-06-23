@@ -99,6 +99,7 @@ public class DashboardController {
     ArrayList<ComboBox<ImageView>> basicProductionResImages = new ArrayList<>();
     Map<Integer, Resource> leaderExtraProductionRes;
 
+    ImageView[] strongboxResourceView = new ImageView[4];
     Label[] amountLabel = new Label [4];
 
     public void setGUI(GUI gui) {
@@ -240,10 +241,6 @@ public class DashboardController {
     public void choiceBoxChange() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
         if(playerSelected != null) {
-            if (!playerSelected.equals(gui.getNickname())) {
-                marketButton.setDisable(true);
-                gridButton.setDisable(true);
-            }
             showDashboard(playerSelected);
         }
     }
@@ -325,6 +322,7 @@ public class DashboardController {
                     bonusStage.close();
                     dashboardPane.setDisable(false);
                     gui.handleTurn();
+                    showDashboard(gui.getNickname());
                 }
             });
             bonusPane.getChildren().add(selectButton);
@@ -507,7 +505,7 @@ public class DashboardController {
                     }
                 } else {
                     marketButton.setDisable(!actions.contains(Action.TAKE_RESOURCE));
-
+                    endTurnButton.setDisable(!actions.contains(Action.END_TURN));
                     gridButton.setDisable(!actions.contains(Action.BUY_CARD));
 
                     if (actions.contains(Action.ACTIVATE_PRODUCTION)) {
@@ -578,7 +576,8 @@ public class DashboardController {
                 devImages[slot] = new Image("/view/images/developments/developmentCard"+activeDevelopments.get(slot)+".png");
             } else {
                 devImages[slot] = new Image("/view/images/developments/developmentCardEmpty.png");
-//                developmentButton[slot].setDisable(true);
+                if (developmentButton[slot] != null)
+                    developmentButton[slot].setOpacity(0);
             }
 
 
@@ -615,40 +614,37 @@ public class DashboardController {
         int xStart = 120, yStart = 515;
         double len = 40; double padding = 20;
         int resCont = 0;
+        if(amountLabel == null) {
+            amountLabel = new Label[4];
+        }
         for (Map.Entry<Resource,Integer> value  : strongbox.getResources().entrySet() ) {
-
             String amount = "x" + value.getValue();
             Image resourceImage = new Image(getImage(value.getKey()));
-            ImageView strongboxResourceView = new ImageView(resourceImage);
-            strongboxResourceView.setLayoutX(xStart+(len+padding*3/2)*(resCont%2));
-            int half = resCont/2;
-            strongboxResourceView.setLayoutY(yStart+(len+padding)*half);
-            strongboxResourceView.setFitWidth(len);
-            strongboxResourceView.setFitHeight(len);
-            strongboxResourceView.setId("strongBoxImage"+resCont);
-            if(amountLabel != null && amountLabel[resCont] != null) {
+            if(strongboxResourceView[resCont] == null) {
+                strongboxResourceView[resCont] = new ImageView();
                 int finalResCont = resCont;
                 Platform.runLater(() -> {
-                    dashboardPane.getChildren().remove(dashboardPane.lookup("#strongBoxImage"+finalResCont));
-                    dashboardPane.getChildren().remove(dashboardPane.lookup("#strongboxLabel"+finalResCont));
-
+                    dashboardPane.getChildren().add(amountLabel[finalResCont]);
+                    dashboardPane.getChildren().add(strongboxResourceView[finalResCont]);
                 });
+                strongboxResourceView[resCont].setImage(resourceImage);
+                strongboxResourceView[resCont].setLayoutX(xStart+(len+padding*3/2)*(resCont%2));
+                int half = resCont/2;
+                strongboxResourceView[resCont].setLayoutY(yStart+(len+padding)*half);
+                strongboxResourceView[resCont].setFitWidth(len);
+                strongboxResourceView[resCont].setFitHeight(len);
+                strongboxResourceView[resCont].setId("strongBoxImage"+resCont);
             }
-            if(amountLabel == null) {
-                amountLabel = new Label[4];
+            if( amountLabel[resCont] == null) {
+                amountLabel[resCont] = new Label();
+                amountLabel[resCont].setTextFill(Color.web("white"));
+                amountLabel[resCont].setLayoutX(strongboxResourceView[resCont].getLayoutX()+len/2);
+                amountLabel[resCont].setLayoutY(strongboxResourceView[resCont].getLayoutY()+len);
+                amountLabel[resCont].setMinWidth(strongboxResourceView[resCont].getFitWidth());
+                amountLabel[resCont].setMinHeight(20);
+                amountLabel[resCont].setId("strongboxLabel"+resCont);
             }
-            amountLabel[resCont] = new Label(amount);
-            amountLabel[resCont].setTextFill(Color.web("white"));
-            amountLabel[resCont].setLayoutX(strongboxResourceView.getLayoutX()+len/2);
-            amountLabel[resCont].setLayoutY(strongboxResourceView.getLayoutY()+len);
-            amountLabel[resCont].setMinWidth(strongboxResourceView.getFitWidth());
-            amountLabel[resCont].setMinHeight(20);
-            amountLabel[resCont].setId("strongboxLabel"+resCont);
-            int finalResCont1 = resCont;
-            Platform.runLater(() -> {
-                dashboardPane.getChildren().add(amountLabel[finalResCont1]);
-                dashboardPane.getChildren().add(strongboxResourceView);
-            });
+            amountLabel[resCont].setText(amount);
             resCont++;
         }
 
@@ -664,11 +660,14 @@ public class DashboardController {
 
         double len = 30;
         int xStart = 200, yStart = 335, yOffset = 55;
-
+        if(ExtraShelfView[0] != null)
+            ExtraShelfView[0].setStyle("-fx-opacity: 0");
+        if(ExtraShelfView[1] != null)
+            ExtraShelfView[1].setStyle("-fx-opacity: 0");
         for(int i = 0; i < extraShelfResources.size()*2; i++) {
             int xBool = (i+1)%2;
             int yBool = (i/2);
-            Image extraShelfImage = new Image(getImage(warehouse.get(6+i) == null ? extraShelfResources.get(0) : warehouse.get(6+i)));
+            Image extraShelfImage = new Image(getImage(warehouse.get(6+i) == null ? extraShelfResources.get(yBool) : warehouse.get(6+i)));
             if(ExtraShelfView[i] == null) {
                 ExtraShelfView[i] = new ImageView();
                 ExtraShelfView[i].setLayoutX(360 - (len + 20) * xBool);
@@ -765,10 +764,14 @@ public class DashboardController {
                 }
         }
         else {
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfImage"));
-            dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfButton"));
-            tempShelfButton = null;
-            temporaryShelfImage = null;
+            if(temporaryShelfImage != null) {
+                Platform.runLater(() -> {
+                    dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfImage"));
+                    dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfButton"));
+                });
+                tempShelfButton = null;
+                temporaryShelfImage = null;
+            }
         }
     }
 
@@ -982,6 +985,7 @@ public class DashboardController {
             Platform.runLater(() -> basicProduction.valueProperty().set(null));
         }
         endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
+        playersChoiceBox.setValue(gui.getNickname());
         showDashboard(gui.getNickname());
     }
 
