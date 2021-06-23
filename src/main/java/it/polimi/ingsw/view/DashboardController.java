@@ -372,7 +372,7 @@ public class DashboardController {
                 basicProductionResImages.get(2).setDisable(false);
             }
             else if(index < 4)
-                developmentImage[index-1].setStyle("-fx-opacity: 0.7");
+                developmentImage[index-1].setStyle("-fx-opacity: 1");
         }
         else {
             if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
@@ -386,7 +386,7 @@ public class DashboardController {
                 }
             }
             if(index < 4)
-                developmentImage[index-1].setStyle("-fx-opacity: 1");
+                developmentImage[index-1].setStyle("-fx-opacity: 0.7");
 
         }
         activateProductionsButton.setDisable(enabledProductions.size() == 0);
