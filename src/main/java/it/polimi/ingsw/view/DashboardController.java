@@ -371,8 +371,8 @@ public class DashboardController {
                 basicProductionResImages.get(1).setDisable(false);
                 basicProductionResImages.get(2).setDisable(false);
             }
-            else
-                developmentImage[index-1].setStyle("-fx-opacity: 1");
+            else if(index < 4)
+                developmentImage[index-1].setStyle("-fx-opacity: 0.7");
         }
         else {
             if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
