@@ -21,9 +21,9 @@
          </effect>
       </Label>
 
-        <Label id="serverLabel" fx:id="serverLabel" alignment="CENTER" layoutX="200" layoutY="130.0" prefHeight="30.0" prefWidth="200.0" text="Server port" />
-    <TextField id="serverTextField" fx:id="serverTextField" alignment="CENTER" layoutX="200.0" layoutY="160.0" prefHeight="20.0" prefWidth="200.0" promptText="Insert server port" />
-    <Label id="ipLabel" fx:id="ipLabel" alignment="CENTER" layoutX="200" layoutY="220.0" prefHeight="30.0" prefWidth="200.0" text="IP address" />
-       <TextField id="ipTextField" fx:id="ipTextField" alignment="CENTER" layoutX="200" layoutY="250.0" prefHeight="20.0" prefWidth="200.0"  promptText="Insert ip address" />
+        <Label id="serverLabel" fx:id="serverLabel" alignment="CENTER" layoutX="200" layoutY="130.0" prefHeight="30.0" prefWidth="200.0" text="IP address" />
+    <TextField id="serverTextField" fx:id="serverTextField" alignment="CENTER" layoutX="200.0" layoutY="160.0" prefHeight="20.0" prefWidth="200.0" promptText="Insert ip address" />
+    <Label id="ipLabel" fx:id="ipLabel" alignment="CENTER" layoutX="200" layoutY="220.0" prefHeight="30.0" prefWidth="200.0" text="Server port" />
+       <TextField id="ipTextField" fx:id="ipTextField" alignment="CENTER" layoutX="200" layoutY="250.0" prefHeight="20.0" prefWidth="200.0"  promptText="Insert server port" />
 
 </Pane>

@@ -53,10 +53,20 @@ public class GUI extends Application implements View {
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
-        setupController = new SetupController();
-        setupController.setGUI(this);
-        setupController.start();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneConnect.fxml"));
 
+        try {
+            Parent root = loader.load();
+//            Stage stage = new Stage();
+            mainStage.setScene(new Scene(root));
+            mainStage.show();
+
+            setupController = loader.getController();
+            setupController.setGUI(this);
+            setupController.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
