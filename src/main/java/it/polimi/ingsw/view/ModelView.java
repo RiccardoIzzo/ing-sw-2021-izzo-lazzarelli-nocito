@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.MarbleColor;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
+import it.polimi.ingsw.model.card.ProductionLeaderCard;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -177,7 +179,7 @@ public class ModelView {
         public ArrayList<Integer> getAvailableProduction(){
             ArrayList<Integer> powerProductionCards = new ArrayList<>();
             for(Integer id : leaderCards.keySet()){
-                if(leaderCards.get(id))  powerProductionCards.add(id);
+                if(leaderCards.get(id) && JsonCardsCreator.generateLeaderCard(id) instanceof ProductionLeaderCard)  powerProductionCards.add(id);
             }
             powerProductionCards.addAll(activeDevelopments.stream().filter(Objects::nonNull).collect(Collectors.toList()));
             return powerProductionCards;
