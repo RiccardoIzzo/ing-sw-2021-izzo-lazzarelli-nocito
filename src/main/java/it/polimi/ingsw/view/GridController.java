@@ -21,6 +21,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * GridController class manages the Grid scene.
+ * @author Andrea Nocito
+ */
 public class GridController {
     // Grid Scene
     public ImageView card1ImageView;
@@ -61,7 +65,9 @@ public class GridController {
     public Button buyCardButton;
     private ModelView modelView;
 
-
+    /**
+     * Method cardButtonClicked is called when a card is selected and updates cardSelectedImageView
+     */
     public void cardButtonClicked(ActionEvent actionEvent) {
         Button clickedButton = (Button) actionEvent.getSource();
         int pos = buttons.indexOf(clickedButton);
@@ -69,6 +75,11 @@ public class GridController {
         selectedId = ids[pos];
     }
 
+    /**
+     * Method buyCardButtonClicked checks if a card has been selected.
+     * If it hasn't, it shows an alert, otherwise checks if the requirement
+     * to buy the card are met and sends a buyCard message
+     */
     public void buyCardButtonClicked() {
         if(selectedId != 0) {
             DevelopmentCard cardToBuy = JsonCardsCreator.generateDevelopmentCard(selectedId);
@@ -125,6 +136,10 @@ public class GridController {
             }
         }
     }
+
+    /**
+     * Method setup sets up the scene and calls setGrid
+     */
     public void setup(ModelView modelView) {
 //    <TextField fx:id="slotTextField" layoutX="101.0" layoutY="304.0" prefHeight="20" prefWidth="70"/
         slotTextField = new TextField();
@@ -180,10 +195,15 @@ public class GridController {
 
         setGrid(modelView.getGrid());
     }
+
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Method setGrid sets the correct image for each card in the grid
+     * @param grid an arrayList of ids of cards that are visible
+     */
     public void setGrid(ArrayList<Integer> grid) {
         Image[] devImages = new Image[12];
         int slot = 0;

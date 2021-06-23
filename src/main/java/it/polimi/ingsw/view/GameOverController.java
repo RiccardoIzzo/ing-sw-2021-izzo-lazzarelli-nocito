@@ -8,6 +8,10 @@ import javafx.scene.layout.Pane;
 
 import java.util.Map;
 
+/**
+ * GameOverController class manages the GameOver scene.
+ * @author Andrea Nocito
+ */
 public class GameOverController {
     //Game over Scene
     public ListView<Integer> pointsListView;
@@ -20,6 +24,11 @@ public class GameOverController {
     public void setMap(Map<String, Integer> map) {
         this.map = map;
     }
+
+    /**
+     * Method start shows the result of the game.
+     * In a multiplayer game, it shows the final point chart
+     */
     public void start() {
         if(map != null) {
             for (Map.Entry<String, Integer> player : map.entrySet()) {

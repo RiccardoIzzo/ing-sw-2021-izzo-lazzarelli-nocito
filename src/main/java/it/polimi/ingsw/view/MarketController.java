@@ -16,6 +16,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
+/**
+ * MarketController class manages the Market scene.
+ * @author Andrea Nocito
+ */
 public class MarketController {
     // Market Scene
     public Button firstColumnButton;
@@ -35,6 +39,12 @@ public class MarketController {
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
+
+    /**
+     * Method checkActiveWhiteMarbleLeaders checks if there are any white marble leaders active and sets up
+     * whiteMarbleChoiceBox before adding it to the scene (if not empty).
+     * @param leaderCards a map representing the leader cards.
+     */
     public void checkActiveWhiteMarbleLeaders(Map<Integer, Boolean> leaderCards) {
         whiteMarbleChoiceBox = new ChoiceBox<>();
 
@@ -72,7 +82,9 @@ public class MarketController {
 
     }
 
-
+    /**
+     * Method start sets up marketPane
+     */
     public void start() {
         Pane marblePane = new Pane();
         double len = 50;
@@ -107,6 +119,10 @@ public class MarketController {
         marblePane.toFront();
     }
 
+    /**
+     * Method columnButtonClicked is called when an arrow representing a column of the market tray is clicked
+     * It sends TakeResource message
+     */
     public void columnButtonClicked(ActionEvent actionEvent) {
         Button arrowButton = (Button) actionEvent.getSource();
 
@@ -134,6 +150,10 @@ public class MarketController {
         stage.close();
     }
 
+    /**
+     * Method rowButtonClicked is called when an arrow representing a row of the market tray is clicked
+     * It sends TakeResource message
+     */
     public void rowButtonClicked(ActionEvent actionEvent) {
         Button arrowButton = (Button) actionEvent.getSource();
         if (whiteMarbleChoiceBox.isShowing()) {
@@ -158,6 +178,7 @@ public class MarketController {
         Stage stage = (Stage) arrowButton.getScene().getWindow();
         stage.close();
     }
+
     public void setMarketTray(ArrayList<MarbleColor> marketTray) {
         this.marketTray = marketTray;
     }
