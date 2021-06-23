@@ -62,7 +62,7 @@ public class MarketController {
                 .filter(leader -> JsonCardsCreator.generateLeaderCard(leader) instanceof WhiteMarbleLeaderCard)
                 .collect(Collectors.toList());
 
-        if (activeWhiteMarbleLeaders.size() > 1){
+        if (activeWhiteMarbleLeaders.size() >= 1){
 
             WhiteMarbleLeaderCard card1 = (WhiteMarbleLeaderCard) Objects.requireNonNull(JsonCardsCreator.generateCard(activeWhiteMarbleLeaders.get(0)));
             whiteMarbleChoiceBox.getItems().add("White marble = " + ((MarbleColor) card1.getExchange().toArray()[0]).name());
