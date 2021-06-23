@@ -132,7 +132,7 @@ public class FaithTrack {
         int victoryPoints = 0;
         int i = 0;
         while (i < WINNING_TILES.length && posFaithMarker >= WINNING_TILES[i]) {
-            victoryPoints += WINNING_VALUES[i];
+            victoryPoints = WINNING_VALUES[i];
             i++;
         }
         return victoryPoints;
