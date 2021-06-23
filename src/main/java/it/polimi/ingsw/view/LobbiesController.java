@@ -110,8 +110,8 @@ public class LobbiesController {
 
             if (isParsable(numPlayersTextField.getText())) {
                 int numPlayers = Integer.parseInt(numPlayersTextField.getText());
-                if (numPlayers > 4 )
-                    gui.showAlert("The maximum number of players is four, choose again.", Alert.AlertType.ERROR);
+                if (numPlayers < 1 || numPlayers > 4)
+                    gui.showAlert("The number of players must be between 1 and 4, choose again.", Alert.AlertType.ERROR);
                 else {
                     gui.send(new CreateLobby(lobbyID, numPlayers));
                     lobbiesPane.setDisable(true);
