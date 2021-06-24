@@ -194,6 +194,12 @@ public class GridController {
 
 
         setGrid(modelView.getGrid());
+
+
+
+        buyCardButton.setDisable(!(modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length() < 1) );
+
+
     }
 
     public void setGUI(GUI gui) {
