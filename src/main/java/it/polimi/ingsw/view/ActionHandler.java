@@ -30,6 +30,7 @@ public class ActionHandler extends Thread{
 
     /**
      * Method handle updates the view.
+     * Based on the message received, it performs the corresponding action on the view.
      */
     public void handle(ServerMessage message){
         if(message instanceof ValidNickname || message instanceof InvalidNickname){
@@ -143,6 +144,9 @@ public class ActionHandler extends Thread{
         }
     }
 
+    /**
+     * Runnable class method that handle a single ServerMessage message.
+     */
     @Override
     public void run() {
         while (true) {
