@@ -122,8 +122,9 @@ public class ActionHandler extends Thread{
                 view.handleTemporaryShelf();
             }
             else {
-                if (view instanceof GUI)
+                if(view instanceof GUI && ((GUI) view).dashboardController != null) {
                     ((GUI) view).dashboardController.updatePlayerDashboard();
+                }
             }
         }
     }
