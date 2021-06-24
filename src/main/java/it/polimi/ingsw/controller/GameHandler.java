@@ -200,6 +200,10 @@ public class GameHandler {
 
         else if(message instanceof SetFinalTurn){
             game.setFinalTurn(true);
+            if (game instanceof SinglePlayerGame){
+                Map<String, Integer> gameStats = game.getRanking();
+                virtualView.sendToEveryone(new GameStats(gameStats, gameStats.keySet().iterator().next()));
+            }
         }
     }
 
