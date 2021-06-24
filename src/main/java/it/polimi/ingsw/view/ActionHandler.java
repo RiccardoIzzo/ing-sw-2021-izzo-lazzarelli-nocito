@@ -92,8 +92,13 @@ public class ActionHandler extends Thread{
             view.handleTurn();
         }
         else if(message instanceof Defeat){
-            view.printText("You lost!");
-            System.exit(0);
+            if(view instanceof CLI) {
+                view.printText("You lost!");
+                System.exit(0);
+            }
+            else if(view instanceof GUI) {
+                ((GUI) view).handleDefeat();
+            }
         }
         else if(message instanceof Reconnection) {
             if(view instanceof GUI)
@@ -108,9 +113,17 @@ public class ActionHandler extends Thread{
             }
             else if (END_TURN.equals(propertyName)){
                 view.printText(newValue.toString() + ", ready to play.");
+                if(view instanceof GUI && ((GUI) view).dashboardController != null) {
+                    ((GUI) view).dashboardController.updatePlayerDashboard();
+                    ((GUI) view).dashboardController.handleWaitingText();
+                }
             }
             else if (TEMPORARY_SHELF_CHANGE.equals(propertyName)){
                 view.handleTemporaryShelf();
+            }
+            else {
+                if (view instanceof GUI)
+                    ((GUI) view).dashboardController.updatePlayerDashboard();
             }
         }
     }
