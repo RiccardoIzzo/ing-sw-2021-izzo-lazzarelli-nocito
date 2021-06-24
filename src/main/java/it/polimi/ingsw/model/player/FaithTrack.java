@@ -66,7 +66,9 @@ public class FaithTrack {
      * @return false if the player hasn't reached a Pope space, otherwise returns the result of popeTilePass method.
      */
     public boolean moveForward() {
-        posFaithMarker++;
+        if (posFaithMarker < END_TILE) {
+            posFaithMarker++;
+        }
         pcs.firePropertyChange(FAITH_MARKER_POSITION, null, posFaithMarker);
         if(TILE_POS.contains(posFaithMarker)) return popeTilePass();
         else return false;

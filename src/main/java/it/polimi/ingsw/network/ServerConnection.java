@@ -76,10 +76,8 @@ public class ServerConnection implements Runnable{
                 modelViewUpdater.start();
                 if ((SET_LEADERS.equals(((UpdateView) message).getPropertyName()) || TEMPORARY_SHELF_CHANGE.equals(((UpdateView) message).getPropertyName()) || TOKEN_DRAWN.equals(((UpdateView) message).getPropertyName()) || END_TURN.equals(((UpdateView) message).getPropertyName()))){
                     modelViewUpdater.join();
-                    messages.add(message);
-                } else {
-                    messages.add(message);
                 }
+                messages.add(message);
             }
             else {
                 if(message instanceof GameStarted) {
