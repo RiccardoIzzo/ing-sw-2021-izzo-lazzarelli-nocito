@@ -492,6 +492,39 @@ public class DashboardController {
     }
 
     /**
+     * Method showDashboard shows the current faithTrack of the player
+     */
+    public void updatePlayerFaithTrack() {
+        ModelView.DashboardView dashboardView = modelView.getMyDashboard();
+        showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
+
+    }
+
+    /**
+     * Method showDashboard shows the current strongbox of the player
+     */
+    public void updatePlayerStrongbox() {
+        ModelView.DashboardView dashboardView = modelView.getMyDashboard();
+        showStrongbox(dashboardView.getStrongbox());
+    }
+
+    /**
+     * Method showDashboard shows the current development cards of the player
+     */
+    public void updatePlayerActiveDevelopments() {
+        ModelView.DashboardView dashboardView = modelView.getMyDashboard();
+        showActiveDevelopments(dashboardView.getActiveDevelopments());
+    }
+
+    /**
+     * Method showDashboard shows the current warehouse of the player
+     */
+    public void updatePlayerWarehouse() {
+        ModelView.DashboardView dashboardView = modelView.getMyDashboard();
+        showWarehouse(dashboardView.getWarehouse(), dashboardView.getExtraShelfResources());
+    }
+
+    /**
      * Method showDashboard shows the current dashboard of the selected player
      * @param nickname name of the selected player
      */
@@ -631,9 +664,9 @@ public class DashboardController {
         for (Map.Entry<Resource,Integer> value  : strongbox.getResources().entrySet() ) {
             String amount = "x" + value.getValue();
             Image resourceImage = new Image(getImage(value.getKey()));
+            int finalResCont = resCont;
             if(strongboxResourceView[resCont] == null) {
                 strongboxResourceView[resCont] = new ImageView();
-                int finalResCont = resCont;
                 Platform.runLater(() -> {
                     dashboardPane.getChildren().add(amountLabel[finalResCont]);
                     dashboardPane.getChildren().add(strongboxResourceView[finalResCont]);
@@ -655,7 +688,8 @@ public class DashboardController {
                 amountLabel[resCont].setMinHeight(20);
                 amountLabel[resCont].setId("strongboxLabel"+resCont);
             }
-            amountLabel[resCont].setText(amount);
+
+            Platform.runLater(() -> amountLabel[finalResCont].setText(amount));
             resCont++;
         }
 
@@ -731,6 +765,7 @@ public class DashboardController {
         if ( showTempShelf ) {
             marketButton.setDisable(true);
             gridButton.setDisable(true);
+
             if(temporaryShelfImage == null) {
                 Image image = new Image("/view/images/resources/temporaryShelfEmpty.png");
                 temporaryShelfImage = new ImageView(image);
@@ -761,7 +796,9 @@ public class DashboardController {
 
                 for(int i =0; i<tempShelfImageViews.length; i++) {
                     Image tempShelfImage = new Image(getImage(warehouse.get(10+i)));
-
+                    if(tempShelfImageViews[i] == null) {
+                        tempShelfImageViews[i] = new ImageView();
+                    }
                     tempShelfImageViews[i] = new ImageView(tempShelfImage);
                     tempShelfImageViews[i].setLayoutX(337.5+120*i);
                     tempShelfImageViews[i].setLayoutY(530);
@@ -898,8 +935,8 @@ public class DashboardController {
             faithTrackImage = new ImageView();
             faithTrackImage.setId("faithTrackImage");
             Platform.runLater(() -> dashboardPane.getChildren().add(faithTrackImage));
+            faithTrackImage.setImage(faithImage);
         }
-        faithTrackImage.setImage(faithImage);
         int xOffset = 80;
         int yOffset = 190;
 
@@ -920,14 +957,9 @@ public class DashboardController {
                 blackFaithTrackImage = new ImageView();
                 blackFaithTrackImage.setId("blackFaithTrackImage");
                 Platform.runLater(() -> dashboardPane.getChildren().add(blackFaithTrackImage));
+                blackFaithTrackImage.setImage(blackFaithImage);
             }
-            blackFaithTrackImage.setImage(blackFaithImage);
 
-
-            blackFaithTrackImage.setLayoutX(xOffset+xStart[blackMarker]);
-            blackFaithTrackImage.setLayoutY(yOffset+yStart[blackMarker]);
-            blackFaithTrackImage.setFitWidth(len);
-            blackFaithTrackImage.setFitHeight(len);
 
             if(faithMarker.equals(blackMarker)) {
                 double halfLen = (double)(len)/2;
@@ -939,6 +971,10 @@ public class DashboardController {
                 faithTrackImage.setFitHeight(halfLen);
             }
             else {
+                blackFaithTrackImage.setLayoutX(xOffset+xStart[blackMarker]);
+                blackFaithTrackImage.setLayoutY(yOffset+yStart[blackMarker]);
+                blackFaithTrackImage.setFitWidth(len);
+                blackFaithTrackImage.setFitHeight(len);
                 faithTrackImage.setFitWidth(len);
                 faithTrackImage.setFitHeight(len);
             }
@@ -1031,9 +1067,11 @@ public class DashboardController {
         gui.send(new EndTurn());
         endTurnButton.setDisable(true);
         marketButton.setDisable(true);
-        for(Button button : developmentButton) {
-            if(button != null) {
-                button.setDisable(true);
+        if(modelView.getDashboards().size() > 1 ) {
+            for (Button button : developmentButton) {
+                if (button != null) {
+                    button.setDisable(true);
+                }
             }
         }
         for(Action action : Action.values()){

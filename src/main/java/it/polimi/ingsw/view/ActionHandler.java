@@ -6,9 +6,8 @@ import javafx.scene.control.Alert;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static it.polimi.ingsw.constants.GameConstants.END_TURN;
-import static it.polimi.ingsw.constants.PlayerConstants.SET_LEADERS;
-import static it.polimi.ingsw.constants.PlayerConstants.TEMPORARY_SHELF_CHANGE;
+import static it.polimi.ingsw.constants.GameConstants.*;
+import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 /**
  * ActionHandler class manages the ServerMessage from the server and updates the view.
@@ -123,7 +122,22 @@ public class ActionHandler extends Thread{
             }
             else {
                 if(view instanceof GUI && ((GUI) view).dashboardController != null) {
-                    ((GUI) view).dashboardController.updatePlayerDashboard();
+                    switch(propertyName) {
+                        case STRONGBOX_CHANGE:
+                            ((GUI) view).dashboardController.updatePlayerStrongbox();
+                            break;
+                        case FAITH_MARKER_POSITION:
+                        case BLACK_MARKER_POSITION:
+                        case POPES_TILES_CHANGE:
+                        case TILES_UNCOVERED_CHANGE:
+                            ((GUI) view).dashboardController.updatePlayerFaithTrack();
+                            break;
+
+                        default:
+                            break;
+
+                    }
+
                 }
             }
         }
