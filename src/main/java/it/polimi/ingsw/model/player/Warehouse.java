@@ -57,6 +57,20 @@ public class Warehouse {
     }
 
     /**
+     * Method setBonusResource sets the bonus resources.
+     * @param resources bonus resources.
+     */
+    public void setBonusResource(ResourceMap resources){
+        ArrayList<Resource> bonusResources = resources.asList();
+        int index = 0;
+        for(Resource resource : bonusResources){
+            shelves.set(index, resource);
+            index++;
+        }
+        pcs.firePropertyChange(SHELF_CHANGE, null, shelves);
+    }
+
+    /**
      * Method getExtraShelfResources gets the Arraylist of Resource(s) associated with the active ExtraShelfLeaderCard(s)
      * of the Player who own this Warehouse.
      * @return ArrayList of Resource(s) of the active ExtraShelfLeaderCard.

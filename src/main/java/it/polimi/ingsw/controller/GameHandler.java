@@ -118,11 +118,7 @@ public class GameHandler {
         }
 
         else if(message instanceof SendBonusResources){
-            int indexResource = 0;
-            for(Resource resource: ((SendBonusResources) message).getBonusResource().asList()) {
-                player.getDashboard().getWarehouse().getShelves().set(indexResource, resource);
-                indexResource++;
-            }
+            player.getDashboard().getWarehouse().setBonusResource(((SendBonusResources) message).getBonusResource());
         }
 
         else if(message instanceof TakeResources) {
