@@ -141,8 +141,8 @@ public class CLI implements View{
                 else {
                     System.out.println("Insert the number of players:");
                     int numPlayers = getInt();
-                    while(numPlayers > 4){
-                        System.out.println("The maximum number of players is four, choose again.");
+                    while(numPlayers < 1 || numPlayers > 4){
+                        System.out.println("The number of players must be between 1 and 4, choose again.");
                         numPlayers = getInt();
                     }
                     send(new CreateLobby(lobbyID, numPlayers));

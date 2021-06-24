@@ -80,9 +80,9 @@ public class FaithTrackTest{
         faithTrack.moveForward();
         faithTrack.moveForward();
         assertEquals(faithTrack.getPosVictoryPoints(), 1);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 8; i++) {
             faithTrack.moveForward();
         }
-        assertEquals(faithTrack.getPosVictoryPoints(), 7);
+        assertEquals(faithTrack.getPosVictoryPoints(), 4);
     }
 }

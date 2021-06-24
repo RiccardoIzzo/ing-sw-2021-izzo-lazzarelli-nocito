@@ -52,7 +52,12 @@ public class MarketController {
         whiteMarbleChoiceBox.setLayoutY(0);
         whiteMarbleChoiceBox.setPrefWidth(150);
         whiteMarbleChoiceBox.setMinHeight(30);
-        whiteMarbleChoiceBox.setOnAction(event -> leaderID = activeWhiteMarbleLeaders.get(whiteMarbleChoiceBox.getSelectionModel().getSelectedIndex()));
+        whiteMarbleChoiceBox.setOnAction(event -> {
+            int index = whiteMarbleChoiceBox.getSelectionModel().getSelectedIndex();
+            if(index >= 0) {
+                leaderID = activeWhiteMarbleLeaders.get(index);
+            }
+        });
 
         activeWhiteMarbleLeaders = (ArrayList<Integer>) leaderCards
                 .entrySet()
@@ -62,21 +67,22 @@ public class MarketController {
                 .filter(leader -> JsonCardsCreator.generateLeaderCard(leader) instanceof WhiteMarbleLeaderCard)
                 .collect(Collectors.toList());
 
-        if (activeWhiteMarbleLeaders.size() > 1){
-
+        if (activeWhiteMarbleLeaders.size() >= 1){
             WhiteMarbleLeaderCard card1 = (WhiteMarbleLeaderCard) Objects.requireNonNull(JsonCardsCreator.generateCard(activeWhiteMarbleLeaders.get(0)));
             whiteMarbleChoiceBox.getItems().add("White marble = " + ((MarbleColor) card1.getExchange().toArray()[0]).name());
             whiteMarbleChoiceBox.setValue("White marble = " + card1.getExchange().toString());
 
 
             if (activeWhiteMarbleLeaders.size() == 2) {
+                System.out.print("&& == 2");
                 WhiteMarbleLeaderCard card2 = (WhiteMarbleLeaderCard) Objects.requireNonNull(JsonCardsCreator.generateCard(activeWhiteMarbleLeaders.get(1)));
                 whiteMarbleChoiceBox.getItems().add("White marble = " + ((MarbleColor) card2.getExchange().toArray()[0]).name());
             }
-
             Platform.runLater(() -> marketPane.getChildren().add(whiteMarbleChoiceBox));
 
             leaderID = activeWhiteMarbleLeaders.get(0);
+            whiteMarbleChoiceBox.getSelectionModel().selectFirst();
+
         }
 
 

@@ -92,77 +92,75 @@ public class LeadersController {
 
                 int finalI = i;
                 int id = (Integer) leaderIds.keySet().toArray()[i];
-                if ((modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length()<1) && id >=209 && id <=212 && modelView.getMyDashboard().getAvailableProduction().contains(id)) {
-
-                    ComboBox<ImageView> basicProductionRes;
-                    basicProductionRes = new ComboBox<>();
-                    basicProductionRes.setLayoutX(leaderCardImageView[i].getLayoutX()+leaderCardImageView[i].getFitWidth()/2-8);
-                    basicProductionRes.setLayoutY(leaderCardImageView[i].getLayoutY()+leaderCardImageView[i].getFitHeight()-55);
-                    int len = 27;
-                    basicProductionRes.setMaxWidth(len);
-                    basicProductionRes.setMaxHeight(len);
-                    Platform.runLater(() -> leaderPane.getChildren().add(basicProductionRes));
-                    String[] resources = {"coinLeader", "servantLeader" , "shieldLeader" , "stoneLeader"};
-                    Resource[] res = {Resource.COIN, Resource.SERVANT, Resource.SHIELD, Resource.STONE};
-                    basicProductionRes.setStyle("-fx-opacity: 1; -fx-background-color: transparent; ");
-                    for (String resource : resources) {
-                        Image resourceImage = new Image("/view/images/resources/" + resource + ".png");
-                        ImageView resourceImageView = new ImageView(resourceImage);
-                        resourceImageView.setFitWidth(len);
-                        resourceImageView.setFitHeight(len);
-                        basicProductionRes.getItems().add(resourceImageView);
-                    }
-                    basicProductionRes.setCellFactory(listView -> new ListCell<>() {
-
-                        private final ImageView imageView = new ImageView();
-
-                        @Override
-                        public void updateItem(ImageView item, boolean empty) {
-                            super.updateItem(item, empty);
-                            if (empty) {
-                                setGraphic(null);
-                            } else {
-                                String imageURL = item.getImage().getUrl();
-                                Image image = new Image(imageURL, true); // true means load in background
-                                imageView.setImage(image);
-                                imageView.setFitWidth(len);
-                                imageView.setFitHeight(len);
-                                setGraphic(imageView);
-                            }
+                if (gui.getValidActions().contains(Action.ACTIVATE_PRODUCTION) && (modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length()<1) && id >=209 && id <=212 && modelView.getMyDashboard().getAvailableProduction().contains(id)) {
+                        ComboBox<ImageView> basicProductionRes;
+                        basicProductionRes = new ComboBox<>();
+                        basicProductionRes.setLayoutX(leaderCardImageView[i].getLayoutX() + leaderCardImageView[i].getFitWidth() / 2 - 8);
+                        basicProductionRes.setLayoutY(leaderCardImageView[i].getLayoutY() + leaderCardImageView[i].getFitHeight() - 55);
+                        int len = 27;
+                        basicProductionRes.setMaxWidth(len);
+                        basicProductionRes.setMaxHeight(len);
+                        Platform.runLater(() -> leaderPane.getChildren().add(basicProductionRes));
+                        String[] resources = {"coinLeader", "servantLeader", "shieldLeader", "stoneLeader"};
+                        Resource[] res = {Resource.COIN, Resource.SERVANT, Resource.SHIELD, Resource.STONE};
+                        basicProductionRes.setStyle("-fx-opacity: 1; -fx-background-color: transparent; ");
+                        for (String resource : resources) {
+                            Image resourceImage = new Image("/view/images/resources/" + resource + ".png");
+                            ImageView resourceImageView = new ImageView(resourceImage);
+                            resourceImageView.setFitWidth(len);
+                            resourceImageView.setFitHeight(len);
+                            basicProductionRes.getItems().add(resourceImageView);
                         }
-                    });
+                        basicProductionRes.setCellFactory(listView -> new ListCell<>() {
 
+                            private final ImageView imageView = new ImageView();
 
-                    Button extraDevButton = new Button("Enable");
-                    extraDevButton.setLayoutX(discardButton[i].getLayoutX());
-                    extraDevButton.setLayoutY(discardButton[i].getLayoutY() + discardButton[i].getHeight() + 10);
-                    extraDevButton.setPrefWidth(discardButton[i].getWidth());
-                    extraDevButton.setPrefHeight(discardButton[i].getHeight());
-                    extraDevButton.setOnAction(event -> {
-                        int index = basicProductionRes.getSelectionModel().getSelectedIndex();
-                        if(index >= 0) {
-                            if(basicProductionRes.isDisabled()) {
-                                basicProductionRes.setDisable(false);
-                                basicProductionRes.setStyle("-fx-opacity: 1;");
-                                extraDevButton.setText("Enable");
-                                gui.dashboardController.activateProduction(5 + finalI);
-                                gui.dashboardController.leaderExtraProductionRes.remove(finalI, res[index]);
+                            @Override
+                            public void updateItem(ImageView item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    String imageURL = item.getImage().getUrl();
+                                    Image image = new Image(imageURL, true); // true means load in background
+                                    imageView.setImage(image);
+                                    imageView.setFitWidth(len);
+                                    imageView.setFitHeight(len);
+                                    setGraphic(imageView);
+                                }
                             }
-                            else {
+
+                        });
+
+
+                        Button extraDevButton = new Button("Enable");
+                        extraDevButton.setLayoutX(discardButton[i].getLayoutX());
+                        extraDevButton.setLayoutY(discardButton[i].getLayoutY() + discardButton[i].getHeight() + 10);
+                        extraDevButton.setPrefWidth(discardButton[i].getWidth());
+                        extraDevButton.setPrefHeight(discardButton[i].getHeight());
+                        extraDevButton.setOnAction(event -> {
+                            int index = basicProductionRes.getSelectionModel().getSelectedIndex();
+                            if (index >= 0) {
+                                if (basicProductionRes.isDisabled()) {
+                                    basicProductionRes.setDisable(false);
+                                    basicProductionRes.setStyle("-fx-opacity: 1;");
+                                    extraDevButton.setText("Enable");
+                                    gui.dashboardController.activateProduction(5 + finalI);
+                                    gui.dashboardController.leaderExtraProductionRes.remove(finalI, res[index]);
+                                } else {
                                     basicProductionRes.setDisable(true);
-                                extraDevButton.setText("Disable");
+                                    basicProductionRes.setStyle("-fx-opacity: 1;");
+                                    extraDevButton.setText("Disable");
                                     gui.dashboardController.activateProduction(5 + finalI);
                                     gui.dashboardController.leaderExtraProductionRes.put(finalI, res[index]);
+                                }
+                            } else {
+                                gui.showAlert("Select the output resource!", Alert.AlertType.ERROR);
                             }
-                        }
-                        else {
-                            gui.showAlert("Select the output resource!", Alert.AlertType.ERROR);
-                        }
 
 
-                    });
-                    Platform.runLater(() -> leaderPane.getChildren().add(extraDevButton));
-
+                        });
+                        Platform.runLater(() -> leaderPane.getChildren().add(extraDevButton));
                 }
 
                 Platform.runLater(() -> leaderPane.getChildren().add(activeLabels[finalI]));

@@ -261,6 +261,6 @@ public class PlayerTest {
         player.getDashboard().getStrongbox().modifyResource(Resource.COIN, 5);
         assertEquals(2, player.getVictoryPoints());
         player.getDashboard().incrementFaith(3);
-        assertEquals(4, player.getVictoryPoints());
+        assertEquals(3, player.getVictoryPoints());
     }
 }

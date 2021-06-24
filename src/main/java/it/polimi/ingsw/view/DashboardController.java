@@ -243,7 +243,12 @@ public class DashboardController {
     public void choiceBoxChange() {
         String playerSelected = playersChoiceBox.getSelectionModel().getSelectedItem();
         if(playerSelected != null) {
-            developmentButton = null;
+            if(developmentButton[0] != null)
+                developmentButton[0].setOpacity(0);
+            if(developmentButton[1] != null)
+                developmentButton[1].setOpacity(0);
+            if(developmentButton[1] != null)
+                developmentButton[1].setOpacity(0);
             showDashboard(playerSelected);
         }
     }
@@ -365,34 +370,34 @@ public class DashboardController {
      * @param index the index of the selected production
      */
     public void activateProduction(int index) {
-        if(enabledProductions.contains(index-1)) {
-            enabledProductions.remove(Integer.valueOf(index - 1));
-            if(index <= 4)
-                developmentButton[index-1].setText("Enable");
-            if(index == 4) {
-                basicProductionResImages.get(0).setDisable(false);
-                basicProductionResImages.get(1).setDisable(false);
-                basicProductionResImages.get(2).setDisable(false);
-            }
-            else if(index < 4)
-                developmentImage[index-1].setStyle("-fx-opacity: 1");
-        }
-        else {
-            if(index != 4 || (basicProductionResources[0]!= null && basicProductionResources[1]!= null && basicProductionResources[2]!= null)) {
-                enabledProductions.add(index-1);
-                if(index <= 4)
-                    developmentButton[index-1].setText("Disable");
-                if(index == 4) {
-                    basicProductionResImages.get(0).setDisable(true);
-                    basicProductionResImages.get(1).setDisable(true);
-                    basicProductionResImages.get(2).setDisable(true);
+        if(playersChoiceBox.getSelectionModel().getSelectedItem().equals(gui.getNickname())) {
+            if (enabledProductions.contains(index - 1)) {
+                enabledProductions.remove(Integer.valueOf(index - 1));
+                if (index <= 4)
+                    developmentButton[index - 1].setText("Enable");
+                if (index == 4) {
+                    basicProductionResImages.get(0).setDisable(false);
+                    basicProductionResImages.get(1).setDisable(false);
+                    basicProductionResImages.get(2).setDisable(false);
+                } else if (index < 4)
+                    developmentImage[index - 1].setStyle("-fx-opacity: 1");
+            } else {
+                if (index != 4 || (basicProductionResources[0] != null && basicProductionResources[1] != null && basicProductionResources[2] != null)) {
+                    enabledProductions.add(index - 1);
+                    if (index <= 4)
+                        developmentButton[index - 1].setText("Disable");
+                    if (index == 4) {
+                        basicProductionResImages.get(0).setDisable(true);
+                        basicProductionResImages.get(1).setDisable(true);
+                        basicProductionResImages.get(2).setDisable(true);
+                    }
                 }
-            }
-            if(index < 4)
-                developmentImage[index-1].setStyle("-fx-opacity: 0.7");
+                if (index < 4)
+                    developmentImage[index - 1].setStyle("-fx-opacity: 0.7");
 
+            }
+            activateProductionsButton.setDisable(enabledProductions.size() == 0);
         }
-        activateProductionsButton.setDisable(enabledProductions.size() == 0);
     }
 
     /**
@@ -491,7 +496,6 @@ public class DashboardController {
      * @param nickname name of the selected player
      */
     public void showDashboard(String nickname) {
-        playersChoiceBox.setValue(gui.getNickname());
         if(nickname.equals(gui.getNickname())) {
             ModelView.DashboardView dashboardView = modelView.getMyDashboard();
             if(gui.getNickname().equals(modelView.getCurrPlayer()) || modelView.getCurrPlayer().length() < 1) {
@@ -577,6 +581,7 @@ public class DashboardController {
 
             if (activeDevelopments.get(slot) != null) {
                 devImages[slot] = new Image("/view/images/developments/developmentCard"+activeDevelopments.get(slot)+".png");
+                developmentButton[slot].setOpacity(1);
             } else {
                 devImages[slot] = new Image("/view/images/developments/developmentCardEmpty.png");
                 if (developmentButton[slot] != null)
@@ -598,6 +603,9 @@ public class DashboardController {
             developmentImage[i].setFitWidth(len);
             developmentImage[i].setFitHeight(len*3/2);
             developmentImage[i].setId("developmentImageSlot" + (i+1));
+
+            developmentImage[i].setStyle("fx-opacity: " + (enabledProductions != null && enabledProductions.contains(i) ? 0.7 :1));
+            developmentImage[i].setFitHeight(len*3/2);
         }
 
         if(!gui.getValidActions().contains(Action.ACTIVATE_PRODUCTION)) {
@@ -998,7 +1006,7 @@ public class DashboardController {
         for(Action action : Action.values()){
             action.enabled = true;
         }
-        showDashboard(gui.getNickname());
+        updatePlayerDashboard();
     }
 
     /**
@@ -1016,13 +1024,13 @@ public class DashboardController {
                 dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView3"));
                 dashboardPane.getChildren().remove(dashboardPane.lookup("#tempShelfImageView4"));
                 dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfImage"));
+                dashboardPane.getChildren().remove(dashboardPane.lookup("#temporaryShelfButton"));
             });
 
         }
         gui.send(new EndTurn());
         endTurnButton.setDisable(true);
         marketButton.setDisable(true);
-        gridButton.setDisable(true);
         for(Button button : developmentButton) {
             if(button != null) {
                 button.setDisable(true);
@@ -1031,10 +1039,20 @@ public class DashboardController {
         for(Action action : Action.values()){
             action.enabled = false;
         }
-        showDashboard(gui.getNickname());
+
         handleWaitingText();
     }
 
+    public void updatePlayerDashboard() {
+        Platform.runLater(() -> {
+            playersChoiceBox.getSelectionModel().select(gui.getNickname());
+            playersChoiceBox.setValue(gui.getNickname());
+        });
+        showDashboard(gui.getNickname());
+    }
+    public void updateDashoboards() {
+        showDashboard(playersChoiceBox.getSelectionModel().getSelectedItem());
+    }
     /**
      * Method handleTemporaryShelf is called when resources are received from the market and
      * calls showsDashboard method to update the scene and show the temporary shelf
@@ -1070,9 +1088,9 @@ public class DashboardController {
     public void showEndGameText() {
         Label endGameLabel = new Label("The game is about to finish.Waiting for the remaining players to play theirs last turn...");
         endGameLabel.setLayoutX(88);
-        endGameLabel.setLayoutY(dashboardPane.getHeight()-30);
+        endGameLabel.setLayoutY(dashboardPane.getHeight()-40);
         endGameLabel.setTextFill(Color.web("red"));
-        endGameLabel.setPrefHeight(30);
+        endGameLabel.setPrefHeight(40);
         endGameLabel.setPrefWidth(dashboardPane.getWidth()-176);
         endGameLabel.setId("endGameLabel");
         Platform.runLater(() -> {

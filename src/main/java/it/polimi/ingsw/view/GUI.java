@@ -332,11 +332,9 @@ public class GUI extends Application implements View {
      *  Method handleEndGame is called by ActionHandler and sets up the final turn of the game.
      */
     public void handleEndGame() {
+
         if(modelView.getDashboards().size() > 1)
             dashboardController.showEndGameText();
-        else {
-            dashboardController.singlePlayerEnd(100);
-        }
     }
 
     /**
@@ -466,6 +464,15 @@ public class GUI extends Application implements View {
      */
     public void handleDefeat() {
         dashboardController.singlePlayerEnd(0);
+
+    }
+
+    /**
+     *  Method handleWin is called by ActionHandler when the single player game has ended
+     *  with a win, and calls singlePlayerEnd method of dashboardController to set up gameOverController.
+     */
+    public void handleWin(int points) {
+        dashboardController.singlePlayerEnd(points);
 
     }
 }
