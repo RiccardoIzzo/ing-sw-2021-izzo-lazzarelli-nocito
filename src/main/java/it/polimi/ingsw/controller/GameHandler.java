@@ -173,6 +173,7 @@ public class GameHandler {
                     if(game.isFinalTurn() && currPlayer.equals(((MultiplayerGame) game).getFirstPlayer().getNickname())){
                         Map<String, Integer> gameStats = game.getRanking();
                         virtualView.sendToEveryone(new GameStats(gameStats, gameStats.keySet().iterator().next()));
+                        server.closeLobby(lobbyID);
                     }
 
                     if(server.isConnected(currPlayer)) {

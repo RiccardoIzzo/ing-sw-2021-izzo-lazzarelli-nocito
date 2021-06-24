@@ -125,8 +125,10 @@ public class Server {
     public synchronized ArrayList<String> getActivePlayersByLobby(String lobbyID){
         ArrayList<String> players = new ArrayList<>();
         for(String nickname : connectionMap.keySet()){
-            if(playerToLobby.get(nickname).equals(lobbyID)){
-                players.add(nickname);
+            if(playerToLobby.containsKey(nickname)){
+                if(playerToLobby.get(nickname).equals(lobbyID)){
+                    players.add(nickname);
+                }
             }
         }
         return players;
@@ -287,6 +289,14 @@ public class Server {
         String nickname = connection.getNickname();
         connectionMap.remove(nickname, connection);
         sendEveryone(new TextMessage(nickname + " is offline!"), getLobbyIDByPlayerName(nickname));
+
+        /*
+        If the lobby no longer exists it means that the game is over, removes the player from the list of registered users.
+         */
+        if(!playerToLobby.containsKey(nickname)){
+            users.remove(nickname);
+        }
+
         try {
             Game game = getGameHandler(nickname).getGame();
             if(game instanceof MultiplayerGame){
@@ -296,13 +306,25 @@ public class Server {
             }
 
             if(getActivePlayersByLobby(getLobbyIDByPlayerName(game.getPlayers().get(0).getNickname())).size() == 0){
-                String lobby = getLobbyIDByPlayerName(game.getPlayers().get(0).getNickname());
+                String lobby = getLobbyIDByPlayerName(connection.getNickname());
                 System.out.println("Lobby ID: " + lobby + " -> the game associated to that lobby was canceled because there are no players left.");
             }
         } catch (NullPointerException e){
             users.remove(nickname);
         }
         connection.close();
+    }
+
+    /**
+     * Method closeLobby removes the lobby from the list of active ones.W
+     * @param lobbyID id of the lobby to close.
+     */
+    public void closeLobby(String lobbyID){
+        lobbies.remove(lobbyID);
+        lobbyToNumPlayers.remove(lobbyID);
+        for(String player : getPlayersNameByLobby(lobbyID)){
+            playerToLobby.remove(player);
+        }
     }
 
     /**
