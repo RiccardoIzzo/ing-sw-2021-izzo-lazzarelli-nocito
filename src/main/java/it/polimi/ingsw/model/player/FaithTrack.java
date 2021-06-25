@@ -68,8 +68,8 @@ public class FaithTrack {
     public boolean moveForward() {
         if (posFaithMarker < END_TILE) {
             posFaithMarker++;
+            pcs.firePropertyChange(FAITH_MARKER_POSITION, null, posFaithMarker);
         }
-        pcs.firePropertyChange(FAITH_MARKER_POSITION, null, posFaithMarker);
         if(TILE_POS.contains(posFaithMarker)) return popeTilePass();
         else return false;
     }
