@@ -21,8 +21,8 @@
             <Image url="@/view/images/dashboard.jpg" />
       </ImageView>
 
-      <ComboBox fx:id ="basicProductionRes1" onAction="#basicProductionResChange" layoutX="300.0" layoutY="489.0" maxWidth="22.0" maxHeight="25.0" />
-      <ComboBox fx:id ="basicProductionRes2" onAction="#basicProductionResChange" layoutX="300.0" layoutY="525.0" maxWidth="22.0" maxHeight="25.0" />
-      <ComboBox fx:id ="basicProductionRes3" onAction="#basicProductionResChange" layoutX="353.0" layoutY="507.0" maxWidth="22.0" maxHeight="25.0" />
+      <ComboBox fx:id ="basicProductionRes1" onAction="#basicProductionResChange" layoutX="300.0" layoutY="495.0" maxWidth="25.0" maxHeight="25.0" />
+      <ComboBox fx:id ="basicProductionRes2" onAction="#basicProductionResChange" layoutX="300.0" layoutY="523.0" maxWidth="25.0" maxHeight="25.0" />
+      <ComboBox fx:id ="basicProductionRes3" onAction="#basicProductionResChange" layoutX="350.0" layoutY="509.0" maxWidth="25.0" maxHeight="25.0" />
 
 </Pane>
