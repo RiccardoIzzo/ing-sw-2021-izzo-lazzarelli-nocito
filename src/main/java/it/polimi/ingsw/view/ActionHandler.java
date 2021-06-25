@@ -133,6 +133,9 @@ public class ActionHandler extends Thread{
                         case TILES_UNCOVERED_CHANGE:
                             ((GUI) view).dashboardController.updatePlayerFaithTrack();
                             break;
+                        case ACTIVE_DEVELOPMENTS_CHANGE:
+                            ((GUI) view).dashboardController.updatePlayerActiveDevelopments();
+                            ((GUI) view).dashboardController.updatePlayerWarehouse();
 
                         default:
                             break;
