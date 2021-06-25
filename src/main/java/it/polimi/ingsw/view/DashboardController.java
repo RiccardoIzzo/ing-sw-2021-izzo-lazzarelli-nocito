@@ -1160,9 +1160,6 @@ public class DashboardController {
         dashboardPane.setDisable(true);
         Platform.runLater(() -> {
             gameOverController = showPopup("/view/scenes/sceneGameOver.fxml").getController();
-            if(points > 0) {
-                gameOverController.setPoints(points);
-            }
             gameOverController.start();
         });
     }

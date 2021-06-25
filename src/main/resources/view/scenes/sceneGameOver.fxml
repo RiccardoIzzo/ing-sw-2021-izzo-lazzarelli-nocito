@@ -16,7 +16,7 @@
             <SepiaTone />
          </effect>
       </Label>
-      <Label id="titleLabel" alignment="CENTER" layoutY="127.0" prefHeight="43.0" prefWidth="400.0" text="Player">
+      <Label fx:id="playerTitle" id="titleLabel" alignment="CENTER" layoutY="127.0" prefHeight="43.0" prefWidth="400.0" text="Player">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -24,7 +24,7 @@
             <SepiaTone />
          </effect>
       </Label>
-      <Label id="titleLabel" layoutX="400.0" layoutY="127.0" prefHeight="43.0" prefWidth="200.0" text="Punti">
+      <Label fx:id="pointsTitle" id="titleLabel" layoutX="400.0" layoutY="127.0" prefHeight="43.0" prefWidth="200.0" text="Points">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

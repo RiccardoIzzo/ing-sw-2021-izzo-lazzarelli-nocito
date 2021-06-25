@@ -16,9 +16,10 @@ public class GameOverController {
     //Game over Scene
     public ListView<Integer> pointsListView;
     public ListView<String> playersListView;
+    public Label pointsTitle;
+    public Label playerTitle;
     @FXML Pane gameOverPane;
     Map<String, Integer> map;
-    Integer points;
 
 
     public void setMap(Map<String, Integer> map) {
@@ -30,32 +31,31 @@ public class GameOverController {
      * In a multiplayer game, it shows the final point chart
      */
     public void start() {
-        if(map != null) {
-            for (Map.Entry<String, Integer> player : map.entrySet()) {
-                playersListView.getItems().add(player.getKey());
-                pointsListView.getItems().add(player.getValue());
+            if (map != null && map.values().size() > 1) {
+                for (Map.Entry<String, Integer> player : map.entrySet()) {
+                    playersListView.getItems().add(player.getKey());
+                    pointsListView.getItems().add(player.getValue());
+                }
             }
-        }
-        else {
-            playersListView.setOpacity(0);
-            pointsListView.setOpacity(0);
-            Label endGameLabel = new Label();
-            if(points != null) {
-                endGameLabel.setText("You won! Total points: " + points);
-            }
-            else {
-                endGameLabel.setText("You lost!");
-            }
-            endGameLabel.setLayoutX((gameOverPane.getWidth()-100)/2);
-            endGameLabel.setLayoutY((gameOverPane.getHeight()-30)/2);
-            endGameLabel.setPrefWidth(100);
-            endGameLabel.setPrefHeight(30);
+           else {
+                Label endGameLabel = new Label();
+                endGameLabel.setLayoutX((gameOverPane.getWidth() - 200) / 2);
+                endGameLabel.setLayoutY((gameOverPane.getHeight() - 30) / 2);
+                endGameLabel.setPrefWidth(200);
+                endGameLabel.setPrefHeight(30);
+                playersListView.setOpacity(0);
+                pointsListView.setOpacity(0);
+                playerTitle.setOpacity(0);
+                pointsTitle.setOpacity(0);
+               if(map != null) {
+                   int points = (int) map.values().toArray()[0];
+                   endGameLabel.setText("You won! Total points: " + points);
+               }
+               else {
+                   endGameLabel.setText("You lost!");
+               }
+               Platform.runLater(() -> gameOverPane.getChildren().add(endGameLabel));
+           }
 
-            Platform.runLater(() -> gameOverPane.getChildren().add(endGameLabel));
-        }
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 }
