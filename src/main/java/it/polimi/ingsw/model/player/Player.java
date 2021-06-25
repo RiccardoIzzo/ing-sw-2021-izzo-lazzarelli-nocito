@@ -144,7 +144,17 @@ public class Player {
      */
     public void buyCard(int row, int column, int index){
         DevelopmentCard developmentCard = game.getGrid()[row][column].draw();
-        myDashboard.removeResourcesFromDashboard(((ResourceRequirement) developmentCard.getRequirement()).getResources());
+        ResourceMap resourcesToRemove = ((ResourceRequirement) developmentCard.getRequirement()).getResources();
+        List<DiscountLeaderCard> activeDiscount = leaders.stream()
+                .filter(leader -> leader instanceof DiscountLeaderCard)
+                .filter(LeaderCard::isActive)
+                .map(leader -> (DiscountLeaderCard) leader)
+                .collect(Collectors.toList());
+        //Apply available discount
+        for (DiscountLeaderCard leader : activeDiscount){
+            resourcesToRemove.removeResources(leader.getDiscount());
+        }
+        myDashboard.removeResourcesFromDashboard(resourcesToRemove);
         activeDevelopments.set(index - 1, developmentCard);
         pcs.firePropertyChange(ACTIVE_DEVELOPMENTS_CHANGE, null, activeDevelopments);
         pcs.firePropertyChange(GRID_CHANGE, null, game.getGrid());

@@ -16,7 +16,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static it.polimi.ingsw.constants.GameConstants.DEVELOPMENTCARDIDS;
 import static it.polimi.ingsw.constants.GameConstants.LEADERCARDIDS;
 
 /**
