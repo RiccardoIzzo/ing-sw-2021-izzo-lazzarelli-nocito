@@ -46,7 +46,7 @@ public class SetupController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneConnect.fxml"));
         Parent root = loader.load();
 
-        gui.mainStage.setTitle("Master of Renaissance");
+        gui.mainStage.setTitle("Masters of Renaissance");
         gui.mainStage.setScene(new Scene(root));
         gui.mainStage.show();
     }

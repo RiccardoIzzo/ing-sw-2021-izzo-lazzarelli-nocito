@@ -197,8 +197,7 @@ public class GridController {
 
 
 
-        buyCardButton.setDisable(!(modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length() < 1) );
-
+        buyCardButton.setDisable(!(modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length() < 1) && !gui.getValidActions().contains(Action.BUY_CARD) );
 
     }
 

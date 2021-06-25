@@ -23,10 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -115,6 +112,8 @@ public class DashboardController {
      */
     public void setup() {
         amountLabel = new Label[4];
+        leaderExtraProductionRes = new HashMap<>();
+
         for(ModelView.DashboardView dashboard : modelView.getDashboards()) {
             playersChoiceBox.getItems().add(dashboard.getNickname());
         }
@@ -138,16 +137,17 @@ public class DashboardController {
         basicProductionResources = new Resource[3];
         activateProductionsButton.setDisable(true);
         enabledProductions = new ArrayList<>();
-        String[] resources = {"coin2", "servant2" , "shield2" , "stone2"};
+//        String[] resources = {"coin2", "servant2" , "shield2" , "stone2"};
+        String[] resources = {"coinLeader", "servantLeader", "shieldLeader", "stoneLeader"};
         for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
-            basicProduction.setStyle("-fx-opacity: 1;");
+            basicProduction.setStyle("-fx-opacity: 1; -fx-background-color: transparent; ");
         }
         for (String resource : resources) {
             Image resourceImage = new Image("/view/images/resources/" + resource + ".png");
             for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
                 ImageView resourceImageView = new ImageView(resourceImage);
-                resourceImageView.setFitWidth(22);
-                resourceImageView.setFitHeight(22);
+                resourceImageView.setFitWidth(25);
+                resourceImageView.setFitHeight(25);
                 basicProduction.getItems().add(resourceImageView);
             }
         }
@@ -165,8 +165,8 @@ public class DashboardController {
                         String imageURL = item.getImage().getUrl();
                         Image image = new Image(imageURL, true); // true means load in background
                         imageView.setImage(image);
-                        imageView.setFitWidth(22);
-                        imageView.setFitHeight(22);
+                        imageView.setFitWidth(25);
+                        imageView.setFitHeight(25);
                         setGraphic(imageView);
                     }
                 }
@@ -530,13 +530,14 @@ public class DashboardController {
      */
     public void showDashboard(String nickname) {
         if(nickname.equals(gui.getNickname())) {
+            gridButton.setDisable(false);
             ModelView.DashboardView dashboardView = modelView.getMyDashboard();
             if(gui.getNickname().equals(modelView.getCurrPlayer()) || modelView.getCurrPlayer().length() < 1) {
                 ArrayList<Action> actions = gui.getValidActions();
                 if (actions.size() == 0) {
                     showLeaders.setDisable(true);
                     marketButton.setDisable(true);
-                    gridButton.setDisable(true);
+//                    gridButton.setDisable(true);
                     endTurnButton.setDisable(true);
                     for(Button button : developmentButton) {
                         if(button != null) {
@@ -546,7 +547,7 @@ public class DashboardController {
                 } else {
                     marketButton.setDisable(!actions.contains(Action.TAKE_RESOURCE));
                     endTurnButton.setDisable(!actions.contains(Action.END_TURN));
-                    gridButton.setDisable(!actions.contains(Action.BUY_CARD));
+//                    gridButton.setDisable(!actions.contains(Action.BUY_CARD));
 
                     if (actions.contains(Action.ACTIVATE_PRODUCTION)) {
                         resetProductions();
@@ -571,7 +572,7 @@ public class DashboardController {
                 showActiveDevelopments(playerDashboardView.getActiveDevelopments());
                 showWarehouse(playerDashboardView.getWarehouse(), playerDashboardView.getExtraShelfResources());
                 marketButton.setDisable(true);
-                gridButton.setDisable(true);
+//                gridButton.setDisable(true);
             }
         }
     }
@@ -963,8 +964,8 @@ public class DashboardController {
 
             if(faithMarker.equals(blackMarker)) {
                 double halfLen = (double)(len)/2;
-                blackFaithTrackImage.setLayoutX(blackFaithTrackImage.getLayoutX()+halfLen);
-                blackFaithTrackImage.setLayoutY(blackFaithTrackImage.getLayoutY()+halfLen);
+                blackFaithTrackImage.setLayoutX(xOffset+xStart[blackMarker]+halfLen);
+                blackFaithTrackImage.setLayoutY(yOffset+yStart[blackMarker]+halfLen);
                 blackFaithTrackImage.setFitWidth(halfLen);
                 blackFaithTrackImage.setFitHeight(halfLen);
                 faithTrackImage.setFitWidth(halfLen);

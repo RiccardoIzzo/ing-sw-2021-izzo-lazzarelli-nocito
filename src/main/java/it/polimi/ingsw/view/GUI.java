@@ -50,14 +50,12 @@ public class GUI extends Application implements View {
      * Method start sets up the stage and sets up setupController
      * @param stage mainStage of the game
      */
-    @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneConnect.fxml"));
 
         try {
             Parent root = loader.load();
-//            Stage stage = new Stage();
             mainStage.setScene(new Scene(root));
             mainStage.show();
 
@@ -96,7 +94,6 @@ public class GUI extends Application implements View {
 
         try {
             Parent root = loader.load();
-//            Stage stage = new Stage();
             mainStage.setScene(new Scene(root));
             mainStage.show();
 
@@ -162,7 +159,6 @@ public class GUI extends Application implements View {
         Parent root;
         try {
             root = loader.load();
-//            Stage stage = new Stage();
             dashboardController = loader.getController();
             dashboardController.setGUI(this);
             dashboardController.setModelView(modelView);
@@ -216,7 +212,6 @@ public class GUI extends Application implements View {
     @Override
     public void handleLeaders() {
         Platform.runLater(this::startLeaders);
-
     }
 
     /**
@@ -227,23 +222,6 @@ public class GUI extends Application implements View {
     public void handleBonusResource(int amount) {
         bonusResourceAmount = amount;
     }
-
-    @Override
-    public void handleTakeResource() {
-    }
-
-    @Override
-    public void handleBuyCard() {
-    }
-
-    @Override
-    public void handleActivateProduction() {
-    }
-
-    @Override
-    public void handleActivateLeader() {
-    }
-
 
     @Override
     public void handleDiscardLeader() {
@@ -257,7 +235,6 @@ public class GUI extends Application implements View {
     @Override
     public void handleTemporaryShelf() {
         dashboardController.handleTemporaryShelf();
-
     }
 
     /**
@@ -269,6 +246,7 @@ public class GUI extends Application implements View {
     public void handleCheckRequirement(boolean result, int id) {
         dashboardController.handleLeaderCardActivation(result, id);
     }
+
     /**
      *  Method updateDashboard is called by scene controllers to show the results of played actions
      */
@@ -276,16 +254,10 @@ public class GUI extends Application implements View {
         dashboardController.showDashboard(nickname);
     }
 
-
-    @Override
-    public void handleEndTurn() {
-    }
-
     @Override
     public void setNickname() {
         send(new SetNickname(nickname));
     }
-
 
     /**
      * Method setModelView sets the modelView for gui, controllers and network.
@@ -303,10 +275,6 @@ public class GUI extends Application implements View {
     @Override
     public String getInput(String check) {
         return null;
-    }
-
-    @Override
-    public void printText(String text) {
     }
 
     /**
@@ -332,7 +300,6 @@ public class GUI extends Application implements View {
      *  Method handleEndGame is called by ActionHandler and sets up the final turn of the game.
      */
     public void handleEndGame() {
-
         if(modelView.getDashboards().size() > 1)
             dashboardController.showEndGameText();
     }
@@ -382,7 +349,7 @@ public class GUI extends Application implements View {
      * Method getValidAction returns a list of valid user action.
      * @return the list of actions.
      */
-//    @Override
+    @Override
     public ArrayList<Action> getValidActions() {
         ArrayList<Action> actions = new ArrayList<>();
         for(Action action : Action.values()){
@@ -390,6 +357,7 @@ public class GUI extends Application implements View {
         }
         return actions;
     }
+
     /**
      * Method startTurn at the beginning of the player turn re-enable all actions.
      */
@@ -464,7 +432,6 @@ public class GUI extends Application implements View {
      */
     public void handleDefeat() {
         dashboardController.singlePlayerEnd(0);
-
     }
 
     /**
@@ -473,6 +440,18 @@ public class GUI extends Application implements View {
      */
     public void handleWin(int points) {
         dashboardController.singlePlayerEnd(points);
-
     }
+
+    @Override
+    public void handleTakeResource() {}
+    @Override
+    public void handleBuyCard() {}
+    @Override
+    public void handleActivateProduction() {}
+    @Override
+    public void handleActivateLeader() {}
+    @Override
+    public void handleEndTurn() {}
+    @Override
+    public void printText(String text) {}
 }

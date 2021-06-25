@@ -57,7 +57,6 @@ public class LeadersController {
         leaderCardImageView[0] = firstLeaderCard;
         leaderCardImageView[1] = secondLeaderCard;
 
-        gui.dashboardController.leaderExtraProductionRes = new HashMap<>();
 
         ArrayList<Action> validActions = gui.getValidActions();
         for(int i =0; i<leaderCardImageView.length; i++) {
@@ -138,18 +137,36 @@ public class LeadersController {
                         extraDevButton.setLayoutY(discardButton[i].getLayoutY() + discardButton[i].getHeight() + 10);
                         extraDevButton.setPrefWidth(discardButton[i].getWidth());
                         extraDevButton.setPrefHeight(discardButton[i].getHeight());
+                        System.out.println("leader card : " + (4+finalI));
+                        System.out.println("Productions enabled: " + gui.dashboardController.enabledProductions);
+                        if(gui.dashboardController.enabledProductions.contains(4 + finalI)) {
+                            System.out.println("leaderExtraProductionRes.get(finalI)");
+                            System.out.print(gui.dashboardController.leaderExtraProductionRes);
+                            switch(gui.dashboardController.leaderExtraProductionRes.get(finalI)) {
+                                case COIN -> basicProductionRes.getSelectionModel().select(0);
+                                case SERVANT -> basicProductionRes.getSelectionModel().select(1);
+                                case SHIELD -> basicProductionRes.getSelectionModel().select(2);
+                                case STONE -> basicProductionRes.getSelectionModel().select(3);
+                            }
+                            basicProductionRes.setDisable(true);
+                            basicProductionRes.setStyle("-fx-opacity: 1; -fx-background-color: transparent; ");
+                            extraDevButton.setText("Disable");
+
+                        }
                         extraDevButton.setOnAction(event -> {
                             int index = basicProductionRes.getSelectionModel().getSelectedIndex();
                             if (index >= 0) {
                                 if (basicProductionRes.isDisabled()) {
                                     basicProductionRes.setDisable(false);
-                                    basicProductionRes.setStyle("-fx-opacity: 1;");
+                                    basicProductionRes.setOpacity(1);
+                                    basicProductionRes.setStyle("-fx-opacity: 1; -fx-background-color: transparent; ");
                                     extraDevButton.setText("Enable");
                                     gui.dashboardController.activateProduction(5 + finalI);
                                     gui.dashboardController.leaderExtraProductionRes.remove(finalI, res[index]);
                                 } else {
                                     basicProductionRes.setDisable(true);
-                                    basicProductionRes.setStyle("-fx-opacity: 1;");
+                                    basicProductionRes.setOpacity(1);
+                                    basicProductionRes.setStyle("-fx-opacity: 1; -fx-background-color: transparent; ");
                                     extraDevButton.setText("Disable");
                                     gui.dashboardController.activateProduction(5 + finalI);
                                     gui.dashboardController.leaderExtraProductionRes.put(finalI, res[index]);
