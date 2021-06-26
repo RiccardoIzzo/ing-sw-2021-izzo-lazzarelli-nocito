@@ -21,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.*;
@@ -213,7 +214,7 @@ public class DashboardController {
         ModelView.DashboardView playerDashboardView = modelView.getDashboards().stream().filter(dashboardView -> dashboardView.getNickname().equals(playerSelected)).findAny().orElse(null);
         if (playerDashboardView != null) {
 
-            leadersController = showPopup("/view/scenes/sceneLeaders.fxml").getController();
+            leadersController = showPopup("/view/scenes/sceneLeaders.fxml", true).getController();
             leadersController.setGUI(gui);
             leadersController.setModelView(modelView);
             leadersController.setup(playerDashboardView.getLeaderCards(), playerSelected);
@@ -988,7 +989,7 @@ public class DashboardController {
      * Method showMarket sets up marketController and shows the current market.
      */
     public void showMarket() {
-        marketController = showPopup("/view/scenes/sceneMarket.fxml").getController();
+        marketController = showPopup("/view/scenes/sceneMarket.fxml", true).getController();
         marketController.setGUI(gui);
         marketController.setMarketTray(modelView.getMarketTray());
         marketController.start();
@@ -999,7 +1000,7 @@ public class DashboardController {
      * Method showGrid sets up gridController and shows the available cards that can be bought
      */
     public void showGrid() {
-        gridController = showPopup("/view/scenes/sceneGrid.fxml").getController();
+        gridController = showPopup("/view/scenes/sceneGrid.fxml", true).getController();
         gridController.setGUI(gui);
         gridController.setup(modelView);
     }
@@ -1007,9 +1008,10 @@ public class DashboardController {
     /**
      * Method showPopup opens a scene as a popup
      * @param scenePath the path of the scene to open
+     * @param stageButtonsVisible bollean that indicates if the stage should or not show maximize, minimize and close buttons
      * @return the FXMLLoader of the scene
      */
-    private FXMLLoader showPopup(String scenePath) {
+    private FXMLLoader showPopup(String scenePath, boolean stageButtonsVisible) {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(scenePath));
         Parent root;
@@ -1020,6 +1022,12 @@ public class DashboardController {
             stage.initOwner(gui.mainStage);
             stage.setScene(new Scene(root));
             stage.setResizable(false);
+            if(!stageButtonsVisible) {
+                stage.setY(250);
+                stage.setX(350);
+                stage.initStyle(StageStyle.UNDECORATED);
+            }
+
             stage.show();
 
         } catch (IOException e) {
@@ -1146,7 +1154,8 @@ public class DashboardController {
         dashboardPane.setDisable(true);
 
         Platform.runLater(() -> {
-        gameOverController = showPopup("/view/scenes/sceneGameOver.fxml").getController();
+        gameOverController = showPopup("/view/scenes/sceneGameOver.fxml", true).getController();
+        gameOverController.setGUI(gui);
         gameOverController.setMap(map);
         gameOverController.start();
         });
@@ -1159,7 +1168,13 @@ public class DashboardController {
     public void singlePlayerEnd(int points) {
         dashboardPane.setDisable(true);
         Platform.runLater(() -> {
-            gameOverController = showPopup("/view/scenes/sceneGameOver.fxml").getController();
+            gameOverController = showPopup("/view/scenes/sceneGameOver.fxml", false).getController();
+            if(points > 0) {
+                Map<String, Integer> map = new HashMap<>();
+                map.put(gui.getNickname(), points);
+                gameOverController.setMap(map);
+            }
+            gameOverController.setGUI(gui);
             gameOverController.start();
         });
     }

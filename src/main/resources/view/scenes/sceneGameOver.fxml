@@ -1,37 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
 
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Button?>
 <Pane fx:controller="it.polimi.ingsw.view.GameOverController" fx:id="gameOverPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
-      <Label id="titleLabel" alignment="CENTER" layoutY="53.0" prefHeight="43.0" prefWidth="600.0" text="Game over!">
-         <font>
-            <Font name="System Bold" size="27.0" />
-         </font>
-         <effect>
-            <SepiaTone />
-         </effect>
-      </Label>
-      <Label fx:id="playerTitle" id="titleLabel" alignment="CENTER" layoutY="127.0" prefHeight="43.0" prefWidth="400.0" text="Player">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-         <effect>
-            <SepiaTone />
-         </effect>
-      </Label>
-      <Label fx:id="pointsTitle" id="titleLabel" layoutX="400.0" layoutY="127.0" prefHeight="43.0" prefWidth="200.0" text="Points">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-         <effect>
-            <SepiaTone />
-         </effect>
-      </Label>
-      <ListView fx:id="playersListView" layoutX="162.0" layoutY="170.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" />
-      <ListView fx:id="pointsListView" layoutX="362.0" layoutY="170.0" prefHeight="200.0" prefWidth="114.0" style="-fx-background-color: transparent;" />
+
+    <ImageView fx:id="scoreboard" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@/view/images/gameOver/scoreboard.png" />
+    </ImageView>
+
+    <ImageView fx:id="boardbw" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@/view/images/gameOver/boardbw.png" />
+    </ImageView>
+
+    <Button layoutX="250.0" layoutY="350.0" prefWidth="100.0" onAction="#exitGame" mnemonicParsing="false" text="Exit game" />
+
+
 </Pane>
