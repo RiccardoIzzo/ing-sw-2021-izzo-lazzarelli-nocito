@@ -41,6 +41,9 @@ public class DisconnectionListener extends PropertyListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String playerSource = evt.getPropertyName();
+        /*
+        It sends all the UpdateView messages necessary to reload the ModelView.
+         */
         virtualView.sendToPlayer(playerSource, new Reconnection());
         virtualView.sendToPlayer(playerSource, new GameStarted((ArrayList<String>) game.getPlayers().stream().map(Player::getNickname).collect(Collectors.toList())));
         virtualView.sendToPlayer(playerSource, new UpdateView(null, GRID_CHANGE, null, translateGrid(game.getGrid())));

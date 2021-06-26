@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
 import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * ResourceMapTest tests ResourceMap class.
@@ -19,5 +16,4 @@ public class ResourceMapTest {
     public void initialization(){
         myResourceMap = new ResourceMap();
     }
-
 }

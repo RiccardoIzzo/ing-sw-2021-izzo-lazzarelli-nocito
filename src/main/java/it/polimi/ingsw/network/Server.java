@@ -5,7 +5,6 @@ import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.*;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.MultiplayerGame;
-import it.polimi.ingsw.model.SinglePlayerGame;
 
 import java.util.*;
 

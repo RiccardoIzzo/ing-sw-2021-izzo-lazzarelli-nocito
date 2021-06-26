@@ -1,5 +1,8 @@
 package it.polimi.ingsw.constants;
 
+/**
+ * Class Colors contains all the ANSI colors used in the game.
+ */
 public enum Colors {
     ANSI_RESET("\u001B[0m"),
     ANSI_BLACK("\u001B[30m"),

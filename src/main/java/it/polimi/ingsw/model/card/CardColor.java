@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.card;
 import it.polimi.ingsw.constants.Colors;
 
 /**
- * Enum CardColor provides a enumeration of all the Card color types in the game.
+ * Enum CardColor provides an enumeration of all the Card color types in the game.
  * @author Gabriele Lazzarelli
  */
 public enum CardColor {
@@ -12,6 +12,10 @@ public enum CardColor {
     BLUE,
     PURPLE;
 
+    /**
+     * Method getColumnGrid returns the column index based on the card color.
+     * @return the columns index.
+     */
     public int getColumnGrid(){
         return switch (this) {
             case GREEN -> 0;
@@ -21,6 +25,10 @@ public enum CardColor {
         };
     }
 
+    /**
+     * Method toString returns a string representation with ANSI color/characters for the card color.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return switch (this) {

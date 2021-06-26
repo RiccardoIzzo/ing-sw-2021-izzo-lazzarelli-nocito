@@ -31,8 +31,6 @@ public class FaithTrackTest{
         assertEquals(faithTrack.getPlayerPosition(), 1);
     }
 
-
-
     /*
      * Method testIsInVaticanSpace checks that the method isInVaticanSpace assigns the correct points to the player when in vatican space.
      */

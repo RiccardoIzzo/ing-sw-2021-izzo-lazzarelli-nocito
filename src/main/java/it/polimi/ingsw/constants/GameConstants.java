@@ -31,12 +31,6 @@ public final class GameConstants {
     //Amount of DevelopmentCard(s) in the whole game
     public static final int NUM_DEVELOPMENT_CARDS = 48;
 
-    //Amount of LeaderCard(s) in the whole game
-    public static final int NUM_LEADER_CARDS = 16;
-
-    //Number of Tokens
-    public static final int NUM_TOKENS = 7;
-
     //Filepath to the list of DevelopmentCard to generate
     public static final String developmentCardsJson = "/json/development_card.json";
 

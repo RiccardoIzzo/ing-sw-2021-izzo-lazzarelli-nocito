@@ -1,13 +1,9 @@
 package it.polimi.ingsw.model.card;
 
-import it.polimi.ingsw.model.MarbleColor;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.ResourceMap;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -47,6 +43,4 @@ public class ExtraShelfLeaderCardTest {
         assertTrue(outputString.contains("VP: " + victoryPoints));
         assertTrue(outputString.contains("2[" + allowedResource.toString() + "]"));
     }
-
-
 }

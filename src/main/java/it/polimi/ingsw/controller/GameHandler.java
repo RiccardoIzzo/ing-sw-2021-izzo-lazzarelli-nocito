@@ -17,7 +17,8 @@ import static it.polimi.ingsw.constants.GameConstants.*;
 
 
 /**
- * GameHandler class represents the controller of the game and manages the incoming messages from the client.
+ * GameHandler class represents the main controller of the game.
+ * It manages a game by processing all incoming messages from the client.
  *
  * @author Andrea Nocito, Riccardo Izzo, Gabriele Lazzarelli
  */
@@ -166,6 +167,9 @@ public class GameHandler {
                     ((MultiplayerGame) game).nextPlayer();
                     String currPlayer = ((MultiplayerGame) game).getCurrPlayer().getNickname();
 
+                    /*
+                    If it's the final turn and the last player has finished his turn a GameStats message is sent with the final ranking.
+                     */
                     if(game.isFinalTurn() && currPlayer.equals(((MultiplayerGame) game).getFirstPlayer().getNickname())){
                         Map<String, Integer> gameStats = game.getRanking();
                         virtualView.sendToEveryone(new GameStats(gameStats, gameStats.keySet().iterator().next()));
@@ -214,6 +218,10 @@ public class GameHandler {
         pcs.firePropertyChange(nickname, null, null);
     }
 
+    /**
+     * Method addPropertyListener register a DisconnectionListener to the PropertyChangeSupport of this class.
+     * @param virtualView the VirtualView used to forward messages to the players.
+     */
     public void addPropertyListener(VirtualView virtualView, Game game){
         DisconnectionListener serverListener = new DisconnectionListener(virtualView, game);
         pcs.addPropertyChangeListener(serverListener);

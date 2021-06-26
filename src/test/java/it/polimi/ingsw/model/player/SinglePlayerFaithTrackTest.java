@@ -11,8 +11,6 @@ import static org.junit.Assert.*;
  *
  * @author Andrea Nocito
  */
-
-
 public class SinglePlayerFaithTrackTest {
     SinglePlayerFaithTrack singlePlayerFaithTrack;
 

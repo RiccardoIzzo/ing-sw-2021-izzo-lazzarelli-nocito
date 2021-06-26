@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model.card;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.JsonCardsCreator;
 import it.polimi.ingsw.model.MultiplayerGame;
@@ -10,8 +7,6 @@ import it.polimi.ingsw.model.player.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 

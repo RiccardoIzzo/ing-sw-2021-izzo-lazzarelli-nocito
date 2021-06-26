@@ -7,15 +7,10 @@ import java.util.Arrays;
  * PlayerConstants contains all constant values of the Player class and related classes (Dashboard, Warehouse, Shelf, FaithTrack)
  */
 public final class PlayerConstants {
-    /*Player constant values*/
-    public static final int NUMBER_OF_DEVELOPMENTS = 3;
-    public static final int NUMBER_OF_LEADERS = 3;
-
     /*Warehouse constant values*/
     public static final int FIRST_SHELF = 1; //Shelf number of the first shelf
     public static final int LAST_SHELF = 4; //Shelf number of the last shelf
     public static final int TEMPORARY_SHELF = 5; //Shelf number of the temporary shelf
-
 
 
     /*FaithTrack constant values*/
@@ -29,9 +24,6 @@ public final class PlayerConstants {
 
     // POINTS_FOR_TILE : position of tiles in the game.
     public static final int[] POINTS_FOR_TILE = {2,3,4};
-
-    // INITIAL OFFSET: offset from the first tile which defines the "point zone"
-    public static final int INITIAL_OFFSET = 4;
 
     // END: last tile of the game
     public static final int END_TILE = 24;

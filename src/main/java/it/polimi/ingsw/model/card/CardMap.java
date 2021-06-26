@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.card;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 

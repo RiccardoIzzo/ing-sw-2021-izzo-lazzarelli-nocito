@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.card;
 
 import it.polimi.ingsw.model.MarbleColor;
 import it.polimi.ingsw.model.ResourceMap;
-import it.polimi.ingsw.model.player.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,8 +22,9 @@ public class WhiteMarbleLeaderCardTest {
     Integer cardID = 1;
     Integer victoryPoints = 2;
     MarbleColor color = MarbleColor.BLUE;
+
     /**
-     * Method initialization creates an instance of  WhiteMarbleLeaderCard
+     * Method initialization creates an instance of WhiteMarbleLeaderCard
      * */
     @Before
     public void initialization() {
@@ -35,7 +35,7 @@ public class WhiteMarbleLeaderCardTest {
     }
 
     /**
-     * Method testGetExchange checks that the output of getEchange is the exchange set with the constructor
+     * Method testGetExchange checks that the output of getExchange is the exchange set with the constructor.
      * */
     @Test
     public void testGetExchange() {
@@ -52,7 +52,4 @@ public class WhiteMarbleLeaderCardTest {
         assertTrue(outputString.contains("VP: " + victoryPoints));
         assertTrue(outputString.contains("Exchange: [" + color + "]"));
     }
-
-
-
 }

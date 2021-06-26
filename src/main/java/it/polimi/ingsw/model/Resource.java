@@ -2,14 +2,19 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.constants.Colors;
 
-import java.awt.*;
-
+/**
+ * Enum Resource provides an enumeration of all the resources.
+ */
 public enum Resource {
     STONE,
     COIN,
     SHIELD,
     SERVANT;
 
+    /**
+     * Method toString returns a string representation with ANSI color/characters for the resource.
+     * @return the string representation.
+     */
     @Override
     public String toString() {
         return switch (this) {

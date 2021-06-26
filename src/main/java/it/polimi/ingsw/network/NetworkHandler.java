@@ -102,7 +102,6 @@ public class NetworkHandler {
         } catch (IOException e) {
             System.err.println("Can't find server! Quitting...");
             close();
-            //notify every player and quit
             System.exit(0);
         }
     }

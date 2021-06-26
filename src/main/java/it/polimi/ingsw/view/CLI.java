@@ -500,6 +500,10 @@ public class CLI implements View{
         handleTurn();
     }
 
+    /**
+     * Method getResource adds the selected resource to the resource map.
+     * @param resourceMap resource map given.
+     */
     private void getResource(ResourceMap resourceMap) {
         String resource;
         resource = getInput("stone|coin|shield|servant");

@@ -185,6 +185,10 @@ public class ModelView {
             return powerProductionCards;
         }
 
+        /**
+         * Method getTotalResources returns the total amount of resources owned by the player.
+         * @return a ResourceMap with the total amount of resources.
+         */
         public ResourceMap getTotalResources(){
             ResourceMap myResources = new ResourceMap();
             myResources.addResources(strongbox);

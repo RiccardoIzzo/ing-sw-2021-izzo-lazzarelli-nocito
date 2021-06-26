@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.constants.PlayerConstants;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.card.Card;
 import it.polimi.ingsw.model.card.CardColor;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.LeaderCard;
@@ -11,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Optional;
 import static org.junit.Assert.*;
 
@@ -37,6 +35,9 @@ public class PlayerTest {
         game.getMarket().generateTray();
     }
 
+    /**
+     * Method tearDown sets game and player null after each test.
+     */
     @After
     public void tearDown() {
         game = null;

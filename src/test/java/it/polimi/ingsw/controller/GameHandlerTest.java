@@ -174,17 +174,6 @@ public class GameHandlerTest {
         gameHandler.process(nickname, new BasicProduction(input, output));
         assertTrue(player.getDashboard().getStrongbox().asList().contains(Resource.SERVANT));
 
-        // SetWarehouse message
-        /*
-        ArrayList<Resource> resources = new ArrayList<>();
-        resources.add(Resource.STONE);
-        resources.add(Resource.SERVANT);
-        player.getDashboard().getWarehouse().flushShelves();
-        assertEquals(0, (int) player.getDashboard().getWarehouse().getResourcesFromWarehouse().getAmount());
-        gameHandler.process(nickname, new SetWarehouse(resources));
-        assertEquals(resources.size(), (int) player.getDashboard().getWarehouse().getResourcesFromWarehouse().getAmount());
-         */
-
         // SetFinalTurn message
         gameHandler.process(nickname, new SetFinalTurn());
         assertTrue(game.isFinalTurn());
