@@ -59,22 +59,6 @@ public class LobbiesController {
         lobbiesPane.setDisable(false);
     }
 
-    public void start() throws IOException {
-//        gui.mainStage.close();
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/scenes/sceneLobbies.fxml"));
-//        Parent root = loader.load();
-//
-//        Stage stage = new Stage();
-//        stage.setScene(new Scene(root));
-//        stage.show();
-
-//        LobbiesController controller = loader.getController();
-
-
-//        controller.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-    }
-
     /**
      * Method joinButtonClicked checks if a lobby has been selected.
      * If it hasn't, it shows an alert, otherwise it sends to server a request to join the selected lobby
@@ -160,7 +144,7 @@ public class LobbiesController {
     /**
      * Method refreshButtonClicked sends a request to get an updated list of the available lobbies
     */
-     public void refreshButtonClicked(ActionEvent actionEvent) {
+     public void refreshButtonClicked() {
             gui.send(new GetLobbies());
         }
     }

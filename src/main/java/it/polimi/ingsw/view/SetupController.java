@@ -12,8 +12,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -24,9 +22,7 @@ import java.io.IOException;
  */
 public class SetupController {
     public Button connectButton;
-    public ImageView headerImage;
     @FXML Pane connectPane;
-    // Connect Scene
     @FXML Label serverLabel;
     @FXML TextField serverTextField;
     @FXML Label ipLabel;

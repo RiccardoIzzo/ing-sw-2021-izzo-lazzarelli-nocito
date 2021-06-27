@@ -138,7 +138,6 @@ public class DashboardController {
         basicProductionResources = new Resource[3];
         activateProductionsButton.setDisable(true);
         enabledProductions = new ArrayList<>();
-//        String[] resources = {"coin2", "servant2" , "shield2" , "stone2"};
         String[] resources = {"coinLeader", "servantLeader", "shieldLeader", "stoneLeader"};
         for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
             basicProduction.setStyle("-fx-opacity: 1; -fx-background-color: transparent; ");
@@ -265,7 +264,6 @@ public class DashboardController {
             Pane bonusPane = new Pane();
             bonusPane.setPrefWidth(400);
             bonusPane.setPrefHeight(300);
-            //add nodes
             Label bonusTitle = new Label("Select " + amount + " Resource" + (amount > 1 ? "s" : ""));
             bonusTitle.setLayoutX(125);
             bonusTitle.setStyle("-fx-text-alignment: center ; -fx-font-size: 20px");
@@ -538,7 +536,6 @@ public class DashboardController {
                 if (actions.size() == 0) {
                     showLeaders.setDisable(true);
                     marketButton.setDisable(true);
-//                    gridButton.setDisable(true);
                     endTurnButton.setDisable(true);
                     for(Button button : developmentButton) {
                         if(button != null) {
@@ -548,7 +545,6 @@ public class DashboardController {
                 } else {
                     marketButton.setDisable(!actions.contains(Action.TAKE_RESOURCE));
                     endTurnButton.setDisable(!actions.contains(Action.END_TURN));
-//                    gridButton.setDisable(!actions.contains(Action.BUY_CARD));
 
                     if (actions.contains(Action.ACTIVATE_PRODUCTION)) {
                         resetProductions();
@@ -573,7 +569,6 @@ public class DashboardController {
                 showActiveDevelopments(playerDashboardView.getActiveDevelopments());
                 showWarehouse(playerDashboardView.getWarehouse(), playerDashboardView.getExtraShelfResources());
                 marketButton.setDisable(true);
-//                gridButton.setDisable(true);
             }
         }
     }
@@ -1090,6 +1085,9 @@ public class DashboardController {
         handleWaitingText();
     }
 
+    /**
+     * Method updateDashoboards shows the updated dashboard of the player
+     */
     public void updatePlayerDashboard() {
         Platform.runLater(() -> {
             playersChoiceBox.getSelectionModel().select(gui.getNickname());
@@ -1097,6 +1095,11 @@ public class DashboardController {
         });
         showDashboard(gui.getNickname());
     }
+
+    /**
+     * Method updateDashoboards shows the updated dashboard of the player
+     * currently selected
+     */
     public void updateDashoboards() {
         showDashboard(playersChoiceBox.getSelectionModel().getSelectedItem());
     }

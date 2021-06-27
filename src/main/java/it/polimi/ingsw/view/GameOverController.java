@@ -17,7 +17,6 @@ import java.util.*;
  * @author Andrea Nocito
  */
 public class GameOverController {
-    //Game over Scene
     public ImageView scoreboard;
     public ImageView boardbw;
     @FXML Pane gameOverPane;
@@ -123,6 +122,9 @@ public class GameOverController {
 
     }
 
+    /**
+     * Method exitGame is called after a match has ended to exit the game
+     */
     public void exitGame() {
         System.exit(0);
     }

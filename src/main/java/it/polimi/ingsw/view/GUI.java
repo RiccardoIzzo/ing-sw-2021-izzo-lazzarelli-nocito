@@ -104,8 +104,6 @@ public class GUI extends Application implements View {
                 lobbiesController.lobbiesListView.getItems().add("[" + lobby.getValue() + " players] - " + lobby.getKey());
             }
             lobbiesController.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-            lobbiesController.start();
         } catch (IOException e) {
             e.printStackTrace();
         }

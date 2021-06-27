@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  * @author Andrea Nocito
  */
 public class GridController {
-    // Grid Scene
     public ImageView card1ImageView;
     public Button card1Button;
     public ImageView card2ImageView;
@@ -141,7 +140,6 @@ public class GridController {
      * Method setup sets up the scene and calls setGrid
      */
     public void setup(ModelView modelView) {
-//    <TextField fx:id="slotTextField" layoutX="101.0" layoutY="304.0" prefHeight="20" prefWidth="70"/
         slotTextField = new TextField();
         slotTextField.setPromptText("Slot num.");
         slotTextField.setLayoutX(90);
