@@ -266,7 +266,8 @@ public class CLI implements View{
             case 3 -> handleActivateLeader();
             case 4 -> handleDiscardLeader();
             case 5 -> showDashboard(modelView.getMyDashboard());
-            case 6 -> handleEndTurn();
+            case 6 -> showGrid(modelView.getGrid());
+            case 7 -> handleEndTurn();
         }
     }
 
@@ -859,6 +860,15 @@ public class CLI implements View{
         else {
             return "   ";
         }
+    }
+
+    /**
+     * Method showGrid prints the visual representation of the grid of cards.
+     * @param grid a list of all the top cards' ids.
+     */
+    public void showGrid(ArrayList<Integer> grid) {
+        showCards(grid);
+        handleTurn();
     }
 
     /**

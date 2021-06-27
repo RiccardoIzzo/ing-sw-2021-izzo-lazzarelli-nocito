@@ -10,6 +10,7 @@ public enum Action {
     ACTIVATE_LEADER(false),
     DISCARD_LEADER(false),
     SHOW_DASHBOARD(false),
+    SHOW_GRID(false),
     END_TURN(false);
 
     boolean enabled;
