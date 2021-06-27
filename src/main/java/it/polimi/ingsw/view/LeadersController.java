@@ -14,9 +14,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * LeadersController class manages the leader cards scene.
+ * @author Andrea Nocito
+ */
 public class LeadersController {
 
     @FXML Button firstLeaderCardActivateButton;
@@ -47,6 +51,11 @@ public class LeadersController {
         this.gui = gui;
     }
 
+    /**
+     * Method setup manages leader cards elements before showing the scene.
+     * It adds leader card images, activate and discard buttons and checks if they are active or not.
+     * If an extra production leader card is active, it adds an enable button
+     */
     public void setup(Map<Integer, Boolean> ids, String nickname) {
         leaderIds = ids;
         playerNickname = nickname;
@@ -185,12 +194,20 @@ public class LeadersController {
         }
     }
 
+    /**
+     * Method start checks if the player is allowed to use activate and discard buttons
+     */
     public void start() {
         if(!modelView.getCurrPlayer().equals(gui.getNickname()) && modelView.getDashboards().size() > 1) {
             disableButtons();
         }
     }
 
+    /**
+     * Method activateButtonClick gets called when a player clicks on an activate button
+     * @param actionEvent ActionEvent containing information about which card the player
+     * is trying to activate
+     */
     public void activateButtonClick(ActionEvent actionEvent) {
         if(actionEvent.getSource().equals(firstLeaderCardActivateButton)) {
             gui.send(new CheckRequirement((Integer) leaderIds.keySet().toArray()[0]));
@@ -203,6 +220,11 @@ public class LeadersController {
         stage.close();
     }
 
+    /**
+     * Method discardButtonClick gets called when a player clicks on a discard button
+     * @param actionEvent ActionEvent containing information about which card the player
+     * is trying to discard
+     */
     public void discardButtonClick(ActionEvent actionEvent) {
         if(actionEvent.getSource().equals(firstLeaderCardDiscardButton)) {
             gui.send(new DiscardLeaderCard((Integer) leaderIds.keySet().toArray()[0]));
@@ -215,6 +237,10 @@ public class LeadersController {
         stage.close();
     }
 
+    /**
+     * Method disableButtons makes all buttons not clickable by the player, and is called
+     * when the actions of activate/discard leader cards are not allowed for that turn
+     */
     public void disableButtons() {
         firstLeaderCardActivateButton.setDisable(true);
         secondLeaderCardActivateButton.setDisable(true);
