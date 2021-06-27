@@ -31,9 +31,12 @@ public class SetupController {
     @FXML TextField nicknameTextField;
     Button setNicknameButton;
 
-
     private static GUI gui;
 
+    /**
+     * Method setGUI sets up the GUI for the SetupController.
+     * @param gui GUI reference.
+     */
     public void setGUI(GUI gui) {
         SetupController.gui = gui;
     }
@@ -48,10 +51,8 @@ public class SetupController {
         gui.mainStage.setScene(new Scene(root));
         gui.mainStage.setResizable(false);
         gui.mainStage.show();
-
-
-
     }
+
     /**
      * Method setNicknameButtonClicked checks if a nickname has been written.
      * If it hasn't, it shows an alert, otherwise it sends a SetNickname message to
@@ -66,7 +67,6 @@ public class SetupController {
         gui.setNickname(nickname);
         gui.send(new SetNickname(nickname));
     }
-
 
     /**
      * Method connectButtonClicked checks if server address and port have been written.
@@ -114,14 +114,9 @@ public class SetupController {
         setNicknameButton.setOnAction(this::setNicknameButtonClicked);
 
         Platform.runLater(() -> {
-
-
             connectPane.getChildren().add(setNicknameButton);
             connectPane.getChildren().add(nicknameLabel);
             connectPane.getChildren().add(nicknameTextField);
         });
-
-
     }
-
 }

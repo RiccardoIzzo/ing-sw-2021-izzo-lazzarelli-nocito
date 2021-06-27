@@ -4,14 +4,11 @@ import it.polimi.ingsw.events.clientmessages.CreateLobby;
 import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.JoinLobby;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 
-import java.io.IOException;
 import java.util.Map;
-
 
 /**
  * LobbiesController class manages the Lobbies scene.
@@ -27,15 +24,21 @@ public class LobbiesController {
     private static GUI gui;
     Map<String, Integer> lobbies;
 
+    /**
+     * Method setLobbies sets the lobbies Map.
+     * @param lobbies lobbies Map.
+     */
     public void setLobbies(Map<String,Integer> lobbies) {
         this.lobbies = lobbies;
     }
 
-
+    /**
+     * Method setGUI sets up the GUI for the LobbiesController.
+     * @param gui GUI reference.
+     */
     public void setGUI(GUI gui) {
         LobbiesController.gui = gui;
     }
-
 
     /**
      * Method setLobbies receives the updated map of the available lobbies
@@ -48,7 +51,6 @@ public class LobbiesController {
             lobbiesListView.getItems().add("["+lobby.getValue()+" players] - " + lobby.getKey());
         }
         lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
     }
 
     /**
@@ -77,7 +79,7 @@ public class LobbiesController {
 
     /**
      * Method joinButtonClicked checks if the lobby name and the number of players have been written.
-     * If they haven't, or the name is not availabble, it shows an alert, otherwise it sends to server
+     * If they haven't, or the name is not available, it shows an alert, otherwise it sends to server
      * a request to create the selected lobby
      */
     public void createButtonClicked() {
@@ -108,7 +110,6 @@ public class LobbiesController {
         }
 
     }
-
 
     /**
      * Method addWaitingView is called after a successful request to join or create a lobby has been made.
@@ -147,4 +148,4 @@ public class LobbiesController {
      public void refreshButtonClicked() {
             gui.send(new GetLobbies());
         }
-    }
+}

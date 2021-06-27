@@ -24,6 +24,11 @@ public class ModelView {
     private MarbleColor slideMarble;
     private ArrayList<MarbleColor> marketTray;
 
+    /**
+     * Constructor ModelView creates a new ModelView instance.
+     * @param players list of player's nickname.
+     * @param myNickname nickname of this player.
+     */
     public ModelView(ArrayList<String> players, String myNickname) {
         this.dashboards = new ArrayList<>();
         for (String player: players) {

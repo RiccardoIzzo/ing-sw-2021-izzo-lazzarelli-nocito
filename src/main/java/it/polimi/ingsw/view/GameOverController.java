@@ -23,14 +23,21 @@ public class GameOverController {
     Map<String, Integer> map;
     private GUI gui;
 
+    /**
+     * Method setGUI sets up the GUI.
+     * @param gui GUI reference.
+     */
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Method setMap sets the map.
+     * @param map Map instance.
+     */
     public void setMap(Map<String, Integer> map) {
         this.map = map;
     }
-
 
     /**
      * Method start shows the result of the game.
@@ -50,8 +57,6 @@ public class GameOverController {
 
             if (map != null && map.values().size() > 1) {
                 int k = 0;
-
-
                 InnerShadow is = new InnerShadow();
                 is.setOffsetX(0.5);
                 is.setOffsetY(0.5);

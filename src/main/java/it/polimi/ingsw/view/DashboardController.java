@@ -34,7 +34,6 @@ import java.util.stream.IntStream;
  *
  * @author Andrea Nocito
  */
-
 public class DashboardController {
     /**
      * DashboardControllers handles Market, Grid, GameOver and Leaders controllers.
@@ -102,6 +101,10 @@ public class DashboardController {
 
     ImageView tokenImageView;
 
+    /**
+     * Method setGUI sets up the GUI for the DashboardController.
+     * @param gui GUI reference.
+     */
     public void setGUI(GUI gui) {
         DashboardController.gui = gui;
     }
@@ -174,7 +177,6 @@ public class DashboardController {
         }
     }
 
-
     /**
      * Method setupArrays adds the scene elements to the dedicated arrays
      */
@@ -233,8 +235,6 @@ public class DashboardController {
             gui.showAlert("Leader card activated", Alert.AlertType.CONFIRMATION);
         }
     }
-
-
 
     /**
      * Method choiceBoxChange checks which nickname has been selected in playersChoiceBox
@@ -401,8 +401,7 @@ public class DashboardController {
 
     /**
      * Method activateAllProductions checks if the enabled productions meet their requirements,
-     * if they don't it shows an alert, otherwise it send a message to server to activate
-     * the productions
+     * if they don't it shows an alert, otherwise it send a message to server to activate the productions
      */
     public void activateAllProductions() {
         ResourceMap totalResources = modelView.getMyDashboard().getTotalResources();
@@ -572,6 +571,7 @@ public class DashboardController {
             }
         }
     }
+
     /**
      * Method showActiveDevelopments shows the active developments cards or an empty card if a slot doesn't have any
      */
@@ -646,7 +646,6 @@ public class DashboardController {
         }
     }
 
-
     /**
      * Method showStrongbox shows the strongbox resources and their amount.
      * @param strongbox ResourceMap containing the amount of resources in the strongbox
@@ -696,7 +695,7 @@ public class DashboardController {
      * Method showWarehouse shows the warehouse of the selected player and, if enabled,
      * the temporary shelf with the resources obtained from the market
      * @param warehouse warehouse of the selected players
-     * @param extraShelfResources arraylist of the resources stored in the extra shelf enabled by some leadercards
+     * @param extraShelfResources arraylist of the resources stored in the extra shelf enabled by some leader cards
      */
     private void showWarehouse(ArrayList<Resource> warehouse, ArrayList<Resource> extraShelfResources) {
 
@@ -879,7 +878,6 @@ public class DashboardController {
         }
     }
 
-
     /**
      * Method getImage
      * @param resource the resource of which an image is needed
@@ -976,8 +974,6 @@ public class DashboardController {
                 faithTrackImage.setFitHeight(len);
             }
         }
-
-
     }
 
     /**
@@ -1031,6 +1027,10 @@ public class DashboardController {
         return loader;
     }
 
+    /**
+     * Method setModelView sets the model view.
+     * @param modelView ModelView instance.
+     */
     public void setModelView(ModelView modelView) {
         this.modelView = modelView;
     }
@@ -1086,7 +1086,7 @@ public class DashboardController {
     }
 
     /**
-     * Method updateDashoboards shows the updated dashboard of the player
+     * Method updatePlayerDashboard shows the updated dashboard of the player
      */
     public void updatePlayerDashboard() {
         Platform.runLater(() -> {
@@ -1097,12 +1097,13 @@ public class DashboardController {
     }
 
     /**
-     * Method updateDashoboards shows the updated dashboard of the player
+     * Method updateDashboards shows the updated dashboard of the player
      * currently selected
      */
-    public void updateDashoboards() {
+    public void updateDashboards() {
         showDashboard(playersChoiceBox.getSelectionModel().getSelectedItem());
     }
+
     /**
      * Method handleTemporaryShelf is called when resources are received from the market and
      * calls showsDashboard method to update the scene and show the temporary shelf
@@ -1181,6 +1182,7 @@ public class DashboardController {
             gameOverController.start();
         });
     }
+
     /**
      * Method showToken display the last drawn token in the single player game
      * @param index the type of token to show

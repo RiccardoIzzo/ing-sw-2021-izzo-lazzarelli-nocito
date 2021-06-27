@@ -29,20 +29,22 @@ public class SelectLeaderController {
 
     ArrayList<Integer> leaderIds;
     static ArrayList<Integer> selectedLeaders;
-
-
     private static GUI gui;
 
+    /**
+     * Method setGUI sets up the GUI for the SelectLeaderController.
+     * @param gui GUI reference.
+     */
     public void setGUI(GUI gui) {
         SelectLeaderController.gui = gui;
     }
 
-
-
+    /**
+     * Method start begins the showCards action for this scene.
+     */
     public void start() throws IOException {
         showCards();
     }
-
 
     /**
      * Method showCards loads the images of the leader cards received
@@ -60,13 +62,17 @@ public class SelectLeaderController {
         card4Button.setStyle("-fx-background-color: transparent ; -fx-border-width: 0px ;");
     }
 
+    /**
+     * Method setLeadersIds sets the list of leader card ids.
+     * @param ids list of Integer, leader card ids.
+     */
     public void setLeadersIds(ArrayList<Integer> ids) {
         leaderIds = ids;
         selectedLeaders = new ArrayList<>();
     }
 
     /**
-     * Method selectButtonClicked checks that two leadercards have been selected.
+     * Method selectButtonClicked checks that two leader cards have been selected.
      * It they haven't, it shows an alert, otherwise it sends a message with the cards to remove.
      */
     public void selectButtonClicked() {
@@ -82,7 +88,7 @@ public class SelectLeaderController {
     }
 
     /**
-     * Method cardButtonClicked manages the selection of the leadercards.
+     * Method cardButtonClicked manages the selection of the leader cards.
      * When a card is selected it will show a colored background,
      * when it's unselected it will show a transparent background
      */

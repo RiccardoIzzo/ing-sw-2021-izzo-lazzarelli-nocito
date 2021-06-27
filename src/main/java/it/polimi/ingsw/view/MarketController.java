@@ -36,6 +36,10 @@ public class MarketController {
     ArrayList<Integer> activeWhiteMarbleLeaders;
     int leaderID = 0;
 
+    /**
+     * Method setGUI sets up the GUI.
+     * @param gui GUI reference.
+     */
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
@@ -82,10 +86,7 @@ public class MarketController {
 
             leaderID = activeWhiteMarbleLeaders.get(0);
             whiteMarbleChoiceBox.getSelectionModel().selectFirst();
-
         }
-
-
     }
 
     /**
@@ -185,6 +186,10 @@ public class MarketController {
         stage.close();
     }
 
+    /**
+     * Method setMarketTray sets the market tray.
+     * @param marketTray list of MarbleColor.
+     */
     public void setMarketTray(ArrayList<MarbleColor> marketTray) {
         this.marketTray = marketTray;
     }

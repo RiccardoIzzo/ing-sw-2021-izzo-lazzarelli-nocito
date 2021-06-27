@@ -190,15 +190,14 @@ public class GridController {
         buttons.add(card11Button);
         buttons.add(card12Button);
 
-
         setGrid(modelView.getGrid());
-
-
-
         buyCardButton.setDisable(!(modelView.getCurrPlayer().equals(gui.getNickname()) || modelView.getCurrPlayer().length() < 1) && !gui.getValidActions().contains(Action.BUY_CARD) );
-
     }
 
+    /**
+     * Method setGUI sets up the GUI.
+     * @param gui GUI reference.
+     */
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
@@ -220,6 +219,5 @@ public class GridController {
             imageViews[slot].setImage(devImages[slot]);
             slot++;
         }
-
     }
 }

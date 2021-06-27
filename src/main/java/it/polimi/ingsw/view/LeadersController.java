@@ -40,13 +40,20 @@ public class LeadersController {
     Map<Integer, Boolean> leaderIds;
     String playerNickname;
     private GUI gui;
+    private ModelView modelView;
 
+    /**
+     * Method setModelView sets the model view.
+     * @param modelView ModelView instance.
+     */
     public void setModelView(ModelView modelView) {
         this.modelView = modelView;
     }
 
-    private ModelView modelView;
-
+    /**
+     * Method setGUI sets up the GUI.
+     * @param gui GUI reference.
+     */
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
@@ -81,7 +88,6 @@ public class LeadersController {
                 discardButton[i].setDisable(true);
             }
         }
-
 
         activeLabels = new Label[2];
 
@@ -246,6 +252,5 @@ public class LeadersController {
         secondLeaderCardActivateButton.setDisable(true);
         firstLeaderCardDiscardButton.setDisable(true);
         secondLeaderCardDiscardButton.setDisable(true);
-
     }
 }
