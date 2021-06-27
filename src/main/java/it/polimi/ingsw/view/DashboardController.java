@@ -25,6 +25,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -278,7 +279,7 @@ public class DashboardController {
                 Image resourceImage = new Image("/view/images/resources/"+resources[i]+".png");
                 ImageView resourceImageView = new ImageView(resourceImage);
 
-                resourceImageView.setLayoutX(100*i+20);
+                resourceImageView.setLayoutX(100*i+ (double) 20);
                 resourceImageView.setLayoutY(50);
                 resourceImageView.setFitWidth(60);
                 resourceImageView.setFitHeight(60);
@@ -286,7 +287,7 @@ public class DashboardController {
                 bonusPane.getChildren().add(resourceImageView);
 
                 resourceTextField[i] = new TextField();
-                resourceTextField[i].setLayoutX(100*i+35);
+                resourceTextField[i].setLayoutX((double) 100*i+ (double) 35);
                 resourceTextField[i].setLayoutY(115);
                 resourceTextField[i].setPrefWidth(30);
                 resourceTextField[i].setPrefHeight(15);
@@ -733,7 +734,7 @@ public class DashboardController {
             if(ShelfView[i] == null) {
                 ShelfView[i] = new ImageView();
                 ShelfView[i].setLayoutX(shelfLayoutX[i]);
-                ShelfView[i].setLayoutY(yStart + yOffset * row);
+                ShelfView[i].setLayoutY((double) yStart + yOffset * row);
                 ShelfView[i].setFitWidth(len);
                 ShelfView[i].setFitHeight(len);
                 ShelfView[i].setPickOnBounds(true);
@@ -939,8 +940,8 @@ public class DashboardController {
         int[] yStart = {0, 0, 0, -40, -80, -80 ,-80 ,-80, -80 ,-80, -40, 0, 0, 0, 0, 0, 0, -40, -80, -80, -80 ,-80 , -80 , -80 ,-80};
         int len = 40;
 
-        faithTrackImage.setLayoutX(xOffset+xStart[faithMarker]);
-        faithTrackImage.setLayoutY(yOffset+yStart[faithMarker]);
+        faithTrackImage.setLayoutX(xOffset+ (double) xStart[faithMarker]);
+        faithTrackImage.setLayoutY(yOffset+ (double) yStart[faithMarker]);
         faithTrackImage.setFitWidth(len);
         faithTrackImage.setFitHeight(len);
 
@@ -966,8 +967,8 @@ public class DashboardController {
                 faithTrackImage.setFitHeight(halfLen);
             }
             else {
-                blackFaithTrackImage.setLayoutX(xOffset+xStart[blackMarker]);
-                blackFaithTrackImage.setLayoutY(yOffset+yStart[blackMarker]);
+                blackFaithTrackImage.setLayoutX(xOffset+ (double) xStart[blackMarker]);
+                blackFaithTrackImage.setLayoutY(yOffset+ (double) yStart[blackMarker]);
                 blackFaithTrackImage.setFitWidth(len);
                 blackFaithTrackImage.setFitHeight(len);
                 faithTrackImage.setFitWidth(len);
@@ -1022,7 +1023,7 @@ public class DashboardController {
             stage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("DashboardController error");
         }
         return loader;
     }

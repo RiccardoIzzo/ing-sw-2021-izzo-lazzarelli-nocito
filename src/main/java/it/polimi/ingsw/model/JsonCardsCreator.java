@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static it.polimi.ingsw.constants.GameConstants.DEVELOPMENTCARDIDS;
 import static it.polimi.ingsw.constants.GameConstants.LEADERCARDIDS;
@@ -42,7 +43,7 @@ public class JsonCardsCreator {
         try (Reader reader = new InputStreamReader(JsonCardsCreator.class.getResourceAsStream(GameConstants.developmentCardsJson))) {
             cards = gson.fromJson(reader , new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("JsonCardCreator error");
         }
         return cards;
     }
@@ -73,7 +74,7 @@ public class JsonCardsCreator {
             try (Reader reader = new InputStreamReader(JsonCardsCreator.class.getResourceAsStream(filePath))){
                 leaders.addAll(gson.fromJson(reader, types.get(i++)));
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getLogger("ClientConnection error");
             }
         }
         return leaders;

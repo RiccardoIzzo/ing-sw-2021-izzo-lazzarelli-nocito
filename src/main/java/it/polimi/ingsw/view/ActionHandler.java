@@ -5,6 +5,7 @@ import it.polimi.ingsw.events.servermessages.*;
 import javafx.scene.control.Alert;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.logging.Logger;
 
 import static it.polimi.ingsw.constants.GameConstants.*;
 import static it.polimi.ingsw.constants.PlayerConstants.*;
@@ -136,12 +137,10 @@ public class ActionHandler extends Thread{
                         case ACTIVE_DEVELOPMENTS_CHANGE:
                             ((GUI) view).dashboardController.updatePlayerActiveDevelopments();
                             ((GUI) view).dashboardController.updatePlayerWarehouse();
-
+                            break;
                         default:
                             break;
-
                     }
-
                 }
             }
         }
@@ -157,7 +156,8 @@ public class ActionHandler extends Thread{
             try {
                 serverMessage = messages.take();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Logger.getLogger("ActionHandler error");
+                Thread.currentThread().interrupt();
             }
             handle(serverMessage);
         }

@@ -106,7 +106,7 @@ public class ModelView {
     public void updateModelView(String playerSource, String propertyName, Object objectToUpdate) {
         if (playerSource != null) {
             DashboardView dashboardView = dashboards.stream().filter(dashboard -> dashboard.getNickname().equals(playerSource)).findAny().orElse(null);
-            dashboardView.updateDashboard(propertyName, objectToUpdate);
+            if (dashboardView != null) dashboardView.updateDashboard(propertyName, objectToUpdate);
         } else {
             if (END_TURN.equals(propertyName)) {
                 currPlayer = (String) objectToUpdate;

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * GUI class manages the game with a Graphical User Interface.
@@ -63,7 +64,7 @@ public class GUI extends Application implements View {
             setupController.setGUI(this);
             setupController.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("GUI error");
         }
     }
 
@@ -105,7 +106,7 @@ public class GUI extends Application implements View {
             }
             lobbiesController.lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("GUI error");
         }
     }
 
@@ -170,7 +171,7 @@ public class GUI extends Application implements View {
             dashboardController.handleBonusResource(bonusResourceAmount);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("GUI error");
         }
     }
 
@@ -191,7 +192,7 @@ public class GUI extends Application implements View {
             selectLeaderController.setLeadersIds(new ArrayList<>(ids));
             selectLeaderController.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("GUI error");
         }
     }
 

@@ -15,6 +15,7 @@ public class ServerHandler implements Runnable{
     private final Server server;
     private ServerSocket serverSocket;
     private final ExecutorService executors;
+    private boolean status = true;
 
     /**
      * Constructor ServerHandler creates a new instance of ServerHandler and initializes a thread pool.
@@ -37,16 +38,15 @@ public class ServerHandler implements Runnable{
      * Method acceptConnection waits for client connection and creates a thread for each connection accepted.
      */
     public void acceptConnection(){
-        while(true){
-            try{
-                Socket socket = serverSocket.accept();
-                ClientConnection clientConnection = new ClientConnection(server, socket);
-                clientConnection.setStatus(true);
-                executors.execute(clientConnection);
-                System.out.println("Connection established with " + socket.getRemoteSocketAddress().toString());
-            } catch (IOException e){
-                System.err.println("Can't accept connection anymore");
-            }
+        try{
+            Socket socket = serverSocket.accept();
+            ClientConnection clientConnection = new ClientConnection(server, socket);
+            clientConnection.setStatus(true);
+            executors.execute(clientConnection);
+            System.out.println("Connection established with " + socket.getRemoteSocketAddress().toString());
+        } catch (IOException e){
+            System.err.println("Can't accept connection anymore");
+            status = false;
         }
     }
 
@@ -56,6 +56,8 @@ public class ServerHandler implements Runnable{
     @Override
     public void run() {
         System.out.println("Server ready!");
-        acceptConnection();
+        while(status){
+            acceptConnection();
+        }
     }
 }

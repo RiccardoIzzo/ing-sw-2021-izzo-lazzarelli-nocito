@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 /**
  * Class ClientConnection manages server-client communication.
@@ -85,7 +86,7 @@ public class ClientConnection implements Runnable{
             output.writeObject(message);
             output.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("ClientConnection error");
         }
     }
 
@@ -117,7 +118,7 @@ public class ClientConnection implements Runnable{
             output.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("ClientConnection error");
         }
     }
 

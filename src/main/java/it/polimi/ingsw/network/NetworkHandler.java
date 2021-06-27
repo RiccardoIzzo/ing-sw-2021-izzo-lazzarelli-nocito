@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * NetworkHandler class represents the client side of the game, it manages connection with server.
@@ -70,7 +71,8 @@ public class NetworkHandler {
                     TimeUnit.MILLISECONDS.sleep(10000);
                     sendToServer(new Heartbeat());
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Logger.getLogger("NetworkHandler error");
+                    Thread.currentThread().interrupt();
                 }
             }
         }).start();
@@ -85,7 +87,7 @@ public class NetworkHandler {
             output.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("NetworkHandler error");
         }
     }
 

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.logging.Logger;
 
 import static it.polimi.ingsw.constants.GameConstants.END_TURN;
 import static it.polimi.ingsw.constants.GameConstants.TOKEN_DRAWN;
@@ -40,7 +41,7 @@ public class ServerConnection implements Runnable{
         try {
             input = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("ServerConnection error");
         }
     }
 
@@ -88,6 +89,7 @@ public class ServerConnection implements Runnable{
         }
         catch (IOException | ClassNotFoundException | InterruptedException e) {
             System.out.println("Can't find server! Quitting...");
+            Thread.currentThread().interrupt();
             System.exit(0);
         }
     }

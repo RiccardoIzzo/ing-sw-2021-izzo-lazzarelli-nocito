@@ -75,7 +75,7 @@ public class GameOverController {
                     playerLabel.setText(playerPoints + "pt - " + player );
                     playerLabel.setFont(new Font("System Black", 25));
                     playerLabel.setLayoutX(230);
-                    playerLabel.setLayoutY(70+k*42);
+                    playerLabel.setLayoutY((double) 70+k*42);
                     playerLabel.setPrefWidth(150);
                     playerLabel.setPrefHeight(40);
                     if(k == 0) {
