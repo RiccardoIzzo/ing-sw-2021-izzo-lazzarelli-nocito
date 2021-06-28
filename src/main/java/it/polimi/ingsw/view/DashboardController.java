@@ -1000,7 +1000,7 @@ public class DashboardController {
     /**
      * Method showPopup opens a scene as a popup
      * @param scenePath the path of the scene to open
-     * @param stageButtonsVisible bollean that indicates if the stage should or not show maximize, minimize and close buttons
+     * @param stageButtonsVisible boolean that indicates if the stage should or not show maximize, minimize and close buttons
      * @return the FXMLLoader of the scene
      */
     private FXMLLoader showPopup(String scenePath, boolean stageButtonsVisible) {
@@ -1040,8 +1040,10 @@ public class DashboardController {
      * Method startTurn resets basicProduction and updates the players dashboard
      */
     public void startTurn() {
-        for(ComboBox<ImageView> basicProduction : basicProductionResImages) {
-            Platform.runLater(() -> basicProduction.valueProperty().set(null));
+        for(int i=0; i<basicProductionResImages.size(); i++) {
+            int finalI = i;
+            Platform.runLater(() -> basicProductionResImages.get(finalI).valueProperty().set(null));
+            basicProductionResources[i] = null;
         }
         endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
         for(Action action : Action.values()){
@@ -1117,21 +1119,19 @@ public class DashboardController {
      * Method basicProductionResChange
      */
     public void basicProductionResChange(ActionEvent actionEvent) {
-        @SuppressWarnings("unchecked")
-        ComboBox<ImageView> comboBox = (ComboBox<ImageView>) actionEvent.getSource();
-            int selectedIndex = -1;
-            switch (comboBox.getId()) {
-                case "basicProductionRes1" -> selectedIndex = 0;
-                case "basicProductionRes2" -> selectedIndex = 1;
-                case "basicProductionRes3" -> selectedIndex = 2;
-            }
-            switch (comboBox.getSelectionModel().getSelectedIndex()) {
-                case 0 -> basicProductionResources[selectedIndex] = Resource.COIN;
-                case 1 -> basicProductionResources[selectedIndex] = Resource.SERVANT;
-                case 2 -> basicProductionResources[selectedIndex] = Resource.SHIELD;
-                case 3 -> basicProductionResources[selectedIndex] = Resource.STONE;
-            }
-
+        @SuppressWarnings("unchecked") ComboBox<ImageView> comboBox = (ComboBox<ImageView>) actionEvent.getSource();
+        int selectedIndex = -1;
+        switch (comboBox.getId()) {
+            case "basicProductionRes1" -> selectedIndex = 0;
+            case "basicProductionRes2" -> selectedIndex = 1;
+            case "basicProductionRes3" -> selectedIndex = 2;
+        }
+        switch (comboBox.getSelectionModel().getSelectedIndex()) {
+            case 0 -> basicProductionResources[selectedIndex] = Resource.COIN;
+            case 1 -> basicProductionResources[selectedIndex] = Resource.SERVANT;
+            case 2 -> basicProductionResources[selectedIndex] = Resource.SHIELD;
+            case 3 -> basicProductionResources[selectedIndex] = Resource.STONE;
+        }
     }
 
     /**
