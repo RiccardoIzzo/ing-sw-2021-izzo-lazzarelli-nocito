@@ -13,7 +13,7 @@
 
       <Button fx:id="endTurnButton" layoutX="455.0" layoutY="33.0" prefWidth="90.0" onAction="#endTurn" mnemonicParsing="false" text="End Turn" />
       <Button fx:id="showLeaders" layoutX="275.0" layoutY="33.0" prefWidth="90.0" onAction="#showLeaders" mnemonicParsing="false" text="Leader cards" />
-      <Button fx:id="activateProductionsButton" layoutX="602.0" layoutY="33.0" prefWidth="90.0" onAction="#activateAllProductions" mnemonicParsing="false" text="Act. Prod" />
+      <Button fx:id="activateProductionsButton" layoutX="602.0" layoutY="33.0" prefWidth="90.0" onAction="#activateAllProductions" mnemonicParsing="false" text="Produce" />
       <Button fx:id ="marketButton" layoutX="712.0" layoutY="33.0" prefWidth="90.0" onAction="#showMarket" mnemonicParsing="false" text="Market" />
       <Button fx:id ="gridButton" layoutX="822.0" layoutY="33.0" prefWidth="90.0" onAction="#showGrid" mnemonicParsing="false" text="Grid" />
 
