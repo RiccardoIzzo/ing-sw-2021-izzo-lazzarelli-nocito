@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public class LobbiesController {
     public ListView<String> lobbiesListView;
-
+    public ArrayList<String> lobbiesList;
     // Lobbies Scene
     @FXML TextField lobbyTextField;
     @FXML TextField numPlayersTextField;
@@ -25,11 +26,13 @@ public class LobbiesController {
     Map<String, Integer> lobbies;
 
     /**
-     * Method setLobbies sets the lobbies Map.
+     * Method setLobbies sets the lobbies Map and saves the lobby IDs in lobbiesList
      * @param lobbies lobbies Map.
      */
     public void setLobbies(Map<String,Integer> lobbies) {
         this.lobbies = lobbies;
+        lobbiesList = new ArrayList<>();
+        lobbiesList.addAll(lobbies.keySet());
     }
 
     /**
@@ -41,14 +44,16 @@ public class LobbiesController {
     }
 
     /**
-     * Method setLobbies receives the updated map of the available lobbies
+     * Method setLobbies receives the updated map of the available lobbies and saves the lobby IDs in lobbiesList
      * @param newLobbies map that associates the lobby id to the maximum number of players for that lobby.
      */
     public void refreshLobbies(Map<String, Integer> newLobbies){
         setLobbies(newLobbies);
         lobbiesListView.getItems().clear();
+        lobbiesList = new ArrayList<>();
         for(Map.Entry<String,Integer> lobby : newLobbies.entrySet()) {
             lobbiesListView.getItems().add("["+lobby.getValue()+" players] - " + lobby.getKey());
+            lobbiesList.add(lobby.getKey());
         }
         lobbiesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
@@ -88,12 +93,11 @@ public class LobbiesController {
             gui.showAlert("Insert a lobby ID!", Alert.AlertType.ERROR);
             return;
         }
-        if (lobbiesListView.getItems().contains(lobbyID) ) {
+        if (lobbiesList.contains(lobbyID) ) {
             gui.showAlert("It already exists a lobby with this id! Try again.", Alert.AlertType.ERROR);
             gui.send(new GetLobbies());
         }
         else {
-
             if (isParsable(numPlayersTextField.getText())) {
                 int numPlayers = Integer.parseInt(numPlayersTextField.getText());
                 if (numPlayers < 1 || numPlayers > 4)
