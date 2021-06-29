@@ -571,9 +571,10 @@ public class CLI implements View{
      */
     @Override
     public void handleDiscardLeader() {
-        Set<Integer> ids = modelView.getMyDashboard().getLeaderCards().keySet();
+        Map<Integer, Boolean> leaders = modelView.getMyDashboard().getLeaderCards();
+        List<Integer> ids = leaders.keySet().stream().filter(id -> !leaders.get(id)).collect(Collectors.toList());
         if(ids.size() == 0) {
-            System.out.println("No remaining leader cards.");
+            System.out.println("No remaining inactive leader cards.");
             handleTurn();
             return;
         }
