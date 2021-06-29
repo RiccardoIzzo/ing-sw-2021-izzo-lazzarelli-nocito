@@ -64,7 +64,7 @@ public class LobbiesController {
      */
     public void enable() {
         lobbiesPane.setDisable(false);
-        lobbiesPane.getChildren().remove(lobbiesPane.lookup("#waitingPane"));
+        Platform.runLater(() -> lobbiesPane.getChildren().remove(lobbiesPane.lookup("#waitingPane")));
     }
 
     /**
