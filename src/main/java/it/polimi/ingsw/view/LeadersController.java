@@ -93,7 +93,7 @@ public class LeadersController {
 
         for(int i=0; i<leaderCardImageView.length; i++) {
 
-            if(ids.size() >= 1 && leaderIds.values().size() >= i && (boolean) leaderIds.values().toArray()[i] ) {
+            if(ids.size() >= 1 && leaderIds.values().size() > i && (boolean) leaderIds.values().toArray()[i] ) {
                 activateButton[i].setDisable(true);
                 discardButton[i].setDisable(true);
                 activeLabels[i] = new Label("ACTIVE");
