@@ -370,6 +370,8 @@ public class CLI implements View{
                     if (cardToBuy.getLevel() > 1 && cardToCover != null) {
                         if (JsonCardsCreator.generateDevelopmentCard(cardToCover).getLevel() + 1 == cardToBuy.getLevel()) {
                             break;
+                        } else {
+                            System.out.println("Cannot place your card at slot number " + slotIndex + "." + "Try again:");
                         }
                     } else if (cardToBuy.getLevel() == 1 && cardToCover == null){
                         break;
