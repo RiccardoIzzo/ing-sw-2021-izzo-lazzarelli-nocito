@@ -64,6 +64,7 @@ public class LobbiesController {
      */
     public void enable() {
         lobbiesPane.setDisable(false);
+        lobbiesPane.getChildren().remove(lobbiesPane.lookup("#waitingPane"));
     }
 
     /**
@@ -130,6 +131,7 @@ public class LobbiesController {
         waitingPane.setLayoutX(lobbiesPane.getWidth()/2 - (paneWidth / 2));
         waitingPane.setLayoutY(lobbiesPane.getHeight()/2 - (paneHeight / 2));
         waitingPane.setStyle("-fx-background-color: white ; -fx-border-radius: 20");
+        waitingPane.setId(("waitingPane"));
         textLabel.setMinHeight(60);
         textLabel.setLayoutX(10);
         textLabel.setMinWidth(paneWidth - 20);
