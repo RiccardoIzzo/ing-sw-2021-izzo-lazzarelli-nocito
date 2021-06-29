@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetFinalTurn;
 import it.polimi.ingsw.events.servermessages.*;
 import javafx.scene.control.Alert;
@@ -41,20 +42,24 @@ public class ActionHandler extends Thread{
             view.handleLobbies(((SendLobbies) message).getLobbies());
         }
         else if(message instanceof LobbyJoined){
-            view.printText("Lobby joined! Waiting for other players...");
+            view.printText("Lobby joined! Waiting for other players...\n");
             if (view instanceof GUI) {
                 ((GUI) view).handleLobbyJoined();
             }
         }
         else if(message instanceof LobbyFull){
-            view.printText("This lobby is full! Try again.");
+            view.printText("This lobby is full! Try again.\n");
             if (view instanceof GUI) {
                 ((GUI) view).enableLobbies();
                 ((GUI) view).showAlert("This lobby is full! Try again.", Alert.AlertType.ERROR);
             }
         }
         else if(message instanceof LobbyError){
-            view.printText("An error occurred while creating the lobby! Try again.");
+            if(view instanceof CLI){
+                view.printText("An error occurred while creating the lobby! Try again.\n");
+                view.send(new GetLobbies());
+            }
+
             if (view instanceof GUI) {
                 ((GUI) view).enableLobbies();
                 ((GUI) view).showAlert("An error occurred while creating the lobby! Try again.", Alert.AlertType.ERROR);
