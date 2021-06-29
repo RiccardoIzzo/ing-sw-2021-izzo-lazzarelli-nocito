@@ -53,6 +53,13 @@ public class ActionHandler extends Thread{
                 ((GUI) view).showAlert("This lobby is full! Try again.", Alert.AlertType.ERROR);
             }
         }
+        else if(message instanceof LobbyError){
+            view.printText("An error occurred while creating the lobby! Try again.");
+            if (view instanceof GUI) {
+                ((GUI) view).enableLobbies();
+                ((GUI) view).showAlert("An error occurred while creating the lobby! Try again.", Alert.AlertType.ERROR);
+            }
+        }
         else if(message instanceof GameStarted){
             view.printText("The game is about to start.");
             view.setModelView(new ModelView(((GameStarted) message).getPlayers(), view.getNickname()));

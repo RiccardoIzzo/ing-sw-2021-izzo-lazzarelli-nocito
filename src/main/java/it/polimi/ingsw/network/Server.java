@@ -5,6 +5,7 @@ import it.polimi.ingsw.events.clientmessages.*;
 import it.polimi.ingsw.events.servermessages.*;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.model.SinglePlayerGame;
 
 import java.util.*;
 
@@ -209,6 +210,7 @@ public class Server {
                 connectionMap.put(nickname, connection);
                 sendEveryone(new TextMessage(nickname + " is back online!"), getLobbyIDByPlayerName(nickname));
                 getGameHandler(nickname).reloadModelView(nickname);
+                if(getGameHandler(nickname).getGame() instanceof SinglePlayerGame) connection.sendToClient(new StartTurn(nickname));
             }
             /*
             This nickname is available, it registers the player with the selected nickname and sends a ValidNickname message.
@@ -244,6 +246,7 @@ public class Server {
                 connection.sendToClient(new LobbyJoined());
                 if(isFull(lobbyID)) getGameHandler(nickname).start();
             }
+            else connection.sendToClient(new LobbyError());
         }
 
         /*
@@ -315,7 +318,7 @@ public class Server {
     }
 
     /**
-     * Method closeLobby removes the lobby from the list of active ones.W
+     * Method closeLobby removes the lobby from the list of active ones.
      * @param lobbyID id of the lobby to close.
      */
     public void closeLobby(String lobbyID){

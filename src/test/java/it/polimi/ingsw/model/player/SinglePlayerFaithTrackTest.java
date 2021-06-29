@@ -28,11 +28,10 @@ public class SinglePlayerFaithTrackTest {
     @Test
     public void testGetBlackFaithMarker() {
         assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), 0);
-        for (int i=0; i<END_TILE; i++) {
+        for (int i=0; i<3; i++) {
             singlePlayerFaithTrack.moveBlackFaithMarker();
         }
-        assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), END_TILE);
-
+        assertEquals(singlePlayerFaithTrack.getBlackFaithMarker(), 3);
     }
 
     /**
