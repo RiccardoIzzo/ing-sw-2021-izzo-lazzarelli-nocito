@@ -63,15 +63,20 @@ public class GridController {
     public ImageView cardSelectedImageView;
     public Button buyCardButton;
     private ModelView modelView;
-
     /**
      * Method cardButtonClicked is called when a card is selected and updates cardSelectedImageView
      */
     public void cardButtonClicked(ActionEvent actionEvent) {
         Button clickedButton = (Button) actionEvent.getSource();
         int pos = buttons.indexOf(clickedButton);
-        cardSelectedImageView.setImage(imageViews[pos].getImage());
-        selectedId = ids[pos];
+
+        if(imageViews[pos].getImage().getUrl().contains("Empty")) {
+            selectedId = 0;
+        }
+        else {
+            cardSelectedImageView.setImage(imageViews[pos].getImage());
+            selectedId = ids[pos];
+        }
     }
 
     /**
