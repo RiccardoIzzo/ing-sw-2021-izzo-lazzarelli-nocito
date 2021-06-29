@@ -197,12 +197,15 @@ public class GameHandler {
         else if(message instanceof SetWarehouse) {
             player.getDashboard().getWarehouse().setShelves(((SetWarehouse) message).getWarehouse());
             int faith = player.getDashboard().getWarehouse().removeResourcesFromShelf(5).getAmount();
-            for (Player playerToAdd: game.getPlayers()) {
-                if (playerToAdd != player) {
-                    if(playerToAdd.getDashboard().incrementFaith(faith)) game.vaticanReport();
+            if (game instanceof SinglePlayerGame) {
+                if (player.getDashboard().incrementBlackFaith(faith)) game.vaticanReport();
+            } else {
+                for (Player playerToAdd: game.getPlayers()) {
+                    if (playerToAdd != player) {
+                        if(playerToAdd.getDashboard().incrementFaith(faith)) game.vaticanReport();
+                    }
                 }
             }
-
         }
 
         else if(message instanceof SetFinalTurn){

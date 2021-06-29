@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.events.servermessages.EndGame;
 import it.polimi.ingsw.events.servermessages.GameStarted;
 import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
@@ -82,6 +83,8 @@ public class ServerConnection implements Runnable{
             }
             else {
                 if(message instanceof GameStarted) {
+                    actionHandler.handle(message);
+                } else if (message instanceof EndGame) {
                     actionHandler.handle(message);
                 }
                 else messages.add(message);

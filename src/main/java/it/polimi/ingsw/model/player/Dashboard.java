@@ -98,8 +98,12 @@ public class Dashboard {
     /**
      * Method incrementBlackFaith increments the position of the black faith marker.
      */
-    public void incrementBlackFaith(){
-        ((SinglePlayerFaithTrack) faithTrack).moveBlackFaithMarker();
+    public boolean incrementBlackFaith(int steps){
+        boolean vaticanReport = false;
+        for(int i=0; i<steps; i++) {
+            if(((SinglePlayerFaithTrack) faithTrack).moveBlackFaithMarker()) vaticanReport = true;
+        }
+        return vaticanReport;
     }
 
     /**

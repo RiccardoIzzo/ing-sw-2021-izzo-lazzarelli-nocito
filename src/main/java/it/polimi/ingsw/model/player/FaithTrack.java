@@ -16,7 +16,7 @@ import static it.polimi.ingsw.constants.PlayerConstants.*;
 public class FaithTrack {
     private int posFaithMarker;
     private final Boolean[] popesFavorTiles;
-    private Boolean[] tilesUncovered;
+    Boolean[] tilesUncovered;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     /**

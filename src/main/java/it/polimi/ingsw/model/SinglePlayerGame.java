@@ -65,10 +65,9 @@ public class SinglePlayerGame extends Game {
             int steps = ((MoveBlackMarkerToken) soloActionToken).getSteps();
             boolean reset = ((MoveBlackMarkerToken) soloActionToken).hasResetStack();
 
-            for(int i = 0; i < steps; i++){
-                Dashboard dashboard = this.getPlayers().get(0).getDashboard();
-                dashboard.incrementBlackFaith();
-            }
+            Dashboard dashboard = this.getPlayers().get(0).getDashboard();
+            if (dashboard.incrementBlackFaith(steps)) vaticanReport();
+
             if(reset){
                 this.getTokenStack().reset();
             }

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.network.VirtualView;
 
-import static it.polimi.ingsw.constants.PlayerConstants.BLACK_MARKER_POSITION;
+import static it.polimi.ingsw.constants.PlayerConstants.*;
 
 /**
  * SinglePlayerFaithTrack class represents a player's faith track in single player mode.
@@ -31,9 +31,27 @@ public class SinglePlayerFaithTrack extends FaithTrack {
     /**
      * Method moveBlackFaithMarker increments the position of the black faith marker.
      */
-    public void moveBlackFaithMarker() {
-        blackFaithMarker++;
-        pcs.firePropertyChange(BLACK_MARKER_POSITION, null, blackFaithMarker);
+    public boolean moveBlackFaithMarker() {
+        if (blackFaithMarker < END_TILE) {
+            blackFaithMarker++;
+            pcs.firePropertyChange(BLACK_MARKER_POSITION, null, blackFaithMarker);
+        }
+        if(TILE_POS.contains(blackFaithMarker)) return blackPopeTilePass();
+        else return false;
+    }
+
+    /**
+     * Method blackPopeTilePass uncovers the tile related to Lorenzo's position, if this tile has already been uncovered.
+     * @return true if the tile has been uncovered successfully, false otherwise.
+     */
+    public boolean blackPopeTilePass() {
+        int index = TILE_POS.indexOf(blackFaithMarker);
+        if (!tilesUncovered[index]) {
+            tilesUncovered[index] = true;
+            pcs.firePropertyChange(TILES_UNCOVERED_CHANGE, null, tilesUncovered.clone());
+            return true;
+        }
+        return false;
     }
 
     /**
