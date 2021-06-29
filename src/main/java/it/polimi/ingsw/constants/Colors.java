@@ -14,6 +14,8 @@ public enum Colors {
     ANSI_CYAN("\u001B[36m"),
     ANSI_WHITE("\u001B[37m"),
     WHITE_BRIGHT("\033[0;97m"),
+    CYAN_BRIGHT("\033[0;96m"),
+    BLACK_BRIGHT("\033[0;90m"),
     ANSI_YELLOW_BACKGROUND("\u001B[43m"),
     ANSI_BLACK_BACKGROUND("\u001B[40m"),
     ANSI_RED_BACKGROUND("\u001B[41m"),
