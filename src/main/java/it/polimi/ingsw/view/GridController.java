@@ -114,6 +114,9 @@ public class GridController {
                         if (JsonCardsCreator.generateDevelopmentCard(cardToCover).getLevel() + 1 == cardToBuy.getLevel()) {
                             conditionsMet = true;
                         }
+                        else {
+                            gui.showAlert("Cannot place your card at slot number " + slotIndex + "." + "Try again:", Alert.AlertType.ERROR);
+                        }
                     } else if (cardToBuy.getLevel() == 1 && cardToCover == null) {
                         conditionsMet = true;
                     } else {
