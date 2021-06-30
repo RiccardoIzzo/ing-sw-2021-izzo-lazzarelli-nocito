@@ -125,8 +125,7 @@ public class DashboardController {
         setupArrays();
         playersChoiceBox.setValue(gui.getNickname());
 
-        ArrayList<Action> actions = gui.getValidActions();
-        endTurnButton.setDisable(!actions.contains(Action.END_TURN));
+        endTurnButton.setDisable(true);
         if(modelView.getDashboards().size() == 1)
             showToken(0);
 
