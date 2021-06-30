@@ -9,6 +9,10 @@
 
 <?import javafx.scene.control.ComboBox?>
 <Pane prefHeight="700.0" prefWidth="1000.0" fx:controller="it.polimi.ingsw.view.DashboardController" fx:id="dashboardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+
+      <ImageView fitHeight="700.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@/view/images/table/cardsBackground.png" />
+      </ImageView>
       <ChoiceBox fx:id ="playersChoiceBox" onAction="#choiceBoxChange" layoutX="88.0" layoutY="33.0" prefWidth="175.0" />
 
       <Button fx:id="endTurnButton" layoutX="455.0" layoutY="33.0" prefWidth="90.0" onAction="#endTurn" mnemonicParsing="false" text="End Turn" />
