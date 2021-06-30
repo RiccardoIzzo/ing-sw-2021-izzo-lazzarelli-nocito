@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.events.clientmessages.CloseLobby;
 import it.polimi.ingsw.events.clientmessages.GetLobbies;
 import it.polimi.ingsw.events.clientmessages.SetFinalTurn;
 import it.polimi.ingsw.events.servermessages.*;
@@ -105,6 +106,7 @@ public class ActionHandler extends Thread{
             view.handleTurn();
         }
         else if(message instanceof Defeat){
+            view.send(new CloseLobby());
             if(view instanceof CLI) {
                 view.printText("You lost!");
                 System.exit(0);

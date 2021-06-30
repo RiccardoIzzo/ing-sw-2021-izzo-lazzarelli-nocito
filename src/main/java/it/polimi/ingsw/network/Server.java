@@ -276,6 +276,13 @@ public class Server {
         }
 
         /*
+        It manages CloseLobby message, at the end of the game it closes the lobby.
+         */
+        else if(message instanceof CloseLobby){
+            closeLobby(getLobbyIDByPlayerName(nickname));
+        }
+
+        /*
         The other messages are user actions and modify the model, these are handled by the GameHandler.
          */
         else getGameHandler(nickname).process(connection.getNickname(), message);
@@ -305,11 +312,6 @@ public class Server {
                 if(((MultiplayerGame) game).getCurrPlayer().getNickname().equals(nickname)){
                     getGameHandler(nickname).process(nickname, new EndTurn());
                 }
-            }
-
-            if(getActivePlayersByLobby(getLobbyIDByPlayerName(game.getPlayers().get(0).getNickname())).size() == 0){
-                String lobby = getLobbyIDByPlayerName(connection.getNickname());
-                System.out.println("Lobby ID: " + lobby + " -> the game associated to that lobby was canceled because there are no players left.");
             }
         } catch (NullPointerException e){
             users.remove(nickname);

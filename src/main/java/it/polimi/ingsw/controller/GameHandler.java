@@ -187,6 +187,7 @@ public class GameHandler {
                 if (game.isFinalTurn()) {
                     Map<String, Integer> gameStats = game.getRanking();
                     virtualView.sendToEveryone(new GameStats(gameStats, gameStats.keySet().iterator().next()));
+                    server.closeLobby(lobbyID);
                 }
                 else {
                     ((SinglePlayerGame) game).drawToken();
