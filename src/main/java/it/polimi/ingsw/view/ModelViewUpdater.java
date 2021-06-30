@@ -1,7 +1,6 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.servermessages.UpdateView;
-import it.polimi.ingsw.view.ModelView;
 
 /**
  * ModelViewUpdater class manages UpdateView message and updates the ModelView.

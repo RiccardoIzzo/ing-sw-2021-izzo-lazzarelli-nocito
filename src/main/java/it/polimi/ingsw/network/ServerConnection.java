@@ -6,6 +6,7 @@ import it.polimi.ingsw.events.servermessages.ServerMessage;
 import it.polimi.ingsw.events.servermessages.UpdateView;
 import it.polimi.ingsw.view.ActionHandler;
 import it.polimi.ingsw.view.ModelView;
+import it.polimi.ingsw.view.ModelViewUpdater;
 import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
