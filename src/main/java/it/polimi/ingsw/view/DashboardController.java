@@ -704,9 +704,11 @@ public class DashboardController {
 
         double len = 30;
         int xStart = 200, yStart = 335, yOffset = 55;
-        for(int i = 0; i < extraShelfResources.size()*2; i++) {
+        for(int i = 0; i < 4; i++) {
             if(ExtraShelfView[i] != null)
                 ExtraShelfView[i].setStyle("-fx-opacity: 0");
+        }
+        for(int i = 0; i < extraShelfResources.size()*2; i++) {
             int xBool = (i+1)%2;
             int yBool = (i/2);
             Image extraShelfImage = new Image(getImage(warehouse.get(6+i) == null ? extraShelfResources.get(yBool) : warehouse.get(6+i)));
