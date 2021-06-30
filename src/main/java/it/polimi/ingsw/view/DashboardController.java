@@ -356,6 +356,7 @@ public class DashboardController {
             waitingText.setId("waitingText" + (4));
             waitingText.setLayoutX(88);
             waitingText.setLayoutY(5);
+            waitingText.setTextFill(Color.web("white"));
             waitingText.setPrefWidth(300);
             waitingText.setPrefHeight(23);
             waitingText.setId("waitingText");
