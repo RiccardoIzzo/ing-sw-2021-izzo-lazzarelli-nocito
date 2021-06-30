@@ -126,6 +126,7 @@ public class DashboardController {
         playersChoiceBox.setValue(gui.getNickname());
 
         endTurnButton.setDisable(true);
+        updatePlayerDashboard();
         if(modelView.getDashboards().size() == 1)
             showToken(0);
 
@@ -1050,7 +1051,7 @@ public class DashboardController {
         for(Action action : Action.values()){
             action.enabled = true;
         }
-        endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
+        endTurnButton.setDisable(false);
         updatePlayerDashboard();
     }
 
