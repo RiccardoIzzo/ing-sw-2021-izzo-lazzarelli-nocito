@@ -33,6 +33,7 @@ public class MarketController {
     public ChoiceBox<String> whiteMarbleChoiceBox;
     private GUI gui;
     private ArrayList<MarbleColor> marketTray;
+    private MarbleColor slideMarble;
     ArrayList<Integer> activeWhiteMarbleLeaders;
     int leaderID = 0;
 
@@ -124,6 +125,19 @@ public class MarketController {
         }
         Platform.runLater(() -> marketPane.getChildren().add(marblePane));
         marblePane.toFront();
+
+        String[] slidePaths = {"/view/images/resources/notFound.png", "/view/images/marbleColors/"+slideMarble.name()+".png"};
+
+        for(int i =0; i<slidePaths.length; i++) {
+            Image slideMarbeImage = new Image(slidePaths[i]);
+            ImageView slideMarbleImageView = new ImageView(slideMarbeImage);
+            slideMarbleImageView.setLayoutX(marketPane.getWidth()-len*2/3+3*i);
+            slideMarbleImageView.setLayoutY(len/3+3*i);
+            slideMarbleImageView.setFitWidth(len/2-6*i);
+            slideMarbleImageView.setFitHeight(len/2-6*i);
+            Platform.runLater(() -> marketPane.getChildren().add(slideMarbleImageView));
+        }
+
     }
 
     /**
@@ -192,5 +206,13 @@ public class MarketController {
      */
     public void setMarketTray(ArrayList<MarbleColor> marketTray) {
         this.marketTray = marketTray;
+    }
+
+    /**
+     * Method setSlideMarble sets the sliderMarble color.
+     * @param slideMarble marbleColor.
+     */
+    public void setSlideMarble(MarbleColor slideMarble) {
+        this.slideMarble = slideMarble;
     }
 }

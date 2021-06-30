@@ -984,6 +984,7 @@ public class DashboardController {
         marketController = showPopup("/view/scenes/sceneMarket.fxml", true).getController();
         marketController.setGUI(gui);
         marketController.setMarketTray(modelView.getMarketTray());
+        marketController.setSlideMarble(modelView.getSlideMarble());
         marketController.start();
         marketController.checkActiveWhiteMarbleLeaders(modelView.getMyDashboard().getLeaderCards());
     }
