@@ -126,6 +126,8 @@ public class DashboardController {
         playersChoiceBox.setValue(gui.getNickname());
 
         endTurnButton.setDisable(true);
+        showLeaders.setDisable(false);
+
         updatePlayerDashboard();
         if(modelView.getDashboards().size() == 1)
             showToken(0);
@@ -536,7 +538,6 @@ public class DashboardController {
             if(gui.getNickname().equals(modelView.getCurrPlayer()) || modelView.getCurrPlayer().length() < 1) {
                 ArrayList<Action> actions = gui.getValidActions();
                 if (actions.size() == 0) {
-                    showLeaders.setDisable(true);
                     marketButton.setDisable(true);
                     endTurnButton.setDisable(true);
                     for(Button button : developmentButton) {
@@ -554,7 +555,6 @@ public class DashboardController {
                         disableProductions();
                     }
 
-                    showLeaders.setDisable(!actions.contains(Action.ACTIVATE_LEADER) && !actions.contains(Action.DISCARD_LEADER));
                 }
             }
 
