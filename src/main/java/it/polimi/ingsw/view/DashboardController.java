@@ -1047,10 +1047,10 @@ public class DashboardController {
             Platform.runLater(() -> basicProductionResImages.get(finalI).valueProperty().set(null));
             basicProductionResources[i] = null;
         }
-        endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
         for(Action action : Action.values()){
             action.enabled = true;
         }
+        endTurnButton.setDisable(!gui.getValidActions().contains(Action.END_TURN));
         updatePlayerDashboard();
     }
 
