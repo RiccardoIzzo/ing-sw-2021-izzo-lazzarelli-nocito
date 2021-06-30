@@ -392,7 +392,6 @@ public class GUI extends Application implements View {
             dashboardController.handleWaitingText();
             if (!modelView.getCurrPlayer().equals(nickname) && modelView.getDashboards().size() > 1) {
                 dashboardController.endTurnButton.setDisable(true);
-                dashboardController.showLeaders.setDisable(true);
                 dashboardController.marketButton.setDisable(true);
                 dashboardController.gridButton.setDisable(true);
             }
