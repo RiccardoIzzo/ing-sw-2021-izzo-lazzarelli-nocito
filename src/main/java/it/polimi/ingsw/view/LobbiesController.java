@@ -142,6 +142,12 @@ public class LobbiesController {
         waitingPane.getChildren().add(textLabel);
         Platform.runLater(() -> lobbiesPane.getChildren().add(waitingPane));
     }
+
+    /**
+     * Method isParsable checks if the input is an integer
+     * @param input string input by the user
+     * @return boolean that states if the input is valid
+     */
     public static boolean isParsable(String input) {
         try {
             Integer.parseInt(input);
