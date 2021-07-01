@@ -334,6 +334,8 @@ public class CLI implements View{
                 .reduce(new ResourceMap(), ResourceMap::addResources);
 
         showCards(grid);
+        System.out.println("My resources: " + modelView.getMyDashboard().getTotalResources() +
+                        "\nDiscount: " + discount);
         System.out.println("Select the card that you want to buy by typing the id: ");
 
         int id = getInt();
@@ -446,6 +448,10 @@ public class CLI implements View{
         //Handles the basic production
         ResourceMap inputBasicProduction = new ResourceMap();
         ResourceMap outputBasicProduction = new ResourceMap();
+
+        System.out.println("\n*** AVAILABLE PRODUCTION CARDS ***\n");
+        showCards(modelView.getMyDashboard().getAvailableProduction());
+
         System.out.println("Do you want to activate the basic production? y/n");
         if(getInput("y|n").equals("y")){
             for(int n = 0; n < 2; n++){
