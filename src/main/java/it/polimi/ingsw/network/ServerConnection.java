@@ -68,7 +68,6 @@ public class ServerConnection implements Runnable{
      * It receives a ServerMessage (Serializable Object) from the server.
      * In case of an UpdateView message it starts a new ModelViewUpdater thread that handle the update of the model view.
      * Otherwise it executes a new ActionHandler thread that handle the view based on the message received.
-     * Note that, to avoid conflicts during the model view update, only one ModelViewUpdater thread can be active.
      */
     public void receiveFromServer(){
         ModelViewUpdater modelViewUpdater;
