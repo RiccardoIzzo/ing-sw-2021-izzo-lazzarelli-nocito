@@ -79,7 +79,6 @@ public class MarketController {
 
 
             if (activeWhiteMarbleLeaders.size() == 2) {
-                System.out.print("&& == 2");
                 WhiteMarbleLeaderCard card2 = (WhiteMarbleLeaderCard) Objects.requireNonNull(JsonCardsCreator.generateCard(activeWhiteMarbleLeaders.get(1)));
                 whiteMarbleChoiceBox.getItems().add("White marble = " + ((MarbleColor) card2.getExchange().toArray()[0]).name());
             }

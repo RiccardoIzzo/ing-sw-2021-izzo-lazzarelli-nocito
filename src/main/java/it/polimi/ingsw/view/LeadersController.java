@@ -152,11 +152,7 @@ public class LeadersController {
                         extraDevButton.setLayoutY(discardButton[i].getLayoutY() + discardButton[i].getHeight() + 10);
                         extraDevButton.setPrefWidth(discardButton[i].getWidth());
                         extraDevButton.setPrefHeight(discardButton[i].getHeight());
-                        System.out.println("leader card : " + (4+finalI));
-                        System.out.println("Productions enabled: " + gui.dashboardController.enabledProductions);
                         if(gui.dashboardController.enabledProductions.contains(4 + finalI)) {
-                            System.out.println("leaderExtraProductionRes.get(finalI)");
-                            System.out.print(gui.dashboardController.leaderExtraProductionRes);
                             switch(gui.dashboardController.leaderExtraProductionRes.get(finalI)) {
                                 case COIN -> basicProductionRes.getSelectionModel().select(0);
                                 case SERVANT -> basicProductionRes.getSelectionModel().select(1);
