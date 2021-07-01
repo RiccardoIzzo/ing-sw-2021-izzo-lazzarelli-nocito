@@ -469,10 +469,12 @@ public class CLI implements View{
                 System.out.println("Add the production you want to activate by typing the id: ");
                 int id = getInt();
                 if(modelView.getMyDashboard().getAvailableProduction().contains(id)) productions.add(id);
+                else System.out.println("Id not valid.");
+
                 if (modelView.getMyDashboard().getAvailableProduction().size() == productions.size()){
                     break;
                 }
-                else System.out.println("Id not valid.");
+
                 System.out.println("Add more? y/n");
                 if(getInput("y|n").equals("n")) {
                     for(Integer production : productions){
