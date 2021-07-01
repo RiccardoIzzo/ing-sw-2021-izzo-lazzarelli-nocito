@@ -465,8 +465,6 @@ public class CLI implements View{
 
         //Handles the DevelopmentCard production
         if (modelView.getMyDashboard().getAvailableProduction().size() > 0){
-            System.out.println("\n*** AVAILABLE PRODUCTION CARDS ***\n");
-            showCards(modelView.getMyDashboard().getAvailableProduction());
             System.out.println("Select the productions you want to activate: ");
             while(true){
                 System.out.println("Add production by typing the id: ");
