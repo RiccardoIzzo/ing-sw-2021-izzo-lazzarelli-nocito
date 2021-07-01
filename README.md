@@ -66,6 +66,6 @@ From the jar it's possible to start both the server and the client (CLI/GUI)
 | Model | 638/733 (87%)
 | Controller | 43/102 (42%)
 
-The low percentage on controller coverage is due to the fat model implementation.
+The low percentage on controller coverage is due to the fat model implementation.  
 The uncovered methods are related to the network.
 
