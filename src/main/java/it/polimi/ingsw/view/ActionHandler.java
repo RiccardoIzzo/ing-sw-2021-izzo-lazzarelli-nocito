@@ -49,7 +49,11 @@ public class ActionHandler extends Thread{
             }
         }
         else if(message instanceof LobbyFull){
-            view.printText("This lobby is full! Try again.\n");
+            if(view instanceof CLI){
+                view.printText("This lobby is full! Try again.\n");
+                view.send(new GetLobbies());
+            }
+
             if (view instanceof GUI) {
                 ((GUI) view).enableLobbies();
                 ((GUI) view).showAlert("This lobby is full! Try again.", Alert.AlertType.ERROR);
