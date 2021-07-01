@@ -54,6 +54,7 @@ public class DisconnectionListener extends PropertyListener{
         for(Player user : game.getPlayers()){
             String name = user.getNickname();
             virtualView.sendToPlayer(playerSource, new UpdateView(name, DISCARD_LEADER, null, translateLeadersToMap((HashSet<LeaderCard>) game.getPlayerByName(name).getLeaders())));
+            virtualView.sendToPlayer(playerSource, new UpdateView(name, EXTRA_SHELF_CHANGE, null, game.getPlayerByName(name).getDashboard().getWarehouse().getExtraShelfResources()));
             virtualView.sendToPlayer(playerSource, new UpdateView(name, DEVELOPMENTS_CHANGE, null, translateCards(user.getDevelopments())));
             virtualView.sendToPlayer(playerSource, new UpdateView(name, ACTIVE_DEVELOPMENTS_CHANGE, null, translateCards(user.getActiveDevelopments())));
             virtualView.sendToPlayer(playerSource, new UpdateView(name, STRONGBOX_CHANGE, null, game.getPlayerByName(name).getDashboard().getStrongbox()));
