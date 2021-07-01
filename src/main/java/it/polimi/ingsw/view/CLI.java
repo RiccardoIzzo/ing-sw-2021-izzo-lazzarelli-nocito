@@ -265,7 +265,7 @@ public class CLI implements View{
             case 2 -> handleActivateProduction();
             case 3 -> handleActivateLeader();
             case 4 -> handleDiscardLeader();
-            case 5 -> showDashboard(modelView.getMyDashboard());
+            case 5 -> showDashboard(modelView);
             case 6 -> showGrid(modelView.getGrid());
             case 7 -> handleEndTurn();
         }
@@ -693,9 +693,24 @@ public class CLI implements View{
     /**
      * Method showDashboard prints the visual representation of a player's dashboard: faith track, warehouse, strongbox,
      * leader cards and the visible development cards.
-     * @param dashboardView the class containing the data to visualize.
+     * @param modelView the class containing the data to visualize.
      */
-    public void showDashboard(ModelView.DashboardView dashboardView){
+    public void showDashboard(ModelView modelView){
+        ModelView.DashboardView dashboardView;
+        if (modelView.getDashboards().size() > 1) {
+            System.out.println("Select the dashboard:");
+            for (int i = 0; i < modelView.getDashboards().size(); i++){
+                System.out.println(i +") " + modelView.getDashboards().get(i).getNickname());
+            }
+            int index = getInt();
+            while (index < 0 || index >= modelView.getDashboards().size()){
+                System.out.println("Invalid option: please select a number between 0 and " + (modelView.getDashboards().size() - 1) + ".");
+                index = getInt();
+            }
+            dashboardView = modelView.getDashboards().get(index);
+        } else {
+            dashboardView = modelView.getMyDashboard();
+        }
         System.out.println("\n*** FAITHTRACK ***");
         showFaithTrack(dashboardView.getFaithMarker(), dashboardView.getBlackMarker(), dashboardView.getPopesFavorTiles());
         System.out.println("\n*** WAREHOUSE ***");
