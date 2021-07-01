@@ -93,11 +93,11 @@ public class GameHandler {
             Manages bonus resources.
              */
             int index = 0;
-            for (String player : players) {
-                game.getPlayerByName(player).getDashboard().incrementFaith(BONUS_FAITH_POINTS[index++]);
-                int amount = game.getPlayers().indexOf(game.getPlayerByName(player));
+            for (Player player : game.getPlayers()) {
+                player.getDashboard().incrementFaith(BONUS_FAITH_POINTS[index++]);
+                int amount = game.getPlayers().indexOf(player);
                 if (amount != 0){
-                    virtualView.sendToPlayer(player, new GetBonusResources(BONUS_RESOURCES[amount]));
+                    virtualView.sendToPlayer(player.getNickname(), new GetBonusResources(BONUS_RESOURCES[amount]));
                 }
             }
         }
