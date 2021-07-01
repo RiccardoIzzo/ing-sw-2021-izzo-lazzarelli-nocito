@@ -908,9 +908,10 @@ public class CLI implements View{
     }
 
     /**
-     * Method showStats prints the statics at the end of the game showing the winner player.
+     * Method showStats prints the stats at the end of the game showing the winner player.
      * @param gameStats a map containing the statistics.
      */
+    @Override
     public void showStats(Map<String, Integer> gameStats){
         boolean firstPlayer = true;
 

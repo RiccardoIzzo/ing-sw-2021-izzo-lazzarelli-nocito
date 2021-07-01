@@ -331,6 +331,10 @@ public class GUI extends Application implements View {
         Platform.runLater(() -> displayAlert(header, type));
     }
 
+    /**
+     * Method setReconnected sets reconnected attribute.
+     * @param value integer value.
+     */
     public void setReconnected(int value) {
         reconnected = value;
     }
