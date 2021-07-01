@@ -42,9 +42,12 @@ java -version
 mvn -version
 ```
 
+(**WINDOWS ONLY**) To enable ANSI colors on Windows it is recommended to install [GNU Unifont](unifoundry.com/pub/unifont/unifont-13.0.01/font-builds/unifont-13.0.01.ttf) with one of the following alternatives:
+1. [ConEmu](https://conemu.github.io/) terminal
+2. Windows Services for Linux (WSL)
 
 ### Quick start guide
-1. Check the requirements
+1. Check the system requirements
 2. Clone this repo
 3. In the main folder of the repo run the following command:
 ```
@@ -58,8 +61,11 @@ From the jar it's possible to start both the server and the client (CLI/GUI)
 
 ## Test coverage
 
-| Package | Coverage (Methods) |
+| Package | Coverage (Line) |
 |:-----------------------|:------------------------------------:|
-| Model | 177/197 (89%)
-| Controller | 5/8 (62%)
+| Model | 638/733 (87%)
+| Controller | 43/102 (42%)
+
+The low percentage on controller coverage is due to the fat model implementation.
+The uncovered methods are related to the network.
 
