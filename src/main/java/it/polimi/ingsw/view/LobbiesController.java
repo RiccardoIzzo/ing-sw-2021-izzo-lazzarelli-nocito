@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -73,7 +72,6 @@ public class LobbiesController {
      * If it hasn't, it shows an alert, otherwise it sends to server a request to join the selected lobby
      */
     public void joinButtonClicked() {
-        System.out.println("joinButtonClicked");
         String selectedItem = lobbiesListView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             gui.showAlert("Select the lobby you want to join", Alert.AlertType.ERROR);
@@ -92,7 +90,6 @@ public class LobbiesController {
      * a request to create the selected lobby
      */
     public void createButtonClicked() {
-        System.out.println("createButtonClicked");
         String lobbyID = lobbyTextField.getText();
         if (lobbyID == null || lobbyID.length() < 1) {
             gui.showAlert("Insert a lobby ID!", Alert.AlertType.ERROR);
@@ -126,7 +123,6 @@ public class LobbiesController {
      * @param text the waiting message that will be shown to the user
      */
     public void addWaitingView(String text) {
-        System.out.println("addWaitingView - " + text);
         Pane waitingPane = new Pane();
         Label textLabel = new Label(text);
         double paneWidth = 400;
