@@ -1077,6 +1077,7 @@ public class DashboardController {
         gui.send(new EndTurn());
         endTurnButton.setDisable(true);
         marketButton.setDisable(true);
+        activateProductionsButton.setDisable(true);
         if(modelView.getDashboards().size() > 1 ) {
             for (Button button : developmentButton) {
                 if (button != null) {
