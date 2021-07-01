@@ -180,6 +180,7 @@ public class CLI implements View{
             System.out.println("Id not valid, choose again.");
             firstId = getInt();
         }
+        ids.remove(firstId);
 
         System.out.println("Select the second card to discard by typing the id: ");
         int secondId = getInt();
