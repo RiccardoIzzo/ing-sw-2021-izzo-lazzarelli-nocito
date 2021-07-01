@@ -374,12 +374,12 @@ public class CLI implements View{
                         if (JsonCardsCreator.generateDevelopmentCard(cardToCover).getLevel() + 1 == cardToBuy.getLevel()) {
                             break;
                         } else {
-                            System.out.println("Cannot place your card at slot number " + slotIndex + "." + "Try again:");
+                            System.out.println("Cannot place your card at slot number " + slotIndex + ". " + "Try again:");
                         }
                     } else if (cardToBuy.getLevel() == 1 && cardToCover == null){
                         break;
                     } else {
-                        System.out.println("Cannot place your card at slot number " + slotIndex + "." + "Try again:");
+                        System.out.println("Cannot place your card at slot number " + slotIndex + ". " + "Try again:");
                     }
                 }
                 int index = modelView.getGrid().indexOf(id);
@@ -465,11 +465,13 @@ public class CLI implements View{
 
         //Handles the DevelopmentCard production
         if (modelView.getMyDashboard().getAvailableProduction().size() > 0){
-            System.out.println("Select the productions you want to activate: ");
             while(true){
-                System.out.println("Add production by typing the id: ");
+                System.out.println("Add the production you want to activate by typing the id: ");
                 int id = getInt();
                 if(modelView.getMyDashboard().getAvailableProduction().contains(id)) productions.add(id);
+                if (modelView.getMyDashboard().getAvailableProduction().size() == productions.size()){
+                    break;
+                }
                 else System.out.println("Id not valid.");
                 System.out.println("Add more? y/n");
                 if(getInput("y|n").equals("n")) {
