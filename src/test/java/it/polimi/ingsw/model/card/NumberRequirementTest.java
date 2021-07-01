@@ -42,6 +42,9 @@ public class NumberRequirementTest {
     LeaderCard cardA;
     LeaderCard cardB;
 
+    /**
+     * Method setUp creates an instance of Player and adds to it 5 different DevelopmentCards
+     */
     @Before
     public void setUp() {
         game = new MultiplayerGame();
@@ -56,13 +59,18 @@ public class NumberRequirementTest {
         cardB = JsonCardsCreator.generateLeaderCard(204); //requirements not met
     }
 
+    /**
+     * Method tearDown removes the references to the objects created
+     */
     @After
     public void tearDown() {
         game = null;
         player = null;
     }
 
-
+    /**
+     * Method checkRequirement checks if the method works as expected
+     */
     @Test
     public void checkRequirement() {
         assertTrue(cardA.getRequirement().checkRequirement(player));

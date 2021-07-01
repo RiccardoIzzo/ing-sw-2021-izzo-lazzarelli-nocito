@@ -17,6 +17,7 @@ public class DiscountLeaderCardTest {
     Integer victoryPoints = 2;
     Requirement requirement;
     ResourceMap discount;
+
     /**
      * Method initialization creates an instance of  DiscountLeaderCard
      * */

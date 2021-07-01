@@ -25,7 +25,7 @@ public class WhiteMarbleLeaderCardTest {
 
     /**
      * Method initialization creates an instance of WhiteMarbleLeaderCard
-     * */
+     */
     @Before
     public void initialization() {
         requirement = new ResourceRequirement(new ResourceMap());
@@ -36,7 +36,7 @@ public class WhiteMarbleLeaderCardTest {
 
     /**
      * Method testGetExchange checks that the output of getExchange is the exchange set with the constructor.
-     * */
+     */
     @Test
     public void testGetExchange() {
         assertEquals(whiteMarbleLeaderCard.getExchange(), exchange);
@@ -44,7 +44,7 @@ public class WhiteMarbleLeaderCardTest {
 
     /**
      * Method testToString checks that the output values stated in the string are the correct ones
-     * */
+     */
     @Test
     public void testToString() {
         String outputString = whiteMarbleLeaderCard.toString();

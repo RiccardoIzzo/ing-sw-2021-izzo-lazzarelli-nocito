@@ -16,6 +16,7 @@ public class ExtraShelfLeaderCardTest {
     Integer victoryPoints = 2;
     Requirement requirement;
     Resource allowedResource = Resource.COIN;
+
     /**
      * Method initialization creates an instance of  ExtraShelfLeaderCard
      * */

@@ -28,6 +28,9 @@ TYPE & LEVEL by cardID:
   - 145 - 148 LEVEL III
  */
 
+/**
+ * ResourceRequirementTests if the method checkRequirement works as excepted
+ */
 public class ResourceRequirementTest {
     Game game;
     Player player;
@@ -38,6 +41,9 @@ public class ResourceRequirementTest {
     DevelopmentCard developmentCardA;
     DevelopmentCard developmentCardB;
 
+    /**
+     * Method setUp creates an instance of Player and adds to its strongbox some Resources
+     */
     @Before
     public void setUp() {
         game = new MultiplayerGame();
@@ -55,13 +61,18 @@ public class ResourceRequirementTest {
         developmentCardB = JsonCardsCreator.generateDevelopmentCard(128); //requirements non met
     }
 
+    /**
+     * Method tearDown removes the references to the objects created
+     */
     @After
     public void tearDown() {
         game = null;
         player = null;
     }
 
-
+    /**
+     * Method checkRequirement checks if the method works as expected
+     */
     @Test
     public void checkRequirement() {
         assertTrue(leaderCardA.getRequirement().checkRequirement(player));

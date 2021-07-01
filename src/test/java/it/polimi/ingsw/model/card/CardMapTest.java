@@ -17,6 +17,9 @@ import static org.junit.Assert.*;
 public class CardMapTest {
     CardMap cardMap;
 
+    /**
+     * Method setUp creates an instance of CardMap and adds to it the following values.
+     */
     @Before
     public void setUp() {
         cardMap = new CardMap();
@@ -26,11 +29,17 @@ public class CardMapTest {
         cardMap.put(CardColor.PURPLE, 7);
     }
 
+    /**
+     * Method tearDown removes the reference to the CardMap created.
+     */
     @After
     public void tearDown() {
         cardMap = null;
     }
 
+    /**
+     * Method flush tests if the method flush brings the CardMap to its original state.
+     */
     @Test
     public void flush() {
         cardMap.flush();
@@ -39,6 +48,9 @@ public class CardMapTest {
         }
     }
 
+    /**
+     * Method put tests if the method put works as expected.
+     */
     @Test
     public void put() {
         assertEquals(cardMap.getCard(CardColor.GREEN), 1);

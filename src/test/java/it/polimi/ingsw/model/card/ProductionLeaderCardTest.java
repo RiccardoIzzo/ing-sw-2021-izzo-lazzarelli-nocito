@@ -21,8 +21,9 @@ public class ProductionLeaderCardTest {
     ProductionPower productionPower;
     ResourceMap inputResource, outputResource;
     Integer outputFaith = 1;
+
     /**
-     * Method initialization creates an instance of  ProductionLeaderCard
+     * Method initialization creates an instance of ProductionLeaderCard
      * */
     @Before
     public void initialization() {

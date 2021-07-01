@@ -26,6 +26,9 @@ public class CardTest {
     private Card card2;
     private Card card3;
 
+    /**
+     * Method setUp creates a instance of each implementation of Requirement, of a ResourceMap, of a CardMap and three Cards.
+     */
     @Before
     public void setUp(){
         resourceMap = new ResourceMap();
@@ -38,6 +41,9 @@ public class CardTest {
         card3 = new Card(103, 20, requirement3);
     }
 
+    /**
+     * Method tearDown removes the references of the objects created in setUp.
+     */
     @After
     public void tearDown() {
         resourceMap = null;
@@ -50,6 +56,9 @@ public class CardTest {
         card3 = null;
     }
 
+    /**
+     * Method getVictoryPoints tests if the method returns the correct VPs of a card.
+     */
     @Test
     public void getVictoryPoints() {
         assertEquals(18, card1.getVictoryPoints());
@@ -57,6 +66,9 @@ public class CardTest {
         assertEquals(20, card3.getVictoryPoints());
     }
 
+    /**
+     * Method getRequirement tests if the method returns the correct card requirement.
+     */
     @Test
     public void getRequirement() {
         assertEquals(card1.getRequirement().getClass(), requirement1.getClass());
@@ -64,6 +76,9 @@ public class CardTest {
         assertEquals(card3.getRequirement().getClass(), requirement3.getClass());
     }
 
+    /**
+     * Method getCardID tests if the method returns the correct card id.
+     */
     @Test
     public void getCardID(){
         assertEquals(101, card1.getCardID());
