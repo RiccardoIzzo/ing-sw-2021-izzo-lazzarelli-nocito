@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -72,6 +73,7 @@ public class LobbiesController {
      * If it hasn't, it shows an alert, otherwise it sends to server a request to join the selected lobby
      */
     public void joinButtonClicked() {
+        System.out.println("joinButtonClicked");
         String selectedItem = lobbiesListView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             gui.showAlert("Select the lobby you want to join", Alert.AlertType.ERROR);
@@ -80,6 +82,7 @@ public class LobbiesController {
             String lobbyID = selectedItem.substring(selectedItem.indexOf(" - ")+3);
             gui.send(new JoinLobby(lobbyID));
             lobbiesPane.setDisable(true);
+            addWaitingView("Lobby joined!\nWaiting for other players ...");
         }
     }
 
@@ -89,6 +92,7 @@ public class LobbiesController {
      * a request to create the selected lobby
      */
     public void createButtonClicked() {
+        System.out.println("createButtonClicked");
         String lobbyID = lobbyTextField.getText();
         if (lobbyID == null || lobbyID.length() < 1) {
             gui.showAlert("Insert a lobby ID!", Alert.AlertType.ERROR);
@@ -106,7 +110,7 @@ public class LobbiesController {
                 else {
                     gui.send(new CreateLobby(lobbyID, numPlayers));
                     lobbiesPane.setDisable(true);
-                    addWaitingView("Lobby created! Waiting for other players ...");
+                    addWaitingView("Lobby created!\nWaiting for other players ...");
                 }
             }
             else {
@@ -122,20 +126,23 @@ public class LobbiesController {
      * @param text the waiting message that will be shown to the user
      */
     public void addWaitingView(String text) {
+        System.out.println("addWaitingView - " + text);
         Pane waitingPane = new Pane();
         Label textLabel = new Label(text);
-        double paneWidth = 230;
+        double paneWidth = 400;
         double paneHeight = 100;
         waitingPane.setMinHeight(paneHeight);
         waitingPane.setMinWidth(paneWidth);
         waitingPane.setLayoutX(lobbiesPane.getWidth()/2 - (paneWidth / 2));
         waitingPane.setLayoutY(lobbiesPane.getHeight()/2 - (paneHeight / 2));
-        waitingPane.setStyle("-fx-background-color: white ; -fx-border-radius: 20");
+        waitingPane.setStyle("-fx-background-color: white ; -fx-font-size: 20px; -fx-text-alignment: center;");
         waitingPane.setId(("waitingPane"));
-        textLabel.setMinHeight(60);
-        textLabel.setLayoutX(10);
-        textLabel.setMinWidth(paneWidth - 20);
-        textLabel.setLayoutY(paneHeight/2-30);
+        textLabel.setMinHeight(paneHeight);
+        textLabel.setLayoutX(80);
+        textLabel.setPrefWidth(paneWidth - 160);
+        textLabel.setLayoutY(0);
+        textLabel.setStyle("-fx-font-size: 20px; -fx-wrap-text: true; -fx-text-alignment: center;");
+
         waitingPane.getChildren().add(textLabel);
         Platform.runLater(() -> lobbiesPane.getChildren().add(waitingPane));
     }

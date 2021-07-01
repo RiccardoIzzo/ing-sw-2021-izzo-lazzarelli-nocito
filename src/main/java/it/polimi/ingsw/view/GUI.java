@@ -202,7 +202,7 @@ public class GUI extends Application implements View {
      * that confirms to the users that the lobby has been created.
      */
     public void handleLobbyJoined() {
-        lobbiesController.addWaitingView("Lobby created! Waiting for other players ...");
+
     }
 
     /**
