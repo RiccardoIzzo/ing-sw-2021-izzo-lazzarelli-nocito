@@ -42,7 +42,7 @@ java -version
 mvn -version
 ```
 
-(**WINDOWS ONLY**) To enable ANSI colors on Windows it is recommended to install [GNU Unifont](unifoundry.com/pub/unifont/unifont-13.0.01/font-builds/unifont-13.0.01.ttf) with one of the following alternatives:
+(**WINDOWS ONLY**) To enable ANSI colors on Windows it is recommended to install [GNU Unifont](http://unifoundry.com/unifont/index.html) with one of the following alternatives:
 1. [ConEmu](https://conemu.github.io/) terminal
 2. Windows Services for Linux (WSL)
 
