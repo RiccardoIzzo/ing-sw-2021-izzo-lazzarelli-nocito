@@ -210,7 +210,9 @@ public class Server {
                 connectionMap.put(nickname, connection);
                 sendEveryone(new TextMessage(nickname + " is back online!"), getLobbyIDByPlayerName(nickname));
                 getGameHandler(nickname).reloadModelView(nickname);
-                if(getGameHandler(nickname).getGame() instanceof SinglePlayerGame) connection.sendToClient(new StartTurn(nickname));
+                if (getGameHandler(nickname).getGame() instanceof SinglePlayerGame || getActivePlayersByLobby(getLobbyIDByPlayerName(nickname)).size() == 1){
+                    connection.sendToClient(new StartTurn(nickname));
+                }
             }
             /*
             This nickname is available, it registers the player with the selected nickname and sends a ValidNickname message.
